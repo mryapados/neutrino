@@ -1,0 +1,58 @@
+Application petit déjeuner
+
+1) Description:
+Construire une application qui permet d'organiser l'achat de petit déjeuner dans une équipe. On pourra ainsi annoncer l'achat d'un petit déjeuner pour un jour donné.
+
+2) Fonctionnel:
+
+2-1) La partie Application
+
+2-1-1) première partie
+
+- Un utilisateur devra se connecter pour accéder à l'application
+
+- Au démarrage, l'utilisateur verra un planning avec l'ensemble des petits déjeuners déjà prévus.
+
+- En selectionnant un des petits déjeuners prévus, il pourra voir les détails de ce petit déjeuner (type, prix, date, descriptif qui y participe, commentaires).
+
+- En selectionnant un des petits déjeuners prévus dont la date n'est pas encore passé, il pourra anoncer sa présence ou non pour cet événement. Il peut annuler sa présence avant la date de l'événement. 
+
+- En selectionnant un des petits déjeuners prévus dont la date est passé, il pourra donner une note (sur 20) sur ce petit déjeuner, ainsi qu'un commentaire.
+ 
+- il pourra ajouter un petit déjeuner, il pourra aussi modifier et annuler un petit déjeuner qu'il a créé. Le prix du petit déjeuner sera saisissable uniquement après l'événement.
+
+2-1-2) deuxième partie
+
+- Un utilisateur peut faire partie d'une équipe, un petit déjeuner peut être organisé pour un équipe ou pour tous les utilisateurs. On aimerait aussi avoir des chefs d'équipe dans les équipes.
+
+- Un utilisateur peut avoir une préférence de petit déjeuner (type)
+
+- Au démarrage de l'application, avoir en entête les futurs petits déjeuners dont la présence ou la non présence de l'utilisateur n'est pas encore saisie afin de les inciter à répondre.
+
+- On aimerait avoir une affichage (une deuxième page) d'un classement des meilleurs petits déjeuners avec des filtres (exemple: par équipe, par année, par mois, que j'ai organisé, où j'ai été présent ...)
+
+- Les chefs d'équipe peuvent paramètrer le planning des petits déjeuners de leur équipe. Il peuvent modifier ou annuler un petit déjeuner de leur équipe. Ils peuvent choisir une fréquence pour les petits déjeuner de leur équipe (uniquement les mardis, ou bien, une semaine le mercredi, une semaine le jeudi ou le vendredi), ils peuvent plafonner le prix d'un petit déjeuner (total ou par participant), il peut aussi paramètrer si les petits déjeuners sont annulable ou donné une heure avant de pouvoir annuler. (exemple: prévenir 48h avant l'événement). Ils peuvent une période maximale de non organisation (exemple tous les 2 mois)
+
+- Prévoir une alerte au personne de l'équipe qui n'ont pas organisé de petit dejeuner depuis la période maximale de non organisation ou si tous les autres membres de l'équipe ont déjà organisé leur petit déjeuner.
+
+- Au lieu d'avoir un commentaire, chaque utilisateur peut faire plusieurs commentaires par rapport à un événement donné. 
+
+2-1-3) troisième partie
+
+- Faire la même application pour les apéros, gérer des événements par plusieurs organisateurs, un utilisateur peut faire parti de plusieur équipe, une demande de paiement collaboratif, gérer le multilangue ...
+
+2-2) La partie Administration:  
+- Les administrateurs peuvent se connecter à l'adminsitration.
+- Il peuvent gérer l'ensemble des entités.
+- Il peuvent se connecter sous l'accès d'un utilisateur.
+
+
+3) Technique/Technologique:
+- Libre au niveau developpement (java web)
+- GIT pour le versionning
+
+4) Conseil recommandation
+
+- Commencer par la partie 1 de l'application. Ensuite la partie administration. Commencer la partie 2 de l'application uniquement quand vous êtes sur de votre code sur la partie 1.
+
+

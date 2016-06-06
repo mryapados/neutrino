@@ -1,0 +1,9 @@
+body{
+    background: url(../image/front/login/back.png);
+	background-color: #444;
+    background: url(../image/front/login/pinlayer2.png),url(../image/front/login/pinlayer1.png),url(../image/front/login/back.png);    
+}
+
+.vertical-offset-100{
+    padding-top:100px;
+}

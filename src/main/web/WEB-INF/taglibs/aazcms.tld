@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+	version="2.1">
+
+	<description>JSTL 1.1 core library</description>
+	<display-name>JSTL core</display-name>
+	<tlib-version>1.1</tlib-version>
+	<short-name>aazcms</short-name>
+	<!--<uri>http://java.sun.com/jsp/jstl/core</uri> -->
+	
+	<tag>
+		<name>init</name>
+		<tag-class>fr.cedricsevestre.taglib.Init</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>test</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<name>head</name>
+		<tag-class>fr.cedricsevestre.taglib.Head</tag-class>
+		<body-content>scriptless</body-content>
+	</tag>
+	<tag>
+		<name>body</name>
+		<tag-class>fr.cedricsevestre.taglib.Body</tag-class>
+		<body-content>scriptless</body-content>
+	</tag>
+	<tag>
+		<name>block</name>
+		<tag-class>fr.cedricsevestre.taglib.Block</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>position</name>
+			<required>true</required>
+		</attribute>
+	</tag>
+
+	
+</taglib>

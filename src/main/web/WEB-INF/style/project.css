@@ -1,0 +1,149 @@
+p.debug{
+	margin:0;
+	padding:0;
+	color: orange;
+	font-size: 0.6em;
+}
+p.debug:before{
+	content: "debug : ";
+}
+
+
+#control header .navbar{
+	border-radius : 0;
+	background: #2a3723;
+}
+#control header a.navbar-brand {
+    color: #a2c091!important;
+}
+#control header .navbar img{
+	margin: 10px;
+	height: 30px;
+}
+#control header .navbar-right img{
+	margin: 0;
+	height: 34px;
+	border-radius: 5px;
+}
+#control header .navbar-right img:hover{
+	border: 1px solid white;
+}
+
+#control header .navbar-right .btn-custom{
+	color: white;
+	background-color: #5cb85c;
+	border-color: #5cb85c;
+}
+
+
+
+#control nav{
+
+	
+}
+#control nav .panel-default{
+	/*border-color: #d2ebc2;*/
+}
+#control nav .panel-default > .panel-heading-green{
+	background-image: none;
+	background-color: #5cb85c;
+	color: #ffffff;
+	font-weight: bold;
+}
+#control nav .panel-default > .panel-heading-pink{
+	background-image: none;
+	background-color: #cf5b95;
+	color: #ffffff;
+	font-weight: bold;
+}
+#control nav .panel-default > .panel-heading-yellow{
+	background-image: none;
+	background-color: #f4e000;
+	color: #423d00;
+	font-weight: bold;
+}
+#control nav .panel-default > .panel-heading-cyan{
+	background-image: none;
+	background-color: #00e0f4;
+	color: #ffffff;
+	font-weight: bold;
+}
+#control article{
+
+	
+}
+#control aside{
+
+	
+}
+
+
+
+
+
+
+.bs-callout {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+.bs-callout h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+.bs-callout p:last-child {
+    margin-bottom: 0;
+}
+.bs-callout code {
+    border-radius: 3px;
+}
+.bs-callout+.bs-callout {
+    margin-top: -5px;
+}
+.bs-callout-default {
+    border-left-color: #777;
+}
+.bs-callout-default h4 {
+    color: #777;
+}
+.bs-callout-primary {
+    border-left-color: #428bca;
+}
+.bs-callout-primary h4 {
+    color: #428bca;
+}
+.bs-callout-success {
+    border-left-color: #5cb85c;
+}
+.bs-callout-success h4 {
+    color: #5cb85c;
+}
+.bs-callout-danger {
+    border-left-color: #d9534f;
+}
+.bs-callout-danger h4 {
+    color: #d9534f;
+}
+.bs-callout-warning {
+    border-left-color: #f0ad4e;
+}
+.bs-callout-warning h4 {
+    color: #f0ad4e;
+}
+.bs-callout-info {
+    border-left-color: #5bc0de;
+}
+.bs-callout-info h4 {
+    color: #5bc0de;
+}
+
+h1, h2, h3, h4, h5, h6{
+	color: #2a3723;
+}
+
+.socialnetwork img{
+	height: 50px;
+	border-radius: 5px;
+}

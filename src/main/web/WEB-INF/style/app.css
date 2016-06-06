@@ -1,0 +1,202 @@
+
+
+/* targetblock */
+.targetblock-view-page{
+	border: 2px Dashed #bf33ed;
+}
+	.targetblock-view-page .edit{
+		font-size: 10px;
+		background-color: #df91f9;
+		border: 1px solid #bf33ed;
+		width: 100px;
+	}
+	.targetblock-view-page .edit a{color: white;}
+	.targetblock-view-page .edit a:hover{color: red; text-decoration: none;}
+
+.targetblock-view-pageblock{
+	border: 2px Dashed #e3344c;
+}
+	.targetblock-view-pageblock .edit{
+		font-size: 10px;
+		background-color: #e79da7;
+		border: 1px solid #e3344c;
+		width: 100px;
+	}
+	.targetblock-view-pageblock .edit a{color: white;}
+	.targetblock-view-pageblock .edit a:hover{color: red; text-decoration: none;}
+	
+
+
+.targetblock-empty{
+	background: repeating-linear-gradient(
+	  45deg,
+	  #e1e1e1,
+	  #e1e1e1 10px,
+	  #bebebe 10px,
+	  #bebebe 20px
+	);
+	min-height: 200px;
+}
+.targetblock-add-element{
+	background: repeating-linear-gradient(
+	  45deg,
+	  #92b480,
+	  #92b480 10px,
+	  #658256 10px,
+	  #658256 20px
+	);
+
+	min-height: 15px;
+}
+
+/* back-management */
+#back-management .block-selection{
+	position: fixed;
+	top: 30%;
+	left: 0;
+	
+}
+#back-management .block-selection .outside{
+    position:absolute;
+    right:-35px;
+    width: 35px;
+    height: 100%;
+}
+#back-management .block-selection .outside .edit{
+    width: 100%;
+    height: 100px;
+	-webkit-border-top-right-radius: 10px;
+	-webkit-border-bottom-right-radius: 10px;
+	-moz-border-radius-topright: 10px;
+	-moz-border-radius-bottomright: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+    background: #2a3723 url(../image/back/block-selection-edit.png);
+    border-top: 2px solid white;
+    border-bottom: 2px solid white;
+    border-right: 2px solid white;
+}
+#back-management .block-selection .outside .edit:hover{
+	background-color: black;
+}
+#back-management .block-selection .inside{
+    width: 250px;
+    height: 300px;
+	-moz-transition: .5s all .1s;
+	-webkit-transition: .5s all .1s;
+	transition: .5s all .1s;
+	-webkit-border-bottom-right-radius: 10px;
+	-moz-border-radius-bottomright: 10px;
+	border-bottom-right-radius: 10px;
+    background: #517341;
+    border-top: 2px solid white;
+    border-bottom: 2px solid white;
+    overflow: auto;
+}
+#back-management .block-selection .inside .contain{
+	color: white;
+	margin: 10px;
+}
+#back-management .block-selection .inside .contain .col-xs-12{
+	padding: 0!important;
+}
+#back-management .block-selection .inside .contain .form-control, 
+#back-management .block-selection .inside .contain .btn-default {
+	border-color: #c0cbba!important;
+}
+#back-management .block-selection .inside .contain h3{
+	color: white;
+	font-size: 18px;
+	margin: 0 0 5px 0;
+}
+#back-management .block-selection .inside .contain h4{
+	color: #c0cbba;
+	font-size: 13px;
+	margin: 0 0 10px 0;
+}
+#back-management .block-selection .inside .contain ul.list-block{
+	margin: 10px 0 0 0;
+	padding: 0px;
+	color: #2a3723;
+	font-size:1em;
+}
+#back-management .block-selection .inside .contain ul.list-block li{
+    display: block;
+    padding: 5px 8px;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid #c0cbba;
+    line-height : 12px;
+}
+#back-management .block-selection .inside .contain ul.list-block li span{
+    font-size: 0.8em;
+}
+#back-management .block-selection .inside .contain ul.list-block li:first-child{
+	border-top-right-radius: 4px;
+	border-top-left-radius: 4px;
+}
+#back-management .block-selection .inside .contain ul.list-block li:last-child{
+	margin-bottom: 0;
+	border-bottom-right-radius: 4px;
+	border-bottom-left-radius: 4px;
+}
+#back-management .block-selection .inside .contain ul.list-block li:hover{
+	background-color: #2a3723;
+	color: white;
+	cursor: move;
+}  
+#back-management .block-selection .closed{
+    width: 0;
+}
+#back-management .block-selection .opened{
+    width: 250px;
+}
+/* debug-info */
+#back-management .debug-info{
+	padding: 0 0 10px 0;
+	font-size: 0.8em;
+	background: #2a3723;
+	color: #c0cbba;
+}
+#back-management .debug-info em, #back-management .debug-info h3{
+	color: white;
+}
+
+
+
+#block-preview{
+	position: fixed;
+	top: 30%;
+	right: 0;
+}
+
+
+
+
+.column {
+    width: 50px;
+    height: 50px;
+    background-color: red;
+    text-align: center;
+    border: 1px solid black;
+    display:inline-block;
+    margin: 50px;
+}
+.columnDrag {
+    opacity: 0.7;
+    background-color: blue;
+}
+.columnDrop {
+	background: repeating-linear-gradient(
+	  45deg,
+	  #feffb1,
+	  #feffb1 10px,
+	  #fdff6c 10px,
+	  #fdff6c 20px
+	);
+}
+div.required label.control-label:after {
+    content: " *";
+    color: red;
+    font-size: 1.2em;
+}

@@ -1,0 +1,11 @@
+<urlrewrite>
+
+    <rule>
+       <from>^/([a-zA-Z0-9_\-]+)/$</from>
+       <to>/project/project?p=$1</to>
+    </rule>
+    <rule>
+       <from>^/demo/api.do?method=getUser&amp;uid=(.*)$</from>
+       <to>/demo/api/user/$1</to>
+    </rule>
+</urlrewrite>

@@ -1,0 +1,20 @@
+package fr.cedricsevestre.dao.back;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import fr.cedricsevestre.entity.back.MapTemplate;
+import fr.cedricsevestre.entity.back.Position;
+import fr.cedricsevestre.entity.back.Template;
+
+@Repository
+@Qualifier(value="backEntityManagerFactory")
+public interface MapTemplateDao extends JpaRepository<MapTemplate, Integer> {
+	@Query("SELECT mt FROM MapTemplate mt WHERE mt.model=:model AND mt.position=:position ORDER BY mt.ordered")
+	List<MapTemplate> findAllForModelAndPosition(@Param("model") Template model, @Param("position") Position position);
+}

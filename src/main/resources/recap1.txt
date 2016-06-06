@@ -1,0 +1,66 @@
+
+I - Technologies
+
+- MAVEN
+- SPRING MVC
+- SPRING SECURITY
+- SPRING DATA
+- JPA/HIBERNATE -> en create-drop pour la phase de dév
+
+- Theme BootStrap
+
+- BDD MySQL
+
+- SERVER : Tomcat
+
+Remarque : pour démmarer l'application, il faut creer la base treeptik_breakfast et ajouter un serveur tomcat.
+
+
+II - A Problème rencontré
+
+	1) Difficultés à lier Spring sécurity avec la base.
+	Problème résolu grâce au lien suivant : 
+	- http://codehustler.org/blog/spring-security-tutorial-form-login-java-config/
+	- http://codehustler.org/blog/spring-security-tutorial-form-login/
+	
+	2) Difficulté pour échanger des infos entre jsp et controller lors d'objets complex : contenant des enum, ou des lien manytomany et manytoone
+	Problème résolu grâce aux InitBinder
+
+II - B Problème non résolues
+	
+	1) Problème d'encodage dans les transactions -> chaines contenant caractère spéciaux éàç...
+
+
+III - Ce que je souhaite montrer
+
+	- L'intégration de spring sécurity avec password encrypté dans la BDD.
+		(reste à faire une vrai page de login).
+		
+	- Le controller MemberController : vérifie les données saisies par l'utilisateur
+		(Je doit peut-etre sortir l'encryption depuis le controller et la mettre dans le service pour faire plus propre)
+	
+	- La partie JSP qui affiche la liste des erreurs et surligne les champs en problème.
+	
+	- la page JSP gérant la ManyToMany avec "checkboxes" : http://localhost:8080/tp-breakfast/admin/breakfast/new.html
+	
+	- Le design des pages en général
+
+
+IV - Ce que je souhaite faire prochainement
+
+	- Des tests unitaires
+	
+	- Améliorer certaines fonctionnalités
+	
+	- Finir la partie backoffice : 
+		- breakfast
+		- outside
+		- event
+		- diary
+		- team
+		
+		Et faire une page index.
+		Et mettre les liens dans mon menu
+		
+	- Faire la partie frontoffice
+
