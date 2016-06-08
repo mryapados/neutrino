@@ -2,19 +2,29 @@ package fr.cedricsevestre.conf;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonParser.NumberType;
+
 import fr.cedricsevestre.entity.back.MapTemplate;
+import fr.cedricsevestre.entity.back.NData;
+import fr.cedricsevestre.entity.back.NSchema;
+import fr.cedricsevestre.entity.back.NType;
+import fr.cedricsevestre.entity.back.NType.ValueType;
 import fr.cedricsevestre.entity.back.Page;
 import fr.cedricsevestre.entity.back.Position;
 import fr.cedricsevestre.entity.back.Template;
 import fr.cedricsevestre.entity.front.Member;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.back.MapTemplateService;
+import fr.cedricsevestre.service.back.NDataService;
+import fr.cedricsevestre.service.back.NSchemaService;
 import fr.cedricsevestre.service.back.PageService;
 import fr.cedricsevestre.service.back.PositionService;
 import fr.cedricsevestre.service.back.TemplateService;
@@ -31,6 +41,12 @@ public class InitialisationBase {
 	private MemberService memberService;
 	
 	@Autowired
+	private NSchemaService nSchemaService;
+	
+	@Autowired
+	private NDataService nDataService;
+	
+	@Autowired
 	private TemplateService templateService;
 	
 	@Autowired
@@ -45,12 +61,14 @@ public class InitialisationBase {
 	public void run() throws ServiceException {
 		System.out.println("init");
 		initUsers();
+		initNSchemas();
 		initTemplates();
 		initPages();
 		initPositions();
 		initBlocs();
 		initPageBlocs();
 		initMapTemplates();
+		initNDatas();
 	}
 
 	public void initUsers() throws ServiceException{
@@ -78,6 +96,19 @@ public class InitialisationBase {
 		memberService.save(member);
 		
 	}
+	public void initNSchemas() throws ServiceException{
+		System.out.println("init nShemas");
+		
+		NSchema nSchema = new NSchema();
+		Map<String, NType> columns = new HashMap<>();
+		columns.put("article.title", new NType(NType.ValueType.VARCHAR255));
+		columns.put("article.content", new NType(NType.ValueType.HTML));
+		columns.put("article.numbers", new NType(NType.ValueType.COLLECTION, NType.ValueType.INTEGER));
+		nSchema.setColumns(columns);
+		nSchema.setScope(NSchema.ScopeType.ONE);
+		nSchemaService.save(nSchema);
+	}
+
 	
 	public void initTemplates() throws ServiceException{
 		System.out.println("init templates");
@@ -322,6 +353,8 @@ public class InitialisationBase {
 		template.setDescription("Page Block article");
 		template.setPath("article");
 		template.setType(Template.TemplateType.PAGEBLOCK);
+		
+		template.setSchema(nSchemaService.findById(1));
 		templateService.save(template);
 		
 		template = new Template();
@@ -372,6 +405,17 @@ public class InitialisationBase {
 		return mapTemplates;
 	}
 	
-	
+	public void initNDatas() throws ServiceException{
+		System.out.println("init nDatas");
+		
+		NData nData = new NData();
+		nData.setvInteger(32);
+		nData.setVarType(ValueType.INTEGER);
+		
+		nData.setTemplate(templateService.findByName("article"));
+		nDataService.save(nData);
+		
+		
+	}
 	
 }

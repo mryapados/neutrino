@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
@@ -59,6 +60,13 @@ public class Template extends Base {
 	@Column(name = "meta_keywords")
 	private String metaKeyWords;
 	
+	@OneToOne
+	@JoinColumn(name="id_schema")
+	private NSchema schema;
+	
+	@OneToMany(mappedBy = "template")
+	private List<NData> datas;
+	
 	public Template() {
 
 	}
@@ -104,7 +112,7 @@ public class Template extends Base {
 		return blocks;
 	}
 
-	public void setBlocs(List<MapTemplate> blocks) {
+	public void setBlocks(List<MapTemplate> blocks) {
 		this.blocks = blocks;
 	}
 
@@ -131,6 +139,24 @@ public class Template extends Base {
 	public void setMetaKeyWords(String metaKeyWords) {
 		this.metaKeyWords = metaKeyWords;
 	}
+
+	public NSchema getSchema() {
+		return schema;
+	}
+
+	public void setSchema(NSchema schema) {
+		this.schema = schema;
+	}
+
+	public List<NData> getDatas() {
+		return datas;
+	}
+
+	public void setDatas(List<NData> datas) {
+		this.datas = datas;
+	}
+
+	
 
 	
 	

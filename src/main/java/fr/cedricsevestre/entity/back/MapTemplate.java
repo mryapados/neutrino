@@ -1,6 +1,7 @@
 package fr.cedricsevestre.entity.back;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OrderBy;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -42,6 +43,12 @@ public class MapTemplate implements Serializable{
 	@Column(name = "ordered")
 	private Integer ordered;
 	
+	
+	
+	@OneToMany(mappedBy = "mapTemplate")
+	private List<NData> datas;
+	
+	
 	public MapTemplate() {
 
 	}
@@ -54,6 +61,8 @@ public class MapTemplate implements Serializable{
 		this.position = position;
 		this.ordered = ordered;
 	}
+
+	
 
 	public Integer getId() {
 		return id;
@@ -93,6 +102,14 @@ public class MapTemplate implements Serializable{
 
 	public void setOrdered(Integer ordered) {
 		this.ordered = ordered;
+	}
+
+	public List<NData> getDatas() {
+		return datas;
+	}
+
+	public void setDatas(List<NData> datas) {
+		this.datas = datas;
 	}
 
 	@Override
