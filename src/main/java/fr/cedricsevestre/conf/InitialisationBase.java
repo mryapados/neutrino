@@ -96,20 +96,7 @@ public class InitialisationBase {
 		memberService.save(member);
 		
 	}
-	public void initNSchemas() throws ServiceException{
-		System.out.println("init nShemas");
-		
-		NSchema nSchema = new NSchema();
-		Map<String, NType> columns = new HashMap<>();
-		columns.put("article.title", new NType(NType.ValueType.VARCHAR255));
-		columns.put("article.content", new NType(NType.ValueType.HTML));
-		columns.put("article.numbers", new NType(NType.ValueType.COLLECTION, NType.ValueType.INTEGER));
-		nSchema.setColumns(columns);
-		nSchema.setScope(NSchema.ScopeType.ONE);
-		nSchemaService.save(nSchema);
-	}
 
-	
 	public void initTemplates() throws ServiceException{
 		System.out.println("init templates");
 		
@@ -405,15 +392,47 @@ public class InitialisationBase {
 		return mapTemplates;
 	}
 	
+	public void initNSchemas() throws ServiceException{
+		System.out.println("init nShemas");
+		
+		NSchema nSchema = new NSchema();
+		Map<String, NType> columns = new HashMap<>();
+		columns.put("article.title", new NType(NType.ValueType.VARCHAR255));
+		columns.put("article.content", new NType(NType.ValueType.HTML));
+		columns.put("article.numbers", new NType(NType.ValueType.COLLECTION, NType.ValueType.INTEGER));
+		nSchema.setColumns(columns);
+		nSchema.setScope(NSchema.ScopeType.ONE);
+		nSchemaService.save(nSchema);
+	}
+
 	public void initNDatas() throws ServiceException{
 		System.out.println("init nDatas");
 		
-		NData nData = new NData();
-		nData.setvInteger(32);
-		nData.setVarType(ValueType.INTEGER);
+		Template template = templateService.findByName("article");
 		
-		nData.setTemplate(templateService.findByName("article"));
+		NData nData = new NData();
+		nData.setvVarchar255("data article title");
+		nData.setVarType(ValueType.VARCHAR255);
+		nData.setPropertyName("article.title");
+		nData.setTemplate(template);
 		nDataService.save(nData);
+		
+		NData nDataCollection = new NData();
+		nDataCollection.setvCollection(true);
+		nDataCollection.setVarType(ValueType.COLLECTION);
+		nDataCollection.setPropertyName("article.numbers");
+		nDataCollection.setTemplate(template);
+		nDataService.save(nDataCollection);
+		
+		NData nDataCollectionItem = new NData();
+		nDataCollectionItem.setvInteger(3);
+		nDataCollectionItem.setVarType(ValueType.INTEGER);
+		nDataCollectionItem.setOrdered(5);
+		nDataCollectionItem.setData(nDataCollection);
+		nDataCollectionItem.setTemplate(template);
+		nDataService.save(nDataCollectionItem);
+		
+		
 		
 		
 	}
