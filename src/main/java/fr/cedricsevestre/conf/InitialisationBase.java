@@ -397,9 +397,9 @@ public class InitialisationBase {
 		
 		NSchema nSchema = new NSchema();
 		Map<String, NType> columns = new HashMap<>();
-		columns.put("article.title", new NType(NType.ValueType.VARCHAR255));
-		columns.put("article.content", new NType(NType.ValueType.HTML));
-		columns.put("article.numbers", new NType(NType.ValueType.COLLECTION, NType.ValueType.INTEGER));
+		columns.put("title", new NType(NType.ValueType.VARCHAR255));
+		columns.put("content", new NType(NType.ValueType.HTML));
+		columns.put("numbers", new NType(NType.ValueType.COLLECTION, NType.ValueType.INTEGER));
 		nSchema.setColumns(columns);
 		nSchema.setScope(NSchema.ScopeType.ONE);
 		nSchemaService.save(nSchema);
@@ -413,14 +413,14 @@ public class InitialisationBase {
 		NData nData = new NData();
 		nData.setvVarchar255("data article title");
 		nData.setVarType(ValueType.VARCHAR255);
-		nData.setPropertyName("article.title");
+		nData.setPropertyName("title");
 		nData.setTemplate(template);
 		nDataService.save(nData);
 		
 		NData nDataCollection = new NData();
 		nDataCollection.setvCollection(true);
 		nDataCollection.setVarType(ValueType.COLLECTION);
-		nDataCollection.setPropertyName("article.numbers");
+		nDataCollection.setPropertyName("numbers");
 		nDataCollection.setTemplate(template);
 		nDataService.save(nDataCollection);
 		
