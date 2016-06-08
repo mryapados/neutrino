@@ -401,7 +401,7 @@ public class InitialisationBase {
 		columns.put("content", new NType(NType.ValueType.HTML));
 		columns.put("numbers", new NType(NType.ValueType.COLLECTION, NType.ValueType.INTEGER));
 		nSchema.setColumns(columns);
-		nSchema.setScope(NSchema.ScopeType.ONE);
+		nSchema.setScope(NSchema.ScopeType.ALL);
 		nSchemaService.save(nSchema);
 	}
 

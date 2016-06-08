@@ -42,9 +42,9 @@ public class BaseDto implements Serializable {
 		return new BaseDto(base.getId(), base.getName(), base.getDateAdd(), base.getDescription());
 	}
 
-	public static Base to(BaseDto baseDto) {
-		return new Base(baseDto.getId(), baseDto.getName(), baseDto.getDateAdd(), baseDto.getDescription());
-	}
+//	public static Base to(BaseDto baseDto) {
+//		return new Base(baseDto.getId(), baseDto.getName(), baseDto.getDateAdd(), baseDto.getDescription());
+//	}
 
 	public Integer getId() {
 		return id;

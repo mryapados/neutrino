@@ -19,7 +19,7 @@ import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 @Entity
 @Table(name = "base")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Base implements Serializable {
+public abstract class Base implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

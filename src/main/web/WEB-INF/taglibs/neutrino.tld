@@ -6,7 +6,7 @@
 	<description>JSTL 1.1 core library</description>
 	<display-name>JSTL core</display-name>
 	<tlib-version>1.1</tlib-version>
-	<short-name>aazcms</short-name>
+	<short-name>neutrino</short-name>
 	<!--<uri>http://java.sun.com/jsp/jstl/core</uri> -->
 	
 	<tag>

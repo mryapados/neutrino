@@ -6,7 +6,7 @@
 <%-- init : Obligatoire dans le JSP contenant le Doctype --%>
 <my:init test="${!initialized}"/>
 
-<h1>PAGEBLOCK NAME = ${activeBlock.name}</h1>
+<h1>PAGEBLOCK NAME = ${activeBlock.name} ${numbers}</h1>
 <div>
 	<my:block position="title" />
 </div>

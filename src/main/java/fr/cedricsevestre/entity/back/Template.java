@@ -60,7 +60,7 @@ public class Template extends Base {
 	@Column(name = "meta_keywords")
 	private String metaKeyWords;
 	
-	@OneToOne
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="id_schema")
 	private NSchema schema;
 	

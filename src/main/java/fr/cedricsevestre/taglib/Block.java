@@ -15,6 +15,9 @@ import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.entity.back.MapTemplate;
+import fr.cedricsevestre.entity.back.NData;
+import fr.cedricsevestre.entity.back.NSchema;
+import fr.cedricsevestre.entity.back.NSchema.ScopeType;
 import fr.cedricsevestre.entity.back.Page;
 import fr.cedricsevestre.entity.back.Position;
 import fr.cedricsevestre.entity.back.Template;
@@ -52,7 +55,6 @@ public class Block extends TagSupport {
 			if (blockPreview){
 				User surfer = (User) pageContext.getAttribute("surfer", PageContext.REQUEST_SCOPE);
 				if (surfer.getRole().equals(User.ROLE_ADMIN)){
-					//out.println("<data-ui-position facade=\"BlockManagementFacade\" position=\"" + position + "\" />");
 					Template model = (Template) pageContext.getAttribute("activeBlock", PageContext.REQUEST_SCOPE);
 					Page page = (Page) pageContext.getAttribute("page", PageContext.REQUEST_SCOPE);
 					if (model == null) model = page.getModel();
@@ -104,6 +106,22 @@ public class Block extends TagSupport {
 				mapTemplates = pos.getMapTemplates();
 				for (MapTemplate mapTemplate : mapTemplates) {
 					Template activeBlock = mapTemplate.getBlock();
+					
+					NSchema nSchema =  activeBlock.getSchema();
+					if (nSchema != null){
+						List<NData> nDatas = null;
+						//pb lazy
+//						if (nSchema.getScope() == ScopeType.ALL){
+//							nDatas = activeBlock.getDatas();
+//						} else if (nSchema.getScope() == ScopeType.ONE){
+//							nDatas = mapTemplate.getDatas();
+//						}
+//						
+//						for (NData nData : nDatas) {
+//							pageContext.setAttribute(nData.getPropertyName(), "test", PageContext.PAGE_SCOPE);
+//							
+//						}
+					}
 					
 					String path = templateService.pathJSP(page.getContext(), activeBlock);				
 
