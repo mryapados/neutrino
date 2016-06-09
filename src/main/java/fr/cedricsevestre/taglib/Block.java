@@ -111,16 +111,22 @@ public class Block extends TagSupport {
 					if (nSchema != null){
 						List<NData> nDatas = null;
 						//pb lazy
-//						if (nSchema.getScope() == ScopeType.ALL){
-//							nDatas = activeBlock.getDatas();
-//						} else if (nSchema.getScope() == ScopeType.ONE){
-//							nDatas = mapTemplate.getDatas();
-//						}
-//						
-//						for (NData nData : nDatas) {
-//							pageContext.setAttribute(nData.getPropertyName(), "test", PageContext.PAGE_SCOPE);
-//							
-//						}
+						if (nSchema.getScope() == ScopeType.ALL){
+							//activeBlock ne contient pas datas qui n'est pas initialisé car lazy
+							//Il faut donc recharger le template en demandant explicitement les datas.
+							//Ou charger les datas directement, c'est la méthode choisie ici.
+							nDatas = activeBlock.getDatas();
+						} else if (nSchema.getScope() == ScopeType.ONE){
+							//mapTemplate ne contient pas datas qui n'est pas initialisé car lazy
+							//Il faut donc recharger le mapTemplate en demandant explicitement les datas.
+							//Ou charger les datas directement, c'est la méthode choisie ici.
+							nDatas = mapTemplate.getDatas();
+						}
+						
+						for (NData nData : nDatas) {
+							pageContext.setAttribute(nData.getPropertyName(), "test", PageContext.PAGE_SCOPE);
+							
+						}
 					}
 					
 					String path = templateService.pathJSP(page.getContext(), activeBlock);				

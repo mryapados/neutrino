@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.dao.back.NDataDao;
 import fr.cedricsevestre.entity.back.NData;
+import fr.cedricsevestre.entity.back.Template;
 import fr.cedricsevestre.exception.ServiceException;
 
 @Service
@@ -87,6 +88,15 @@ public class NDataService{
 			throw new ServiceException("erreur findAll NData", e);
 		}
 	}
+	
+	public List<NData> findAllForTemplate(Template template) throws ServiceException {
+		try {
+			return nDataDao.findAllForTemplate(template);
+		} catch (PersistenceException e) {
+			throw new ServiceException("erreur findAll NData", e);
+		}
+	}
+	
 		
 	public Logger getLogger() {
 		return logger;
