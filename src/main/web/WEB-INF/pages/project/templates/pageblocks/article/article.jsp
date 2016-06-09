@@ -6,7 +6,17 @@
 <%-- init : Obligatoire dans le JSP contenant le Doctype --%>
 <my:init test="${!initialized}"/>
 
-<h1>PAGEBLOCK NAME = ${activeBlock.name} ${numbers}</h1>
+<h1>PAGEBLOCK NAME = ${activeBlock.name} </h1>
+
+<h2>attribut : title = ${title}</h2>
+<h2>attribut : number = ${number}</h2>
+
+<c:forEach var="item" items="${numbers}" varStatus="status">
+
+	<h2>Element ${status.index} : ${item}</h2>
+
+</c:forEach>
+
 <div>
 	<my:block position="title" />
 </div>

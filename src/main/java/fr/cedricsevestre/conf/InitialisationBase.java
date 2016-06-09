@@ -417,6 +417,13 @@ public class InitialisationBase {
 		nData.setTemplate(template);
 		nDataService.save(nData);
 		
+		nData = new NData();
+		nData.setvInteger(8);
+		nData.setVarType(ValueType.INTEGER);
+		nData.setPropertyName("number");
+		nData.setTemplate(template);
+		nDataService.save(nData);
+		
 		NData nDataCollection = new NData();
 		nDataCollection.setvCollection(true);
 		nDataCollection.setVarType(ValueType.COLLECTION);
@@ -429,10 +436,16 @@ public class InitialisationBase {
 		nDataCollectionItem.setVarType(ValueType.INTEGER);
 		nDataCollectionItem.setOrdered(5);
 		nDataCollectionItem.setData(nDataCollection);
-		nDataCollectionItem.setTemplate(template);
+		//nDataCollectionItem.setTemplate(template);
 		nDataService.save(nDataCollectionItem);
 		
-		
+		nDataCollectionItem = new NData();
+		nDataCollectionItem.setvInteger(5);
+		nDataCollectionItem.setVarType(ValueType.INTEGER);
+		nDataCollectionItem.setOrdered(2);
+		nDataCollectionItem.setData(nDataCollection);
+		//nDataCollectionItem.setTemplate(template);
+		nDataService.save(nDataCollectionItem);
 		
 		
 	}

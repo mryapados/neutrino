@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.SafeHtml;
@@ -66,6 +67,9 @@ public class Template extends Base {
 	
 	@OneToMany(mappedBy = "template")
 	private List<NData> datas;
+	
+//	@Transient
+//	private List<Object> properties;
 	
 	public Template() {
 
@@ -155,6 +159,14 @@ public class Template extends Base {
 	public void setDatas(List<NData> datas) {
 		this.datas = datas;
 	}
+
+//	public List<Object> getProperties() {
+//		return properties;
+//	}
+//
+//	public void setProperties(List<Object> properties) {
+//		this.properties = properties;
+//	}
 
 	
 

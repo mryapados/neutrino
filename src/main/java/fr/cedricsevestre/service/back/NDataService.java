@@ -1,7 +1,12 @@
 package fr.cedricsevestre.service.back;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import javax.persistence.PersistenceException;
 import javax.servlet.jsp.PageContext;
@@ -15,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.dao.back.NDataDao;
+import fr.cedricsevestre.entity.back.MapTemplate;
 import fr.cedricsevestre.entity.back.NData;
 import fr.cedricsevestre.entity.back.Template;
 import fr.cedricsevestre.exception.ServiceException;
@@ -93,10 +99,74 @@ public class NDataService{
 		try {
 			return nDataDao.findAllForTemplate(template);
 		} catch (PersistenceException e) {
-			throw new ServiceException("erreur findAll NData", e);
+			throw new ServiceException("erreur findAllForTemplate NData", e);
 		}
 	}
+	public List<NData> findAllForMapTemplate(MapTemplate mapTemplate) throws ServiceException {
+		try {
+			return nDataDao.findAllForMapTemplate(mapTemplate);
+		} catch (PersistenceException e) {
+			throw new ServiceException("erreur findAllForMapTemplate NData", e);
+		}
+	}
+
+//	public Integer getNDataValue(NData nData) throws ServiceException {
+//		try {
+//			switch (nData.getVarType()) {
+//			case INTEGER:
+//				return nData.getvInteger();
+//			
+//			default:
+//				return 0;
+//				//throw new ServiceException("getNDataValue No Type");
+//			}
+//			
+//			
+//		} catch (PersistenceException e) {
+//			throw new ServiceException("erreur getNDataValue NData", e);
+//		}
+//	}
 	
+	public Object getNDataValue(NData nData) throws ServiceException {
+		try {
+			switch (nData.getVarType()) {
+			case INTEGER:
+				return nData.getvInteger();
+			case FLOAT:
+				return nData.getvFloat();
+			case DOUBLE:
+				return nData.getvDouble();
+			case DATETIME:
+				return nData.getvDateTime();
+			case VARCHAR50:
+				return nData.getvVarchar50();
+			case VARCHAR255:
+				return nData.getvVarchar255();
+			case TEXT:
+				return nData.getvText();
+			case IMAGE:
+				return nData.getvPathFile();
+			case HTML:
+				return nData.getvHtml();
+			case FILE:
+				return nData.getvPathFile();	
+			case COLLECTION:
+				List<NData> nDatas = nData.getDatas();
+				SortedMap<Integer, Object> objects = new TreeMap<>();
+				for (NData data : nDatas) {
+					System.out.println(data.getOrdered() + " ; " + data.getvInteger());
+					objects.put(data.getOrdered(), getNDataValue(data));
+				}
+				return objects.values();
+			default:
+				throw new ServiceException("getNDataValue No Type");
+			}
+			
+			
+		} catch (PersistenceException e) {
+			throw new ServiceException("erreur getNDataValue NData", e);
+		}
+	}
 		
 	public Logger getLogger() {
 		return logger;

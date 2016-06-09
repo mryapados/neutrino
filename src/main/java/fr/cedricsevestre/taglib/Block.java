@@ -1,6 +1,7 @@
 package fr.cedricsevestre.taglib;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -24,6 +25,7 @@ import fr.cedricsevestre.entity.back.Template;
 import fr.cedricsevestre.entity.back.Template.TemplateType;
 import fr.cedricsevestre.entity.front.User;
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.service.back.NDataService;
 import fr.cedricsevestre.service.back.PositionService;
 import fr.cedricsevestre.service.back.TemplateService;
 
@@ -44,6 +46,12 @@ public class Block extends TagSupport {
 	@Autowired
 	public void TemplateService(TemplateService templateService) {
 		Block.templateService = templateService;
+	}
+
+	private static NDataService nDataService;
+	@Autowired
+	public void NDataService(NDataService nDataService) {
+		Block.nDataService = nDataService;
 	}
 		
 	private String position = null;
@@ -111,21 +119,18 @@ public class Block extends TagSupport {
 					if (nSchema != null){
 						List<NData> nDatas = null;
 						//pb lazy
+						//activeBlock ne contient pas datas qui n'est pas initialisé car lazy
+						//Il faut donc recharger le template en demandant explicitement les datas.
+						//Ou charger les datas directement, c'est la méthode choisie ici.
 						if (nSchema.getScope() == ScopeType.ALL){
-							//activeBlock ne contient pas datas qui n'est pas initialisé car lazy
-							//Il faut donc recharger le template en demandant explicitement les datas.
-							//Ou charger les datas directement, c'est la méthode choisie ici.
-							nDatas = activeBlock.getDatas();
+							nDatas = nDataService.findAllForTemplate(activeBlock);
 						} else if (nSchema.getScope() == ScopeType.ONE){
-							//mapTemplate ne contient pas datas qui n'est pas initialisé car lazy
-							//Il faut donc recharger le mapTemplate en demandant explicitement les datas.
-							//Ou charger les datas directement, c'est la méthode choisie ici.
-							nDatas = mapTemplate.getDatas();
+							nDatas = nDataService.findAllForMapTemplate(mapTemplate);
 						}
 						
+//						List<Object> properties = new ArrayList<>();
 						for (NData nData : nDatas) {
-							pageContext.setAttribute(nData.getPropertyName(), "test", PageContext.PAGE_SCOPE);
-							
+							pageContext.setAttribute(nData.getPropertyName(), nDataService.getNDataValue(nData), PageContext.REQUEST_SCOPE);
 						}
 					}
 					

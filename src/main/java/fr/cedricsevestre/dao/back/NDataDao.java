@@ -19,4 +19,9 @@ import fr.cedricsevestre.entity.back.Template;
 public interface NDataDao extends JpaRepository<NData, Integer> {
 	@Query("SELECT nd FROM NData nd WHERE nd.template=:template ORDER BY nd.ordered, nd.id")
 	List<NData> findAllForTemplate(@Param("template") Template template);
+	
+	@Query("SELECT nd FROM NData nd WHERE nd.mapTemplate=:mapTemplate ORDER BY nd.ordered, nd.id")
+	List<NData> findAllForMapTemplate(@Param("mapTemplate") MapTemplate mapTemplate);
+
+	
 }
