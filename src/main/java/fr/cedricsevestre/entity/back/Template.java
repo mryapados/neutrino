@@ -10,6 +10,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
@@ -43,6 +44,10 @@ public class Template extends Base {
 	@Column(name = "path")
 	private String path;
 	
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="id_lang")
+	private Lang lang;
+
 	@OneToMany(mappedBy = "block")
 	private List<MapTemplate> models;
 
@@ -61,15 +66,22 @@ public class Template extends Base {
 	@Column(name = "meta_keywords")
 	private String metaKeyWords;
 	
+//	@OneToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name="id_translation")
+//	private Translation<Template> translation;
+	
+	
+	@ManyToOne
+	@JoinColumn(name="id_translation")
+	private Translation<Template> translation;
+	
+	
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="id_schema")
 	private NSchema schema;
 	
 	@OneToMany(mappedBy = "template")
 	private List<NData> datas;
-	
-//	@Transient
-//	private List<Object> properties;
 	
 	public Template() {
 
@@ -102,6 +114,14 @@ public class Template extends Base {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public Lang getLang() {
+		return lang;
+	}
+
+	public void setLang(Lang lang) {
+		this.lang = lang;
 	}
 
 	public List<MapTemplate> getModels() {
@@ -144,6 +164,14 @@ public class Template extends Base {
 		this.metaKeyWords = metaKeyWords;
 	}
 
+	public Translation<Template> getTranslation() {
+		return translation;
+	}
+
+	public void setTranslation(Translation<Template> translation) {
+		this.translation = translation;
+	}
+
 	public NSchema getSchema() {
 		return schema;
 	}
@@ -160,13 +188,7 @@ public class Template extends Base {
 		this.datas = datas;
 	}
 
-//	public List<Object> getProperties() {
-//		return properties;
-//	}
-//
-//	public void setProperties(List<Object> properties) {
-//		this.properties = properties;
-//	}
+	
 
 	
 

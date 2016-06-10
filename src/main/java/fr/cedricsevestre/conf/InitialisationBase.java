@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonParser.NumberType;
 
+import fr.cedricsevestre.entity.back.Lang;
 import fr.cedricsevestre.entity.back.MapTemplate;
 import fr.cedricsevestre.entity.back.NData;
 import fr.cedricsevestre.entity.back.NSchema;
@@ -20,14 +21,17 @@ import fr.cedricsevestre.entity.back.NType.ValueType;
 import fr.cedricsevestre.entity.back.Page;
 import fr.cedricsevestre.entity.back.Position;
 import fr.cedricsevestre.entity.back.Template;
+import fr.cedricsevestre.entity.back.Translation;
 import fr.cedricsevestre.entity.front.Member;
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.service.back.LangService;
 import fr.cedricsevestre.service.back.MapTemplateService;
 import fr.cedricsevestre.service.back.NDataService;
 import fr.cedricsevestre.service.back.NSchemaService;
 import fr.cedricsevestre.service.back.PageService;
 import fr.cedricsevestre.service.back.PositionService;
 import fr.cedricsevestre.service.back.TemplateService;
+import fr.cedricsevestre.service.back.TranslationService;
 import fr.cedricsevestre.service.front.MemberService;
 
 
@@ -36,7 +40,9 @@ public class InitialisationBase {
 	public InitialisationBase() {
 
 	}
-
+	@Autowired
+	private LangService langService;
+	
 	@Autowired
 	private MemberService memberService;
 	
@@ -58,8 +64,12 @@ public class InitialisationBase {
 	@Autowired
 	private PageService pageService;
 	
+	@Autowired
+	private TranslationService<Template> translationService;
+	
 	public void run() throws ServiceException {
 		System.out.println("init");
+		initLangs();
 		initUsers();
 		initNSchemas();
 		initTemplates();
@@ -71,6 +81,20 @@ public class InitialisationBase {
 		initNDatas();
 	}
 
+	private Lang langEN;
+	private Lang langFR;
+	public void initLangs() throws ServiceException{
+		System.out.println("init langs");
+		langEN = new Lang();
+		langEN.setCode("en");
+		langService.save(langEN);
+		
+		langFR = new Lang();
+		langFR.setCode("fr");
+		langService.save(langFR);
+	}
+	
+	
 	public void initUsers() throws ServiceException{
 		System.out.println("init users");
 		Member member = new Member();
@@ -108,7 +132,38 @@ public class InitialisationBase {
 		template.setMetaDescription("MetaDescription");
 		template.setPath("login");
 		template.setType(Template.TemplateType.PAGE);
+		template.setLang(langEN);
+		
+		
+		
 		templateService.save(template);
+		
+		
+		
+		Template templateFr = new Template();
+		templateFr.setDateAdd(new Date());
+		templateFr.setName("loginFR");
+		templateFr.setDescription("loginFR");
+		templateFr.setMetaTitle("loginFR");
+		templateFr.setMetaDescription("MetaDescriptionFR");
+		templateFr.setPath("loginFR");
+		templateFr.setType(Template.TemplateType.PAGE);
+		templateFr.setLang(langFR);
+		
+		
+		List<Template> translations = new ArrayList<>();
+		translations.add(templateFr);
+		
+		Translation<Template> translation = new Translation<>();
+		translation.setTranslations(translations);
+//		translation.setTranslation(templateFr);
+		translationService.save(translation);
+
+		templateService.save(templateFr);
+		
+		
+		
+		
 		
 		template = new Template();
 		template.setDateAdd(new Date());
