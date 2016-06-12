@@ -12,20 +12,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.cedricsevestre.dao.back.TranslationDao;
+import fr.cedricsevestre.entity.back.Base;
+import fr.cedricsevestre.entity.back.Lang;
 import fr.cedricsevestre.entity.back.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 
 @Service
 @Scope(value = "singleton")
-public class TranslationService<T>{
+public class TranslationService{
 
 	private Logger logger = Logger.getLogger(TranslationService.class);
 
 	@Autowired
-	private TranslationDao<T> translationDao;
+	private TranslationDao translationDao;
 
 	@Transactional
-	public Translation<T> save(Translation<T> translation) throws ServiceException {
+	public Translation save(Translation translation) throws ServiceException {
 		logger.debug("appel de la methode save Translation " + translation.getId());
 		try {
 			return translationDao.save(translation);
@@ -36,7 +38,7 @@ public class TranslationService<T>{
 	}
 
 	@Transactional
-	public void remove(Translation<T> translation) throws ServiceException {
+	public void remove(Translation translation) throws ServiceException {
 		logger.debug("appel de la methode remove Translation " + translation.getId());
 		try {
 			translationDao.delete(translation);
@@ -69,7 +71,7 @@ public class TranslationService<T>{
 		}
 	}
 	
-	public Translation<T> findById(Integer id) throws ServiceException {
+	public Translation findById(Integer id) throws ServiceException {
 		try {
 			return translationDao.findOne(id);
 		} catch (PersistenceException e) {
@@ -77,13 +79,29 @@ public class TranslationService<T>{
 		}
 	}
 	
-	public List<Translation<T>> findAll() throws ServiceException {
+	public List<Translation> findAll() throws ServiceException {
 		try {
 			return translationDao.findAll();
 		} catch (PersistenceException e) {
 			throw new ServiceException("erreur findAll Translation", e);
 		}
 	}
+	
+//	@Transactional(rollbackFor = ServiceException.class)
+//	public Base Translate(Base objectToTranslate, Lang lang) throws ServiceException{
+//		
+//		
+//		Translation translation = objectToTranslate.getTranslation();
+//		if (objectToTranslate.getTranslation() == null){
+//			translation = save(new Translation());
+//			objectToTranslate.setTranslation(translation);
+//		}
+//		
+//		
+//		return translation;
+//	}
+//	
+	
 		
 	public Logger getLogger() {
 		return logger;
@@ -93,11 +111,11 @@ public class TranslationService<T>{
 		this.logger = logger;
 	}
 
-	public TranslationDao<T> getTranslationDao() {
+	public TranslationDao getTranslationDao() {
 		return translationDao;
 	}
 
-	public void setTranslationDao(TranslationDao<T> translationDao) {
+	public void setTranslationDao(TranslationDao translationDao) {
 		this.translationDao = translationDao;
 	}
 

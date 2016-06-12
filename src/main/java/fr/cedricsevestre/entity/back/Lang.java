@@ -46,6 +46,21 @@ public class Lang implements Serializable {
 	@Column(length = 5, name = "code")
 	private String code;
 
+	public Lang() {
+
+	}
+
+	public Lang(String code) {
+		super();
+		this.code = code;
+	}
+
+	public Lang(Integer id, String code) {
+		super();
+		this.id = id;
+		this.code = code;
+	}
+
 	public Integer getId() {
 		return id;
 	}

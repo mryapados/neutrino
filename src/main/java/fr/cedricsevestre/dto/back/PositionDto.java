@@ -6,6 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.SafeHtml;
+import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,8 +19,14 @@ import fr.cedricsevestre.entity.back.Template;
 import fr.cedricsevestre.entity.back.Template.TemplateType;
 import fr.cedricsevestre.taglib.Block;
 
-public class PositionDto extends BaseDto {
+public class PositionDto {
 	private static final long serialVersionUID = 1L;
+	
+	private Integer id;
+	
+	@NotNull
+	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
+	private String name;
 	
 	public PositionDto() {
 
@@ -24,8 +34,9 @@ public class PositionDto extends BaseDto {
 
 	private List<MapTemplateDto> mapTemplateDtos;
 	
-	public PositionDto(Integer id, String name, Date dateAdd, String description, List<MapTemplateDto> mapTemplateDtos) {
-		super(id, name, dateAdd, description);
+	public PositionDto(Integer id, String name, List<MapTemplateDto> mapTemplateDtos) {
+		this.id = id;
+		this.name = name;
 		this.mapTemplateDtos = mapTemplateDtos;
 	}
 
@@ -34,11 +45,11 @@ public class PositionDto extends BaseDto {
 		for (MapTemplate mapTemplate : position.getMapTemplates()) {
 			mapTemplateDtos.add(MapTemplateDto.from(mapTemplate));
 		}
-		return new PositionDto(position.getId(), position.getName(), position.getDateAdd(), position.getDescription(), mapTemplateDtos);
+		return new PositionDto(position.getId(), position.getName(), mapTemplateDtos);
 	}
 	
 	public static PositionDto fromWithoutMapTemplate(Position position) {
-		return new PositionDto(position.getId(), position.getName(), position.getDateAdd(), position.getDescription(), new ArrayList<>());
+		return new PositionDto(position.getId(), position.getName(), new ArrayList<>());
 	}
 
 	public static Position to(PositionDto positionDto){
@@ -46,7 +57,23 @@ public class PositionDto extends BaseDto {
 		for (MapTemplateDto mapTemplateDto : positionDto.getMapTemplateDtos()) {
 			mapTemplates.add(MapTemplateDto.to(mapTemplateDto, positionDto));
 		}
-		return new Position(positionDto.getId(), positionDto.getName(), positionDto.getDateAdd(), positionDto.getDescription(), mapTemplates);
+		return new Position(positionDto.getId(), positionDto.getName(), mapTemplates);
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public List<MapTemplateDto> getMapTemplateDtos() {
@@ -56,6 +83,8 @@ public class PositionDto extends BaseDto {
 	public void setMapTemplateDtos(List<MapTemplateDto> mapTemplateDtos) {
 		this.mapTemplateDtos = mapTemplateDtos;
 	}
+
+
 
 
 

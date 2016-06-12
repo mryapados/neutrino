@@ -30,6 +30,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.ManyToAny;
 import org.hibernate.annotations.MapKeyType;
 import org.hibernate.annotations.Target;
 import org.hibernate.annotations.Type;
@@ -39,7 +40,7 @@ import org.hibernate.annotations.MetaValue;
 
 @Entity
 @Table(name = "translation")
-public class Translation<T> implements Serializable {
+public class Translation implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -66,16 +67,24 @@ public class Translation<T> implements Serializable {
 //	private List<T> translations;
 	
 	
+//	@ManyToAny ( 
+//	metaColumn =  @Column ( name =  "property_type"  )  ) 
+//	@AnyMetaDef ( 
+//	    idType =  "integer" , 
+//	    metaType =  "string" , 
+//	    metaValues =  { 
+//	@MetaValue ( value =  "Template" , targetEntity =  Template . class  ), 
+//	@MetaValue ( value =  "Position" , targetEntity =  Position . class  )  }  ) 
+//	@Cascade (  { org . hibernate . annotations . CascadeType . ALL }  ) 
+//	@JoinTable ( name =  "obj_properties" , joinColumns =  @JoinColumn ( name =  "obj_id"  ), 
+//	    inverseJoinColumns =  @JoinColumn ( name =  "property_id"  )  ) 
+//	public  List < T > translations;
+//	
 	
+	@OneToMany(mappedBy = "translation")
+	private List<Base> translations;
 	
-	
-	 @Any(metaColumn = @Column(name = "translation"))
-		@AnyMetaDef(idType = "integer", metaType = "string", metaValues = {
-		@MetaValue(targetEntity = Template.class, value = "Template"),
-		@MetaValue(targetEntity = Position.class, value = "Position") })
-	 @JoinColumn(name = "id_base")
-	 @OneToMany(mappedBy = "translation")
-	 private List<T> translations;
+
 
 	public Integer getId() {
 		return id;
@@ -85,11 +94,11 @@ public class Translation<T> implements Serializable {
 		this.id = id;
 	}
 
-	public List<T> getTranslations() {
+	public List<Base> getTranslations() {
 		return translations;
 	}
 
-	public void setTranslations(List<T> translations) {
+	public void setTranslations(List<Base> translations) {
 		this.translations = translations;
 	}
 

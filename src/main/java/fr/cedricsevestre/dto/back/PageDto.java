@@ -22,19 +22,20 @@ public class PageDto extends BaseDto {
 
 	}
 
-	public PageDto(Integer id, String name, Date dateAdd, String description, String context, TemplateDto model) {
-		super(id, name, dateAdd, description);
+	public PageDto(Integer id, String name, Date dateAdd, String description, LangDto langDto, String context, TemplateDto model) {
+		super(id, name, dateAdd, description, langDto);
 		this.context = context;
 		this.model = model;
 	}
 
 	public static PageDto from(Page page) {
-		return new PageDto(page.getId(), page.getName(), page.getDateAdd(), page.getDescription(),
+		return new PageDto(page.getId(), page.getName(), page.getDateAdd(), 
+				page.getDescription(), LangDto.from(page.getLang()),
 				page.getContext(), TemplateDto.from(page.getModel()));
 	}
 
 	public static Page to(PageDto pageDto){
-		return new Page(pageDto.getId(), pageDto.getName(), pageDto.getDateAdd(), pageDto.getDescription(), pageDto.getContext(), TemplateDto.to(pageDto.getModel()));
+		return new Page(pageDto.getId(), pageDto.getName(), pageDto.getDateAdd(), pageDto.getDescription(), LangDto.to(pageDto.getLangDto()), pageDto.getContext(), TemplateDto.to(pageDto.getModel()));
 	}
 
 	public String getContext() {

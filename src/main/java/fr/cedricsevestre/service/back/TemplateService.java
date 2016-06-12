@@ -15,7 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.dao.back.TemplateDao;
+import fr.cedricsevestre.entity.back.Base;
+import fr.cedricsevestre.entity.back.Lang;
+import fr.cedricsevestre.entity.back.MapTemplate;
 import fr.cedricsevestre.entity.back.Template;
+import fr.cedricsevestre.entity.back.Translation;
 import fr.cedricsevestre.entity.back.Template.TemplateType;
 import fr.cedricsevestre.exception.ServiceException;
 
@@ -28,6 +32,9 @@ public class TemplateService{
 	@Autowired
 	private TemplateDao templateDao;
 
+	@Autowired
+	TranslationService translationService;
+	
 	@Transactional
 	public Template save(Template template) throws ServiceException {
 		logger.debug("appel de la methode save Template " + template.getName());
@@ -130,21 +137,20 @@ public class TemplateService{
 	public String pathJSP(String pathContext, Template template) throws ServiceException{	
 		String pathBlock = pathType(template) + "/" + template.getPath();
 		
-		if (pathBlock.length() > 2 && pathBlock.substring(pathBlock.length() - 3).equals("jsp")){
-			// TODO throw exception 
-		}
+//		if (pathBlock.length() > 2 && pathBlock.substring(pathBlock.length() - 3).equals("jsp")){
+//			// TODO throw exception 
+//		}
 		
 		StringBuilder path = new StringBuilder();
 		path.append(Common.BASEPAGESPATH);
 		path.append(pathContext);
 		path.append("/templates/");
 		path.append(pathBlock);
-		path.append("/");
-		path.append(template.getName());
+//		if (pathBlock.substring(pathBlock.length() - 1).equals("/")){
+//			path.append(template.getName());
+//			path.append(".jsp");
+//		}
 		path.append(".jsp");
-
-		
-		
 		return path.toString();
 	}
 	
@@ -158,6 +164,37 @@ public class TemplateService{
 		}
 		return false;
 	}
+	
+	@Transactional
+	public Template translate(Template template, Lang lang) throws ServiceException {
+		Template translated = new Template();
+		
+		Translation translation = template.getTranslation();
+		if (translation == null){
+			translation = translationService.save(new Translation());
+		}
+		translated.setLang(lang);
+		translated.setTranslation(translation);
+		translated.setName(template.getName());
+		translated.setPath(template.getPath());
+		translated.setType(template.getType());
+		translated.setSchema(template.getSchema());
+//		for (MapTemplate models : baseObject.getModels()) {
+//			// TODO
+//			System.out.println(models.getId());
+//		}
+//		
+//		for (MapTemplate blocks : baseObject.getBlocks()) {
+//			// TODO
+//			System.out.println(blocks.getId());
+//		}
+		
+		return translated;
+	}
+
+
+	
+	
 	
 	public Logger getLogger() {
 		return logger;
@@ -174,6 +211,8 @@ public class TemplateService{
 	public void setTemplateDao(TemplateDao templateDao) {
 		this.templateDao = templateDao;
 	}
+
+
 
 
 

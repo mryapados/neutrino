@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
+import fr.cedricsevestre.entity.back.Lang;
 import fr.cedricsevestre.entity.back.MapTemplate;
 import fr.cedricsevestre.entity.back.Template;
 import fr.cedricsevestre.entity.back.Template.TemplateType;
@@ -36,9 +37,9 @@ public class TemplateDto extends BaseDto {
 
 	}
 
-	public TemplateDto(Integer id, String name, Date dateAdd, String description, TemplateType type, String path,
+	public TemplateDto(Integer id, String name, Date dateAdd, String description, LangDto langDto, TemplateType type, String path,
 			String metaDescription, String metaTitle, String metaKeyWords) {
-		super(id, name, dateAdd, description);
+		super(id, name, dateAdd, description, langDto);
 		this.type = type;
 		this.path = path;
 		this.metaDescription = metaDescription;
@@ -47,13 +48,13 @@ public class TemplateDto extends BaseDto {
 	}
 
 	public static TemplateDto from(Template template) {
-		return new TemplateDto(template.getId(), template.getName(), template.getDateAdd(), template.getDescription(),
+		return new TemplateDto(template.getId(), template.getName(), template.getDateAdd(), template.getDescription(), LangDto.from(template.getLang()), 
 				template.getType(), template.getPath(), template.getMetaDescription(), template.getMetaTitle(),
 				template.getMetaKeyWords());
 	}
 
 	public static Template to(TemplateDto templateDto){
-		return new Template(templateDto.getId(), templateDto.getName(), templateDto.getDateAdd(), templateDto.getDescription(), templateDto.getType(), templateDto.getPath(), new ArrayList<MapTemplate>(), new ArrayList<MapTemplate>(), templateDto.getMetaDescription(), templateDto.getMetaTitle(), templateDto.getMetaKeyWords());
+		return new Template(templateDto.getId(), templateDto.getName(), templateDto.getDateAdd(), templateDto.getDescription(), LangDto.to(templateDto.getLangDto()), templateDto.getType(), templateDto.getPath(), new ArrayList<MapTemplate>(), new ArrayList<MapTemplate>(), templateDto.getMetaDescription(), templateDto.getMetaTitle(), templateDto.getMetaKeyWords());
 	}
 
 	public TemplateType getType() {

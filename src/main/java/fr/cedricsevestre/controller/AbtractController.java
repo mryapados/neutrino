@@ -80,8 +80,16 @@ public class AbtractController {
 	public ModelAndView baseView(Template template, String pathContext) throws ServiceException {
 		ModelAndView modelAndView = null;
 
-		String pathModelAndView = "pages/" + pathContext + "/templates/" + templateService.pathType(template) + "/" + template.getPath() + "/" + template.getName();
-		System.out.println(pathModelAndView);
+		//String pathModelAndView = "pages/" + pathContext + "/templates/" + templateService.pathType(template) + "/" + template.getPath() + "/" + template.getName();
+		
+		
+		String pathModelAndView = "pages/" + pathContext + "/templates/" + templateService.pathType(template) + "/" + template.getPath();
+		
+		//String pathModelAndView = templateService.pathJSP("", pathContext, template);
+		
+		System.out.println("rrrrr " + pathModelAndView);
+		
+		
 		
 		modelAndView = new ModelAndView(pathModelAndView);
 

@@ -10,6 +10,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -22,6 +23,7 @@ import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 import fr.cedricsevestre.entity.back.MapTemplate;
+import fr.cedricsevestre.entity.front.File;
 
 @Entity
 @Table(name = "template")
@@ -43,10 +45,6 @@ public class Template extends Base {
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "path")
 	private String path;
-	
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="id_lang")
-	private Lang lang;
 
 	@OneToMany(mappedBy = "block")
 	private List<MapTemplate> models;
@@ -71,9 +69,11 @@ public class Template extends Base {
 //	private Translation<Template> translation;
 	
 	
-	@ManyToOne
-	@JoinColumn(name="id_translation")
-	private Translation<Template> translation;
+
+	
+	
+//	@ManyToMany(mappedBy = "translations")
+//	private List<Template> templates;
 	
 	
 	@OneToOne(fetch = FetchType.EAGER)
@@ -84,13 +84,13 @@ public class Template extends Base {
 	private List<NData> datas;
 	
 	public Template() {
-
+		super();
 	}
 
-	public Template(Integer id, String name, Date dateAdd, String description, TemplateType type, String path,
+	public Template(Integer id, String name, Date dateAdd, String description, Lang lang, TemplateType type, String path,
 			List<MapTemplate> models, List<MapTemplate> blocks, String metaDescription, String metaTitle,
 			String metaKeyWords) {
-		super(id, name, dateAdd, description);
+		super(id, name, dateAdd, description, lang);
 		this.type = type;
 		this.path = path;
 		this.models = models;
@@ -99,6 +99,8 @@ public class Template extends Base {
 		this.metaTitle = metaTitle;
 		this.metaKeyWords = metaKeyWords;
 	}
+	
+	
 
 	public TemplateType getType() {
 		return type;
@@ -114,14 +116,6 @@ public class Template extends Base {
 
 	public void setPath(String path) {
 		this.path = path;
-	}
-
-	public Lang getLang() {
-		return lang;
-	}
-
-	public void setLang(Lang lang) {
-		this.lang = lang;
 	}
 
 	public List<MapTemplate> getModels() {
@@ -164,14 +158,6 @@ public class Template extends Base {
 		this.metaKeyWords = metaKeyWords;
 	}
 
-	public Translation<Template> getTranslation() {
-		return translation;
-	}
-
-	public void setTranslation(Translation<Template> translation) {
-		this.translation = translation;
-	}
-
 	public NSchema getSchema() {
 		return schema;
 	}
@@ -187,6 +173,8 @@ public class Template extends Base {
 	public void setDatas(List<NData> datas) {
 		this.datas = datas;
 	}
+
+	
 
 	
 

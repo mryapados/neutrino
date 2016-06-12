@@ -5,12 +5,16 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -37,21 +41,32 @@ public abstract class Base implements Serializable {
 	@Column(name = "date_add")
 	private Date dateAdd;
 	
-	@NotNull
 	@SafeHtml(whitelistType = WhiteListType.BASIC)
 	@Column(name = "description")
 	private String description;
 
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="id_lang")
+	private Lang lang;
+	
+	@ManyToOne
+	@JoinColumn(name="id_translation")
+	private Translation translation;
+	
+	
+	
 	public Base() {
-
+		super();
+		this.setDateAdd(new Date());
 	}
 
-	public Base(Integer id, String name, Date dateAdd, String description) {
+	public Base(Integer id, String name, Date dateAdd, String description, Lang lang) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.dateAdd = dateAdd;
 		this.description = description;
+		this.lang = lang;
 	}
 
 	public Integer getId() {
@@ -84,6 +99,22 @@ public abstract class Base implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Lang getLang() {
+		return lang;
+	}
+
+	public void setLang(Lang lang) {
+		this.lang = lang;
+	}
+
+	public Translation getTranslation() {
+		return translation;
+	}
+
+	public void setTranslation(Translation translation) {
+		this.translation = translation;
 	}
 
 	@Override

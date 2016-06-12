@@ -31,8 +31,8 @@ public class Page extends Base {
 		
 	}
 	
-	public Page(Integer id, String name, Date dateAdd, String description, String context, Template model) {
-		super(id, name, dateAdd, description);
+	public Page(Integer id, String name, Date dateAdd, String description, Lang lang, String context, Template model) {
+		super(id, name, dateAdd, description, lang);
 		this.context = context;
 		this.model = model;
 	}

@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 import fr.cedricsevestre.entity.back.Base;
+import fr.cedricsevestre.entity.back.Lang;
 
 public class BaseDto implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -26,25 +27,24 @@ public class BaseDto implements Serializable {
 	@SafeHtml(whitelistType = WhiteListType.BASIC)
 	private String description;
 
+	private LangDto langDto;
+	
 	public BaseDto() {
 
 	}
 
-	public BaseDto(Integer id, String name, Date dateAdd, String description) {
+	public BaseDto(Integer id, String name, Date dateAdd, String description, LangDto langDto) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.dateAdd = dateAdd;
 		this.description = description;
+		this.langDto = langDto;
 	}
 
 	public static BaseDto from(Base base) {
-		return new BaseDto(base.getId(), base.getName(), base.getDateAdd(), base.getDescription());
+		return new BaseDto(base.getId(), base.getName(), base.getDateAdd(), base.getDescription(), LangDto.from(base.getLang()));
 	}
-
-//	public static Base to(BaseDto baseDto) {
-//		return new Base(baseDto.getId(), baseDto.getName(), baseDto.getDateAdd(), baseDto.getDescription());
-//	}
 
 	public Integer getId() {
 		return id;
@@ -78,4 +78,17 @@ public class BaseDto implements Serializable {
 		this.description = description;
 	}
 
+	public LangDto getLangDto() {
+		return langDto;
+	}
+
+	public void setLangDto(LangDto langDto) {
+		this.langDto = langDto;
+	}
+
+//	public static Base to(BaseDto baseDto) {
+//		return new Base(baseDto.getId(), baseDto.getName(), baseDto.getDateAdd(), baseDto.getDescription());
+//	}
+
+	
 }

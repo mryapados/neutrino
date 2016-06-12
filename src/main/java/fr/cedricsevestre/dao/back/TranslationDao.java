@@ -9,7 +9,7 @@ import fr.cedricsevestre.entity.back.Translation;
 
 @Repository
 @Qualifier(value="backEntityManagerFactory")
-public interface TranslationDao<T> extends JpaRepository<Translation<T>, Integer> {
+public interface TranslationDao extends JpaRepository<Translation, Integer> {
 	
 	
 }

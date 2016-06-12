@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonParser.NumberType;
 
+import fr.cedricsevestre.entity.back.Base;
 import fr.cedricsevestre.entity.back.Lang;
 import fr.cedricsevestre.entity.back.MapTemplate;
 import fr.cedricsevestre.entity.back.NData;
@@ -65,7 +66,7 @@ public class InitialisationBase {
 	private PageService pageService;
 	
 	@Autowired
-	private TranslationService<Template> translationService;
+	private TranslationService translationService;
 	
 	public void run() throws ServiceException {
 		System.out.println("init");
@@ -85,12 +86,10 @@ public class InitialisationBase {
 	private Lang langFR;
 	public void initLangs() throws ServiceException{
 		System.out.println("init langs");
-		langEN = new Lang();
-		langEN.setCode("en");
+		langEN = new Lang("en");
 		langService.save(langEN);
 		
-		langFR = new Lang();
-		langFR.setCode("fr");
+		langFR = new Lang("fr");
 		langService.save(langFR);
 	}
 	
@@ -123,55 +122,34 @@ public class InitialisationBase {
 
 	public void initTemplates() throws ServiceException{
 		System.out.println("init templates");
+				
+		Template loginEN = templateService.translate(new Template(), langEN);
+		loginEN.setName("login_" + langEN.getCode().toUpperCase());
+		loginEN.setDescription("login description en");
+		loginEN.setMetaTitle("login");
+		loginEN.setMetaDescription("MetaDescription");
+		loginEN.setPath("login/login");
+		loginEN.setType(Template.TemplateType.PAGE);
+		templateService.save(loginEN);
+		
+		Template loginFr = templateService.translate(loginEN, langFR);
+		loginFr.setName("login_" + langFR.getCode().toUpperCase());
+		loginFr.setDescription("login description fr");
+		templateService.save(loginFr);
+
+		
+		
+		
+		
+		
 		
 		Template template = new Template();
-		template.setDateAdd(new Date());
-		template.setName("login");
-		template.setDescription("login");
-		template.setMetaTitle("login");
-		template.setMetaDescription("MetaDescription");
-		template.setPath("login");
-		template.setType(Template.TemplateType.PAGE);
-		template.setLang(langEN);
-		
-		
-		
-		templateService.save(template);
-		
-		
-		
-		Template templateFr = new Template();
-		templateFr.setDateAdd(new Date());
-		templateFr.setName("loginFR");
-		templateFr.setDescription("loginFR");
-		templateFr.setMetaTitle("loginFR");
-		templateFr.setMetaDescription("MetaDescriptionFR");
-		templateFr.setPath("loginFR");
-		templateFr.setType(Template.TemplateType.PAGE);
-		templateFr.setLang(langFR);
-		
-		
-		List<Template> translations = new ArrayList<>();
-		translations.add(templateFr);
-		
-		Translation<Template> translation = new Translation<>();
-		translation.setTranslations(translations);
-//		translation.setTranslation(templateFr);
-		translationService.save(translation);
-
-		templateService.save(templateFr);
-		
-		
-		
-		
-		
-		template = new Template();
 		template.setDateAdd(new Date());
 		template.setName("home");
 		template.setDescription("Page d'accueil");
 		template.setMetaTitle("home");
 		template.setMetaDescription("MetaDescription");
-		template.setPath("home");
+		template.setPath("home/home");
 		template.setType(Template.TemplateType.PAGE);
 		templateService.save(template);
 		
@@ -181,7 +159,7 @@ public class InitialisationBase {
 		template.setDescription("Page d'accueil projets");
 		template.setMetaTitle("{0}");
 		template.setMetaDescription("MetaDescription");
-		template.setPath("home");
+		template.setPath("home/homeProject");
 		template.setType(Template.TemplateType.PAGE);
 		templateService.save(template);
 
@@ -195,7 +173,7 @@ public class InitialisationBase {
 		page.setName("login");
 		page.setDescription("Login page");
 		page.setContext("static");
-		page.setModel(templateService.findByName("login"));
+		page.setModel(templateService.findByName("login_EN"));
 		pageService.save(page);
 		
 		page = new Page();
@@ -225,37 +203,27 @@ public class InitialisationBase {
 		ArrayList<Position> positions = new ArrayList<>();
 		Position position = new Position();
 		
-		position.setDateAdd(new Date());
 		position.setName("header");
-		position.setDescription("Placer ici les blocs du header");
 		positionService.save(position);
 		positions.add(position);
 		
 		position = new Position();
-		position.setDateAdd(new Date());
 		position.setName("nav");
-		position.setDescription("Placer ici les blocs du nav");
 		positionService.save(position);
 		positions.add(position);
 		
 		position = new Position();
-		position.setDateAdd(new Date());
 		position.setName("aside");
-		position.setDescription("Placer ici les blocs du aside");
 		positionService.save(position);
 		positions.add(position);
 		
 		position = new Position();
-		position.setDateAdd(new Date());
 		position.setName("article");
-		position.setDescription("Placer ici les blocs du article");
 		positionService.save(position);
 		positions.add(position);
 		
 		position = new Position();
-		position.setDateAdd(new Date());
 		position.setName("footer");
-		position.setDescription("Placer ici les blocs du footer");
 		positionService.save(position);
 		positions.add(position);
 		
@@ -265,16 +233,12 @@ public class InitialisationBase {
 		
 		
 		position = new Position();
-		position.setDateAdd(new Date());
 		position.setName("title");
-		position.setDescription("Placer ici les blocs constituant le titre");
 		positionService.save(position);
 		positions.add(position);
 		
 		position = new Position();
-		position.setDateAdd(new Date());
 		position.setName("content");
-		position.setDescription("Placer ici les blocs constituant le contenu");
 		positionService.save(position);
 		positions.add(position);
 		
@@ -290,7 +254,7 @@ public class InitialisationBase {
 		template.setDateAdd(new Date());
 		template.setName("headerProject");
 		template.setDescription("Block header");
-		template.setPath("header");
+		template.setPath("header/headerProject");
 		template.setType(Template.TemplateType.BLOCK);
 		templateService.save(template);
 		
@@ -298,7 +262,7 @@ public class InitialisationBase {
 		template.setDateAdd(new Date());
 		template.setName("headerProjectH2");
 		template.setDescription("Block header");
-		template.setPath("header");
+		template.setPath("header/headerProjectH2");
 		template.setType(Template.TemplateType.BLOCK);
 		templateService.save(template);
 		
@@ -307,7 +271,7 @@ public class InitialisationBase {
 		template.setDateAdd(new Date());
 		template.setName("socialNetwork");
 		template.setDescription("Twitter, Facebook, Google+, ...");
-		template.setPath("socialnetwork");
+		template.setPath("socialnetwork/socialNetwork");
 		template.setType(Template.TemplateType.BLOCK);
 		templateService.save(template);
 		
@@ -315,7 +279,7 @@ public class InitialisationBase {
 		template.setDateAdd(new Date());
 		template.setName("advertisement");
 		template.setDescription("Here your advertisement block");
-		template.setPath("advertisement");
+		template.setPath("advertisement/advertisement");
 		template.setType(Template.TemplateType.BLOCK);
 		templateService.save(template);
 		
@@ -323,7 +287,7 @@ public class InitialisationBase {
 		template.setDateAdd(new Date());
 		template.setName("articleTitle");
 		template.setDescription("Here define the article title");
-		template.setPath("article/title");
+		template.setPath("article/title/articleTitle");
 		template.setType(Template.TemplateType.BLOCK);
 		templateService.save(template);
 		
@@ -331,7 +295,7 @@ public class InitialisationBase {
 		template.setDateAdd(new Date());
 		template.setName("articleContent");
 		template.setDescription("Here define the article content");
-		template.setPath("article/content");
+		template.setPath("article/content/articleContent");
 		template.setType(Template.TemplateType.BLOCK);
 		templateService.save(template);
 		
@@ -339,7 +303,7 @@ public class InitialisationBase {
 		template.setDateAdd(new Date());
 		template.setName("album");
 		template.setDescription("Block list albums");
-		template.setPath("nav/album");
+		template.setPath("nav/album/album");
 		template.setType(Template.TemplateType.BLOCK);
 		templateService.save(template);
 		
@@ -347,7 +311,7 @@ public class InitialisationBase {
 		template.setDateAdd(new Date());
 		template.setName("blockTest1");
 		template.setDescription("Block pannel test 1");
-		template.setPath("test");
+		template.setPath("test/blockTest1");
 		template.setType(Template.TemplateType.BLOCK);
 		templateService.save(template);
 		
@@ -355,7 +319,7 @@ public class InitialisationBase {
 		template.setDateAdd(new Date());
 		template.setName("blockTest2");
 		template.setDescription("Block pannel test 2");
-		template.setPath("test");
+		template.setPath("test/blockTest2");
 		template.setType(Template.TemplateType.BLOCK);
 		templateService.save(template);		
 		
@@ -363,7 +327,7 @@ public class InitialisationBase {
 		template.setDateAdd(new Date());
 		template.setName("blockTest3");
 		template.setDescription("Block Test");
-		template.setPath("test/subtest");
+		template.setPath("test/subtest/blockTest3");
 		template.setType(Template.TemplateType.BLOCK);
 		templateService.save(template);
 		
@@ -393,7 +357,7 @@ public class InitialisationBase {
 		template.setDateAdd(new Date());
 		template.setName("article");
 		template.setDescription("Page Block article");
-		template.setPath("article");
+		template.setPath("article/article");
 		template.setType(Template.TemplateType.PAGEBLOCK);
 		
 		template.setSchema(nSchemaService.findById(1));
@@ -403,7 +367,7 @@ public class InitialisationBase {
 		template.setDateAdd(new Date());
 		template.setName("article2");
 		template.setDescription("Page Block article 2");
-		template.setPath("article");
+		template.setPath("article/article2");
 		template.setType(Template.TemplateType.PAGEBLOCK);
 		templateService.save(template);
 	}
