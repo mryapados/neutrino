@@ -202,7 +202,6 @@ public class InitialisationBase {
 	public void initPages() throws ServiceException{
 		System.out.println("init templates");
 		
-		
 		Page loginEN = pageService.translate(new Page(), langEN);
 		loginEN.setName("login_" + langEN.getCode().toUpperCase());
 		loginEN.setContext("static");
@@ -241,33 +240,6 @@ public class InitialisationBase {
 		projectFr.setDescription("project description fr");
 		pageService.save(projectFr);
 		
-		
-//		Page page = new Page();
-////		page.setDateAdd(new Date());
-////		page.setName("login");
-////		page.setDescription("Login page");
-////		page.setContext("static");
-////		page.setModel(templateService.findByName("login_EN"));
-////		pageService.save(page);
-////		
-//		page = new Page();
-//		page.setDateAdd(new Date());
-//		page.setName("home");
-//		page.setDescription("Index");
-//		page.setContext("home");
-//		page.setModel(templateService.findByName("home"));
-//		pageService.save(page);
-//		
-//		page = new Page();
-//		page.setDateAdd(new Date());
-//		page.setName("project");
-//		page.setDescription("Index");
-//		page.setContext("project");
-//		page.setModel(templateService.findByName("homeProject"));
-//		pageService.save(page);
-		
-		
-
 		
 	}
 
@@ -324,6 +296,28 @@ public class InitialisationBase {
 	}
 	public void initBlocs() throws ServiceException{
 		System.out.println("init blocs");
+//		String name = "";
+//		
+//		Template templateEN = templateService.translate(new Template(), langEN);
+//		name = "headerProject";
+//		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
+//		templateEN.setDescription(name + " description en");
+//		templateEN.setMetaTitle("MetaTitle");
+//		templateEN.setMetaDescription("MetaDescription");
+//		templateEN.setPath("header/headerProject");
+//		templateEN.setType(Template.TemplateType.PAGE);
+//		templateService.save(templateEN);
+//		
+//		Template templateFr = templateService.translate(templateEN, langFR);
+//		templateFr.setName(name + "_" + langFR.getCode().toUpperCase());
+//		templateFr.setDescription(name + " description fr");
+//		templateService.save(templateFr);
+//		
+		
+		
+		
+		
+		
 		Template template = new Template();
 		template.setDateAdd(new Date());
 		template.setName("headerProject");

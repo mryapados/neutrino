@@ -215,19 +215,6 @@ public class BackController extends AbtractController {
 		return TemplateDto.from(templateService.save(TemplateDto.to(templateDto)));
 	}
 
-//	@RequestMapping(value = "/templates/exist/{context}/{type}/{path}/{name}", method = RequestMethod.GET)
-//	public @ResponseBody Boolean checkJSPExist2(@PathVariable(value = "context") String context, @PathVariable(value = "type") String type, @PathVariable(value = "path") String path, @PathVariable(value = "name") String name) throws ServiceException {
-//		System.out.println("ok");
-//		
-//		TemplateDto templateDto = new TemplateDto();
-//		templateDto.setType(TemplateType.valueOf(type));
-//		templateDto.setPath(path);
-//		templateDto.setName(name);
-//		Template template = TemplateDto.to(templateDto);
-//		return templateService.checkJSPExist(common.getWebInfFolder(), context, template);
-//	}
-	
-
 	
 	
 	
