@@ -1,6 +1,7 @@
 package fr.cedricsevestre.controller;
 
 import java.text.MessageFormat;
+import java.util.Locale;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,17 +40,9 @@ public class LoginController extends AbtractController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView view() {
 		System.out.println("login controller");
-		
 		ModelAndView modelAndView = null;
 		try {
-//			String pageName = Common.LOGINPAGE;
-//			Page page = common.getPage(pageName);
-//			Template model = page.getModel();
-//			modelAndView = baseView(model, page.getContext());
-
-			modelAndView = baseView(common.getPage(Common.LOGINPAGE));
-			
-			
+			modelAndView = baseView(Common.LOGINPAGE);
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

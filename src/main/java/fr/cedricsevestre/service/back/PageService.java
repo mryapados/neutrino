@@ -1,6 +1,9 @@
 package fr.cedricsevestre.service.back;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.persistence.PersistenceException;
 
@@ -12,7 +15,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.cedricsevestre.dao.back.PageDao;
+import fr.cedricsevestre.entity.back.Base;
+import fr.cedricsevestre.entity.back.Lang;
 import fr.cedricsevestre.entity.back.Page;
+import fr.cedricsevestre.entity.back.Template;
+import fr.cedricsevestre.entity.back.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 
 @Service
@@ -24,6 +31,9 @@ public class PageService{
 	@Autowired
 	private PageDao pageDao;
 
+	@Autowired
+	TranslationService translationService;
+	
 	@Transactional
 	public Page save(Page page) throws ServiceException {
 		logger.debug("appel de la methode save Page " + page.getName());
@@ -91,6 +101,33 @@ public class PageService{
 		} catch (PersistenceException e) {
 			throw new ServiceException("erreur findAll Page", e);
 		}
+	}
+	
+	@Transactional
+	public Page translate(Page page, Lang lang) throws ServiceException {
+		Page translated = new Page();
+		
+		Translation translation = page.getTranslation();
+		if (translation == null){
+			translation = translationService.save(new Translation());
+		}
+		translated.setLang(lang);
+		translated.setTranslation(translation);
+		translated.setName(page.getName());
+		translated.setContext(page.getContext());
+
+		Template pageModel = page.getModel();
+		if (pageModel != null){
+			Translation pageModelTranslation = pageModel.getTranslation();
+			if (pageModelTranslation != null){
+				Map<Lang, Base> translations = pageModelTranslation.getTranslations();
+				if (translations != null){
+					translated.setModel((Template) translations.get(lang));
+				}
+			}
+		}
+
+		return translated;
 	}
 	
 	public Logger getLogger() {

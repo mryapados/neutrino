@@ -94,6 +94,13 @@ public class TemplateService{
 			throw new ServiceException("erreur findByName Template", e);
 		}
 	}
+	public Template findByNameWithAllExceptData(String name) throws ServiceException {
+		try {
+			return templateDao.findByNameWithAllExceptData(name);
+		} catch (PersistenceException e) {
+			throw new ServiceException("erreur findByNameWithAllExceptData Template", e);
+		}
+	}	
 	
 	public List<Template> findAll() throws ServiceException {
 		try {
@@ -136,20 +143,11 @@ public class TemplateService{
 	
 	public String pathJSP(String pathContext, Template template) throws ServiceException{	
 		String pathBlock = pathType(template) + "/" + template.getPath();
-		
-//		if (pathBlock.length() > 2 && pathBlock.substring(pathBlock.length() - 3).equals("jsp")){
-//			// TODO throw exception 
-//		}
-		
 		StringBuilder path = new StringBuilder();
 		path.append(Common.BASEPAGESPATH);
 		path.append(pathContext);
 		path.append("/templates/");
 		path.append(pathBlock);
-//		if (pathBlock.substring(pathBlock.length() - 1).equals("/")){
-//			path.append(template.getName());
-//			path.append(".jsp");
-//		}
 		path.append(".jsp");
 		return path.toString();
 	}

@@ -87,21 +87,6 @@ public class TranslationService{
 		}
 	}
 	
-//	@Transactional(rollbackFor = ServiceException.class)
-//	public Base Translate(Base objectToTranslate, Lang lang) throws ServiceException{
-//		
-//		
-//		Translation translation = objectToTranslate.getTranslation();
-//		if (objectToTranslate.getTranslation() == null){
-//			translation = save(new Translation());
-//			objectToTranslate.setTranslation(translation);
-//		}
-//		
-//		
-//		return translation;
-//	}
-//	
-	
 		
 	public Logger getLogger() {
 		return logger;

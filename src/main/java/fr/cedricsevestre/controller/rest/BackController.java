@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -20,6 +21,7 @@ import javax.validation.Valid;
 import org.hibernate.loader.custom.Return;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -85,9 +87,6 @@ public class BackController extends AbtractController {
 		Template template = TemplateDto.to(templateDto);
 		return templateService.checkJSPExist(common.getWebInfFolder(), context, template);
 	}
-	
-	
-	
 
 	@RequestMapping(value = "/positions", method = RequestMethod.GET)
 	public @ResponseBody Map<String, PositionDto> getPositions() throws ServiceException {
@@ -98,111 +97,7 @@ public class BackController extends AbtractController {
 		}
 		return mapPositions;
 	}
-	
-//	@RequestMapping(value = "/positions/{name}", method = RequestMethod.GET)
-//	public @ResponseBody PositionDto getPositions(@PathVariable(value = "name") String positionName) throws ServiceException {
-//		Position position = positionService.findByName(positionName);
-//		return PositionDto.from(position);
-//	}
-	
-//	@RequestMapping(value = "/blocks/{model}", method = RequestMethod.GET)
-//	public @ResponseBody Map<String, List<TemplateDto>> getBlocks(@PathVariable(value = "model") String modelName) throws ServiceException {
-//		List<Position> positions = positionService.findAllWithMaps();
-//		Map<String, List<TemplateDto>> blocksByPosition = new HashMap<>();
-//		for (Position position : positions) {
-//			List<TemplateDto> blocks = new ArrayList<>();
-//			for (MapTemplate mapTemplate : position.getMapTemplates()) {
-//				if (mapTemplate.getModel().getName().equals(modelName)) blocks.add(TemplateDto.from(mapTemplate.getBlock()));
-//			}
-//			blocksByPosition.put(position.getName(), blocks);
-//		}
-//		return blocksByPosition;
-//	}
-	
-//	@RequestMapping(value = "/blocks/{model}", method = RequestMethod.GET)
-//	public @ResponseBody Map<String, List<BlockDto>> getBlocks(@PathVariable(value = "model") String modelName) throws ServiceException {
-////		Template template = templateService.findByName(modelName);
-////		List<Position> positions = positionService.findAllForModelWithMaps(template);
-//
-//		List<Position> positions = positionService.findAllWithMaps();
-//		
-//		Map<String, List<BlockDto>> blocksByPosition = new HashMap<>();
-//		for (Position position : positions) {
-//			List<BlockDto> blocks = new ArrayList<>();
-//			for (MapTemplate mapTemplate : position.getMapTemplates()) {
-//				if (mapTemplate.getModel().getName().equals(modelName)) blocks.add(BlockDto.from(mapTemplate));
-//			}
-//			blocksByPosition.put(position.getName(), blocks);
-//		}
-//		return blocksByPosition;
-//	}
-	
-//	@RequestMapping(value = "/blocks/{model}", method = RequestMethod.GET)
-//	public @ResponseBody Map<String, List<BlockDto>> getBlocks(@PathVariable(value = "model") String modelName) throws ServiceException {
-////		Template template = templateService.findByName(modelName);
-////		List<Position> positions = positionService.findAllForModelWithMaps(template);
-//
-//		List<Position> positions = positionService.findAllWithMaps();
-//		
-//		Map<String, List<BlockDto>> blocksByPosition = new HashMap<>();
-//		for (Position position : positions) {
-//			List<BlockDto> blocks = new ArrayList<>();
-//			for (MapTemplate mapTemplate : position.getMapTemplates()) {
-//				
-//				Template model = mapTemplate.getModel();
-//				if (model.getName().equals(modelName) || model.getType() == TemplateType.PAGEBLOCK){
-//					blocks.add(BlockDto.from(mapTemplate));
-//				}
-//				
-////				if (mapTemplate.getModel().getName().equals(modelName)) {
-////					
-////				}
-//			}
-//			blocksByPosition.put(position.getName(), blocks);
-//		}
-//		return blocksByPosition;
-//	}
-//	
-	
-	
-//	private Map<String, List<BlockDto>> mkBlocks(Template model) throws ServiceException {
-//		HashMap<Template, List<Position>> positionsByTemplate = new HashMap<>();
-//		List<Position> positions = positionService.findAllForModelWithMaps(model);
-//		positionsByTemplate.put(model, positions);
-//		
-////		positions = positionService.findAllWithMaps();
-////		positionsByTemplate.put(null, positions);
-//		
-//		Map<String, List<BlockDto>> blocksByPosition = new HashMap<>();
-//		for (Map.Entry<Template, List<Position>> entry : positionsByTemplate.entrySet())
-//		{
-//			for (Position position : entry.getValue()) {
-//				List<BlockDto> blocks = new ArrayList<>();
-//				for (MapTemplate mapTemplate : position.getMapTemplates()) {
-//					System.out.println("Templat = " + mapTemplate.getModel().getName());
-//					blocks.add(BlockDto.from(mapTemplate));
-//					Template template = mapTemplate.getBlock();
-//					if (template.getType() == TemplateType.PAGEBLOCK){
-//						System.out.println("TemplateType.PAGEBLOCK" + template.getName());
-//						blocksByPosition.putAll(mkBlocks(template));
-//					}
-//				}
-//				String name = position.getName();
-//				Template template = entry.getKey();
-//				if (template != null){
-//					name += "@" + template.getName();
-//				}
-//				blocksByPosition.put(name, blocks);
-//			}
-//		}
-//		return blocksByPosition;
-//	}
-//	@RequestMapping(value = "/blocks/{model}", method = RequestMethod.GET)
-//	public @ResponseBody Map<String, List<BlockDto>> getBlocks(@PathVariable(value = "model") String modelName) throws ServiceException {
-//		return mkBlocks(templateService.findByName(modelName));
-//	}
-	
-	
+
 	@RequestMapping(value = "models/{model}/positions/{position}/blocks", method = RequestMethod.GET)
 	public @ResponseBody List<BlockDto> getBlocksForPosition(
 			@PathVariable(value = "model") String modelName, 
@@ -228,9 +123,9 @@ public class BackController extends AbtractController {
 	public ModelAndView getParsedBlock(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "pageName") String pageName, @PathVariable(value = "blockName") String blockName) throws ServiceException {
 		ModelAndView modelAndView = null;
 		try {
-			Page page = common.getPage(pageName);
+			Page page = pageService.findByName(pageName);
 			Template block = templateService.findByName(blockName);
-			String pathContext = page.getName();
+			String pathContext = page.getContext();
 			
 			modelAndView = baseView(block, pathContext);
 			modelAndView.addObject("page", page);
@@ -284,19 +179,6 @@ public class BackController extends AbtractController {
 		mapTemplateService.removeById(mapBlockId);
 		return BlockDto.from(mapTemplate);
 	}
-	
-//	@RequestMapping(value = "/templates/blocks", method = RequestMethod.GET)
-//	public @ResponseBody Map<String, TemplateDto> getBlocks() throws ServiceException {
-//		List<Template> templates = templateService.findAllBlockAndPageBlock();
-//		Map<String, TemplateDto> namedTemplates = new HashMap<>();
-//		for (Template template : templates) {
-//			namedTemplates.put(template.getName(), TemplateDto.from(template));
-//		}
-//		return namedTemplates;
-//	}
-	
-	
-	
 	
 	// RESTFull (ngResource)
 	@RequestMapping(value = "/pages/{name}", method = RequestMethod.GET)

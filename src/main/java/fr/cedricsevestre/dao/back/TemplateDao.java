@@ -17,6 +17,9 @@ public interface TemplateDao extends JpaRepository<Template, Integer> {
 	@Query("SELECT t FROM Template t WHERE t.name =:name")
 	Template findByName(@Param("name") String name);
 	
+	@Query("SELECT t FROM Template t LEFT JOIN FETCH t.models m LEFT JOIN t.blocks b LEFT JOIN FETCH t.translation tr LEFT JOIN FETCH tr.translations trs WHERE t.name =:name")
+	Template findByNameWithAllExceptData(@Param("name") String name);
+		
 	@Query("SELECT t FROM Template t WHERE t.type ='BLOCK' AND t.models IS EMPTY")
 	List<Template> findAllBlockNotAffected();
 	
@@ -25,5 +28,9 @@ public interface TemplateDao extends JpaRepository<Template, Integer> {
 	
 	@Query("SELECT t FROM Template t LEFT JOIN FETCH t.models m")
 	List<Template> findAllWithModels();
+	
+	
+	
+	
 	
 }

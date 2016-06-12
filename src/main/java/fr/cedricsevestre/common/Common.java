@@ -73,7 +73,8 @@ public class Common {
 		}
 	}
 	
-	public Page getPage(String pageName) throws ServiceException {
+	public Page getPage(String pageNameWithoutLangCode, String langCode) throws ServiceException {
+		String pageName = pageNameWithoutLangCode + "_" + langCode;
 		if (pages == null){
 			pages = new HashMap<>();
 		}

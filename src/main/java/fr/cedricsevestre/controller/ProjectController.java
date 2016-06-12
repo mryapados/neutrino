@@ -30,23 +30,13 @@ public class ProjectController extends AbtractController {
 	@RequestMapping(value = "/project", method = RequestMethod.GET)
 	public ModelAndView view(@ModelAttribute("p") String project) {
 		ModelAndView modelAndView = null;
-		
 		try {
-
-//			String pageName = Common.HOMEPROJECTPAGE;
-//			Template model = common.getModelByPageName(pageName);
-//			String pathContext = pageName;
-//			modelAndView = baseView(model, pathContext);
-
-			modelAndView = baseView(common.getPage(Common.HOMEPROJECTPAGE));
-			
+			modelAndView = baseView(Common.HOMEPROJECTPAGE);
 			modelAndView.addObject("project", project);
-
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return modelAndView;
 	}
 

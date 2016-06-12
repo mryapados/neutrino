@@ -1,7 +1,10 @@
 package fr.cedricsevestre.controller;
 
+import java.util.Locale;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -67,7 +70,15 @@ public class AbtractController {
 	@Autowired
 	protected Common common;
 
+	public ModelAndView baseView(String pageNameWithoutLangCode) throws ServiceException {
+		Locale locale = LocaleContextHolder.getLocale();
+		return baseView(common.getPage(pageNameWithoutLangCode, locale.getLanguage()));
+	}
+	
+	
 	public ModelAndView baseView(Page page) throws ServiceException {
+		System.out.println(page.getName());
+		
 		Template model = page.getModel();
 		String pathContext = page.getContext();
 		ModelAndView modelAndView = baseView(model, pathContext);

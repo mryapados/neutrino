@@ -35,13 +35,14 @@ public class StaticController extends AbtractController {
 		
 		try {
 
-			String pageName = page;
-			Page page2 = common.getPage(pageName);
-			Template model = page2.getModel();
-			modelAndView = baseView(model, page2.getContext());
+//			String pageName = page;
+//			Page page2 = common.getPage(pageName);
+//			Template model = page2.getModel();
+//			modelAndView = baseView(model, page2.getContext());
+//			modelAndView.addObject("page", page);
 			
-
-			modelAndView.addObject("page", page);
+			modelAndView = baseView(page);
+			
 
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block

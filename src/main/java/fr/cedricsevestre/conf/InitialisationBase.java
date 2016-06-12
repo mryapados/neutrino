@@ -139,58 +139,132 @@ public class InitialisationBase {
 
 		
 		
+		Template homeEN = templateService.translate(new Template(), langEN);
+		homeEN.setName("home_" + langEN.getCode().toUpperCase());
+		homeEN.setDescription("home description en");
+		homeEN.setMetaTitle("home");
+		homeEN.setMetaDescription("MetaDescription");
+		homeEN.setPath("home/home");
+		homeEN.setType(Template.TemplateType.PAGE);
+		templateService.save(homeEN);
+		
+		Template homeFr = templateService.translate(homeEN, langFR);
+		homeFr.setName("home_" + langFR.getCode().toUpperCase());
+		homeFr.setDescription("home description fr");
+		templateService.save(homeFr);
+
+		
+		
+		Template homeProjectEN = templateService.translate(new Template(), langEN);
+		homeProjectEN.setName("homeProject_" + langEN.getCode().toUpperCase());
+		homeProjectEN.setDescription("homeProject description en");
+		homeProjectEN.setMetaTitle("{0}");
+		homeProjectEN.setMetaDescription("MetaDescription");
+		homeProjectEN.setPath("home/homeProject");
+		homeProjectEN.setType(Template.TemplateType.PAGE);
+		templateService.save(homeProjectEN);
+		
+		Template homeProjectFr = templateService.translate(homeProjectEN, langFR);
+		homeProjectFr.setName("homeProject_" + langFR.getCode().toUpperCase());
+		homeProjectFr.setDescription("homeProject description fr");
+		templateService.save(homeProjectFr);
 		
 		
 		
 		
-		Template template = new Template();
-		template.setDateAdd(new Date());
-		template.setName("home");
-		template.setDescription("Page d'accueil");
-		template.setMetaTitle("home");
-		template.setMetaDescription("MetaDescription");
-		template.setPath("home/home");
-		template.setType(Template.TemplateType.PAGE);
-		templateService.save(template);
 		
-		template = new Template();
-		template.setDateAdd(new Date());
-		template.setName("homeProject");
-		template.setDescription("Page d'accueil projets");
-		template.setMetaTitle("{0}");
-		template.setMetaDescription("MetaDescription");
-		template.setPath("home/homeProject");
-		template.setType(Template.TemplateType.PAGE);
-		templateService.save(template);
+		
+		
+		
+		
+//		Template template = new Template();
+//		template.setDateAdd(new Date());
+//		template.setName("home");
+//		template.setDescription("Page d'accueil");
+//		template.setMetaTitle("home");
+//		template.setMetaDescription("MetaDescription");
+//		template.setPath("home/home");
+//		template.setType(Template.TemplateType.PAGE);
+//		templateService.save(template);
+//		
+//		template = new Template();
+//		template.setDateAdd(new Date());
+//		template.setName("homeProject");
+//		template.setDescription("Page d'accueil projets");
+//		template.setMetaTitle("{0}");
+//		template.setMetaDescription("MetaDescription");
+//		template.setPath("home/homeProject");
+//		template.setType(Template.TemplateType.PAGE);
+//		templateService.save(template);
 
 	}
 	
 	public void initPages() throws ServiceException{
 		System.out.println("init templates");
 		
-		Page page = new Page();
-		page.setDateAdd(new Date());
-		page.setName("login");
-		page.setDescription("Login page");
-		page.setContext("static");
-		page.setModel(templateService.findByName("login_EN"));
-		pageService.save(page);
 		
-		page = new Page();
-		page.setDateAdd(new Date());
-		page.setName("home");
-		page.setDescription("Index");
-		page.setContext("home");
-		page.setModel(templateService.findByName("home"));
-		pageService.save(page);
+		Page loginEN = pageService.translate(new Page(), langEN);
+		loginEN.setName("login_" + langEN.getCode().toUpperCase());
+		loginEN.setContext("static");
+		loginEN.setDescription("login description en");
+		loginEN.setModel(templateService.findByNameWithAllExceptData("login_" + langEN.getCode().toUpperCase()));
+		pageService.save(loginEN);
 		
-		page = new Page();
-		page.setDateAdd(new Date());
-		page.setName("project");
-		page.setDescription("Index");
-		page.setContext("project");
-		page.setModel(templateService.findByName("homeProject"));
-		pageService.save(page);
+		Page loginFr = pageService.translate(loginEN, langFR);
+		loginFr.setName("login_" + langFR.getCode().toUpperCase());
+		loginFr.setDescription("login description fr");
+		pageService.save(loginFr);
+		
+		
+		Page homeEN = pageService.translate(new Page(), langEN);
+		homeEN.setName("home_" + langEN.getCode().toUpperCase());
+		homeEN.setContext("home");
+		homeEN.setDescription("home description en");
+		homeEN.setModel(templateService.findByNameWithAllExceptData("home_" + langEN.getCode().toUpperCase()));
+		pageService.save(homeEN);
+		
+		Page homeFr = pageService.translate(homeEN, langFR);
+		homeFr.setName("home_" + langFR.getCode().toUpperCase());
+		homeFr.setDescription("home description fr");
+		pageService.save(homeFr);
+		
+		
+		Page projectEN = pageService.translate(new Page(), langEN);
+		projectEN.setName("project_" + langEN.getCode().toUpperCase());
+		projectEN.setContext("project");
+		projectEN.setDescription("project description en");
+		projectEN.setModel(templateService.findByNameWithAllExceptData("homeProject_" + langEN.getCode().toUpperCase()));
+		pageService.save(projectEN);
+		
+		Page projectFr = pageService.translate(projectEN, langFR);
+		projectFr.setName("project_" + langFR.getCode().toUpperCase());
+		projectFr.setDescription("project description fr");
+		pageService.save(projectFr);
+		
+		
+//		Page page = new Page();
+////		page.setDateAdd(new Date());
+////		page.setName("login");
+////		page.setDescription("Login page");
+////		page.setContext("static");
+////		page.setModel(templateService.findByName("login_EN"));
+////		pageService.save(page);
+////		
+//		page = new Page();
+//		page.setDateAdd(new Date());
+//		page.setName("home");
+//		page.setDescription("Index");
+//		page.setContext("home");
+//		page.setModel(templateService.findByName("home"));
+//		pageService.save(page);
+//		
+//		page = new Page();
+//		page.setDateAdd(new Date());
+//		page.setName("project");
+//		page.setDescription("Index");
+//		page.setContext("project");
+//		page.setModel(templateService.findByName("homeProject"));
+//		pageService.save(page);
 		
 		
 
@@ -389,24 +463,24 @@ public class InitialisationBase {
 		
 		ArrayList<MapTemplate> mapTemplates = new ArrayList<>();
 		
-		mapTemplates.add(addMapTemplate("homeProject","headerProject", "header", 10));
-		mapTemplates.add(addMapTemplate("homeProject","socialNetwork", "aside", 10));
-		mapTemplates.add(addMapTemplate("homeProject","album", "nav", 10));
-		mapTemplates.add(addMapTemplate("homeProject","blockTest1", "nav", 20));
-		mapTemplates.add(addMapTemplate("homeProject","blockTest2", "nav", 30));
-//		mapTemplates.add(addMapTemplate("homeProject","articleContent", "article", 10));
-//		mapTemplates.add(addMapTemplate("homeProject","articleTitle", "article", 10));
+		mapTemplates.add(addMapTemplate("homeProject_EN","headerProject", "header", 10));
+		mapTemplates.add(addMapTemplate("homeProject_EN","socialNetwork", "aside", 10));
+		mapTemplates.add(addMapTemplate("homeProject_EN","album", "nav", 10));
+		mapTemplates.add(addMapTemplate("homeProject_EN","blockTest1", "nav", 20));
+		mapTemplates.add(addMapTemplate("homeProject_EN","blockTest2", "nav", 30));
+//		mapTemplates.add(addMapTemplate("homeProject_EN","articleContent", "article", 10));
+//		mapTemplates.add(addMapTemplate("homeProject_EN","articleTitle", "article", 10));
 		
 		mapTemplates.add(addMapTemplate("article","articleTitle", "title", 10));
 		mapTemplates.add(addMapTemplate("article","articleContent", "content", 20));
-		mapTemplates.add(addMapTemplate("homeProject","article", "article", 10));
+		mapTemplates.add(addMapTemplate("homeProject_EN","article", "article", 10));
 		
 		mapTemplates.add(addMapTemplate("article2","socialNetwork", "title", 10));
-		mapTemplates.add(addMapTemplate("homeProject","article2", "article", 10));
+		mapTemplates.add(addMapTemplate("homeProject_EN","article2", "article", 10));
 		
 		
-		mapTemplates.add(addMapTemplate("home","blockTest3", "article", 10));
-		mapTemplates.add(addMapTemplate("home","socialNetwork", "article", 20));
+		mapTemplates.add(addMapTemplate("home_EN","blockTest3", "article", 10));
+		mapTemplates.add(addMapTemplate("home_EN","socialNetwork", "article", 20));
 		
 		return mapTemplates;
 	}

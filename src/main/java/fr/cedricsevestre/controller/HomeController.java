@@ -25,23 +25,13 @@ public class HomeController extends AbtractController{
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public ModelAndView view() {
 		System.out.println("home controller");
-		
 		ModelAndView modelAndView = null;
-		
 		try {
-			
-//			String pageName = Common.HOMEPAGE;
-//			Page page = common.getPage(pageName);
-//			Template model = page.getModel();
-//			modelAndView = baseView(model, page.getContext());
-
-			modelAndView = baseView(common.getPage(Common.HOMEPAGE));
-			
+			modelAndView = baseView(Common.HOMEPAGE);
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return modelAndView;
 	}
 	

@@ -64,18 +64,6 @@ public class Template extends Base {
 	@Column(name = "meta_keywords")
 	private String metaKeyWords;
 	
-//	@OneToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name="id_translation")
-//	private Translation<Template> translation;
-	
-	
-
-	
-	
-//	@ManyToMany(mappedBy = "translations")
-//	private List<Template> templates;
-	
-	
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="id_schema")
 	private NSchema schema;
