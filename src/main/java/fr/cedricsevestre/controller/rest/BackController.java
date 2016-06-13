@@ -39,11 +39,13 @@ import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.controller.AbtractController;
 import fr.cedricsevestre.dao.back.PageDao;
 import fr.cedricsevestre.dto.back.BlockDto;
+import fr.cedricsevestre.dto.back.LangDto;
 import fr.cedricsevestre.dto.back.MapTemplateDto;
 import fr.cedricsevestre.dto.back.MapTemplateSimpleDto;
 import fr.cedricsevestre.dto.back.PageDto;
 import fr.cedricsevestre.dto.back.PositionDto;
 import fr.cedricsevestre.dto.back.TemplateDto;
+import fr.cedricsevestre.entity.back.Lang;
 import fr.cedricsevestre.entity.back.MapTemplate;
 import fr.cedricsevestre.entity.back.Page;
 import fr.cedricsevestre.entity.back.Position;
@@ -51,6 +53,7 @@ import fr.cedricsevestre.entity.back.Template;
 import fr.cedricsevestre.entity.back.Template.TemplateType;
 import fr.cedricsevestre.exception.FormException;
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.service.back.LangService;
 import fr.cedricsevestre.service.back.MapTemplateService;
 import fr.cedricsevestre.service.back.PageService;
 import fr.cedricsevestre.service.back.PositionService;
@@ -61,6 +64,10 @@ import fr.cedricsevestre.service.back.TemplateService;
 @RequestMapping(value = "/@back")
 @Secured({ "ROLE_WEBMASTER", "ROLE_ADMIN" })
 public class BackController extends AbtractController {
+	
+	@Autowired
+	private LangService langService;
+	
 	@Autowired
 	private PageService pageService;
 	
@@ -181,6 +188,18 @@ public class BackController extends AbtractController {
 	}
 	
 	// RESTFull (ngResource)
+	@RequestMapping(value = "/langs", method = RequestMethod.GET)
+	public @ResponseBody List<LangDto> getLangs() throws ServiceException {
+		List<Lang> langs = langService.findAll();
+		List<LangDto> langsDto = new ArrayList<>();
+		for (Lang lang : langs) {
+			langsDto.add(LangDto.from(lang));
+		}
+		return langsDto;
+	}
+	
+	
+	
 	@RequestMapping(value = "/pages/{name}", method = RequestMethod.GET)
 	public @ResponseBody PageDto getPage(@PathVariable(value = "name") String pageName) throws ServiceException {
 		Page page = pageService.findByName(pageName);

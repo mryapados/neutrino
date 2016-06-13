@@ -16,38 +16,13 @@
 			    <h3><spring:message code="block-selection.inside.title" /></h3>
 			    <h4><spring:message code="block-selection.inside.subtitle" /></h4>
 
-	            <div class="col-xs-12">
-
-		
-				<div class="row">
-					<div class="col-xs-3">
-						<div class="dropdown">
-							<button class="btn btn-default dropdown-toggle" type="button" id="dropdownLang" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-								all
-								<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" aria-labelledby="dropdownLang">
-								<li><a href="#">fr</a></li>
-								<li><a href="#">en</a></li>
-								<li role="separator" class="divider"></li>
-								<li><a href="#">tous</a></li>
-							</ul>
-						</div>			
+	            <div class="form-inline">
+					<div class="form-group">
+						<select class="form-control" data-ng-options="lang as lang.code for lang in BlockManagementFacade.getLangs() track by lang.id" ng-model="language"></select>
 					</div>
-					<div class="col-xs-9">
+					<div class="form-group">
 						<input type="text" class="form-control" placeholder="Recherche" data-ng-model="search">
 					</div>
-				</div>		  
-	  
-					  
-
-					  
-					  
-					  
-					  
-					  
-					  
-					  
 	            </div>
 				<div class="col-xs-12">
 					<ul class="list-block">

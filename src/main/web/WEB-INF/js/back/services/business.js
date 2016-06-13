@@ -1,7 +1,7 @@
 (function() {
 	var module = angular.module('backServices');
 
-	module.service('BlockManagementService', function($rootScope, $q, $modal, PageService, TemplateService, BlockService, MapTemplateService, PATH) {
+	module.service('BlockManagementService', function($rootScope, $q, $modal, LangService, PageService, TemplateService, BlockService, MapTemplateService, PATH) {
 		var page;
 		self = this;
 		
@@ -9,12 +9,19 @@
 		self.getTemplates = function() {
 			return templates;
 		};
-
+		var langs;
+		self.getLangs = function() {
+			return langs;
+		};
+		
 		self.init = function(viewPage) {
 			var deferred = $q.defer();
 			var promise = PageService.getPage(viewPage)
 			.then(function(data){
 				page = data;
+			})
+			.then(function(){
+				self.initLangs();
 			})
 			.then(function(){
 				self.initTemplates();
@@ -25,6 +32,21 @@
 			.finally(function() {
 				deferred.resolve();
 			});
+			return deferred.promise;
+		};
+		
+		
+		self.initLangs = function() {
+			var deferred = $q.defer();
+			if (!langs) {
+				LangService.getLangs().then(function(data) {
+					console.log(data);
+					langs = data;
+					deferred.resolve();
+				});
+			} else {
+				deferred.resolve();
+			}
 			return deferred.promise;
 		};
 		
@@ -132,6 +154,15 @@
 
 			//return fn.call(TemplateResource, {}, template).$promise;
 
+		};
+	});
+	module.service('LangService', function(LangResource, PATH) {
+		self = this;
+		self.getLang = function(langName) {
+			return LangResource.get({name : langName}).$promise;
+		};
+		self.getLangs = function() {
+			return LangResource.getAll().$promise;
 		};
 	});
 	module.service('PageService', function(PageResource, PATH) {

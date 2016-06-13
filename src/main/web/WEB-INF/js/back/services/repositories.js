@@ -43,6 +43,16 @@
 	  	});
 	});
 	
+	module.factory("LangResource", function($resource, PATH) {
+	  	var API_URI = '@back/langs/:name';  				
+	  	return $resource(PATH.URL_SERVER_REST + API_URI, {name: '@name'}, {
+	  		create: {method: 'POST'},
+	  		get:    {method: 'GET'},
+	  		getAll: {method: 'GET', isArray: true},
+	  		remove: {method: 'DELETE'},
+	  		update: {method: 'PUT'}
+	  	});
+	});
 	module.factory("PageResource", function($resource, PATH) {
 	  	var API_URI = '@back/pages/:name';  				
 	  	return $resource(PATH.URL_SERVER_REST + API_URI, {name: '@name'}, {
