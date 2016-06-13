@@ -296,35 +296,35 @@ public class InitialisationBase {
 	}
 	public void initBlocs() throws ServiceException{
 		System.out.println("init blocs");
-//		String name = "";
-//		
-//		Template templateEN = templateService.translate(new Template(), langEN);
-//		name = "headerProject";
-//		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
-//		templateEN.setDescription(name + " description en");
-//		templateEN.setMetaTitle("MetaTitle");
-//		templateEN.setMetaDescription("MetaDescription");
-//		templateEN.setPath("header/headerProject");
-//		templateEN.setType(Template.TemplateType.PAGE);
-//		templateService.save(templateEN);
-//		
-//		Template templateFr = templateService.translate(templateEN, langFR);
-//		templateFr.setName(name + "_" + langFR.getCode().toUpperCase());
-//		templateFr.setDescription(name + " description fr");
-//		templateService.save(templateFr);
-//		
+		String name = "";
+		
+		Template templateEN = templateService.translate(new Template(), langEN);
+		name = "headerProject";
+		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		templateEN.setDescription(name + " description en");
+		templateEN.setMetaTitle("MetaTitle");
+		templateEN.setMetaDescription("MetaDescription");
+		templateEN.setPath("header/headerProject");
+		templateEN.setType(Template.TemplateType.BLOCK);
+		templateService.save(templateEN);
+		
+		Template templateFr = templateService.translate(templateEN, langFR);
+		templateFr.setName(name + "_" + langFR.getCode().toUpperCase());
+		templateFr.setDescription(name + " description fr");
+		templateService.save(templateFr);
+		
 		
 		
 		
 		
 		
 		Template template = new Template();
-		template.setDateAdd(new Date());
-		template.setName("headerProject");
-		template.setDescription("Block header");
-		template.setPath("header/headerProject");
-		template.setType(Template.TemplateType.BLOCK);
-		templateService.save(template);
+//		template.setDateAdd(new Date());
+//		template.setName("headerProject");
+//		template.setDescription("Block header");
+//		template.setPath("header/headerProject");
+//		template.setType(Template.TemplateType.BLOCK);
+//		templateService.save(template);
 		
 		template = new Template();
 		template.setDateAdd(new Date());
@@ -457,7 +457,7 @@ public class InitialisationBase {
 		
 		ArrayList<MapTemplate> mapTemplates = new ArrayList<>();
 		
-		mapTemplates.add(addMapTemplate("homeProject_EN","headerProject", "header", 10));
+		mapTemplates.add(addMapTemplate("homeProject_EN","headerProject_EN", "header", 10));
 		mapTemplates.add(addMapTemplate("homeProject_EN","socialNetwork", "aside", 10));
 		mapTemplates.add(addMapTemplate("homeProject_EN","album", "nav", 10));
 		mapTemplates.add(addMapTemplate("homeProject_EN","blockTest1", "nav", 20));

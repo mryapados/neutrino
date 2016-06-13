@@ -128,7 +128,12 @@
     border: 1px solid #c0cbba;
     line-height : 12px;
 }
-#back-management .block-selection .inside .contain ul.list-block li span{
+
+#back-management .block-selection .inside .contain ul.list-block li .block-title{
+    font-size: 1em;
+}
+#back-management .block-selection .inside .contain ul.list-block li p{
+	margin:0;
     font-size: 0.8em;
 }
 #back-management .block-selection .inside .contain ul.list-block li:first-child{

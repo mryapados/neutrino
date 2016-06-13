@@ -1,5 +1,6 @@
 package fr.cedricsevestre.dto.back;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,7 +13,7 @@ import fr.cedricsevestre.entity.back.Base;
 import fr.cedricsevestre.entity.back.Lang;
 import fr.cedricsevestre.entity.back.Page;
 
-public class LangDto extends BaseDto {
+public class LangDto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;

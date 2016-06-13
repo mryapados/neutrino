@@ -21,10 +21,12 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
+import fr.cedricsevestre.entity.ITranslation;
+
 @Entity
 @Table(name = "base")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Base implements Serializable {
+public abstract class Base implements ITranslation, Serializable {
 
 	private static final long serialVersionUID = 1L;
 

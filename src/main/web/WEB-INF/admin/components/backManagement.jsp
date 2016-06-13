@@ -17,16 +17,47 @@
 			    <h4><spring:message code="block-selection.inside.subtitle" /></h4>
 
 	            <div class="col-xs-12">
-					  <input type="text" class="form-control" placeholder="Recherche" data-ng-model="search">
+
+		
+				<div class="row">
+					<div class="col-xs-3">
+						<div class="dropdown">
+							<button class="btn btn-default dropdown-toggle" type="button" id="dropdownLang" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+								all
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" aria-labelledby="dropdownLang">
+								<li><a href="#">fr</a></li>
+								<li><a href="#">en</a></li>
+								<li role="separator" class="divider"></li>
+								<li><a href="#">tous</a></li>
+							</ul>
+						</div>			
+					</div>
+					<div class="col-xs-9">
+						<input type="text" class="form-control" placeholder="Recherche" data-ng-model="search">
+					</div>
+				</div>		  
+	  
+					  
+
+					  
+					  
+					  
+					  
+					  
+					  
+					  
 	            </div>
 				<div class="col-xs-12">
 					<ul class="list-block">
 						<li data-ng-repeat="block in BlockManagementFacade.getTemplates() | orderBy: 'name' | filter : search">
 							<div drag="block" dragStyle="columnDrag">
-								<strong>{{block.name}}</strong><br />
-								<span>adresse : {{block.path}}</span><br />
-								<span>crée le : {{block.dateAdd | date}}</span><br />
-								<span>description : {{block.description}}</span>
+								<p class="block-title"><strong>{{block.name}}</strong></p>
+								<p><strong>adresse : </strong>{{block.path}}</p>
+								<p><strong>crée le : </strong>{{block.dateAdd | date}}</p>
+								<p><strong>description : </strong>{{block.description}}</p>
+								<p><strong>langue : </strong>{{block.langDto.code}}</p>
 							</div>
 						</li>
 					</ul>
