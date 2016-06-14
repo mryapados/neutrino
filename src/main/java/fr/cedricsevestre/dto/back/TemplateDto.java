@@ -54,7 +54,7 @@ public class TemplateDto extends BaseDto {
 	}
 
 	public static Template to(TemplateDto templateDto){
-		return new Template(templateDto.getId(), templateDto.getName(), templateDto.getDateAdd(), templateDto.getDescription(), LangDto.to(templateDto.getLangDto()), templateDto.getType(), templateDto.getPath(), new ArrayList<MapTemplate>(), new ArrayList<MapTemplate>(), templateDto.getMetaDescription(), templateDto.getMetaTitle(), templateDto.getMetaKeyWords());
+		return new Template(templateDto.getId(), templateDto.getName(), templateDto.getDateAdd(), templateDto.getDescription(), LangDto.to(templateDto.getLang()), templateDto.getType(), templateDto.getPath(), new ArrayList<MapTemplate>(), new ArrayList<MapTemplate>(), templateDto.getMetaDescription(), templateDto.getMetaTitle(), templateDto.getMetaKeyWords());
 	}
 
 	public TemplateType getType() {

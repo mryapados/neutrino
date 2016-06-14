@@ -17,7 +17,7 @@
 			    <h4><spring:message code="block-selection.inside.subtitle" /></h4>
 
 				<div class="row">
-					<div class="col-lg-6">
+					<div class="col-lg-12">
 						<div class="input-group">
 							<div class="input-group-btn">
 								<button type="button" class="btn btn-default dropdown-toggle"

@@ -35,7 +35,7 @@ public class PageDto extends BaseDto {
 	}
 
 	public static Page to(PageDto pageDto){
-		return new Page(pageDto.getId(), pageDto.getName(), pageDto.getDateAdd(), pageDto.getDescription(), LangDto.to(pageDto.getLangDto()), pageDto.getContext(), TemplateDto.to(pageDto.getModel()));
+		return new Page(pageDto.getId(), pageDto.getName(), pageDto.getDateAdd(), pageDto.getDescription(), LangDto.to(pageDto.getLang()), pageDto.getContext(), TemplateDto.to(pageDto.getModel()));
 	}
 
 	public String getContext() {

@@ -308,14 +308,154 @@ public class InitialisationBase {
 		templateEN.setType(Template.TemplateType.BLOCK);
 		templateService.save(templateEN);
 		
-		Template templateFr = templateService.translate(templateEN, langFR);
-		templateFr.setName(name + "_" + langFR.getCode().toUpperCase());
-		templateFr.setDescription(name + " description fr");
-		templateService.save(templateFr);
+		Template templateFR = templateService.translate(templateEN, langFR);
+		templateFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		templateFR.setDescription(name + " description fr");
+		templateService.save(templateFR);
 		
 		
+		templateEN = templateService.translate(new Template(), langEN);
+		name = "headerProjectH2";
+		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		templateEN.setDescription(name + " description en");
+		templateEN.setMetaTitle("MetaTitle");
+		templateEN.setMetaDescription("MetaDescription");
+		templateEN.setPath("header/headerProjectH2");
+		templateEN.setType(Template.TemplateType.BLOCK);
+		templateService.save(templateEN);
+		
+		templateFR = templateService.translate(templateEN, langFR);
+		templateFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		templateFR.setDescription(name + " description fr");
+		templateService.save(templateFR);
 		
 		
+		templateEN = templateService.translate(new Template(), langEN);
+		name = "socialNetwork";
+		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		templateEN.setDescription(name + " Twitter, Facebook, Google+, ... en");
+		templateEN.setMetaTitle("MetaTitle");
+		templateEN.setMetaDescription("MetaDescription");
+		templateEN.setPath("socialnetwork/socialNetwork");
+		templateEN.setType(Template.TemplateType.BLOCK);
+		templateService.save(templateEN);
+		
+		templateFR = templateService.translate(templateEN, langFR);
+		templateFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		templateFR.setDescription(name + " Twitter, Facebook, Google+, ... fr");
+		templateService.save(templateFR);
+		
+		
+		templateEN = templateService.translate(new Template(), langEN);
+		name = "advertisement";
+		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		templateEN.setDescription(name + " advertisement description en");
+		templateEN.setMetaTitle("MetaTitle");
+		templateEN.setMetaDescription("MetaDescription");
+		templateEN.setPath("advertisement/advertisement");
+		templateEN.setType(Template.TemplateType.BLOCK);
+		templateService.save(templateEN);
+		
+		templateFR = templateService.translate(templateEN, langFR);
+		templateFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		templateFR.setDescription(name + " advertisement description fr");
+		templateService.save(templateFR);
+		
+		
+		templateEN = templateService.translate(new Template(), langEN);
+		name = "articleTitle";
+		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		templateEN.setDescription(name + " articleTitle description en");
+		templateEN.setMetaTitle("MetaTitle");
+		templateEN.setMetaDescription("MetaDescription");
+		templateEN.setPath("article/title/articleTitle");
+		templateEN.setType(Template.TemplateType.BLOCK);
+		templateService.save(templateEN);
+		
+		templateFR = templateService.translate(templateEN, langFR);
+		templateFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		templateFR.setDescription(name + " articleTitle description fr");
+		templateService.save(templateFR);
+		
+		
+		templateEN = templateService.translate(new Template(), langEN);
+		name = "articleContent";
+		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		templateEN.setDescription(name + " advertisement articleContent en");
+		templateEN.setMetaTitle("MetaTitle");
+		templateEN.setMetaDescription("MetaDescription");
+		templateEN.setPath("article/content/articleContent");
+		templateEN.setType(Template.TemplateType.BLOCK);
+		templateService.save(templateEN);
+		
+		templateFR = templateService.translate(templateEN, langFR);
+		templateFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		templateFR.setDescription(name + " articleContent description fr");
+		templateService.save(templateFR);
+		
+		
+		templateEN = templateService.translate(new Template(), langEN);
+		name = "album";
+		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		templateEN.setDescription(name + " album articleContent en");
+		templateEN.setMetaTitle("MetaTitle");
+		templateEN.setMetaDescription("MetaDescription");
+		templateEN.setPath("nav/album/album");
+		templateEN.setType(Template.TemplateType.BLOCK);
+		templateService.save(templateEN);
+		
+		templateFR = templateService.translate(templateEN, langFR);
+		templateFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		templateFR.setDescription(name + " album description fr");
+		templateService.save(templateFR);		
+		
+		
+		templateEN = templateService.translate(new Template(), langEN);
+		name = "blockTest1";
+		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		templateEN.setDescription(name + " blockTest1 articleContent en");
+		templateEN.setMetaTitle("MetaTitle");
+		templateEN.setMetaDescription("MetaDescription");
+		templateEN.setPath("test/blockTest1");
+		templateEN.setType(Template.TemplateType.BLOCK);
+		templateService.save(templateEN);
+		
+		templateFR = templateService.translate(templateEN, langFR);
+		templateFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		templateFR.setDescription(name + " blockTest1 description fr");
+		templateService.save(templateFR);		
+		
+		
+		templateEN = templateService.translate(new Template(), langEN);
+		name = "blockTest2";
+		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		templateEN.setDescription(name + " blockTest2 articleContent en");
+		templateEN.setMetaTitle("MetaTitle");
+		templateEN.setMetaDescription("MetaDescription");
+		templateEN.setPath("test/blockTest2");
+		templateEN.setType(Template.TemplateType.BLOCK);
+		templateService.save(templateEN);
+		
+		templateFR = templateService.translate(templateEN, langFR);
+		templateFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		templateFR.setDescription(name + " blockTest2 description fr");
+		templateService.save(templateFR);	
+		
+		
+		templateEN = templateService.translate(new Template(), langEN);
+		name = "blockTest3";
+		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		templateEN.setDescription(name + " blockTest3 articleContent en");
+		templateEN.setMetaTitle("MetaTitle");
+		templateEN.setMetaDescription("MetaDescription");
+		templateEN.setPath("test/subtest/blockTest3");
+		templateEN.setType(Template.TemplateType.BLOCK);
+		templateService.save(templateEN);
+		
+		templateFR = templateService.translate(templateEN, langFR);
+		templateFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		templateFR.setDescription(name + " blockTest3 description fr");
+		templateService.save(templateFR);	
 		
 		
 		Template template = new Template();
@@ -326,78 +466,78 @@ public class InitialisationBase {
 //		template.setType(Template.TemplateType.BLOCK);
 //		templateService.save(template);
 		
-		template = new Template();
-		template.setDateAdd(new Date());
-		template.setName("headerProjectH2");
-		template.setDescription("Block header");
-		template.setPath("header/headerProjectH2");
-		template.setType(Template.TemplateType.BLOCK);
-		templateService.save(template);
+//		template = new Template();
+//		template.setDateAdd(new Date());
+//		template.setName("headerProjectH2");
+//		template.setDescription("Block header");
+//		template.setPath("header/headerProjectH2");
+//		template.setType(Template.TemplateType.BLOCK);
+//		templateService.save(template);
 		
 		
-		template = new Template();
-		template.setDateAdd(new Date());
-		template.setName("socialNetwork");
-		template.setDescription("Twitter, Facebook, Google+, ...");
-		template.setPath("socialnetwork/socialNetwork");
-		template.setType(Template.TemplateType.BLOCK);
-		templateService.save(template);
+//		template = new Template();
+//		template.setDateAdd(new Date());
+//		template.setName("socialNetwork");
+//		template.setDescription("Twitter, Facebook, Google+, ...");
+//		template.setPath("socialnetwork/socialNetwork");
+//		template.setType(Template.TemplateType.BLOCK);
+//		templateService.save(template);
 		
-		template = new Template();
-		template.setDateAdd(new Date());
-		template.setName("advertisement");
-		template.setDescription("Here your advertisement block");
-		template.setPath("advertisement/advertisement");
-		template.setType(Template.TemplateType.BLOCK);
-		templateService.save(template);
+//		template = new Template();
+//		template.setDateAdd(new Date());
+//		template.setName("advertisement");
+//		template.setDescription("Here your advertisement block");
+//		template.setPath("advertisement/advertisement");
+//		template.setType(Template.TemplateType.BLOCK);
+//		templateService.save(template);
 		
-		template = new Template();
-		template.setDateAdd(new Date());
-		template.setName("articleTitle");
-		template.setDescription("Here define the article title");
-		template.setPath("article/title/articleTitle");
-		template.setType(Template.TemplateType.BLOCK);
-		templateService.save(template);
+//		template = new Template();
+//		template.setDateAdd(new Date());
+//		template.setName("articleTitle");
+//		template.setDescription("Here define the article title");
+//		template.setPath("article/title/articleTitle");
+//		template.setType(Template.TemplateType.BLOCK);
+//		templateService.save(template);
 		
-		template = new Template();
-		template.setDateAdd(new Date());
-		template.setName("articleContent");
-		template.setDescription("Here define the article content");
-		template.setPath("article/content/articleContent");
-		template.setType(Template.TemplateType.BLOCK);
-		templateService.save(template);
+//		template = new Template();
+//		template.setDateAdd(new Date());
+//		template.setName("articleContent");
+//		template.setDescription("Here define the article content");
+//		template.setPath("article/content/articleContent");
+//		template.setType(Template.TemplateType.BLOCK);
+//		templateService.save(template);
 		
-		template = new Template();
-		template.setDateAdd(new Date());
-		template.setName("album");
-		template.setDescription("Block list albums");
-		template.setPath("nav/album/album");
-		template.setType(Template.TemplateType.BLOCK);
-		templateService.save(template);
+//		template = new Template();
+//		template.setDateAdd(new Date());
+//		template.setName("album");
+//		template.setDescription("Block list albums");
+//		template.setPath("nav/album/album");
+//		template.setType(Template.TemplateType.BLOCK);
+//		templateService.save(template);
 		
-		template = new Template();
-		template.setDateAdd(new Date());
-		template.setName("blockTest1");
-		template.setDescription("Block pannel test 1");
-		template.setPath("test/blockTest1");
-		template.setType(Template.TemplateType.BLOCK);
-		templateService.save(template);
+//		template = new Template();
+//		template.setDateAdd(new Date());
+//		template.setName("blockTest1");
+//		template.setDescription("Block pannel test 1");
+//		template.setPath("test/blockTest1");
+//		template.setType(Template.TemplateType.BLOCK);
+//		templateService.save(template);
 		
-		template = new Template();
-		template.setDateAdd(new Date());
-		template.setName("blockTest2");
-		template.setDescription("Block pannel test 2");
-		template.setPath("test/blockTest2");
-		template.setType(Template.TemplateType.BLOCK);
-		templateService.save(template);		
+//		template = new Template();
+//		template.setDateAdd(new Date());
+//		template.setName("blockTest2");
+//		template.setDescription("Block pannel test 2");
+//		template.setPath("test/blockTest2");
+//		template.setType(Template.TemplateType.BLOCK);
+//		templateService.save(template);		
 		
-		template = new Template();
-		template.setDateAdd(new Date());
-		template.setName("blockTest3");
-		template.setDescription("Block Test");
-		template.setPath("test/subtest/blockTest3");
-		template.setType(Template.TemplateType.BLOCK);
-		templateService.save(template);
+//		template = new Template();
+//		template.setDateAdd(new Date());
+//		template.setName("blockTest3");
+//		template.setDescription("Block Test");
+//		template.setPath("test/subtest/blockTest3");
+//		template.setType(Template.TemplateType.BLOCK);
+//		templateService.save(template);
 		
 		
 		template = new Template();
@@ -458,23 +598,23 @@ public class InitialisationBase {
 		ArrayList<MapTemplate> mapTemplates = new ArrayList<>();
 		
 		mapTemplates.add(addMapTemplate("homeProject_EN","headerProject_EN", "header", 10));
-		mapTemplates.add(addMapTemplate("homeProject_EN","socialNetwork", "aside", 10));
-		mapTemplates.add(addMapTemplate("homeProject_EN","album", "nav", 10));
-		mapTemplates.add(addMapTemplate("homeProject_EN","blockTest1", "nav", 20));
-		mapTemplates.add(addMapTemplate("homeProject_EN","blockTest2", "nav", 30));
+		mapTemplates.add(addMapTemplate("homeProject_EN","socialNetwork_EN", "aside", 10));
+		mapTemplates.add(addMapTemplate("homeProject_EN","album_EN", "nav", 10));
+		mapTemplates.add(addMapTemplate("homeProject_EN","blockTest1_EN", "nav", 20));
+		mapTemplates.add(addMapTemplate("homeProject_EN","blockTest2_EN", "nav", 30));
 //		mapTemplates.add(addMapTemplate("homeProject_EN","articleContent", "article", 10));
 //		mapTemplates.add(addMapTemplate("homeProject_EN","articleTitle", "article", 10));
 		
-		mapTemplates.add(addMapTemplate("article","articleTitle", "title", 10));
-		mapTemplates.add(addMapTemplate("article","articleContent", "content", 20));
+		mapTemplates.add(addMapTemplate("article","articleTitle_EN", "title", 10));
+		mapTemplates.add(addMapTemplate("article","articleContent_EN", "content", 20));
 		mapTemplates.add(addMapTemplate("homeProject_EN","article", "article", 10));
 		
-		mapTemplates.add(addMapTemplate("article2","socialNetwork", "title", 10));
+		mapTemplates.add(addMapTemplate("article2","socialNetwork_EN", "title", 10));
 		mapTemplates.add(addMapTemplate("homeProject_EN","article2", "article", 10));
 		
 		
-		mapTemplates.add(addMapTemplate("home_EN","blockTest3", "article", 10));
-		mapTemplates.add(addMapTemplate("home_EN","socialNetwork", "article", 20));
+		mapTemplates.add(addMapTemplate("home_EN","blockTest3_EN", "article", 10));
+		mapTemplates.add(addMapTemplate("home_EN","socialNetwork_EN", "article", 20));
 		
 		return mapTemplates;
 	}
