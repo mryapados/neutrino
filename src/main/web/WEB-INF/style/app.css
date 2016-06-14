@@ -90,7 +90,8 @@
     background: #517341;
     border-top: 2px solid white;
     border-bottom: 2px solid white;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 #back-management .block-selection .inside .contain{
 	color: white;

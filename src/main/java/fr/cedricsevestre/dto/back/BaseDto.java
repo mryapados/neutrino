@@ -27,19 +27,19 @@ public class BaseDto implements Serializable {
 	@SafeHtml(whitelistType = WhiteListType.BASIC)
 	private String description;
 
-	private LangDto langDto;
+	private LangDto lang;
 	
 	public BaseDto() {
 
 	}
 
-	public BaseDto(Integer id, String name, Date dateAdd, String description, LangDto langDto) {
+	public BaseDto(Integer id, String name, Date dateAdd, String description, LangDto lang) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.dateAdd = dateAdd;
 		this.description = description;
-		this.langDto = langDto;
+		this.lang = lang;
 	}
 
 	public static BaseDto from(Base base) {
@@ -78,17 +78,14 @@ public class BaseDto implements Serializable {
 		this.description = description;
 	}
 
-	public LangDto getLangDto() {
-		return langDto;
+	public LangDto getLang() {
+		return lang;
 	}
 
-	public void setLangDto(LangDto langDto) {
-		this.langDto = langDto;
+	public void setLang(LangDto lang) {
+		this.lang = lang;
 	}
 
-//	public static Base to(BaseDto baseDto) {
-//		return new Base(baseDto.getId(), baseDto.getName(), baseDto.getDateAdd(), baseDto.getDescription());
-//	}
 
 	
 }

@@ -40,7 +40,6 @@
 			var deferred = $q.defer();
 			if (!langs) {
 				LangService.getLangs().then(function(data) {
-					console.log(data);
 					langs = data;
 					deferred.resolve();
 				});

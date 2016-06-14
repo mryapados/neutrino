@@ -16,23 +16,43 @@
 			    <h3><spring:message code="block-selection.inside.title" /></h3>
 			    <h4><spring:message code="block-selection.inside.subtitle" /></h4>
 
-	            <div class="form-inline">
-					<div class="form-group">
-						<select class="form-control" data-ng-options="lang as lang.code for lang in BlockManagementFacade.getLangs() track by lang.id" ng-model="language"></select>
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="input-group">
+							<div class="input-group-btn">
+								<button type="button" class="btn btn-default dropdown-toggle"
+									data-toggle="dropdown" aria-haspopup="true"
+									aria-expanded="false">
+									<span ng-if="currentLang == ''">
+										{{'block-selection.lang.all' | translate}}
+									</span>
+									<span ng-if="currentLang != ''">
+										{{currentLang}} 
+									</span>
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" aria-labelledby="dropdownLang">
+									<li><a data-ng-click="switchLang('')">{{'block-selection.lang.all' | translate}}</a></li>
+									<li role="separator" class="divider"></li>
+									<li data-ng-repeat="lang in BlockManagementFacade.getLangs() | orderBy: 'code'">
+										<a data-ng-click="switchLang(lang.code)">{{lang.code | uppercase}}</a>
+									</li>
+								</ul>
+							</div>
+							<input type="text" class="form-control" placeholder="Recherche" data-ng-model="search">
+						</div>
 					</div>
-					<div class="form-group">
-						<input type="text" class="form-control" placeholder="Recherche" data-ng-model="search">
-					</div>
-	            </div>
+				</div>
+
 				<div class="col-xs-12">
 					<ul class="list-block">
-						<li data-ng-repeat="block in BlockManagementFacade.getTemplates() | orderBy: 'name' | filter : search">
+						<li data-ng-repeat="block in BlockManagementFacade.getTemplates() | orderBy: 'name' | filter : {lang:{code:currentLang}, $ : search} ">
 							<div drag="block" dragStyle="columnDrag">
 								<p class="block-title"><strong>{{block.name}}</strong></p>
-								<p><strong>adresse : </strong>{{block.path}}</p>
-								<p><strong>crée le : </strong>{{block.dateAdd | date}}</p>
-								<p><strong>description : </strong>{{block.description}}</p>
-								<p><strong>langue : </strong>{{block.langDto.code}}</p>
+								<p><strong>{{'block-selection.block.path' | translate}} : </strong>{{block.path}}</p>
+								<p><strong>{{'block-selection.block.dateadd' | translate}} : </strong>{{block.dateAdd | date}}</p>
+								<p><strong>{{'block-selection.block.description' | translate}} : </strong>{{block.description}}</p>
+								<p><strong>{{'block-selection.block.lang' | translate}} : </strong>{{block.lang.code}}</p>
 							</div>
 						</li>
 					</ul>
