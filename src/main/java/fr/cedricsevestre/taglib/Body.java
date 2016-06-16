@@ -41,10 +41,10 @@ public class Body extends TagSupport {
 					Page page = (Page) pageContext.getAttribute("page", PageContext.REQUEST_SCOPE);
 					out.println("<body data-ng-app=\"backApp\" data-ng-controller=\"BlockManagementCtrl\" data-ng-init=\"init('" + page.getName() + "')\">");
 				} else {
-					out.println("<body>");
+					out.println("<body data-ng-app=\"frontApp\">");
 				}
 			} else {
-				out.println("<body>");
+				out.println("<body data-ng-app=\"frontApp\">");
 			}
 		} catch (IOException e) {
 			try {

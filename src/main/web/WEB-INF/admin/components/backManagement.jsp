@@ -94,7 +94,7 @@
 
 
 
-<script src="<c:url value='/js/lib/ui-bootstrap-tpls.js'/>"></script>
+
 <script src="<c:url value='/js/back/app.js'/>"></script>	
 <script src="<c:url value='/js/back/controller/blockManagementCtrl.js'/>"></script>	
 <script src="<c:url value='/js/back/controller/blockSelectionCtrl.js'/>"></script>

@@ -1,7 +1,7 @@
 (function() {
-	var module = angular.module('backServices');
+	var bModule = angular.module('backServices');
 
-	module.service('BlockManagementService', function($rootScope, $q, $modal, LangService, PageService, TemplateService, BlockService, MapTemplateService, PATH) {
+	bModule.service('BlockManagementService', function($rootScope, $q, $modal, LangService, PageService, TemplateService, BlockService, MapTemplateService, PATH) {
 		var page;
 		self = this;
 		
@@ -119,7 +119,7 @@
 	
 
 	
-	module.service('TemplateService', function(TemplateResource, TemplateRepository, PATH) {
+	bModule.service('TemplateService', function(TemplateResource, TemplateRepository, PATH) {
 		self = this;
 		self.getTemplate = function(templateName) {
 			return TemplateResource.get({name : templateName}).$promise;
@@ -155,7 +155,7 @@
 
 		};
 	});
-	module.service('LangService', function(LangResource, PATH) {
+	bModule.service('LangService', function(LangResource, PATH) {
 		self = this;
 		self.getLang = function(langName) {
 			return LangResource.get({name : langName}).$promise;
@@ -164,7 +164,7 @@
 			return LangResource.getAll().$promise;
 		};
 	});
-	module.service('PageService', function(PageResource, PATH) {
+	bModule.service('PageService', function(PageResource, PATH) {
 		self = this;
 		self.getPage = function(pageName) {
 			return PageResource.get({name : pageName}).$promise;
@@ -173,13 +173,13 @@
 			return PageResource.getAll().$promise;
 		};
 	});
-	module.service('BlockService', function(BlockResource, PATH) {
+	bModule.service('BlockService', function(BlockResource, PATH) {
 		self = this;
 		self.getBlocksForModelPosition = function(modelName, positionName) {
 			return BlockResource.getAll({model : modelName, position : positionName}).$promise;
 		};
 	});
-	module.service('PositionService', function(PositionRepository, PATH) {
+	bModule.service('PositionService', function(PositionRepository, PATH) {
 		self = this;
 		self.getPosition = function(positionName) {
 			return PositionRepository.get(positionName);
@@ -188,7 +188,7 @@
 			return PositionRepository.getAll();
 		};		
 	});
-	module.service('MapTemplateService', function(MapTemplateResource, PATH) {
+	bModule.service('MapTemplateService', function(MapTemplateResource, PATH) {
 		self = this;
 		self.save = function(mapTemplate) {
 			var fn = (mapTemplate.id) ? MapTemplateResource.update : MapTemplateResource.save;

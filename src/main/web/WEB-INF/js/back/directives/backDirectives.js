@@ -1,7 +1,7 @@
 (function() {
 	
-	var module = angular.module("backApp");
-	module.directive("drag", ["$rootScope", function ($rootScope) {
+	var bModule = angular.module("backApp");
+	bModule.directive("drag", ["$rootScope", function ($rootScope) {
 
         function dragStart(evt, element, dragStyle) {
             element.addClass(dragStyle);
@@ -29,7 +29,7 @@
         }
     }]);
 
-	module.directive("drop", ['$rootScope', function ($rootScope) {
+	bModule.directive("drop", ['$rootScope', function ($rootScope) {
 
         function dragEnter(evt, element, dropStyle) {
             evt.preventDefault();
@@ -85,7 +85,7 @@
 	
 	
 
-	module.directive('uiPosition', function(PATH, BlockManagementService){
+	bModule.directive('uiPosition', function(PATH, BlockManagementService){
 		return {
 			scope: {
 				position: '@',

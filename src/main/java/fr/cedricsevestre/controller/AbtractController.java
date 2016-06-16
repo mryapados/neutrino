@@ -77,8 +77,7 @@ public class AbtractController {
 	
 	
 	public ModelAndView baseView(Page page) throws ServiceException {
-		System.out.println(page.getName());
-		
+		if (Common.DEBUG) System.out.println(this.getClass() + " - baseview - page : " + page.getName());
 		Template model = page.getModel();
 		String pathContext = page.getContext();
 		ModelAndView modelAndView = baseView(model, pathContext);
@@ -89,30 +88,12 @@ public class AbtractController {
 	}
 	
 	public ModelAndView baseView(Template template, String pathContext) throws ServiceException {
-		ModelAndView modelAndView = null;
-
-		//String pathModelAndView = "pages/" + pathContext + "/templates/" + templateService.pathType(template) + "/" + template.getPath() + "/" + template.getName();
-		
-		
 		String pathModelAndView = "pages/" + pathContext + "/templates/" + templateService.pathType(template) + "/" + template.getPath();
-		
-		//String pathModelAndView = templateService.pathJSP("", pathContext, template);
-		
-		System.out.println("rrrrr " + pathModelAndView);
-		
-		
-		
-		modelAndView = new ModelAndView(pathModelAndView);
-
+		ModelAndView modelAndView = new ModelAndView(pathModelAndView);
 		modelAndView.addObject("applicationFolder", common.getApplicationFolder());
-		//modelAndView.addObject("pathContext", pathContext);
-
-		//modelAndView.addObject("model", template);
-		
 		modelAndView.addObject("template", template);
 		modelAndView.addObject("context", pathContext);
 		modelAndView.addObject("initialized", false);
-		
 		return modelAndView;
 	}
 	

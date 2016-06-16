@@ -7,7 +7,7 @@
 
 <div class="panel panel-default">
 	<div class="panel-heading panel-heading-yellow">
-		<spring:message code="project.block.${activeBlock.name}.title" />
+		<spring:message code="project.block.album.title" />
 	</div>
 	
 	<ul class="list-group">

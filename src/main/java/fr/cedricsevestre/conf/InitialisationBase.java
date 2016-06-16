@@ -456,128 +456,64 @@ public class InitialisationBase {
 		templateFR.setName(name + "_" + langFR.getCode().toUpperCase());
 		templateFR.setDescription(name + " blockTest3 description fr");
 		templateService.save(templateFR);	
-		
-		
-		Template template = new Template();
-//		template.setDateAdd(new Date());
-//		template.setName("headerProject");
-//		template.setDescription("Block header");
-//		template.setPath("header/headerProject");
-//		template.setType(Template.TemplateType.BLOCK);
-//		templateService.save(template);
-		
-//		template = new Template();
-//		template.setDateAdd(new Date());
-//		template.setName("headerProjectH2");
-//		template.setDescription("Block header");
-//		template.setPath("header/headerProjectH2");
-//		template.setType(Template.TemplateType.BLOCK);
-//		templateService.save(template);
-		
-		
-//		template = new Template();
-//		template.setDateAdd(new Date());
-//		template.setName("socialNetwork");
-//		template.setDescription("Twitter, Facebook, Google+, ...");
-//		template.setPath("socialnetwork/socialNetwork");
-//		template.setType(Template.TemplateType.BLOCK);
-//		templateService.save(template);
-		
-//		template = new Template();
-//		template.setDateAdd(new Date());
-//		template.setName("advertisement");
-//		template.setDescription("Here your advertisement block");
-//		template.setPath("advertisement/advertisement");
-//		template.setType(Template.TemplateType.BLOCK);
-//		templateService.save(template);
-		
-//		template = new Template();
-//		template.setDateAdd(new Date());
-//		template.setName("articleTitle");
-//		template.setDescription("Here define the article title");
-//		template.setPath("article/title/articleTitle");
-//		template.setType(Template.TemplateType.BLOCK);
-//		templateService.save(template);
-		
-//		template = new Template();
-//		template.setDateAdd(new Date());
-//		template.setName("articleContent");
-//		template.setDescription("Here define the article content");
-//		template.setPath("article/content/articleContent");
-//		template.setType(Template.TemplateType.BLOCK);
-//		templateService.save(template);
-		
-//		template = new Template();
-//		template.setDateAdd(new Date());
-//		template.setName("album");
-//		template.setDescription("Block list albums");
-//		template.setPath("nav/album/album");
-//		template.setType(Template.TemplateType.BLOCK);
-//		templateService.save(template);
-		
-//		template = new Template();
-//		template.setDateAdd(new Date());
-//		template.setName("blockTest1");
-//		template.setDescription("Block pannel test 1");
-//		template.setPath("test/blockTest1");
-//		template.setType(Template.TemplateType.BLOCK);
-//		templateService.save(template);
-		
-//		template = new Template();
-//		template.setDateAdd(new Date());
-//		template.setName("blockTest2");
-//		template.setDescription("Block pannel test 2");
-//		template.setPath("test/blockTest2");
-//		template.setType(Template.TemplateType.BLOCK);
-//		templateService.save(template);		
-		
-//		template = new Template();
-//		template.setDateAdd(new Date());
-//		template.setName("blockTest3");
-//		template.setDescription("Block Test");
-//		template.setPath("test/subtest/blockTest3");
-//		template.setType(Template.TemplateType.BLOCK);
-//		templateService.save(template);
-		
-		
-		template = new Template();
-		template.setDateAdd(new Date());
-		template.setName("Block Test 4");
-		template.setDescription("Z Block Test");
-		template.setPath("b/test/test.jsp");
-		template.setType(Template.TemplateType.BLOCK);
-		templateService.save(template);
-		
-		template = new Template();
-		template.setDateAdd(new Date());
-		template.setName("Block Test 5");
-		template.setDescription("Block Test");
-		template.setPath("a/test/test.jsp");
-		template.setType(Template.TemplateType.BLOCK);
-		templateService.save(template);
-		
 
-		
 	}
 	public void initPageBlocs() throws ServiceException{
 		System.out.println("init Page blocs");
-		Template template = new Template();
-		template.setDateAdd(new Date());
-		template.setName("article");
-		template.setDescription("Page Block article");
-		template.setPath("article/article");
-		template.setType(Template.TemplateType.PAGEBLOCK);
+		Template templateEN = null;
+		Template templateFR = null;
+		String name = null;
 		
-		template.setSchema(nSchemaService.findById(1));
-		templateService.save(template);
+		templateEN = templateService.translate(new Template(), langEN);
+		name = "article";
+		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		templateEN.setDescription(name + " Page Block article description en");
+		templateEN.setMetaTitle("MetaTitle");
+		templateEN.setMetaDescription("MetaDescription");
+		templateEN.setPath("article/article");
+		templateEN.setType(Template.TemplateType.PAGEBLOCK);
+		templateEN.setSchema(nSchemaService.findById(1));
+		templateService.save(templateEN);
 		
-		template = new Template();
-		template.setDateAdd(new Date());
-		template.setName("article2");
-		template.setDescription("Page Block article 2");
-		template.setPath("article/article2");
-		template.setType(Template.TemplateType.PAGEBLOCK);
-		templateService.save(template);
+		templateFR = templateService.translate(templateEN, langFR);
+		templateFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		templateFR.setDescription(name + " Page Block article description fr");
+		templateService.save(templateFR);	
+		
+
+		templateEN = templateService.translate(new Template(), langEN);
+		name = "article2";
+		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		templateEN.setDescription(name + " Page Block article2 description en");
+		templateEN.setMetaTitle("MetaTitle");
+		templateEN.setMetaDescription("MetaDescription");
+		templateEN.setPath("article/article2");
+		templateEN.setType(Template.TemplateType.PAGEBLOCK);
+		templateEN.setSchema(nSchemaService.findById(1));
+		templateService.save(templateEN);
+		
+		templateFR = templateService.translate(templateEN, langFR);
+		templateFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		templateFR.setDescription(name + " Page Block article2 description fr");
+		templateService.save(templateFR);	
+		
+//		Template template = new Template();
+//		template.setDateAdd(new Date());
+//		template.setName("article");
+//		template.setDescription("Page Block article");
+//		template.setPath("article/article");
+//		template.setType(Template.TemplateType.PAGEBLOCK);
+//		
+//		template.setSchema(nSchemaService.findById(1));
+//		templateService.save(template);
+//		
+//		template = new Template();
+//		template.setDateAdd(new Date());
+//		template.setName("article2");
+//		template.setDescription("Page Block article 2");
+//		template.setPath("article/article2");
+//		template.setType(Template.TemplateType.PAGEBLOCK);
+//		templateService.save(template);
 	}
 	
 	public MapTemplate addMapTemplate(String model, String block, String position, Integer ordered) throws ServiceException{
@@ -605,12 +541,12 @@ public class InitialisationBase {
 //		mapTemplates.add(addMapTemplate("homeProject_EN","articleContent", "article", 10));
 //		mapTemplates.add(addMapTemplate("homeProject_EN","articleTitle", "article", 10));
 		
-		mapTemplates.add(addMapTemplate("article","articleTitle_EN", "title", 10));
-		mapTemplates.add(addMapTemplate("article","articleContent_EN", "content", 20));
-		mapTemplates.add(addMapTemplate("homeProject_EN","article", "article", 10));
+		mapTemplates.add(addMapTemplate("article_EN","articleTitle_EN", "title", 10));
+		mapTemplates.add(addMapTemplate("article_EN","articleContent_EN", "content", 20));
+		mapTemplates.add(addMapTemplate("homeProject_EN","article_EN", "article", 10));
 		
-		mapTemplates.add(addMapTemplate("article2","socialNetwork_EN", "title", 10));
-		mapTemplates.add(addMapTemplate("homeProject_EN","article2", "article", 10));
+		mapTemplates.add(addMapTemplate("article2_EN","socialNetwork_EN", "title", 10));
+		mapTemplates.add(addMapTemplate("homeProject_EN","article2_EN", "article", 10));
 		
 		
 		mapTemplates.add(addMapTemplate("home_EN","blockTest3_EN", "article", 10));
@@ -635,7 +571,7 @@ public class InitialisationBase {
 	public void initNDatas() throws ServiceException{
 		System.out.println("init nDatas");
 		
-		Template template = templateService.findByName("article");
+		Template template = templateService.findByName("article_EN");
 		
 		NData nData = new NData();
 		nData.setvVarchar255("data article title");

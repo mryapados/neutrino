@@ -1,6 +1,6 @@
-var module = angular.module('backApp');
+var bModule = angular.module('backApp');
 
-module.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateService, TemplateService, BlockManagementService) {
+bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateService, TemplateService, BlockManagementService) {
 	TemplateService.getTemplate($scope.model).then(function(data) {
 
 		var model = data;

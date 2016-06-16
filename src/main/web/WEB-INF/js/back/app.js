@@ -1,6 +1,6 @@
 (function() {
-	var module = angular.module('backApp', [ 'backServices', 'ngSanitize', 'pascalprecht.translate', 'ngCookies', 'ui.bootstrap', 'ngResource' ]);
-	module.config(function($translateProvider) {
+	var bModule = angular.module('backApp', [ 'backServices', 'ngSanitize', 'pascalprecht.translate', 'ngCookies', 'ui.bootstrap', 'ngResource', 'frontApp' ]);
+	bModule.config(function($translateProvider) {
 		var $cookies;
 		angular.injector(['ngCookies']).invoke(['$cookies', function(_$cookies_) {
 			$cookies = _$cookies_;
@@ -13,11 +13,11 @@
 		$translateProvider.useLoader('i18nLoader');
 		
 	});
-	module.run(function($cookies) {
+	bModule.run(function($cookies) {
 
 		
 	});
-	module.factory('i18nLoader', function ($http, $q, PATH) {
+	bModule.factory('i18nLoader', function ($http, $q, PATH) {
 	    return function (options) {
 		    var deferred = $q.defer();
 			$http.get(PATH.URL_SERVER_REST + '@front/labels/' + options.key)

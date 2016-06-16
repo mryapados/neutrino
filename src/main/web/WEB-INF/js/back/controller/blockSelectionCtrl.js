@@ -1,6 +1,6 @@
-var module = angular.module("backApp");
+var bModule = angular.module("backApp");
 
-module.controller('BlockSelectionCtrl', function($scope) {
+bModule.controller('BlockSelectionCtrl', function($scope) {
 	
 	$scope.currentLang = '';
 	$scope.switchLang = function(codeLang) {

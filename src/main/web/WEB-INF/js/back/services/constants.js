@@ -1,6 +1,6 @@
 (function() {
-	var module = angular.module('backServices');
-	module.constant('PATH', {
+	var bModule = angular.module('backServices');
+	bModule.constant('PATH', {
 		URL_SERVER_REST: '/neutrino/',
 		URL_TEMPLATE_JS: '/neutrino/js/back/templates/',
 		URL_TEMPLATE_MODAL: '/neutrino/js/back/views/templateForm.html',

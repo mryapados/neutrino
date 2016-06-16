@@ -1,5 +1,5 @@
 (function() {
-	var module = angular.module('backServices');
+	var bModule = angular.module('backServices');
 
 //	module.factory("BlockRepository", function($http, PATH) {
 //		return {
@@ -15,7 +15,7 @@
 //			}
 //		};
 //	});
-	module.factory("TemplateRepository", function($http, PATH) {
+	bModule.factory("TemplateRepository", function($http, PATH) {
 		return {
 			exist: function(context, type, path, name) {
 				return $http.get(
@@ -32,7 +32,7 @@
 		};
 	});
 	
-	module.factory("TemplateResource", function($resource, PATH) {
+	bModule.factory("TemplateResource", function($resource, PATH) {
 	  	var API_URI = '@back/templates/:name';  				
 	  	return $resource(PATH.URL_SERVER_REST + API_URI, {name: '@name'}, {
 	  		create: {method: 'POST'},
@@ -43,7 +43,7 @@
 	  	});
 	});
 	
-	module.factory("LangResource", function($resource, PATH) {
+	bModule.factory("LangResource", function($resource, PATH) {
 	  	var API_URI = '@back/langs/:name';  				
 	  	return $resource(PATH.URL_SERVER_REST + API_URI, {name: '@name'}, {
 	  		create: {method: 'POST'},
@@ -53,7 +53,7 @@
 	  		update: {method: 'PUT'}
 	  	});
 	});
-	module.factory("PageResource", function($resource, PATH) {
+	bModule.factory("PageResource", function($resource, PATH) {
 	  	var API_URI = '@back/pages/:name';  				
 	  	return $resource(PATH.URL_SERVER_REST + API_URI, {name: '@name'}, {
 	  		create: {method: 'POST'},
@@ -64,7 +64,7 @@
 	  	});
 	});
 	
-	module.factory("BlockResource", function($resource, PATH) {
+	bModule.factory("BlockResource", function($resource, PATH) {
 	  	var API_URI = '@back/models/:model/positions/:position/blocks';  				
 	  	return $resource(PATH.URL_SERVER_REST + API_URI, {model: '@model', positions: '@positions'}, {
 	  		create: {method: 'POST'},
@@ -75,7 +75,7 @@
 	  	});
 	});
 	
-	module.factory("PositionRepository", function($http, PATH) {
+	bModule.factory("PositionRepository", function($http, PATH) {
 		return {
 			get: function(positionName) {
 				return $http.get(PATH.URL_SERVER_REST + '@back/positions/'+ positionName)
@@ -102,7 +102,7 @@
 		};
 	});
 
-	module.factory("MapTemplateRepository", function($http, PATH) {
+	bModule.factory("MapTemplateRepository", function($http, PATH) {
 		return {
 			remove: function(idTemplateBlock) {
 				return $http.delete(PATH.URL_SERVER_REST + '@back/removemapblock/' + idTemplateBlock)
@@ -127,7 +127,7 @@
 	});
 	
 	
-	module.factory("MapTemplateResource", function($resource, PATH) {
+	bModule.factory("MapTemplateResource", function($resource, PATH) {
 	  	var API_URI = '@back/maptemplates/:id';			
 	  	return $resource(PATH.URL_SERVER_REST + API_URI, {id: '@id'}, {
 	  		save:   {method: 'POST'},

@@ -1,6 +1,6 @@
-var module = angular.module("backApp");
+var bModule = angular.module("backApp");
 
-module.controller('TemplateModalCtrl', function($scope, $modalInstance, PATH, template, page, TemplateService) {	
+bModule.controller('TemplateModalCtrl', function($scope, $modalInstance, PATH, template, page, TemplateService) {	
 	$scope.exist = function() {
 		return TemplateService.getExist(page.context, template.type, template.path, template.name)
 		.then(function(data) {

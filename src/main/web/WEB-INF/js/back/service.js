@@ -1,10 +1,10 @@
 (function() {
-	var module=angular.module("backServices",[]);
-	module.config(function($httpProvider) {
+	var bModule=angular.module("backServices",[]);
+	bModule.config(function($httpProvider) {
 		$httpProvider.interceptors.push('Interceptor');
 	});
 	
-	module.factory('Interceptor', function($q) {
+	bModule.factory('Interceptor', function($q) {
 		return {
 			responseError: function(rejection) {
 				if (rejection.status === 404) {
