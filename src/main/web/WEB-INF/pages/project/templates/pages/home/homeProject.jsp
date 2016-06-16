@@ -59,27 +59,7 @@
 
 	<section id="map">
 		<article>
-			
-
-			<div id="map_canvas" data-ng-controller="MapCtrl">
-				<h1>MAP {{map.center + ' ' + map.zoom}}</h1>
-			    <ui-gmap-google-map center="map.center" zoom="map.zoom" options="options">
-			    
-			    
-			    
-			    
-			    	<h1>PAS COOL</h1>
-			    
-			    
-			    
-			    
-			    
-			    
-			    </ui-gmap-google-map>
-			</div>
-
-
-
+			<my:block position="map" />
 		</article>
 	</section>
 

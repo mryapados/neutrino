@@ -56,16 +56,6 @@
 		</footer>
 	</section>
 
-	<div data-ng-controller="MapCtrl">
-		<div id="map_canvas" ng-if="mapShow">
-
-		    <data-ui-gmap-google-map center="map.center" zoom="map.zoom" options="options">
-
-		    </data-ui-gmap-google-map>
-
-		</div>
-	</div>
-
 </my:body>
 </html>
 			

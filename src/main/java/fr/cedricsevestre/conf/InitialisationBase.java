@@ -168,34 +168,7 @@ public class InitialisationBase {
 		homeProjectFr.setName("homeProject_" + langFR.getCode().toUpperCase());
 		homeProjectFr.setDescription("homeProject description fr");
 		templateService.save(homeProjectFr);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-//		Template template = new Template();
-//		template.setDateAdd(new Date());
-//		template.setName("home");
-//		template.setDescription("Page d'accueil");
-//		template.setMetaTitle("home");
-//		template.setMetaDescription("MetaDescription");
-//		template.setPath("home/home");
-//		template.setType(Template.TemplateType.PAGE);
-//		templateService.save(template);
-//		
-//		template = new Template();
-//		template.setDateAdd(new Date());
-//		template.setName("homeProject");
-//		template.setDescription("Page d'accueil projets");
-//		template.setMetaTitle("{0}");
-//		template.setMetaDescription("MetaDescription");
-//		template.setPath("home/homeProject");
-//		template.setType(Template.TemplateType.PAGE);
-//		templateService.save(template);
+
 
 	}
 	
@@ -273,7 +246,10 @@ public class InitialisationBase {
 		positionService.save(position);
 		positions.add(position);
 		
-		
+		position = new Position();
+		position.setName("map");
+		positionService.save(position);
+		positions.add(position);
 		
 		
 		
@@ -456,7 +432,39 @@ public class InitialisationBase {
 		templateFR.setName(name + "_" + langFR.getCode().toUpperCase());
 		templateFR.setDescription(name + " blockTest3 description fr");
 		templateService.save(templateFR);	
-
+		
+		
+		templateEN = templateService.translate(new Template(), langEN);
+		name = "map";
+		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		templateEN.setDescription(name + " description en");
+		templateEN.setMetaTitle("MetaTitle");
+		templateEN.setMetaDescription("MetaDescription");
+		templateEN.setPath("map/map");
+		templateEN.setType(Template.TemplateType.BLOCK);
+		templateService.save(templateEN);
+		
+		templateFR = templateService.translate(templateEN, langFR);
+		templateFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		templateFR.setDescription(name + " description fr");
+		templateService.save(templateFR);
+		
+		
+		
+		templateEN = templateService.translate(new Template(), langEN);
+		name = "horizontal";
+		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		templateEN.setDescription(name + " description en");
+		templateEN.setMetaTitle("MetaTitle");
+		templateEN.setMetaDescription("MetaDescription");
+		templateEN.setPath("nav/horizontal/horizontal");
+		templateEN.setType(Template.TemplateType.BLOCK);
+		templateService.save(templateEN);
+		
+		templateFR = templateService.translate(templateEN, langFR);
+		templateFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		templateFR.setDescription(name + " description fr");
+		templateService.save(templateFR);
 	}
 	public void initPageBlocs() throws ServiceException{
 		System.out.println("init Page blocs");
