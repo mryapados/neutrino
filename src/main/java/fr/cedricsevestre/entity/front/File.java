@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import fr.cedricsevestre.entity.front.Base;
+
 @Entity
 @Table(name = "file")
 public class File extends Base {

@@ -22,7 +22,6 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
-import fr.cedricsevestre.entity.back.MapTemplate;
 import fr.cedricsevestre.entity.front.File;
 
 @Entity

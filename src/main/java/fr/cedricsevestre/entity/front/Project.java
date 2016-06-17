@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import fr.cedricsevestre.entity.front.Base;
+
 @Entity
 @Table(name = "project")
 public class Project extends Base {
