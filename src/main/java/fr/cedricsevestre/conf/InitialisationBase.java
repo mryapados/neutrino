@@ -12,7 +12,10 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonParser.NumberType;
 
+import fr.cedricsevestre.entity.custom.Album;
+import fr.cedricsevestre.entity.custom.Album.AlbumType;
 import fr.cedricsevestre.entity.custom.Member;
+import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.engine.Base;
 import fr.cedricsevestre.entity.engine.Lang;
 import fr.cedricsevestre.entity.engine.MapTemplate;
@@ -25,6 +28,7 @@ import fr.cedricsevestre.entity.engine.Template;
 import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.entity.engine.NType.ValueType;
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.service.back.BaseService;
 import fr.cedricsevestre.service.back.LangService;
 import fr.cedricsevestre.service.back.MapTemplateService;
 import fr.cedricsevestre.service.back.NDataService;
@@ -41,6 +45,13 @@ public class InitialisationBase {
 	public InitialisationBase() {
 
 	}
+
+	@Autowired
+	private BaseService<Album> albumService;
+	
+	@Autowired
+	private BaseService<Project> projectService;
+	
 	@Autowired
 	private LangService langService;
 	
@@ -68,7 +79,7 @@ public class InitialisationBase {
 	@Autowired
 	private TranslationService translationService;
 	
-	public void run() throws ServiceException {
+	public void run() throws ServiceException, InstantiationException, IllegalAccessException {
 		System.out.println("init");
 		initLangs();
 		initUsers();
@@ -80,6 +91,10 @@ public class InitialisationBase {
 		initPageBlocs();
 		initMapTemplates();
 		initNDatas();
+		
+		
+		initProject();
+		initAlbum();
 	}
 
 	private Lang langEN;
@@ -620,5 +635,63 @@ public class InitialisationBase {
 		
 		
 	}
+	
+	
+	
+	
+	
+	// FRONT DATAS
+	public void initProject() throws ServiceException, InstantiationException, IllegalAccessException{
+		System.out.println("init project");
+		String name = "";
+		
+		Project projectEN =   projectService.translate(new Project(), langEN);
+		name = "testproject";
+		projectEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		projectEN.setDescription(name + " description en");
+		projectService.save(projectEN);
+		
+		Project projectFR = projectService.translate(projectEN, langFR);
+		projectFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		projectFR.setDescription(name + " description fr");
+		projectService.save(projectFR);
+	
+	
+	
+	}
+	
+	
+	public void initAlbum() throws ServiceException, InstantiationException, IllegalAccessException{
+		System.out.println("init album");
+		String name = "";
+		
+		Album albumEN =  (Album) albumService.translate(new Album(), langEN);
+		name = "testalbum";
+		albumEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		albumEN.setDescription(name + " description en");
+		albumEN.setProject(projectService.findByName("testproject_EN"));
+		albumEN.setType(AlbumType.DEFAULT);
+		albumService.save(albumEN);
+		
+		Album albumFR = (Album) albumService.translate(albumEN, langFR);
+		albumFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		albumFR.setDescription(name + " description fr");
+		albumFR.setProject(projectService.findByName("testproject_FR"));
+		albumFR.setType(AlbumType.DEFAULT);
+		albumService.save(albumFR);
+	
+	
+	
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

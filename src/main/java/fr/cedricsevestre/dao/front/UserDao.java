@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import fr.cedricsevestre.entity.custom.User;
+import fr.cedricsevestre.entity.engine.User;
 
 @Repository
 @Qualifier(value="frontEntityManagerFactory")

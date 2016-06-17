@@ -1,4 +1,4 @@
-package fr.cedricsevestre.entity.custom;
+package fr.cedricsevestre.entity.engine;
 
 import java.io.Serializable;
 
@@ -67,7 +67,7 @@ public abstract class User implements Serializable {
 	@Transient
 	private String name;
 	
-	abstract String getName();
+	public abstract String getName();
 	
 	public Integer getId() {
 		return id;

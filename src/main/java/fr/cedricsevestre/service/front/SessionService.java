@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.entity.custom.Member;
-import fr.cedricsevestre.entity.custom.User;
+import fr.cedricsevestre.entity.engine.User;
 import fr.cedricsevestre.exception.ServiceException;
 
 @Component

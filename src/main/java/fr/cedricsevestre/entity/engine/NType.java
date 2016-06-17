@@ -13,7 +13,7 @@ public class NType implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public enum ValueType{
-		INTEGER, FLOAT, DOUBLE, VARCHAR50, VARCHAR255, TEXT, DATETIME, IMAGE, FILE, HTML, COLLECTION
+		INTEGER, FLOAT, DOUBLE, VARCHAR50, VARCHAR255, TEXT, DATETIME, IMAGE, FILE, HTML, OBJECT, COLLECTION
 	}
 	
 	@Column(name = "type")

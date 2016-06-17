@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,6 +25,7 @@ import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 @Entity
 @Table(name = "base")
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name="object_type")
 public abstract class Base implements ITranslation, Serializable {
 
 	private static final long serialVersionUID = 1L;

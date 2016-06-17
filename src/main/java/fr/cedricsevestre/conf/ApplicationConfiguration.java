@@ -127,6 +127,12 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 				} catch (ServiceException e) {
 
 					e.printStackTrace();
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}

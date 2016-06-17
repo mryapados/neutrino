@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import fr.cedricsevestre.dao.front.UserDao;
-import fr.cedricsevestre.entity.custom.User;
+import fr.cedricsevestre.entity.engine.User;
  
 @Service
 public class LoginService implements UserDetailsService{

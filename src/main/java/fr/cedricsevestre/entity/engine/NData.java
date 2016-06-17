@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -72,6 +73,10 @@ public class NData implements Serializable {
 	@SafeHtml(whitelistType = WhiteListType.RELAXED)
 	@Column(name = "html")
 	private String vHtml;
+	
+	@OneToOne
+	@JoinColumn(name="vobject")
+	private Base vObject;
 	
 	@Column(name = "vcollection")
 	private Boolean vCollection;
@@ -196,6 +201,14 @@ public class NData implements Serializable {
 
 	public void setvHtml(String vHtml) {
 		this.vHtml = vHtml;
+	}
+	
+	public Base getvObject() {
+		return vObject;
+	}
+
+	public void setvObject(Base vObject) {
+		this.vObject = vObject;
 	}
 
 	public Boolean getvCollection() {
