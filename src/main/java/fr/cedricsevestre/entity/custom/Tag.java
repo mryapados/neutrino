@@ -1,6 +1,6 @@
-package fr.cedricsevestre.entity.back;
+package fr.cedricsevestre.entity.custom;
 
-import java.util.Date;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -17,8 +17,8 @@ import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 @Entity
-@Table(name = "position")
-public class Position {
+@Table(name = "tag")
+public class Tag implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,39 +28,36 @@ public class Position {
 
 	@NotNull
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
-	@Column(name = "name")
-	private String name;
+	@Column(name = "word")
+	private String word;
 	
-	@OneToMany(mappedBy = "position")
-	private List<MapTemplate> mapTemplates;
+	@ManyToMany(mappedBy = "tags")
+	private List<File> files;
 
-	public Position(){
-		
-	}
-	public Position(Integer id, String name, List<MapTemplate> mapTemplates) {
-		this.id = id;
-		this.name = name;
-		this.mapTemplates = mapTemplates;
-	}
 	public Integer getId() {
 		return id;
 	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public List<MapTemplate> getMapTemplates() {
-		return mapTemplates;
-	}
-	public void setMapTemplates(List<MapTemplate> mapTemplates) {
-		this.mapTemplates = mapTemplates;
+
+	public String getWord() {
+		return word;
 	}
 
+	public void setWord(String word) {
+		this.word = word;
+	}
 
+	public List<File> getFiles() {
+		return files;
+	}
 
+	public void setFiles(List<File> files) {
+		this.files = files;
+	}
+	
+	
+	
 }

@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.cedricsevestre.dao.back.PositionDao;
-import fr.cedricsevestre.entity.back.MapTemplate;
-import fr.cedricsevestre.entity.back.Position;
-import fr.cedricsevestre.entity.back.Template;
+import fr.cedricsevestre.entity.engine.MapTemplate;
+import fr.cedricsevestre.entity.engine.Position;
+import fr.cedricsevestre.entity.engine.Template;
 import fr.cedricsevestre.exception.ServiceException;
 
 @Service

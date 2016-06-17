@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.cedricsevestre.dao.back.MapTemplateDao;
-import fr.cedricsevestre.entity.back.MapTemplate;
+import fr.cedricsevestre.entity.engine.MapTemplate;
 import fr.cedricsevestre.exception.ServiceException;
 
 @Service

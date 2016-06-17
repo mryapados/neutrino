@@ -1,4 +1,4 @@
-package fr.cedricsevestre.entity.front;
+package fr.cedricsevestre.entity.custom;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;

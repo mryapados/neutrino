@@ -10,10 +10,10 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import fr.cedricsevestre.entity.back.Base;
-import fr.cedricsevestre.entity.back.MapTemplate;
-import fr.cedricsevestre.entity.back.Position;
-import fr.cedricsevestre.entity.back.Template;
+import fr.cedricsevestre.entity.engine.Base;
+import fr.cedricsevestre.entity.engine.MapTemplate;
+import fr.cedricsevestre.entity.engine.Position;
+import fr.cedricsevestre.entity.engine.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.back.MapTemplateService;
 import fr.cedricsevestre.service.back.PositionService;

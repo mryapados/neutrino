@@ -1,4 +1,4 @@
-package fr.cedricsevestre.entity.front;
+package fr.cedricsevestre.entity.custom;
 
 import java.util.List;
 import java.util.Set;
@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import fr.cedricsevestre.entity.front.Base;
+import fr.cedricsevestre.entity.engine.Base;
 
 @Entity
 @Table(name = "album")

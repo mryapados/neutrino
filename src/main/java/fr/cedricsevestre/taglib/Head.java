@@ -15,10 +15,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.common.Common;
-import fr.cedricsevestre.entity.back.MapTemplate;
-import fr.cedricsevestre.entity.back.Position;
-import fr.cedricsevestre.entity.back.Template;
-import fr.cedricsevestre.entity.front.User;
+import fr.cedricsevestre.entity.custom.User;
+import fr.cedricsevestre.entity.engine.MapTemplate;
+import fr.cedricsevestre.entity.engine.Position;
+import fr.cedricsevestre.entity.engine.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.back.PositionService;
 import fr.cedricsevestre.service.back.TemplateService;

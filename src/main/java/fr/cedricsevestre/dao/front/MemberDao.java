@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import fr.cedricsevestre.entity.front.Member;
+import fr.cedricsevestre.entity.custom.Member;
 
 @Repository
 @Qualifier(value="frontEntityManagerFactory")

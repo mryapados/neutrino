@@ -13,8 +13,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import fr.cedricsevestre.entity.back.Page;
-import fr.cedricsevestre.entity.back.Template;
+import fr.cedricsevestre.entity.engine.Page;
+import fr.cedricsevestre.entity.engine.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.back.PageService;
 

@@ -1,4 +1,4 @@
-package fr.cedricsevestre.entity.front;
+package fr.cedricsevestre.entity.custom;
 
 import java.util.Date;
 import java.util.List;
@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import fr.cedricsevestre.entity.front.Base;
+import fr.cedricsevestre.entity.engine.Base;
 
 @Entity
 @Table(name = "file")

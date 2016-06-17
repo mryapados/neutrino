@@ -1,4 +1,4 @@
-package fr.cedricsevestre.entity.back;
+package fr.cedricsevestre.entity.engine;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
-import fr.cedricsevestre.entity.back.NType.ValueType;
+import fr.cedricsevestre.entity.engine.NType.ValueType;
 
 @Entity
 @Table(name = "ndata")

@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.dao.back.NSchemaDao;
-import fr.cedricsevestre.entity.back.NSchema;
+import fr.cedricsevestre.entity.engine.NSchema;
 import fr.cedricsevestre.exception.ServiceException;
 
 @Service

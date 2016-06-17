@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
-import fr.cedricsevestre.entity.back.Page;
+import fr.cedricsevestre.entity.engine.Page;
 
 public class PageDto extends BaseDto {
 	private static final long serialVersionUID = 1L;

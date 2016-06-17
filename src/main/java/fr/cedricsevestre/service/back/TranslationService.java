@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.cedricsevestre.dao.back.TranslationDao;
-import fr.cedricsevestre.entity.back.Base;
-import fr.cedricsevestre.entity.back.Lang;
-import fr.cedricsevestre.entity.back.Translation;
+import fr.cedricsevestre.entity.engine.Base;
+import fr.cedricsevestre.entity.engine.Lang;
+import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 
 @Service

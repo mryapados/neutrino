@@ -9,10 +9,10 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
-import fr.cedricsevestre.entity.back.Lang;
-import fr.cedricsevestre.entity.back.MapTemplate;
-import fr.cedricsevestre.entity.back.Template;
-import fr.cedricsevestre.entity.back.Template.TemplateType;
+import fr.cedricsevestre.entity.engine.Lang;
+import fr.cedricsevestre.entity.engine.MapTemplate;
+import fr.cedricsevestre.entity.engine.Template;
+import fr.cedricsevestre.entity.engine.Template.TemplateType;
 
 public class TemplateDto extends BaseDto {
 	private static final long serialVersionUID = 1L;

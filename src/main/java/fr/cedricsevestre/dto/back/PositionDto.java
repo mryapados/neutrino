@@ -13,10 +13,10 @@ import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.cedricsevestre.entity.back.MapTemplate;
-import fr.cedricsevestre.entity.back.Position;
-import fr.cedricsevestre.entity.back.Template;
-import fr.cedricsevestre.entity.back.Template.TemplateType;
+import fr.cedricsevestre.entity.engine.MapTemplate;
+import fr.cedricsevestre.entity.engine.Position;
+import fr.cedricsevestre.entity.engine.Template;
+import fr.cedricsevestre.entity.engine.Template.TemplateType;
 import fr.cedricsevestre.taglib.Block;
 
 public class PositionDto {

@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import fr.cedricsevestre.common.Common;
-import fr.cedricsevestre.entity.back.Page;
-import fr.cedricsevestre.entity.back.Template;
-import fr.cedricsevestre.entity.front.Member;
-import fr.cedricsevestre.entity.front.User;
+import fr.cedricsevestre.entity.custom.Member;
+import fr.cedricsevestre.entity.custom.User;
+import fr.cedricsevestre.entity.engine.Page;
+import fr.cedricsevestre.entity.engine.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.back.TemplateService;
 import fr.cedricsevestre.service.front.SessionService;

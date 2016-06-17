@@ -1,4 +1,4 @@
-package fr.cedricsevestre.entity.back;
+package fr.cedricsevestre.entity.engine;
 
 import java.util.Date;
 import java.util.List;
@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
-import fr.cedricsevestre.entity.front.File;
+import fr.cedricsevestre.entity.custom.File;
 
 @Entity
 @Table(name = "template")

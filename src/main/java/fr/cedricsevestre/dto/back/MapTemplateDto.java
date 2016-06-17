@@ -8,10 +8,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
-import fr.cedricsevestre.entity.back.Base;
-import fr.cedricsevestre.entity.back.MapTemplate;
-import fr.cedricsevestre.entity.back.Position;
-import fr.cedricsevestre.entity.back.Template;
+import fr.cedricsevestre.entity.engine.Base;
+import fr.cedricsevestre.entity.engine.MapTemplate;
+import fr.cedricsevestre.entity.engine.Position;
+import fr.cedricsevestre.entity.engine.Template;
 
 public class MapTemplateDto implements Serializable {
 	private static final long serialVersionUID = 1L;

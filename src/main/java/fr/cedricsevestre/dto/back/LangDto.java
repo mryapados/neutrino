@@ -9,9 +9,9 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
-import fr.cedricsevestre.entity.back.Base;
-import fr.cedricsevestre.entity.back.Lang;
-import fr.cedricsevestre.entity.back.Page;
+import fr.cedricsevestre.entity.engine.Base;
+import fr.cedricsevestre.entity.engine.Lang;
+import fr.cedricsevestre.entity.engine.Page;
 
 public class LangDto implements Serializable {
 	private static final long serialVersionUID = 1L;

@@ -1,7 +1,4 @@
-package fr.cedricsevestre.entity;
-
-import fr.cedricsevestre.entity.back.Lang;
-import fr.cedricsevestre.entity.back.Translation;
+package fr.cedricsevestre.entity.engine;
 
 public interface ITranslation {
 

@@ -20,9 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.dao.back.NDataDao;
-import fr.cedricsevestre.entity.back.MapTemplate;
-import fr.cedricsevestre.entity.back.NData;
-import fr.cedricsevestre.entity.back.Template;
+import fr.cedricsevestre.entity.engine.MapTemplate;
+import fr.cedricsevestre.entity.engine.NData;
+import fr.cedricsevestre.entity.engine.Template;
 import fr.cedricsevestre.exception.ServiceException;
 
 @Service

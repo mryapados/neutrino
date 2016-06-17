@@ -15,11 +15,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.cedricsevestre.dao.back.PageDao;
-import fr.cedricsevestre.entity.back.Base;
-import fr.cedricsevestre.entity.back.Lang;
-import fr.cedricsevestre.entity.back.Page;
-import fr.cedricsevestre.entity.back.Template;
-import fr.cedricsevestre.entity.back.Translation;
+import fr.cedricsevestre.entity.engine.Base;
+import fr.cedricsevestre.entity.engine.Lang;
+import fr.cedricsevestre.entity.engine.Page;
+import fr.cedricsevestre.entity.engine.Template;
+import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 
 @Service

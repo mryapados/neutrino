@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.cedricsevestre.dao.front.TagDao;
-import fr.cedricsevestre.entity.front.Tag;
+import fr.cedricsevestre.entity.custom.Tag;
 import fr.cedricsevestre.exception.ServiceException;
 
 @Service

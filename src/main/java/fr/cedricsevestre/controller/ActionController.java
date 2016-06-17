@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import fr.cedricsevestre.common.Common;
-import fr.cedricsevestre.entity.back.Template;
-import fr.cedricsevestre.entity.front.User;
+import fr.cedricsevestre.entity.custom.User;
+import fr.cedricsevestre.entity.engine.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.back.PageService;
 import fr.cedricsevestre.service.front.UserService;

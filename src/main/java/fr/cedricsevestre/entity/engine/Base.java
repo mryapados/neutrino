@@ -1,4 +1,4 @@
-package fr.cedricsevestre.entity.back;
+package fr.cedricsevestre.entity.engine;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -20,8 +20,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
-
-import fr.cedricsevestre.entity.ITranslation;
 
 @Entity
 @Table(name = "base")

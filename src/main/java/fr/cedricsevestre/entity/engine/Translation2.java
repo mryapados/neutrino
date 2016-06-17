@@ -1,3 +1,4 @@
+package fr.cedricsevestre.entity.engine;
 //package fr.cedricsevestre.entity.back;
 //
 //import java.io.Serializable;
