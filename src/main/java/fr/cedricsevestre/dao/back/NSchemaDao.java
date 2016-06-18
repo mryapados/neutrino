@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import fr.cedricsevestre.entity.engine.NSchema;
 
 @Repository
-@Qualifier(value="backEntityManagerFactory")
 public interface NSchemaDao extends JpaRepository<NSchema, Integer> {
 	
 	

@@ -15,7 +15,6 @@ import fr.cedricsevestre.entity.engine.Position;
 import fr.cedricsevestre.entity.engine.Template;
 
 @Repository
-@Qualifier(value="backEntityManagerFactory")
 public interface NDataDao extends JpaRepository<NData, Integer> {
 	@Query("SELECT nd FROM NData nd WHERE nd.template=:template ORDER BY nd.ordered, nd.id")
 	List<NData> findAllForTemplate(@Param("template") Template template);

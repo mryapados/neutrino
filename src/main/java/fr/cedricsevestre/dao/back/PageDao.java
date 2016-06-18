@@ -9,12 +9,6 @@ import org.springframework.stereotype.Repository;
 import fr.cedricsevestre.entity.engine.Page;
 
 @Repository
-@Qualifier(value="backEntityManagerFactory")
-public interface PageDao extends JpaRepository<Page, Integer> {
-	
-	@Query("SELECT b FROM Page b WHERE b.name =:name")
-	Page findByName(@Param("name") String name);
-	
-	
+public interface PageDao extends BaseDao<Page> {
 	
 }

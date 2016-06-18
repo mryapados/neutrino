@@ -12,7 +12,6 @@ import fr.cedricsevestre.entity.engine.Position;
 import fr.cedricsevestre.entity.engine.Template;
 
 @Repository
-@Qualifier(value="backEntityManagerFactory")
 public interface PositionDao extends JpaRepository<Position, Integer> {
 	
 	@Query("SELECT p FROM Position p WHERE p.name =:name")

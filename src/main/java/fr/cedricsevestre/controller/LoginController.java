@@ -31,7 +31,7 @@ import fr.cedricsevestre.entity.engine.Template;
 import fr.cedricsevestre.entity.engine.User;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.back.PageService;
-import fr.cedricsevestre.service.front.UserService;
+import fr.cedricsevestre.service.back.UserService;
 
 @Controller
 @Scope("prototype")

@@ -1,4 +1,4 @@
-package fr.cedricsevestre.service.front;
+package fr.cedricsevestre.service.back;
 
 import java.util.List;
 

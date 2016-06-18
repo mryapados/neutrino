@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import fr.cedricsevestre.entity.engine.Lang;
 
 @Repository
-@Qualifier(value="backEntityManagerFactory")
 public interface LangDao extends JpaRepository<Lang, Integer> {
 	
 	

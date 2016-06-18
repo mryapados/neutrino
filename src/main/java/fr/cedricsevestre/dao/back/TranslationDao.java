@@ -8,7 +8,6 @@ import fr.cedricsevestre.entity.engine.NSchema;
 import fr.cedricsevestre.entity.engine.Translation;
 
 @Repository
-@Qualifier(value="backEntityManagerFactory")
 public interface TranslationDao extends JpaRepository<Translation, Integer> {
 	
 	

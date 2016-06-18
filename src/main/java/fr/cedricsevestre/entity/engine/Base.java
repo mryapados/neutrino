@@ -30,6 +30,9 @@ public abstract class Base implements ITranslation, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Column(name = "object_type", insertable = false, updatable = false)
+    private String objectType;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -69,6 +72,10 @@ public abstract class Base implements ITranslation, Serializable {
 		this.dateAdd = dateAdd;
 		this.description = description;
 		this.lang = lang;
+	}
+
+	public String getObjectType() {
+		return objectType;
 	}
 
 	public Integer getId() {

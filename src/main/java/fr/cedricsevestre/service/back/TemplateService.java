@@ -25,75 +25,13 @@ import fr.cedricsevestre.exception.ServiceException;
 
 @Service
 @Scope(value = "singleton")
-public class TemplateService{
+public class TemplateService extends TranslationService<Template>{
 
 	private Logger logger = Logger.getLogger(TemplateService.class);
 
 	@Autowired
 	private TemplateDao templateDao;
-
-	@Autowired
-	TranslationService translationService;
 	
-	@Transactional
-	public Template save(Template template) throws ServiceException {
-		logger.debug("appel de la methode save Template " + template.getName());
-		try {
-			return templateDao.save(template);
-		} catch (PersistenceException e) {
-			logger.error("erreur save Template " + e.getMessage());
-			throw new ServiceException("erreur save Template", e);
-		}
-	}
-
-	@Transactional
-	public void remove(Template template) throws ServiceException {
-		logger.debug("appel de la methode remove Template " + template.getName());
-		try {
-			templateDao.delete(template);
-		} catch (EmptyResultDataAccessException e) {
-			logger.error("erreur remove Template " + e.getMessage());
-			throw new ServiceException("Template id doesn't exist", e);
-		} catch (PersistenceException e) {
-			logger.error("erreur remove Template " + e.getMessage());
-			throw new ServiceException("erreur remove Template", e);
-		} catch (Exception e) {
-			logger.error("erreur remove Template " + e.getMessage());
-			throw new ServiceException("erreur remove Template", e);
-		}
-	}
-
-	@Transactional(rollbackFor = ServiceException.class)
-	public void removeById(Integer id) throws ServiceException {
-		logger.debug("appel de la methode removeById Template id " + id);
-		try {
-			templateDao.delete(id);
-		} catch (EmptyResultDataAccessException e) {
-			logger.error("erreur remove Template " + e.getMessage());
-			throw new ServiceException("Template id doesn't exist", e);
-		} catch (PersistenceException e) {
-			logger.error("erreur remove Template " + e.getMessage());
-			throw new ServiceException("erreur removeById Template", e);
-		} catch (Exception e) {
-			logger.error("erreur remove Template " + e.getMessage());
-			throw new ServiceException("erreur removeById Template", e);
-		}
-	}
-	
-	public Template findById(Integer id) throws ServiceException {
-		try {
-			return templateDao.findOne(id);
-		} catch (PersistenceException e) {
-			throw new ServiceException("erreur findById Template", e);
-		}
-	}
-	public Template findByName(String name) throws ServiceException {
-		try {
-			return templateDao.findByName(name);
-		} catch (PersistenceException e) {
-			throw new ServiceException("erreur findByName Template", e);
-		}
-	}
 	public Template findByNameWithAllExceptData(String name) throws ServiceException {
 		try {
 			return templateDao.findByNameWithAllExceptData(name);
@@ -163,13 +101,14 @@ public class TemplateService{
 		return false;
 	}
 	
+	@Override
 	@Transactional
 	public Template translate(Template template, Lang lang) throws ServiceException {
 		Template translated = new Template();
 		
 		Translation translation = template.getTranslation();
 		if (translation == null){
-			translation = translationService.save(new Translation());
+			translation = translationDao.save(new Translation());
 		}
 		translated.setLang(lang);
 		translated.setTranslation(translation);

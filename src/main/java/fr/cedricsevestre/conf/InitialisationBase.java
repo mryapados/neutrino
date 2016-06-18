@@ -28,15 +28,16 @@ import fr.cedricsevestre.entity.engine.Template;
 import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.entity.engine.NType.ValueType;
 import fr.cedricsevestre.exception.ServiceException;
-import fr.cedricsevestre.service.back.BaseService;
+import fr.cedricsevestre.service.back.AlbumService;
+import fr.cedricsevestre.service.back.TranslationService;
 import fr.cedricsevestre.service.back.LangService;
 import fr.cedricsevestre.service.back.MapTemplateService;
 import fr.cedricsevestre.service.back.NDataService;
 import fr.cedricsevestre.service.back.NSchemaService;
 import fr.cedricsevestre.service.back.PageService;
 import fr.cedricsevestre.service.back.PositionService;
+import fr.cedricsevestre.service.back.ProjectService;
 import fr.cedricsevestre.service.back.TemplateService;
-import fr.cedricsevestre.service.back.TranslationService;
 import fr.cedricsevestre.service.front.MemberService;
 
 
@@ -46,11 +47,17 @@ public class InitialisationBase {
 
 	}
 
-	@Autowired
-	private BaseService<Album> albumService;
+//	@Autowired
+//	private BaseService<Album> albumService;
 	
 	@Autowired
-	private BaseService<Project> projectService;
+	private ProjectService projectService;
+	@Autowired
+	private AlbumService albumService;
+	
+//	@Autowired
+//	private BaseService<Project> projectService;
+	
 	
 	@Autowired
 	private LangService langService;
@@ -75,9 +82,6 @@ public class InitialisationBase {
 	
 	@Autowired
 	private PageService pageService;
-	
-	@Autowired
-	private TranslationService translationService;
 	
 	public void run() throws ServiceException, InstantiationException, IllegalAccessException {
 		System.out.println("init");
@@ -293,8 +297,6 @@ public class InitialisationBase {
 		name = "headerProject";
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " description en");
-		templateEN.setMetaTitle("MetaTitle");
-		templateEN.setMetaDescription("MetaDescription");
 		templateEN.setPath("header/headerProject");
 		templateEN.setType(Template.TemplateType.BLOCK);
 		templateService.save(templateEN);
@@ -309,8 +311,6 @@ public class InitialisationBase {
 		name = "headerProjectH2";
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " description en");
-		templateEN.setMetaTitle("MetaTitle");
-		templateEN.setMetaDescription("MetaDescription");
 		templateEN.setPath("header/headerProjectH2");
 		templateEN.setType(Template.TemplateType.BLOCK);
 		templateService.save(templateEN);
@@ -325,8 +325,6 @@ public class InitialisationBase {
 		name = "socialNetwork";
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " Twitter, Facebook, Google+, ... en");
-		templateEN.setMetaTitle("MetaTitle");
-		templateEN.setMetaDescription("MetaDescription");
 		templateEN.setPath("socialnetwork/socialNetwork");
 		templateEN.setType(Template.TemplateType.BLOCK);
 		templateService.save(templateEN);
@@ -341,8 +339,6 @@ public class InitialisationBase {
 		name = "advertisement";
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " advertisement description en");
-		templateEN.setMetaTitle("MetaTitle");
-		templateEN.setMetaDescription("MetaDescription");
 		templateEN.setPath("advertisement/advertisement");
 		templateEN.setType(Template.TemplateType.BLOCK);
 		templateService.save(templateEN);
@@ -357,8 +353,6 @@ public class InitialisationBase {
 		name = "articleTitle";
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " articleTitle description en");
-		templateEN.setMetaTitle("MetaTitle");
-		templateEN.setMetaDescription("MetaDescription");
 		templateEN.setPath("article/title/articleTitle");
 		templateEN.setType(Template.TemplateType.BLOCK);
 		templateService.save(templateEN);
@@ -373,8 +367,6 @@ public class InitialisationBase {
 		name = "articleContent";
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " advertisement articleContent en");
-		templateEN.setMetaTitle("MetaTitle");
-		templateEN.setMetaDescription("MetaDescription");
 		templateEN.setPath("article/content/articleContent");
 		templateEN.setType(Template.TemplateType.BLOCK);
 		templateService.save(templateEN);
@@ -389,8 +381,6 @@ public class InitialisationBase {
 		name = "album";
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " album articleContent en");
-		templateEN.setMetaTitle("MetaTitle");
-		templateEN.setMetaDescription("MetaDescription");
 		templateEN.setPath("nav/album/album");
 		templateEN.setType(Template.TemplateType.BLOCK);
 		templateService.save(templateEN);
@@ -405,8 +395,6 @@ public class InitialisationBase {
 		name = "blockTest1";
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " blockTest1 articleContent en");
-		templateEN.setMetaTitle("MetaTitle");
-		templateEN.setMetaDescription("MetaDescription");
 		templateEN.setPath("test/blockTest1");
 		templateEN.setType(Template.TemplateType.BLOCK);
 		templateService.save(templateEN);
@@ -421,8 +409,6 @@ public class InitialisationBase {
 		name = "blockTest2";
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " blockTest2 articleContent en");
-		templateEN.setMetaTitle("MetaTitle");
-		templateEN.setMetaDescription("MetaDescription");
 		templateEN.setPath("test/blockTest2");
 		templateEN.setType(Template.TemplateType.BLOCK);
 		templateService.save(templateEN);
@@ -437,8 +423,6 @@ public class InitialisationBase {
 		name = "blockTest3";
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " blockTest3 articleContent en");
-		templateEN.setMetaTitle("MetaTitle");
-		templateEN.setMetaDescription("MetaDescription");
 		templateEN.setPath("test/subtest/blockTest3");
 		templateEN.setType(Template.TemplateType.BLOCK);
 		templateService.save(templateEN);
@@ -453,8 +437,6 @@ public class InitialisationBase {
 		name = "map";
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " description en");
-		templateEN.setMetaTitle("MetaTitle");
-		templateEN.setMetaDescription("MetaDescription");
 		templateEN.setPath("map/map");
 		templateEN.setType(Template.TemplateType.BLOCK);
 		templateService.save(templateEN);
@@ -470,8 +452,6 @@ public class InitialisationBase {
 		name = "horizontal";
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " description en");
-		templateEN.setMetaTitle("MetaTitle");
-		templateEN.setMetaDescription("MetaDescription");
 		templateEN.setPath("nav/horizontal/horizontal");
 		templateEN.setType(Template.TemplateType.BLOCK);
 		templateService.save(templateEN);
@@ -491,8 +471,6 @@ public class InitialisationBase {
 		name = "article";
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " Page Block article description en");
-		templateEN.setMetaTitle("MetaTitle");
-		templateEN.setMetaDescription("MetaDescription");
 		templateEN.setPath("article/article");
 		templateEN.setType(Template.TemplateType.PAGEBLOCK);
 		templateEN.setSchema(nSchemaService.findById(1));
@@ -508,8 +486,6 @@ public class InitialisationBase {
 		name = "article2";
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " Page Block article2 description en");
-		templateEN.setMetaTitle("MetaTitle");
-		templateEN.setMetaDescription("MetaDescription");
 		templateEN.setPath("article/article2");
 		templateEN.setType(Template.TemplateType.PAGEBLOCK);
 		templateEN.setSchema(nSchemaService.findById(1));
@@ -643,6 +619,12 @@ public class InitialisationBase {
 	// FRONT DATAS
 	public void initProject() throws ServiceException, InstantiationException, IllegalAccessException{
 		System.out.println("init project");
+		
+		
+		Project project = projectService.findByName("tesage");
+		
+		
+		
 		String name = "";
 		
 		Project projectEN =   projectService.translate(new Project(), langEN);
@@ -665,7 +647,7 @@ public class InitialisationBase {
 		System.out.println("init album");
 		String name = "";
 		
-		Album albumEN =  (Album) albumService.translate(new Album(), langEN);
+		Album albumEN = albumService.translate(new Album(), langEN);
 		name = "testalbum";
 		albumEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		albumEN.setDescription(name + " description en");
@@ -673,15 +655,18 @@ public class InitialisationBase {
 		albumEN.setType(AlbumType.DEFAULT);
 		albumService.save(albumEN);
 		
-		Album albumFR = (Album) albumService.translate(albumEN, langFR);
+		Album albumFR = albumService.translate(albumEN, langFR);
 		albumFR.setName(name + "_" + langFR.getCode().toUpperCase());
 		albumFR.setDescription(name + " description fr");
 		albumFR.setProject(projectService.findByName("testproject_FR"));
 		albumFR.setType(AlbumType.DEFAULT);
 		albumService.save(albumFR);
+
 	
-	
-	
+		System.out.println("AAAAAAAAAAAAAAAAa testalbum_FR");
+		Album test = albumService.findByName("testalbum_FR");
+		
+		
 	}
 	
 	
