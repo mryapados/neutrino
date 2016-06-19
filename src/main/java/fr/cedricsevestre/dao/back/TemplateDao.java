@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import fr.cedricsevestre.entity.engine.Template;
 
 @Repository
-public interface TemplateDao extends BaseDao<Template> {
+public interface TemplateDao extends TranslationDao<Template> {
 	
 //	@Query("SELECT t FROM Template t WHERE t.name =:name")
 //	Template findByName(@Param("name") String name);

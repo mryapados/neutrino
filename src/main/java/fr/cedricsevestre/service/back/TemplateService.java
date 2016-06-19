@@ -15,11 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.dao.back.TemplateDao;
-import fr.cedricsevestre.entity.engine.Base;
+import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.entity.engine.Lang;
 import fr.cedricsevestre.entity.engine.MapTemplate;
 import fr.cedricsevestre.entity.engine.Template;
-import fr.cedricsevestre.entity.engine.Translation;
+import fr.cedricsevestre.entity.engine.TranslationProvider;
 import fr.cedricsevestre.entity.engine.Template.TemplateType;
 import fr.cedricsevestre.exception.ServiceException;
 
@@ -106,9 +106,9 @@ public class TemplateService extends TranslationService<Template>{
 	public Template translate(Template template, Lang lang) throws ServiceException {
 		Template translated = new Template();
 		
-		Translation translation = template.getTranslation();
+		TranslationProvider translation = template.getTranslation();
 		if (translation == null){
-			translation = translationDao.save(new Translation());
+			translation = translationDao.save(new TranslationProvider());
 		}
 		translated.setLang(lang);
 		translated.setTranslation(translation);

@@ -7,11 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import fr.cedricsevestre.entity.engine.Base;
+import fr.cedricsevestre.entity.engine.Translation;
 
 @Entity
 @Table(name = "project")
-public class Project extends Base {
+public class Project extends Translation {
 
 	private static final long serialVersionUID = 1L;
 	

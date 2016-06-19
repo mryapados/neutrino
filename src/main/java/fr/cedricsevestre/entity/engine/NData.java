@@ -76,7 +76,7 @@ public class NData implements Serializable {
 	
 	@OneToOne
 	@JoinColumn(name="vobject")
-	private Base vObject;
+	private Translation vObject;
 	
 	@Column(name = "vcollection")
 	private Boolean vCollection;
@@ -203,11 +203,11 @@ public class NData implements Serializable {
 		this.vHtml = vHtml;
 	}
 	
-	public Base getvObject() {
+	public Translation getvObject() {
 		return vObject;
 	}
 
-	public void setvObject(Base vObject) {
+	public void setvObject(Translation vObject) {
 		this.vObject = vObject;
 	}
 

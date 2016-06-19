@@ -14,7 +14,7 @@ import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 @Entity
 @Table(name = "page")
-public class Page extends Base {
+public class Page extends Translation {
 
 	private static final long serialVersionUID = 1L;
 	

@@ -13,11 +13,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import fr.cedricsevestre.entity.engine.Base;
+import fr.cedricsevestre.entity.engine.Translation;
 
 @Entity
 @Table(name = "album")
-public class Album extends Base {
+public class Album extends Translation {
 
 	private static final long serialVersionUID = 1L;
 

@@ -5,7 +5,7 @@ public interface ITranslation {
 	Lang getLang();
 	void setLang(Lang lang);
 
-	Translation getTranslation();
-	void setTranslation(Translation translation);
+	TranslationProvider getTranslation();
+	void setTranslation(TranslationProvider translation);
 	
 }

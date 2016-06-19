@@ -2,13 +2,13 @@ package fr.cedricsevestre.dao.back;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import fr.cedricsevestre.entity.engine.Page;
+import fr.cedricsevestre.entity.engine.NSchema;
+import fr.cedricsevestre.entity.engine.TranslationProvider;
 
 @Repository
-public interface PageDao extends TranslationDao<Page> {
+public interface TranslationProviderDao extends JpaRepository<TranslationProvider, Integer> {
+	
 	
 }

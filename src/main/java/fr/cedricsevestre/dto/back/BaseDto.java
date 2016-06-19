@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
-import fr.cedricsevestre.entity.engine.Base;
+import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.entity.engine.Lang;
 
 public class BaseDto implements Serializable {
@@ -42,7 +42,7 @@ public class BaseDto implements Serializable {
 		this.lang = lang;
 	}
 
-	public static BaseDto from(Base base) {
+	public static BaseDto from(Translation base) {
 		return new BaseDto(base.getId(), base.getName(), base.getDateAdd(), base.getDescription(), LangDto.from(base.getLang()));
 	}
 

@@ -27,7 +27,7 @@ import fr.cedricsevestre.entity.custom.File;
 
 @Entity
 @Table(name = "template")
-public class Template extends Base {
+public class Template extends Translation {
 
 	private static final long serialVersionUID = 1L;
 

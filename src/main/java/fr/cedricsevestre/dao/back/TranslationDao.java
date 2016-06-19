@@ -1,14 +1,17 @@
 package fr.cedricsevestre.dao.back;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.data.repository.query.Param;
 
-import fr.cedricsevestre.entity.engine.NSchema;
 import fr.cedricsevestre.entity.engine.Translation;
 
-@Repository
-public interface TranslationDao extends JpaRepository<Translation, Integer> {
+@NoRepositoryBean
+public interface TranslationDao<T extends Translation> extends BaseDao<T> {
 	
+//	@Query("SELECT t FROM #{#entityName} t WHERE t.name =:name OR (t.name =:name AND t.objectType = #{#entityName})")
+//	T findByName(@Param("name") String name);
 	
+	@Query("SELECT t FROM #{#entityName} t WHERE t.name =:name AND t.objectType = #{#entityName}")
+	T findByName(@Param("name") String name);
 }

@@ -15,11 +15,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.cedricsevestre.dao.back.PageDao;
-import fr.cedricsevestre.entity.engine.Base;
+import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.entity.engine.Lang;
 import fr.cedricsevestre.entity.engine.Page;
 import fr.cedricsevestre.entity.engine.Template;
-import fr.cedricsevestre.entity.engine.Translation;
+import fr.cedricsevestre.entity.engine.TranslationProvider;
 import fr.cedricsevestre.exception.ServiceException;
 
 @Service
@@ -36,9 +36,9 @@ public class PageService extends TranslationService<Page>{
 	public Page translate(Page page, Lang lang) throws ServiceException {
 		Page translated = new Page();
 		
-		Translation translation = page.getTranslation();
+		TranslationProvider translation = page.getTranslation();
 		if (translation == null){
-			translation = translationDao.save(new Translation());
+			translation = translationDao.save(new TranslationProvider());
 		}
 		translated.setLang(lang);
 		translated.setTranslation(translation);
@@ -47,9 +47,9 @@ public class PageService extends TranslationService<Page>{
 
 		Template pageModel = page.getModel();
 		if (pageModel != null){
-			Translation pageModelTranslation = pageModel.getTranslation();
+			TranslationProvider pageModelTranslation = pageModel.getTranslation();
 			if (pageModelTranslation != null){
-				Map<Lang, Base> translations = pageModelTranslation.getTranslations();
+				Map<Lang, Translation> translations = pageModelTranslation.getTranslations();
 				if (translations != null){
 					translated.setModel((Template) translations.get(lang));
 				}
