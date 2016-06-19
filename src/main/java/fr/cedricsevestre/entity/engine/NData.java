@@ -74,7 +74,7 @@ public class NData implements Serializable {
 	@Column(name = "html")
 	private String vHtml;
 	
-	@OneToOne
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="vobject")
 	private Translation vObject;
 	

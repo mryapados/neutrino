@@ -78,18 +78,19 @@ public class NDataService extends BaseService<NData>{
 				return nData.getvPathFile();
 			case OBJECT:
 				
-				//Translation dataObject = nData.getvObject();
-				
+				Translation dataObject = nData.getvObject();
+				System.out.println("ndata object = " + dataObject.getName());
 				
 				return nData.getvObject();
 				
 				
 				
 			case COLLECTION:
+				System.out.println("collection");
 				List<NData> nDatas = nData.getDatas();
 				SortedMap<Integer, Object> objects = new TreeMap<>();
 				for (NData data : nDatas) {
-					System.out.println(data.getOrdered() + " ; " + data.getvInteger());
+					//System.out.println(data.getOrdered() + " ; " + getNDataValue(data));
 					objects.put(data.getOrdered(), getNDataValue(data));
 				}
 				return objects.values();

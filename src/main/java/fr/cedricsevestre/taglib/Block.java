@@ -116,8 +116,8 @@ public class Block extends TagSupport {
 					Template activeBlock = mapTemplate.getBlock();
 					
 					NSchema nSchema =  activeBlock.getSchema();
+					List<NData> nDatas = null;
 					if (nSchema != null){
-						List<NData> nDatas = null;
 						//pb lazy
 						//activeBlock ne contient pas datas qui n'est pas initialisé car lazy
 						//Il faut donc recharger le template en demandant explicitement les datas.
@@ -146,6 +146,15 @@ public class Block extends TagSupport {
 					} else {
 						pageContext.include(path.toString());
 					}
+					
+					//remove ndata attributes
+					if (nDatas != null){
+						for (NData nData : nDatas) {
+							pageContext.removeAttribute(nData.getPropertyName(), PageContext.REQUEST_SCOPE);
+						}
+					}
+					
+					
 				}
 			}
 		} catch (ServiceException e) {

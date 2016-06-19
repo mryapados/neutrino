@@ -12,13 +12,12 @@
 <h2>attribut : number = ${number}</h2>
 
 <h2>attribut : album = ${album.name}</h2>
-
-
+<c:forEach var="item" items="${albums}" varStatus="status">
+	<h2>Element ${status.index} : ${item.name}</h2>
+</c:forEach>
 
 <c:forEach var="item" items="${numbers}" varStatus="status">
-
 	<h2>Element ${status.index} : ${item}</h2>
-
 </c:forEach>
 
 <div>
@@ -28,7 +27,6 @@
 <div>
 	<my:block position="content" />
 <!-- 	<data-ui-position facade="facade" position="content" /> -->
-	
 </div>
 
 

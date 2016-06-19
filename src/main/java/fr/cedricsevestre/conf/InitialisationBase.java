@@ -559,6 +559,7 @@ public class InitialisationBase {
 		columns.put("numbers", new NType(NType.ValueType.COLLECTION, NType.ValueType.INTEGER));
 		
 		columns.put("album", new NType(NType.ValueType.OBJECT));
+		columns.put("albums", new NType(NType.ValueType.COLLECTION, NType.ValueType.OBJECT));
 		
 		nSchema.setColumns(columns);
 		nSchema.setScope(NSchema.ScopeType.ALL);
@@ -673,6 +674,28 @@ public class InitialisationBase {
 		nData.setTemplate(template);
 		nDataService.save(nData);
 		
+		
+		
+		nDataCollection = new NData();
+		nDataCollection.setvCollection(true);
+		nDataCollection.setVarType(ValueType.COLLECTION);
+		nDataCollection.setPropertyName("albums");
+		nDataCollection.setTemplate(template);
+		nDataService.save(nDataCollection);
+		
+		nDataCollectionItem = new NData();
+		nDataCollectionItem.setvObject(albumService.findByName("testalbum_EN"));
+		nDataCollectionItem.setVarType(ValueType.OBJECT);
+		nDataCollectionItem.setOrdered(5);
+		nDataCollectionItem.setData(nDataCollection);
+		nDataService.save(nDataCollectionItem);
+		
+		nDataCollectionItem = new NData();
+		nDataCollectionItem.setvObject(albumService.findByName("testalbum_FR"));
+		nDataCollectionItem.setVarType(ValueType.OBJECT);
+		nDataCollectionItem.setOrdered(2);
+		nDataCollectionItem.setData(nDataCollection);
+		nDataService.save(nDataCollectionItem);
 		
 	}
 	

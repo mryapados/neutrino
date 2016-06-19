@@ -1,4 +1,4 @@
-package fr.cedricsevestre.entity.custom;
+package fr.cedricsevestre.entity.engine;
 
 import java.io.Serializable;
 import java.util.Date;
