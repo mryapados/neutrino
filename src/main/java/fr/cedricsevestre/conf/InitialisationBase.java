@@ -28,17 +28,17 @@ import fr.cedricsevestre.entity.engine.Template;
 import fr.cedricsevestre.entity.engine.TranslationProvider;
 import fr.cedricsevestre.entity.engine.NType.ValueType;
 import fr.cedricsevestre.exception.ServiceException;
-import fr.cedricsevestre.service.back.AlbumService;
-import fr.cedricsevestre.service.back.TranslationService;
-import fr.cedricsevestre.service.back.LangService;
-import fr.cedricsevestre.service.back.MapTemplateService;
-import fr.cedricsevestre.service.back.NDataService;
-import fr.cedricsevestre.service.back.NSchemaService;
-import fr.cedricsevestre.service.back.PageService;
-import fr.cedricsevestre.service.back.PositionService;
-import fr.cedricsevestre.service.back.ProjectService;
-import fr.cedricsevestre.service.back.TemplateService;
-import fr.cedricsevestre.service.front.MemberService;
+import fr.cedricsevestre.service.custom.MemberService;
+import fr.cedricsevestre.service.engine.AlbumService;
+import fr.cedricsevestre.service.engine.LangService;
+import fr.cedricsevestre.service.engine.MapTemplateService;
+import fr.cedricsevestre.service.engine.NDataService;
+import fr.cedricsevestre.service.engine.NSchemaService;
+import fr.cedricsevestre.service.engine.PageService;
+import fr.cedricsevestre.service.engine.PositionService;
+import fr.cedricsevestre.service.engine.ProjectService;
+import fr.cedricsevestre.service.engine.TemplateService;
+import fr.cedricsevestre.service.engine.TranslationService;
 
 
 @Component

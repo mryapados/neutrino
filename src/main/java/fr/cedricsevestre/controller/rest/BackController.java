@@ -37,14 +37,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.controller.AbtractController;
-import fr.cedricsevestre.dao.back.PageDao;
-import fr.cedricsevestre.dto.back.BlockDto;
-import fr.cedricsevestre.dto.back.LangDto;
-import fr.cedricsevestre.dto.back.MapTemplateDto;
-import fr.cedricsevestre.dto.back.MapTemplateSimpleDto;
-import fr.cedricsevestre.dto.back.PageDto;
-import fr.cedricsevestre.dto.back.PositionDto;
-import fr.cedricsevestre.dto.back.TemplateDto;
+import fr.cedricsevestre.dao.engine.PageDao;
+import fr.cedricsevestre.dto.engine.BlockDto;
+import fr.cedricsevestre.dto.engine.LangDto;
+import fr.cedricsevestre.dto.engine.MapTemplateDto;
+import fr.cedricsevestre.dto.engine.MapTemplateSimpleDto;
+import fr.cedricsevestre.dto.engine.PageDto;
+import fr.cedricsevestre.dto.engine.PositionDto;
+import fr.cedricsevestre.dto.engine.TemplateDto;
 import fr.cedricsevestre.entity.engine.Lang;
 import fr.cedricsevestre.entity.engine.MapTemplate;
 import fr.cedricsevestre.entity.engine.Page;
@@ -53,11 +53,11 @@ import fr.cedricsevestre.entity.engine.Template;
 import fr.cedricsevestre.entity.engine.Template.TemplateType;
 import fr.cedricsevestre.exception.FormException;
 import fr.cedricsevestre.exception.ServiceException;
-import fr.cedricsevestre.service.back.LangService;
-import fr.cedricsevestre.service.back.MapTemplateService;
-import fr.cedricsevestre.service.back.PageService;
-import fr.cedricsevestre.service.back.PositionService;
-import fr.cedricsevestre.service.back.TemplateService;
+import fr.cedricsevestre.service.engine.LangService;
+import fr.cedricsevestre.service.engine.MapTemplateService;
+import fr.cedricsevestre.service.engine.PageService;
+import fr.cedricsevestre.service.engine.PositionService;
+import fr.cedricsevestre.service.engine.TemplateService;
 
 @RestController
 @Scope("prototype")

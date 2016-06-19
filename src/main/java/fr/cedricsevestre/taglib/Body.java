@@ -21,8 +21,8 @@ import fr.cedricsevestre.entity.engine.Position;
 import fr.cedricsevestre.entity.engine.Template;
 import fr.cedricsevestre.entity.engine.User;
 import fr.cedricsevestre.exception.ServiceException;
-import fr.cedricsevestre.service.back.PositionService;
-import fr.cedricsevestre.service.back.TemplateService;
+import fr.cedricsevestre.service.engine.PositionService;
+import fr.cedricsevestre.service.engine.TemplateService;
 
 @Component
 @Scope(value = "singleton")

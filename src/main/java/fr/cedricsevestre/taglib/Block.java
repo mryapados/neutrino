@@ -25,9 +25,9 @@ import fr.cedricsevestre.entity.engine.User;
 import fr.cedricsevestre.entity.engine.NSchema.ScopeType;
 import fr.cedricsevestre.entity.engine.Template.TemplateType;
 import fr.cedricsevestre.exception.ServiceException;
-import fr.cedricsevestre.service.back.NDataService;
-import fr.cedricsevestre.service.back.PositionService;
-import fr.cedricsevestre.service.back.TemplateService;
+import fr.cedricsevestre.service.engine.NDataService;
+import fr.cedricsevestre.service.engine.PositionService;
+import fr.cedricsevestre.service.engine.TemplateService;
 
 @Component
 @Scope(value = "singleton")
