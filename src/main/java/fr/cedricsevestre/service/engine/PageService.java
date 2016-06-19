@@ -31,14 +31,13 @@ public class PageService extends TranslationService<Page>{
 	@Autowired
 	private PageDao pageDao;
 
-	@Override
 	@Transactional
 	public Page translate(Page page, Lang lang) throws ServiceException {
 		Page translated = new Page();
 		
 		TranslationProvider translation = page.getTranslation();
 		if (translation == null){
-			translation = translationDao.save(new TranslationProvider());
+			translation = translationProviderDao.save(new TranslationProvider());
 		}
 		translated.setLang(lang);
 		translated.setTranslation(translation);
@@ -66,16 +65,6 @@ public class PageService extends TranslationService<Page>{
 	public void setLogger(Logger logger) {
 		this.logger = logger;
 	}
-
-	public PageDao getPageDao() {
-		return pageDao;
-	}
-
-	public void setPageDao(PageDao pageDao) {
-		this.pageDao = pageDao;
-	}
-
-
 
 
 

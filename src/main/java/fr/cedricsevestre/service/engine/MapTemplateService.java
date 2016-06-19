@@ -62,8 +62,6 @@ public class MapTemplateService extends BaseService<MapTemplate>{
 		}
 	}
 
-	
-	
 	public Logger getLogger() {
 		return logger;
 	}
@@ -71,18 +69,5 @@ public class MapTemplateService extends BaseService<MapTemplate>{
 	public void setLogger(Logger logger) {
 		this.logger = logger;
 	}
-
-	public MapTemplateDao getMapDao() {
-		return mapTemplateDao;
-	}
-
-	public void setMapDao(MapTemplateDao mapTemplateDao) {
-		this.mapTemplateDao = mapTemplateDao;
-	}
-
-
-
-
-
 
 }

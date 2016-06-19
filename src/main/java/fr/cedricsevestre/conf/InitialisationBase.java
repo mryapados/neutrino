@@ -28,15 +28,15 @@ import fr.cedricsevestre.entity.engine.Template;
 import fr.cedricsevestre.entity.engine.TranslationProvider;
 import fr.cedricsevestre.entity.engine.NType.ValueType;
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.service.custom.AlbumService;
 import fr.cedricsevestre.service.custom.MemberService;
-import fr.cedricsevestre.service.engine.AlbumService;
+import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.engine.LangService;
 import fr.cedricsevestre.service.engine.MapTemplateService;
 import fr.cedricsevestre.service.engine.NDataService;
 import fr.cedricsevestre.service.engine.NSchemaService;
 import fr.cedricsevestre.service.engine.PageService;
 import fr.cedricsevestre.service.engine.PositionService;
-import fr.cedricsevestre.service.engine.ProjectService;
 import fr.cedricsevestre.service.engine.TemplateService;
 import fr.cedricsevestre.service.engine.TranslationService;
 
@@ -46,19 +46,13 @@ public class InitialisationBase {
 	public InitialisationBase() {
 
 	}
-
-//	@Autowired
-//	private BaseService<Album> albumService;
 	
 	@Autowired
 	private ProjectService projectService;
+	
 	@Autowired
 	private AlbumService albumService;
-	
-//	@Autowired
-//	private BaseService<Project> projectService;
-	
-	
+
 	@Autowired
 	private LangService langService;
 	
@@ -94,11 +88,12 @@ public class InitialisationBase {
 		initBlocs();
 		initPageBlocs();
 		initMapTemplates();
-		initNDatas();
-		
-		
+
 		initProject();
 		initAlbum();
+		
+		initNDatas();
+		
 	}
 
 	private Lang langEN;
@@ -562,10 +557,70 @@ public class InitialisationBase {
 		columns.put("title", new NType(NType.ValueType.VARCHAR255));
 		columns.put("content", new NType(NType.ValueType.HTML));
 		columns.put("numbers", new NType(NType.ValueType.COLLECTION, NType.ValueType.INTEGER));
+		
+		columns.put("album", new NType(NType.ValueType.OBJECT));
+		
 		nSchema.setColumns(columns);
 		nSchema.setScope(NSchema.ScopeType.ALL);
 		nSchemaService.save(nSchema);
 	}
+
+	
+	
+	// FRONT DATAS
+	public void initProject() throws ServiceException, InstantiationException, IllegalAccessException{
+		System.out.println("init project");
+		
+		
+		Project project = projectService.findByName("tesage");
+		
+		
+		
+		String name = "";
+		
+		Project projectEN =   projectService.translate(new Project(), langEN, Project.class);
+		name = "testproject";
+		projectEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		projectEN.setDescription(name + " description en");
+		projectService.save(projectEN);
+		
+		Project projectFR = projectService.translate(projectEN, langFR, Project.class);
+		projectFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		projectFR.setDescription(name + " description fr");
+		projectService.save(projectFR);
+	
+	
+	
+	}
+	
+	
+	public void initAlbum() throws ServiceException, InstantiationException, IllegalAccessException{
+		System.out.println("init album");
+		String name = "";
+		
+		Album albumEN = albumService.translate(new Album(), langEN, Album.class);
+		name = "testalbum";
+		albumEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		albumEN.setDescription(name + " description en");
+		albumEN.setProject(projectService.findByName("testproject_EN"));
+		albumEN.setType(AlbumType.DEFAULT);
+		albumService.save(albumEN);
+		
+		Album albumFR = albumService.translate(albumEN, langFR, Album.class);
+		albumFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		albumFR.setDescription(name + " description fr");
+		albumFR.setProject(projectService.findByName("testproject_FR"));
+		albumFR.setType(AlbumType.DEFAULT);
+		albumService.save(albumFR);
+
+	
+		System.out.println("AAAAAAAAAAAAAAAAa testalbum_FR");
+		Album test = albumService.findByName("testalbum_FR");
+		
+		
+	}
+	
+	
 
 	public void initNDatas() throws ServiceException{
 		System.out.println("init nDatas");
@@ -610,61 +665,13 @@ public class InitialisationBase {
 		nDataService.save(nDataCollectionItem);
 		
 		
-	}
-	
-	
-	
-	
-	
-	// FRONT DATAS
-	public void initProject() throws ServiceException, InstantiationException, IllegalAccessException{
-		System.out.println("init project");
 		
-		
-		Project project = projectService.findByName("tesage");
-		
-		
-		
-		String name = "";
-		
-		Project projectEN =   projectService.translate(new Project(), langEN);
-		name = "testproject";
-		projectEN.setName(name + "_" + langEN.getCode().toUpperCase());
-		projectEN.setDescription(name + " description en");
-		projectService.save(projectEN);
-		
-		Project projectFR = projectService.translate(projectEN, langFR);
-		projectFR.setName(name + "_" + langFR.getCode().toUpperCase());
-		projectFR.setDescription(name + " description fr");
-		projectService.save(projectFR);
-	
-	
-	
-	}
-	
-	
-	public void initAlbum() throws ServiceException, InstantiationException, IllegalAccessException{
-		System.out.println("init album");
-		String name = "";
-		
-		Album albumEN = albumService.translate(new Album(), langEN);
-		name = "testalbum";
-		albumEN.setName(name + "_" + langEN.getCode().toUpperCase());
-		albumEN.setDescription(name + " description en");
-		albumEN.setProject(projectService.findByName("testproject_EN"));
-		albumEN.setType(AlbumType.DEFAULT);
-		albumService.save(albumEN);
-		
-		Album albumFR = albumService.translate(albumEN, langFR);
-		albumFR.setName(name + "_" + langFR.getCode().toUpperCase());
-		albumFR.setDescription(name + " description fr");
-		albumFR.setProject(projectService.findByName("testproject_FR"));
-		albumFR.setType(AlbumType.DEFAULT);
-		albumService.save(albumFR);
-
-	
-		System.out.println("AAAAAAAAAAAAAAAAa testalbum_FR");
-		Album test = albumService.findByName("testalbum_FR");
+		nData = new NData();
+		nData.setvObject(albumService.findByName("testalbum_EN"));
+		nData.setVarType(ValueType.OBJECT);
+		nData.setPropertyName("album");
+		nData.setTemplate(template);
+		nDataService.save(nData);
 		
 		
 	}

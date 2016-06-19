@@ -6,11 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import fr.cedricsevestre.dao.engine.BaseDao;
 import fr.cedricsevestre.entity.custom.Tag;
 
 @Repository
-@Qualifier(value="frontEntityManagerFactory")
-public interface TagDao extends JpaRepository<Tag, Integer> {
+public interface TagDao extends BaseDao<Tag> {
 	
 	@Query("SELECT f FROM Tag f WHERE f.word =:word")
 	Tag FindByWord(@Param("word") String word);

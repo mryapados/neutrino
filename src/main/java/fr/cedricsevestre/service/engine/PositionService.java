@@ -97,17 +97,6 @@ public class PositionService extends BaseService<Position>{
 		this.logger = logger;
 	}
 
-	public PositionDao getPositionDao() {
-		return positionDao;
-	}
-
-	public void setPositionDao(PositionDao positionDao) {
-		this.positionDao = positionDao;
-	}
-
-
-
-
 
 
 }

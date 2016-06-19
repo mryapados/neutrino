@@ -2,7 +2,8 @@ package fr.cedricsevestre.service.engine;
 
 import java.util.Arrays;
 import java.util.List;
- 
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,9 @@ import fr.cedricsevestre.entity.engine.User;
  
 @Service
 public class LoginService implements UserDetailsService{
+	
+	private Logger logger = Logger.getLogger(LoginService.class);
+	
 	private UserDao userDao;
     
     @Autowired
@@ -34,4 +38,15 @@ public class LoginService implements UserDetailsService{
 
 	    return userDetails;
     }
+
+	public Logger getLogger() {
+		return logger;
+	}
+
+	public void setLogger(Logger logger) {
+		this.logger = logger;
+	}
+    
+    
+    
 }

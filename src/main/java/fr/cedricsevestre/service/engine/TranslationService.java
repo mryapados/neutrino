@@ -28,28 +28,28 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 	private Logger logger = Logger.getLogger(TranslationService.class);
 
 	@Autowired
-	private TranslationDao<T> baseDao;
+	private TranslationDao<T> translationDao;
 
 	@Autowired
-	protected TranslationProviderDao translationDao;
+	protected TranslationProviderDao translationProviderDao;
 	
 	public T findByName(String name) throws ServiceException {
 		try {
-			System.out.println("findbyname " + name + " " + baseDao);
+			System.out.println("findbyname " + name + " " + translationDao);
 			
-			return baseDao.findByName(name);
+			return translationDao.findByName(name);
 		} catch (PersistenceException e) {
 			throw new ServiceException("erreur findByName Base", e);
 		}
 	}
 
 	@Transactional
-	public T translate(T base, Lang lang) throws ServiceException, InstantiationException, IllegalAccessException {
-		T translated = (T) base.getClass().newInstance();
+	public T translate(T base, Lang lang, Class<T> cls) throws ServiceException, InstantiationException, IllegalAccessException {
+		T translated = cls.newInstance(); 
 
 		TranslationProvider translation = base.getTranslation();
 		if (translation == null){
-			translation = translationDao.save(new TranslationProvider());
+			translation = translationProviderDao.save(new TranslationProvider());
 		}
 		translated.setLang(lang);
 		translated.setTranslation(translation);

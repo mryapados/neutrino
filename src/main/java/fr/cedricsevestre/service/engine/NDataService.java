@@ -18,12 +18,15 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.deser.Deserializers.Base;
+
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.dao.engine.NDataDao;
 import fr.cedricsevestre.entity.engine.Lang;
 import fr.cedricsevestre.entity.engine.MapTemplate;
 import fr.cedricsevestre.entity.engine.NData;
 import fr.cedricsevestre.entity.engine.Template;
+import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 
 @Service
@@ -72,7 +75,16 @@ public class NDataService extends BaseService<NData>{
 			case HTML:
 				return nData.getvHtml();
 			case FILE:
-				return nData.getvPathFile();	
+				return nData.getvPathFile();
+			case OBJECT:
+				
+				//Translation dataObject = nData.getvObject();
+				
+				
+				return nData.getvObject();
+				
+				
+				
 			case COLLECTION:
 				List<NData> nDatas = nData.getDatas();
 				SortedMap<Integer, Object> objects = new TreeMap<>();
@@ -98,17 +110,6 @@ public class NDataService extends BaseService<NData>{
 	public void setLogger(Logger logger) {
 		this.logger = logger;
 	}
-
-	public NDataDao getNDataDao() {
-		return nDataDao;
-	}
-
-	public void setNDataDao(NDataDao nDataDao) {
-		this.nDataDao = nDataDao;
-	}
-
-
-
 
 
 
