@@ -5,7 +5,7 @@
 <my:init test="${!initialized}"/>
 
 
-<div style="height:500px;" id="map">
+<div style="height:500px;" id="jvmmap">
 
 
 </div>

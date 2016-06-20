@@ -38,6 +38,14 @@
 			<required>true</required>
 		</attribute>
 	</tag>
-
+	<tag>
+		<name>script</name>
+		<tag-class>fr.cedricsevestre.taglib.Script</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>src</name>
+			<required>false</required>
+		</attribute>
+	</tag>
 	
 </taglib>

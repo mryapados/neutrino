@@ -61,6 +61,9 @@ public class Body extends TagSupport {
 		JspWriter out = pageContext.getOut();
 		try {
 			pageContext.include(Common.BASEPAGESPATH + "common/components/scripts.jsp");
+			String engineScript = (String) pageContext.getAttribute("NEngineScript", PageContext.REQUEST_SCOPE); 
+			out.println(engineScript);		
+			
 			User surfer = (User) pageContext.getAttribute("surfer", PageContext.REQUEST_SCOPE);
 			if (surfer.getRole().equals(User.ROLE_ADMIN)){
 				pageContext.include(Common.BASEADMINPATH + "components/blockPreview.jsp");

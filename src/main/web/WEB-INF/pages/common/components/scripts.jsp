@@ -1,15 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 
 <%-- Here set all necessary initialization for alone component like blocks --%>
-<script type="text/javascript"
-	src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.0.1/lodash.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.0.1/lodash.js"></script>
 
 
 <script src="<c:url value='/js/lib/jquery-1.11.3.min.js'/>"></script>
-<script
-	src="<c:url value='/style/bootstrap-3.3.5-dist/js/bootstrap.min.js'/>"></script>
+<script src="<c:url value='/style/bootstrap-3.3.5-dist/js/bootstrap.min.js'/>"></script>
 <script src="<c:url value='/js/lib/angular-1.5.0.min.js'/>"></script>
 <script src="<c:url value='/js/lib/angular-sanitize.min.js'/>"></script>
 <script src="<c:url value='/js/lib/angular-translate.min.js'/>"></script>
@@ -38,7 +35,7 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 
-		$('#map').vectorMap({
+		$('#jvmmap').vectorMap({
 			map : 'fr_merc',
 			backgroundColor : "#ffffff",
 			regionStyle: {

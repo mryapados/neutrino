@@ -5,6 +5,14 @@
 
 <my:init test="${!initialized}"/>
 
+
+<my:script src="test script src">ccccc</my:script>
+<my:script src="test src">ddddd</my:script>
+<my:script src="test src eeee">
+	eeeeeee
+</my:script>
+
+
 <div class="socialnetwork">
 	<img src="<c:url value='/image/front/social/facebook.png'/>" />
 	<img src="<c:url value='/image/front/social/googleplus.png'/>" />
