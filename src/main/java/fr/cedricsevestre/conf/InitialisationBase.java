@@ -455,6 +455,21 @@ public class InitialisationBase {
 		templateFR.setName(name + "_" + langFR.getCode().toUpperCase());
 		templateFR.setDescription(name + " description fr");
 		templateService.save(templateFR);
+		
+		
+		
+		templateEN = templateService.translate(new Template(), langEN);
+		name = "vectormapfra";
+		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		templateEN.setDescription(name + " description en");
+		templateEN.setPath("vectormap/fra/vectorMapFra");
+		templateEN.setType(Template.TemplateType.BLOCK);
+		templateService.save(templateEN);
+		
+		templateFR = templateService.translate(templateEN, langFR);
+		templateFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		templateFR.setDescription(name + " description fr");
+		templateService.save(templateFR);
 	}
 	public void initPageBlocs() throws ServiceException{
 		System.out.println("init Page blocs");
