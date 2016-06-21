@@ -573,8 +573,8 @@ public class InitialisationBase {
 		columns.put("content", new NType(NType.ValueType.HTML));
 		columns.put("numbers", new NType(NType.ValueType.COLLECTION, NType.ValueType.INTEGER));
 		
-		columns.put("album", new NType(NType.ValueType.OBJECT));
-		columns.put("albums", new NType(NType.ValueType.COLLECTION, NType.ValueType.OBJECT));
+		columns.put("album", new NType(NType.ValueType.TOBJECT));
+		columns.put("albums", new NType(NType.ValueType.COLLECTION, NType.ValueType.TOBJECT));
 		
 		nSchema.setColumns(columns);
 		nSchema.setScope(NSchema.ScopeType.ALL);
@@ -683,8 +683,8 @@ public class InitialisationBase {
 		
 		
 		nData = new NData();
-		nData.setvObject(albumService.findByName("testalbum_EN"));
-		nData.setVarType(ValueType.OBJECT);
+		nData.setvTObject(albumService.findByName("testalbum_EN"));
+		nData.setVarType(ValueType.TOBJECT);
 		nData.setPropertyName("album");
 		nData.setTemplate(template);
 		nDataService.save(nData);
@@ -699,15 +699,15 @@ public class InitialisationBase {
 		nDataService.save(nDataCollection);
 		
 		nDataCollectionItem = new NData();
-		nDataCollectionItem.setvObject(albumService.findByName("testalbum_EN"));
-		nDataCollectionItem.setVarType(ValueType.OBJECT);
+		nDataCollectionItem.setvTObject(albumService.findByName("testalbum_EN"));
+		nDataCollectionItem.setVarType(ValueType.TOBJECT);
 		nDataCollectionItem.setOrdered(5);
 		nDataCollectionItem.setData(nDataCollection);
 		nDataService.save(nDataCollectionItem);
 		
 		nDataCollectionItem = new NData();
-		nDataCollectionItem.setvObject(albumService.findByName("testalbum_FR"));
-		nDataCollectionItem.setVarType(ValueType.OBJECT);
+		nDataCollectionItem.setvTObject(albumService.findByName("testalbum_FR"));
+		nDataCollectionItem.setVarType(ValueType.TOBJECT);
 		nDataCollectionItem.setOrdered(2);
 		nDataCollectionItem.setData(nDataCollection);
 		nDataService.save(nDataCollectionItem);

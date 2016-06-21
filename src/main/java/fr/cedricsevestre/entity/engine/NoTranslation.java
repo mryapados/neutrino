@@ -26,7 +26,7 @@ import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 @Table(name = "translation")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name="object_type")
-public abstract class Translation implements ITranslation, Serializable {
+public abstract class NoTranslation implements IdProvider, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -50,28 +50,17 @@ public abstract class Translation implements ITranslation, Serializable {
 	@Column(name = "description")
 	private String description;
 
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="id_lang")
-	private Lang lang;
-	
-	@ManyToOne
-	@JoinColumn(name="id_translation")
-	private TranslationProvider translation;
-	
-	
-	
-	public Translation() {
+	public NoTranslation() {
 		super();
 		this.setDateAdd(new Date());
 	}
 
-	public Translation(Integer id, String name, Date dateAdd, String description, Lang lang) {
+	public NoTranslation(Integer id, String name, Date dateAdd, String description) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.dateAdd = dateAdd;
 		this.description = description;
-		this.lang = lang;
 	}
 
 	public String getObjectType() {
@@ -115,26 +104,6 @@ public abstract class Translation implements ITranslation, Serializable {
 	}
 
 	@Override
-	public Lang getLang() {
-		return lang;
-	}
-
-	@Override
-	public void setLang(Lang lang) {
-		this.lang = lang;
-	}
-
-	@Override
-	public TranslationProvider getTranslation() {
-		return translation;
-	}
-
-	@Override
-	public void setTranslation(TranslationProvider translation) {
-		this.translation = translation;
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -150,7 +119,7 @@ public abstract class Translation implements ITranslation, Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Translation other = (Translation) obj;
+		NoTranslation other = (NoTranslation) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

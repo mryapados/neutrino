@@ -20,11 +20,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.deser.Deserializers.Base;
 
+import fr.cedricsevestre.bean.NDataValue;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.dao.engine.NDataDao;
 import fr.cedricsevestre.entity.engine.Lang;
 import fr.cedricsevestre.entity.engine.MapTemplate;
 import fr.cedricsevestre.entity.engine.NData;
+import fr.cedricsevestre.entity.engine.NType;
+import fr.cedricsevestre.entity.engine.NType.ValueType;
+import fr.cedricsevestre.entity.engine.NoTranslation;
 import fr.cedricsevestre.entity.engine.Template;
 import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.exception.ServiceException;
@@ -53,35 +57,46 @@ public class NDataService extends BaseService<NData>{
 		}
 	}
 	
-	public Object getNDataValue(NData nData) throws ServiceException {
+	public NDataValue getNDataValue(NData nData) throws ServiceException {
 		try {
+			ValueType nTypeValueType = nData.getVarType();
+			
 			switch (nData.getVarType()) {
 			case INTEGER:
-				return nData.getvInteger();
+				return new NDataValue(nTypeValueType, nData.getvInteger());
 			case FLOAT:
-				return nData.getvFloat();
+				return new NDataValue(nTypeValueType, nData.getvFloat());
 			case DOUBLE:
-				return nData.getvDouble();
+				return new NDataValue(nTypeValueType, nData.getvDouble());
 			case DATETIME:
-				return nData.getvDateTime();
+				return new NDataValue(nTypeValueType, nData.getvDateTime());
 			case VARCHAR50:
-				return nData.getvVarchar50();
+				return new NDataValue(nTypeValueType, nData.getvVarchar50());
 			case VARCHAR255:
-				return nData.getvVarchar255();
+				return new NDataValue(nTypeValueType, nData.getvVarchar255());
 			case TEXT:
-				return nData.getvText();
+				return new NDataValue(nTypeValueType, nData.getvText());
 			case IMAGE:
-				return nData.getvPathFile();
+				return new NDataValue(nTypeValueType, nData.getvPathFile());
 			case HTML:
-				return nData.getvHtml();
+				return new NDataValue(nTypeValueType, nData.getvHtml());
 			case FILE:
-				return nData.getvPathFile();
+				return new NDataValue(nTypeValueType, nData.getvPathFile());
+			case TOBJECT:
+				Translation dataTObject = nData.getvTObject();
+				System.out.println("ndata object = " + dataTObject.getName());
+				return  new NDataValue(nTypeValueType, dataTObject, dataTObject.getObjectType().toUpperCase());
+			case NTOBJECT:
+				NoTranslation dataNTObject = nData.getvNTObject();
+				System.out.println("ndata object = " + dataNTObject.getName());
+				return new NDataValue(nTypeValueType, dataNTObject, dataNTObject.getObjectType().toUpperCase());
 			case OBJECT:
-				
-				Translation dataObject = nData.getvObject();
-				System.out.println("ndata object = " + dataObject.getName());
-				
-				return nData.getvObject();
+				NData dataObject = nData.getvObject();
+//				if (dataObject.getVarType() != ValueType.OBJECT){
+//					return new NDataValue(nTypeValueType, dataObject);
+//				} else {
+					return getNDataValue(dataObject);
+//				}
 				
 				
 				
@@ -93,7 +108,7 @@ public class NDataService extends BaseService<NData>{
 					//System.out.println(data.getOrdered() + " ; " + getNDataValue(data));
 					objects.put(data.getOrdered(), getNDataValue(data));
 				}
-				return objects.values();
+				return new NDataValue(nTypeValueType, objects.values());
 			default:
 				throw new ServiceException("getNDataValue No Type");
 			}

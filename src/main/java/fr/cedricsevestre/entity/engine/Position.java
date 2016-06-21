@@ -1,5 +1,6 @@
 package fr.cedricsevestre.entity.engine;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -18,7 +19,7 @@ import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 @Entity
 @Table(name = "position")
-public class Position {
+public class Position implements IdProvider, Serializable{
 
 	private static final long serialVersionUID = 1L;
 

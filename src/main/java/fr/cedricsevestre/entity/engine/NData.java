@@ -75,9 +75,17 @@ public class NData implements Serializable {
 	private String vHtml;
 	
 	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="vobject")
-	private Translation vObject;
+	@JoinColumn(name="vtobject")
+	private Translation vTObject;
 	
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="vntobject")
+	private NoTranslation vNTObject;
+	
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="vobject")
+	private NData vObject;
+
 	@Column(name = "vcollection")
 	private Boolean vCollection;
 
@@ -203,11 +211,27 @@ public class NData implements Serializable {
 		this.vHtml = vHtml;
 	}
 	
-	public Translation getvObject() {
+	public Translation getvTObject() {
+		return vTObject;
+	}
+
+	public void setvTObject(Translation vTObject) {
+		this.vTObject = vTObject;
+	}
+
+	public NoTranslation getvNTObject() {
+		return vNTObject;
+	}
+
+	public void setvNTObject(NoTranslation vNTObject) {
+		this.vNTObject = vNTObject;
+	}
+
+	public NData getvObject() {
 		return vObject;
 	}
 
-	public void setvObject(Translation vObject) {
+	public void setvObject(NData vObject) {
 		this.vObject = vObject;
 	}
 
