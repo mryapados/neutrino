@@ -39,6 +39,19 @@
 		</attribute>
 	</tag>
 	<tag>
+		<name>discrimin</name>
+		<tag-class>fr.cedricsevestre.taglib.Discrimin</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+		</attribute>
+		<attribute>
+			<name>scope</name>
+			<required>false</required>
+		</attribute>
+	</tag>
+	<tag>
 		<name>script</name>
 		<tag-class>fr.cedricsevestre.taglib.Script</tag-class>
 		<body-content>scriptless</body-content>

@@ -6,11 +6,23 @@
 <my:init test="${!initialized}"/>
 
 
-<my:script src="test script src">ccccc</my:script>
-<my:script src="test src">ddddd</my:script>
-<my:script src="test src eeee">
-	eeeeeee
-</my:script>
+<my:discrimin name="socialnetwork">
+	<my:script src="test script src"></my:script>
+	<my:script>
+		<c:set var="testset" value="1" />
+		<c:out value="${testset}" />
+	</my:script>
+</my:discrimin>
+
+
+<my:discrimin name="socialnetwork" scope="session">
+	<h1>JE SUIS PAS LA</h1>
+</my:discrimin>
+<my:discrimin name="socialnetwork" scope="session">
+	<h1>JE SUIS PAS LA 2</h1>
+</my:discrimin>
+
+
 
 
 <div class="socialnetwork">

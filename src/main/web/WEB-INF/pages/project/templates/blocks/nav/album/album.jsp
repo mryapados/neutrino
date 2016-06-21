@@ -32,6 +32,11 @@
 </div>
 
 
-
+<my:discrimin name="socialnetwork" scope="session">
+	<h1>JE SUIS PAS LA al</h1>
+</my:discrimin>
+<my:discrimin name="socialnetwork" scope="session">
+	<h1>JE SUIS PAS LA 2 al</h1>
+</my:discrimin>
 
 
