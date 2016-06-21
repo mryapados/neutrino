@@ -20,7 +20,6 @@
 
 <my:script>
 	$(document).ready(function() {
-
 		$('#<c:out value="${mapName}"/>').vectorMap({
 			map : 'fr_merc',
 			backgroundColor : "#ffffff",
@@ -79,6 +78,5 @@
 			}
 
 		});
-
 	});
 </my:script>
