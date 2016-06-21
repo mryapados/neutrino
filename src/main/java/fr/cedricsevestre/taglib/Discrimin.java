@@ -32,6 +32,11 @@ import fr.cedricsevestre.service.engine.TemplateService;
 @Component
 @Scope(value = "singleton")
 public class Discrimin extends TagSupport {
+	
+	/* Le code JSTL contenu entre le tag <discrimin>
+	 * n'est affiché qu'une fois en fonction de son
+	 * attribut name et scope.
+	 */
 
 	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(Discrimin.class);

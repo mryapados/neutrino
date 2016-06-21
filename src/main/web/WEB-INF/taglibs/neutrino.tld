@@ -58,6 +58,7 @@
 		<attribute>
 			<name>src</name>
 			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
 	
