@@ -1,6 +1,6 @@
 package fr.cedricsevestre.entity.engine;
 
-public interface ITranslation {
+public interface ITranslation extends IdProvider {
 
 	Lang getLang();
 	void setLang(Lang lang);
