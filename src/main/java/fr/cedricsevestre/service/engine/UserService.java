@@ -1,15 +1,11 @@
 package fr.cedricsevestre.service.engine;
 
-import java.util.List;
-
 import javax.persistence.PersistenceException;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import fr.cedricsevestre.dao.engine.UserDao;
 import fr.cedricsevestre.entity.engine.User;

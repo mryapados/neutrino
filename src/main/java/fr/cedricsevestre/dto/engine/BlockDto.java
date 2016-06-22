@@ -1,23 +1,9 @@
 package fr.cedricsevestre.dto.engine;
 
 import java.io.Serializable;
-import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.entity.engine.MapTemplate;
-import fr.cedricsevestre.entity.engine.Position;
 import fr.cedricsevestre.entity.engine.Template;
-import fr.cedricsevestre.exception.ServiceException;
-import fr.cedricsevestre.service.engine.MapTemplateService;
-import fr.cedricsevestre.service.engine.PositionService;
-import fr.cedricsevestre.service.engine.TemplateService;
 
 public class BlockDto implements Serializable {
 	private static final long serialVersionUID = 1L;

@@ -1,7 +1,6 @@
 package fr.cedricsevestre.taglib;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -18,12 +17,12 @@ import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.entity.engine.MapTemplate;
 import fr.cedricsevestre.entity.engine.NData;
 import fr.cedricsevestre.entity.engine.NSchema;
+import fr.cedricsevestre.entity.engine.NSchema.ScopeType;
 import fr.cedricsevestre.entity.engine.Page;
 import fr.cedricsevestre.entity.engine.Position;
 import fr.cedricsevestre.entity.engine.Template;
-import fr.cedricsevestre.entity.engine.User;
-import fr.cedricsevestre.entity.engine.NSchema.ScopeType;
 import fr.cedricsevestre.entity.engine.Template.TemplateType;
+import fr.cedricsevestre.entity.engine.User;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.NDataService;
 import fr.cedricsevestre.service.engine.PositionService;

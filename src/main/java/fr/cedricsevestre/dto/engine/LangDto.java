@@ -1,7 +1,6 @@
 package fr.cedricsevestre.dto.engine;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
@@ -9,9 +8,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
-import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.entity.engine.Lang;
-import fr.cedricsevestre.entity.engine.Page;
 
 public class LangDto implements Serializable {
 	private static final long serialVersionUID = 1L;

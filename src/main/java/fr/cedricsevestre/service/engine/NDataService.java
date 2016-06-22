@@ -1,32 +1,20 @@
 package fr.cedricsevestre.service.engine;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 import javax.persistence.PersistenceException;
-import javax.servlet.jsp.PageContext;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.fasterxml.jackson.databind.deser.Deserializers.Base;
 
 import fr.cedricsevestre.bean.NDataValue;
-import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.dao.engine.NDataDao;
-import fr.cedricsevestre.entity.engine.Lang;
 import fr.cedricsevestre.entity.engine.MapTemplate;
 import fr.cedricsevestre.entity.engine.NData;
-import fr.cedricsevestre.entity.engine.NType;
 import fr.cedricsevestre.entity.engine.NType.ValueType;
 import fr.cedricsevestre.entity.engine.NoTranslation;
 import fr.cedricsevestre.entity.engine.Template;

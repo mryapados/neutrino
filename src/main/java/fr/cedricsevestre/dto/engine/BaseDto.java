@@ -9,7 +9,6 @@ import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 import fr.cedricsevestre.entity.engine.Translation;
-import fr.cedricsevestre.entity.engine.Lang;
 
 public class BaseDto implements Serializable {
 	private static final long serialVersionUID = 1L;

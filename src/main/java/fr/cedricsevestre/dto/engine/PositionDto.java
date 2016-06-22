@@ -1,25 +1,18 @@
 package fr.cedricsevestre.dto.engine;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.ModelAndView;
 
 import fr.cedricsevestre.entity.engine.MapTemplate;
 import fr.cedricsevestre.entity.engine.Position;
-import fr.cedricsevestre.entity.engine.Template;
-import fr.cedricsevestre.entity.engine.Template.TemplateType;
-import fr.cedricsevestre.taglib.Block;
 
-public class PositionDto {
+public class PositionDto implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id;

@@ -1,7 +1,6 @@
 package fr.cedricsevestre.conf;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,23 +9,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.JsonParser.NumberType;
-
 import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.custom.Album.AlbumType;
 import fr.cedricsevestre.entity.custom.Member;
 import fr.cedricsevestre.entity.custom.Project;
-import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.entity.engine.Lang;
 import fr.cedricsevestre.entity.engine.MapTemplate;
 import fr.cedricsevestre.entity.engine.NData;
 import fr.cedricsevestre.entity.engine.NSchema;
 import fr.cedricsevestre.entity.engine.NType;
+import fr.cedricsevestre.entity.engine.NType.ValueType;
 import fr.cedricsevestre.entity.engine.Page;
 import fr.cedricsevestre.entity.engine.Position;
 import fr.cedricsevestre.entity.engine.Template;
-import fr.cedricsevestre.entity.engine.TranslationProvider;
-import fr.cedricsevestre.entity.engine.NType.ValueType;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.AlbumService;
 import fr.cedricsevestre.service.custom.MemberService;
@@ -38,7 +33,6 @@ import fr.cedricsevestre.service.engine.NSchemaService;
 import fr.cedricsevestre.service.engine.PageService;
 import fr.cedricsevestre.service.engine.PositionService;
 import fr.cedricsevestre.service.engine.TemplateService;
-import fr.cedricsevestre.service.engine.TranslationService;
 
 
 @Component
@@ -614,11 +608,6 @@ public class InitialisationBase {
 	public void initProject() throws ServiceException, InstantiationException, IllegalAccessException{
 		System.out.println("init project");
 		
-		
-		Project project = projectService.findByName("tesage");
-		
-		
-		
 		String name = "";
 		
 		Project projectEN =   projectService.translate(new Project(), langEN, Project.class);
@@ -654,12 +643,7 @@ public class InitialisationBase {
 		albumFR.setDescription(name + " description fr");
 		albumFR.setProject(projectService.findByName("testproject_FR"));
 		albumFR.setType(AlbumType.DEFAULT);
-		albumService.save(albumFR);
-
-	
-		System.out.println("AAAAAAAAAAAAAAAAa testalbum_FR");
-		Album test = albumService.findByName("testalbum_FR");
-		
+		albumService.save(albumFR);		
 		
 	}
 	

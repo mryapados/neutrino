@@ -1,6 +1,5 @@
 package fr.cedricsevestre.service.engine;
 
-import java.util.HashSet;
 import java.util.List;
 
 import javax.persistence.PersistenceException;
@@ -8,11 +7,8 @@ import javax.persistence.PersistenceException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.fasterxml.jackson.databind.deser.Deserializers.Base;
 
 import fr.cedricsevestre.dao.engine.MapTemplateDao;
 import fr.cedricsevestre.entity.engine.MapTemplate;

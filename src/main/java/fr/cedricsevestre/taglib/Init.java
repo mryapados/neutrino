@@ -1,8 +1,6 @@
 package fr.cedricsevestre.taglib;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.jsp.JspWriter;
@@ -10,18 +8,10 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.common.Common;
-import fr.cedricsevestre.entity.engine.MapTemplate;
-import fr.cedricsevestre.entity.engine.Position;
-import fr.cedricsevestre.entity.engine.Template;
-import fr.cedricsevestre.entity.engine.User;
-import fr.cedricsevestre.exception.ServiceException;
-import fr.cedricsevestre.service.engine.PositionService;
-import fr.cedricsevestre.service.engine.TemplateService;
 
 @Component
 @Scope(value = "singleton")
