@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import fr.cedricsevestre.common.Common;
-import fr.cedricsevestre.controller.AbtractController;
+import fr.cedricsevestre.controller.engine.AbtractController;
 import fr.cedricsevestre.dao.engine.PageDao;
 import fr.cedricsevestre.dto.engine.BlockDto;
 import fr.cedricsevestre.dto.engine.LangDto;
@@ -132,7 +132,11 @@ public class BackController extends AbtractController {
 		try {
 			Page page = pageService.findByName(pageName);
 			Template block = templateService.findByName(blockName);
-			String pathContext = page.getContext();
+
+			String pathContext = page.getContext();			
+			if (!templateService.checkJSPExist(common.getWebInfFolder(), pathContext, block)){
+				pathContext = Common.COMMONCONTEXT;
+			}
 			
 			modelAndView = baseView(block, pathContext);
 			modelAndView.addObject("page", page);

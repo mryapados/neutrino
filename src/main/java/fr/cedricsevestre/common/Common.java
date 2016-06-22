@@ -1,6 +1,5 @@
 package fr.cedricsevestre.common;
 
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,23 +13,17 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.entity.engine.Page;
-import fr.cedricsevestre.entity.engine.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.PageService;
-
 
 @Component
 @Scope(value = "singleton")
 @PropertySource(value = "classpath:config.properties", name = "config")
-public class Common {
-	@Deprecated
-	private Map<String, Template> modelsByPage;
-	@Deprecated
-	private Map<String, Page> pagesByModel;
-	
+public class Common {	
 	private Map<String, Page> pages;
 	
 	private String applicationFolder;
+	private String webInfFolder;
 	
 	@Autowired
 	ServletContext servletContext;
@@ -46,31 +39,16 @@ public class Common {
 	public static final String BACK = "back";
 	public static final String FRONT = "front";
 	
-	public static final String HOMEPAGE = "home";
-	public static final String HOMEPROJECTPAGE = "project";
-	public static final String LOGINPAGE = "login";
-	
 	public static final String BASEADMINPATH = "/WEB-INF/admin/";
 	public static final String BASEPAGESPATH = "/WEB-INF/pages/";
 	
+	public static final String COMMONCONTEXT = "common";
+	
 	public String getWebInfFolder() {
-		return servletContext.getRealPath("/WEB-INF/");
-	}
-	
-	@Deprecated
-	private void setPageAndModel(String pageName) throws ServiceException{
-		Page page = pageService.findByName(pageName);
-		Template template = page.getModel();
-		pagesByModel.put(template.getName(), page);
-		modelsByPage.put(pageName, template);
-	}
-	
-	@Deprecated
-	private void init() throws ServiceException{
-		if (modelsByPage == null || pagesByModel == null){
-			pagesByModel = new HashMap<>();
-			modelsByPage = new HashMap<>();
-		}
+		// TODO double check lockin
+		if (webInfFolder == null) 
+			webInfFolder = servletContext.getRealPath("/WEB-INF/");
+		return webInfFolder;
 	}
 	
 	public Page getPage(String pageNameWithoutLangCode, String langCode) throws ServiceException {
@@ -83,25 +61,7 @@ public class Common {
 		}
 		return pages.get(pageName);
 	}
-	
-	@Deprecated
-	public Template getModelByPageName(String pageName) throws ServiceException {
-		init();
-		if(!modelsByPage.containsKey(pageName)){
-			setPageAndModel(pageName);
-		}
-		return modelsByPage.get(pageName);
-	}
-	
-	@Deprecated
-	public Page getPageByModelName(String modelName) throws ServiceException {
-		init();
-		if(!pagesByModel.containsKey(modelName)){
-			setPageAndModel(modelName);
-		}
-		return pagesByModel.get(modelName);
-	}
-	
+		
 	public String getApplicationFolder() {
 		// TODO double check lockin
 		if (applicationFolder == null) 
@@ -110,13 +70,5 @@ public class Common {
 	}
 
 
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }

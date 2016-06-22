@@ -92,6 +92,7 @@ public class TemplateService extends TranslationService<Template>{
 	
 	public Boolean checkJSPExist(String webInfFolder, String pathContext, Template template) throws ServiceException{
 		File d = new File(webInfFolder);
+		System.out.println("webInfFolder = " + webInfFolder);
 		String path = d.getParent().replace("\\", "/") + pathJSP(pathContext, template);
 		System.out.println("path = " + path);
 		File f = new File(path);

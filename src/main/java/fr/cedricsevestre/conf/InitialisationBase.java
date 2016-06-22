@@ -183,6 +183,21 @@ public class InitialisationBase {
 		homeProjectFr.setDescription("homeProject description fr");
 		templateService.save(homeProjectFr);
 
+		
+		
+		Template homeArticleEN = templateService.translate(new Template(), langEN);
+		homeArticleEN.setName("homeArticle_" + langEN.getCode().toUpperCase());
+		homeArticleEN.setDescription("homeArticle description en");
+		homeArticleEN.setMetaTitle("{0}");
+		homeArticleEN.setMetaDescription("MetaDescription");
+		homeArticleEN.setPath("home/homeArticle");
+		homeArticleEN.setType(Template.TemplateType.PAGE);
+		templateService.save(homeArticleEN);
+		
+		Template homeArticleFr = templateService.translate(homeArticleEN, langFR);
+		homeArticleFr.setName("homeArticle_" + langFR.getCode().toUpperCase());
+		homeArticleFr.setDescription("homeArticle description fr");
+		templateService.save(homeArticleFr);
 
 	}
 	
@@ -227,6 +242,18 @@ public class InitialisationBase {
 		projectFr.setDescription("project description fr");
 		pageService.save(projectFr);
 		
+		
+		Page articleEN = pageService.translate(new Page(), langEN);
+		articleEN.setName("article_" + langEN.getCode().toUpperCase());
+		articleEN.setContext("article");
+		articleEN.setDescription("article description en");
+		articleEN.setModel(templateService.findByNameWithAllExceptData("homeArticle_" + langEN.getCode().toUpperCase()));
+		pageService.save(articleEN);
+		
+		Page articleFr = pageService.translate(articleEN, langFR);
+		articleFr.setName("article_" + langFR.getCode().toUpperCase());
+		articleFr.setDescription("article description fr");
+		pageService.save(articleFr);
 		
 	}
 

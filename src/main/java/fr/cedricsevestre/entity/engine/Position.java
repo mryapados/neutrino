@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.SafeHtml;
@@ -35,6 +36,12 @@ public class Position implements IdProvider, Serializable{
 	@OneToMany(mappedBy = "position")
 	private List<MapTemplate> mapTemplates;
 
+	@Transient
+	@Override
+	public String getObjectType() {
+		return "Position";
+	}
+	
 	public Position(){
 		
 	}
@@ -61,6 +68,7 @@ public class Position implements IdProvider, Serializable{
 	public void setMapTemplates(List<MapTemplate> mapTemplates) {
 		this.mapTemplates = mapTemplates;
 	}
+
 
 
 

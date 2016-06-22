@@ -36,6 +36,12 @@ public class Block extends TagSupport {
 	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(Block.class);
 
+	private static Common common;
+	@Autowired
+	public void Common(Common common) {
+		Block.common = common;
+	}
+
 	private static PositionService positionService;
 	@Autowired
 	public void PositionService(PositionService positionService) {
@@ -134,7 +140,14 @@ public class Block extends TagSupport {
 						}
 					}
 					
-					String path = templateService.pathJSP(page.getContext(), activeBlock);				
+					String pathContext = page.getContext();
+					String path = null;				
+					if (templateService.checkJSPExist(common.getWebInfFolder(), pathContext, activeBlock)){
+						path = templateService.pathJSP(pathContext, activeBlock);
+					} else {
+						path = templateService.pathJSP(Common.COMMONCONTEXT, activeBlock);
+						System.out.println("COMMONCONTEXT " + path);
+					}
 
 					if (Common.DEBUG) out.print("<p class=\"debug\">" + "path = " + path + "</p>");
 					pageContext.setAttribute("activeBlock", activeBlock, PageContext.REQUEST_SCOPE);
