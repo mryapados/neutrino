@@ -61,5 +61,19 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
-	
+	<tag>
+		<name>cache</name>
+		<tag-class>fr.cedricsevestre.taglib.Cache</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>key</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>lang</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
 </taglib>

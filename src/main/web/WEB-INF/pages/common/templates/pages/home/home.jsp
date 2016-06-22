@@ -13,6 +13,7 @@
 <%-- init : Obligatoire dans le JSP contenant le Doctype --%>
 <my:init test="${!initialized}"/>
 
+<my:cache>
 <!DOCTYPE html>
 <html lang="${language}">
 <my:head>
@@ -66,4 +67,4 @@
 </my:body>
 </html>
 			
-			
+		</my:cache>	

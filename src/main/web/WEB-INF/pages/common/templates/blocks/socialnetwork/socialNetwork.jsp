@@ -5,12 +5,21 @@
 
 <my:init test="${!initialized}"/>
 
-<my:discrimin name="socialnetwork" scope="page">
-	<h1>Je suis affiché</h1>
-</my:discrimin>
-<my:discrimin name="socialnetwork" scope="page">
-	<h1>Je ne suis pas affiché</h1>
-</my:discrimin>
+
+<my:cache>
+	<c:set var="test" value="test" />
+	<h1><c:out value="${test}" /></h1>
+	
+	<my:discrimin name="socialnetwork" scope="page">
+		<h1>Je suis affiché</h1>
+	</my:discrimin>
+	<my:discrimin name="socialnetwork" scope="page">
+		<h1>Je ne suis pas affiché</h1>
+	</my:discrimin>
+	
+</my:cache>
+
+
 
 <div class="socialnetwork">
 	<img src="<c:url value='/image/front/social/facebook.png'/>" />
