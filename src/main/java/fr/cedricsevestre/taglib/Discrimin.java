@@ -26,6 +26,7 @@ public class Discrimin extends TagSupport {
 	private String scope = null;
 	
 	public int doStartTag() {
+		logger.debug("Enter in doStartTag()");
 		Integer contextScope = PageContext.REQUEST_SCOPE;
 		if (scope !=null){
 			switch (scope.toUpperCase()) {

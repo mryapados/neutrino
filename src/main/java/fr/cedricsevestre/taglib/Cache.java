@@ -3,6 +3,7 @@ package fr.cedricsevestre.taglib;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -27,7 +28,7 @@ import fr.cedricsevestre.exception.TagException;
 
 @Component
 @Scope(value = "singleton")
-public class Cache extends SimpleTagSupport  {
+public class Cache extends SimpleTagSupport implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(Cache.class);
@@ -35,19 +36,17 @@ public class Cache extends SimpleTagSupport  {
 	private static Common common;
 	@Autowired
 	public void Common(Common common) {
-		System.out.println("enter in Cache Common");
 		Cache.common = common;
 	}
 
-	
-	
 	private String key = null;
 	private String lang = null;
 	
 	protected PageContext pageContext;
 	
 	public void doTag() throws JspException {	
-		System.out.println("enter in Cache doTag");
+		logger.debug("Enter in doTag()");
+				
 		pageContext = (PageContext) getJspContext();
 		
 		int hashCode = mkHashCode();
@@ -79,7 +78,7 @@ public class Cache extends SimpleTagSupport  {
 		return hashCode;
 	}
 	private Boolean contentFromCache(String pathFile){
-		System.out.println("Enter in contentFromCache()");
+		logger.debug("Enter in contentFromCache()");
 		JspWriter out = pageContext.getOut();
 		try {
 			String content = new String(Files.readAllBytes(Paths.get(pathFile)));
@@ -92,7 +91,7 @@ public class Cache extends SimpleTagSupport  {
 		}
 	}
 	private void contentFromBodyTag(String pathDir, String pathFile){
-		System.out.println("Enter in contentFromBodyTag()");
+		logger.debug("Enter in contentFromBodyTag()");
 		File file = new File(pathDir);
 		file.mkdirs();
 		

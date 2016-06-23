@@ -23,6 +23,7 @@ public class Body extends TagSupport {
 	private Logger logger = Logger.getLogger(Body.class);
 
 	public int doStartTag() {
+		logger.debug("Enter in doStartTag()");
 		JspWriter out = pageContext.getOut();
 		try {			
 			Boolean blockPreview = (Boolean) pageContext.getAttribute("blockPreview", PageContext.REQUEST_SCOPE);
@@ -49,6 +50,7 @@ public class Body extends TagSupport {
 	}
 
 	public int doEndTag() {
+		logger.debug("Enter in doEndTag()");
 		JspWriter out = pageContext.getOut();
 		try {
 			pageContext.include(Common.BASEPAGESPATH + "common/components/scripts.jsp");

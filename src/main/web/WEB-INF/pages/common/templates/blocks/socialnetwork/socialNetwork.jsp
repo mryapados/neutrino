@@ -5,7 +5,6 @@
 
 <my:init test="${!initialized}"/>
 
-
 <my:cache>
 	<c:set var="test" value="test" />
 	<h1><c:out value="${test}" /></h1>

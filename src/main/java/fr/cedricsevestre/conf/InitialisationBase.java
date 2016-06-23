@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -33,10 +34,13 @@ import fr.cedricsevestre.service.engine.NSchemaService;
 import fr.cedricsevestre.service.engine.PageService;
 import fr.cedricsevestre.service.engine.PositionService;
 import fr.cedricsevestre.service.engine.TemplateService;
+import fr.cedricsevestre.taglib.Head;
 
 
 @Component
 public class InitialisationBase {
+	private Logger logger = Logger.getLogger(InitialisationBase.class);
+	
 	public InitialisationBase() {
 
 	}
@@ -72,7 +76,7 @@ public class InitialisationBase {
 	private PageService pageService;
 	
 	public void run() throws ServiceException, InstantiationException, IllegalAccessException {
-		System.out.println("init");
+		logger.debug("init");
 		initLangs();
 		initUsers();
 		initNSchemas();
@@ -93,7 +97,7 @@ public class InitialisationBase {
 	private Lang langEN;
 	private Lang langFR;
 	public void initLangs() throws ServiceException{
-		System.out.println("init langs");
+		logger.debug("init langs");
 		langEN = new Lang("en");
 		langService.save(langEN);
 		
@@ -103,7 +107,7 @@ public class InitialisationBase {
 	
 	
 	public void initUsers() throws ServiceException{
-		System.out.println("init users");
+		logger.debug("init users");
 		Member member = new Member();
 		member.setLogin("admin");
 		ShaPasswordEncoder sha = new ShaPasswordEncoder();
@@ -129,7 +133,7 @@ public class InitialisationBase {
 	}
 
 	public void initTemplates() throws ServiceException{
-		System.out.println("init templates");
+		logger.debug("init templates");
 				
 		Template loginEN = templateService.translate(new Template(), langEN);
 		loginEN.setName("login_" + langEN.getCode().toUpperCase());
@@ -196,7 +200,7 @@ public class InitialisationBase {
 	}
 	
 	public void initPages() throws ServiceException{
-		System.out.println("init templates");
+		logger.debug("init templates");
 		
 		Page loginEN = pageService.translate(new Page(), langEN);
 		loginEN.setName("login_" + langEN.getCode().toUpperCase());
@@ -252,7 +256,7 @@ public class InitialisationBase {
 	}
 
 	public List<Position> initPositions() throws ServiceException{
-		System.out.println("init positions");
+		logger.debug("init positions");
 		
 		ArrayList<Position> positions = new ArrayList<>();
 		Position position = new Position();
@@ -306,7 +310,7 @@ public class InitialisationBase {
 		return positions;
 	}
 	public void initBlocs() throws ServiceException{
-		System.out.println("init blocs");
+		logger.debug("init blocs");
 		String name = "";
 		
 		Template templateEN = templateService.translate(new Template(), langEN);
@@ -508,7 +512,7 @@ public class InitialisationBase {
 		templateService.save(templateFR);
 	}
 	public void initPageBlocs() throws ServiceException{
-		System.out.println("init Page blocs");
+		logger.debug("init Page blocs");
 		Template templateEN = null;
 		Template templateFR = null;
 		String name = null;
@@ -574,7 +578,7 @@ public class InitialisationBase {
 	
 	
 	public List<MapTemplate> initMapTemplates() throws ServiceException{
-		System.out.println("init maps");
+		logger.debug("init maps");
 		
 		ArrayList<MapTemplate> mapTemplates = new ArrayList<>();
 		
@@ -602,7 +606,7 @@ public class InitialisationBase {
 	}
 	
 	public void initNSchemas() throws ServiceException{
-		System.out.println("init nShemas");
+		logger.debug("init nShemas");
 		
 		NSchema nSchema = new NSchema();
 		Map<String, NType> columns = new HashMap<>();
@@ -622,7 +626,7 @@ public class InitialisationBase {
 	
 	// FRONT DATAS
 	public void initProject() throws ServiceException, InstantiationException, IllegalAccessException{
-		System.out.println("init project");
+		logger.debug("init project");
 		
 		String name = "";
 		
@@ -643,7 +647,7 @@ public class InitialisationBase {
 	
 	
 	public void initAlbum() throws ServiceException, InstantiationException, IllegalAccessException{
-		System.out.println("init album");
+		logger.debug("init album");
 		String name = "";
 		
 		Album albumEN = albumService.translate(new Album(), langEN, Album.class);
@@ -666,7 +670,7 @@ public class InitialisationBase {
 	
 
 	public void initNDatas() throws ServiceException{
-		System.out.println("init nDatas");
+		logger.debug("init nDatas");
 		
 		Template template = templateService.findByName("article_EN");
 		

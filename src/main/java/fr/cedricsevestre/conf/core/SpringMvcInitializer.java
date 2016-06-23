@@ -26,7 +26,7 @@ public class SpringMvcInitializer extends AbstractAnnotationConfigDispatcherServ
 
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
-		System.out.println("onStartup");
+		logger.info("Enter in onStartup()");
 		super.onStartup(servletContext);
 		servletContext.addListener(new SessionListener());
 	}

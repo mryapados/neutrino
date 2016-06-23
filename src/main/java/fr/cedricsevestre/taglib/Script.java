@@ -18,6 +18,7 @@ public class Script extends BodyTagSupport  {
 	private String src = null;
 	
 	public int doStartTag() {
+		logger.debug("Enter in doStartTag()");
 		if (src != null){
 			String engineScript = (String) pageContext.getAttribute("NEngineScript", PageContext.REQUEST_SCOPE);
 			if (engineScript == null) engineScript = "";
@@ -30,6 +31,7 @@ public class Script extends BodyTagSupport  {
 	}
 	
 	public int doAfterBody() {
+		logger.debug("Enter in doAfterBody()");
 		String engineScript = (String) pageContext.getAttribute("NEngineScript", PageContext.REQUEST_SCOPE);
 		if (engineScript == null) engineScript = "";
 		String newLine = System.getProperty("line.separator");

@@ -23,6 +23,7 @@ public class Init extends TagSupport {
 	private Boolean test = null;
 	
 	public int doStartTag() {
+		logger.debug("Enter in doStartTag()");
 		if (test){
 			JspWriter out = pageContext.getOut();
 			try {

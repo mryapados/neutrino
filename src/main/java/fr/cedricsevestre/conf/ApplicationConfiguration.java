@@ -3,6 +3,7 @@ package fr.cedricsevestre.conf;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
@@ -30,6 +31,7 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.taglib.Head;
 
 @Configuration
 @ComponentScan(basePackages = "fr.cedricsevestre")
@@ -38,6 +40,7 @@ import fr.cedricsevestre.exception.ServiceException;
 @EnableTransactionManagement
 public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 
+	
 	@Bean
 	public UrlBasedViewResolver urlBasedViewResolver() {
 		UrlBasedViewResolver res = new InternalResourceViewResolver();
@@ -118,9 +121,10 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 		@Override
 		public void onApplicationEvent(final ContextRefreshedEvent event) {
 			count += 1;
-			System.out.println("Passage n°" + count);
+			Logger logger = Logger.getLogger(ApplicationConfiguration.class);
+			logger.info("Passage n°" + count);
 			if (count == 1) {
-				System.out.println("INIT");
+				logger.info("INIT");
 				try {
 					initialisationBase.run();
 

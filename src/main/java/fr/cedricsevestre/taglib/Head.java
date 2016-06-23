@@ -22,6 +22,7 @@ public class Head extends TagSupport {
 	private Logger logger = Logger.getLogger(Head.class);
 
 	public int doStartTag() {
+		logger.debug("Enter in doStartTag()");
 		JspWriter out = pageContext.getOut();
 		try {
 			out.println("<head>");
@@ -37,6 +38,7 @@ public class Head extends TagSupport {
 	}
 
 	public int doEndTag() {
+		logger.debug("Enter in doEndTag()");
 		JspWriter out = pageContext.getOut();
 		try {
 			pageContext.include(Common.BASEPAGESPATH + "common/components/css.jsp");

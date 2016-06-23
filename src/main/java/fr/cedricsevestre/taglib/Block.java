@@ -62,6 +62,7 @@ public class Block extends TagSupport {
 	private String position = null;
 
 	public int doStartTag() {
+		logger.debug("Enter in doStartTag()");
 		JspWriter out = pageContext.getOut();
 		try {
 			Boolean blockPreview = (Boolean) pageContext.getAttribute("blockPreview", PageContext.REQUEST_SCOPE);
@@ -103,6 +104,7 @@ public class Block extends TagSupport {
 //	}
 	
 	public void getJsp() throws ServletException, IOException{
+		logger.debug("Enter in getJsp()");
 		JspWriter out = pageContext.getOut();
 		if (Common.DEBUG) out.print("<p class=\"debug\">" + "Enter in getJSP()" + "</p>");
 		try {
