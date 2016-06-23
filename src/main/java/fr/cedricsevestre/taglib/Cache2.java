@@ -1,19 +1,14 @@
 package fr.cedricsevestre.taglib;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTagSupport;
-import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,43 +22,24 @@ import fr.cedricsevestre.exception.TagException;
 
 @Component
 @Scope(value = "singleton")
-public class Cache extends SimpleTagSupport  {
+public class Cache2 extends BodyTagSupport  {
 
 	private static final long serialVersionUID = 1L;
-	private Logger logger = Logger.getLogger(Cache.class);
+	private Logger logger = Logger.getLogger(Cache2.class);
 		
 	private static Common common;
 	@Autowired
 	public void Common(Common common) {
 		System.out.println("enter in Cache Common");
-		Cache.common = common;
+		Cache2.common = common;
 	}
 
-	
-	
 	private String key = null;
 	private String lang = null;
 	
-	protected PageContext pageContext;
-	
-	public void doTag() throws JspException {	
-		System.out.println("enter in Cache doTag");
-		pageContext = (PageContext) getJspContext();
+	public int doStartTag() {
+		System.out.println("enter in Cache doStartTag");
 		
-		int hashCode = mkHashCode();
-		
-		String pathDir = common.getWebInfFolder() + "cache/";
-		String pathFile = pathDir + hashCode;
-		
-		System.out.println("pathFile = " + pathFile);
-
-		if (!contentFromCache(pathFile)){
-			contentFromBodyTag(pathDir, pathFile);
-		}
-		
-	}	
-	
-	private int mkHashCode(){
 		int hashCode = 0;
 		if (key != null){
 			hashCode = key.hashCode();
@@ -76,49 +52,48 @@ public class Cache extends SimpleTagSupport  {
 			hashCode = prime * hashCode + ((pageClass == null) ? 0 : pageClass.hashCode());
 			hashCode = prime * hashCode + ((lang == null) ? 0 : lang.hashCode());
 		}
-		return hashCode;
-	}
-	private Boolean contentFromCache(String pathFile){
-		System.out.println("Enter in contentFromCache()");
-		JspWriter out = pageContext.getOut();
+		System.out.println("hashCode = " + hashCode);
+		
+		String path = common.getWebInfFolder() + "cache/" + hashCode;
 		try {
-			String content = new String(Files.readAllBytes(Paths.get(pathFile)));
+			String content = new String(Files.readAllBytes(Paths.get(path)));
+			JspWriter out = pageContext.getOut();
 			out.print(content);
-			return true;
+			return SKIP_BODY;
 		} catch (NoSuchFileException e) {
-			return false;
+			return EVAL_BODY_AGAIN;
 		} catch (IOException e) {
 			throw new TagException(e.getMessage(), e);
 		}
-	}
-	private void contentFromBodyTag(String pathDir, String pathFile){
-		System.out.println("Enter in contentFromBodyTag()");
-		File file = new File(pathDir);
-		file.mkdirs();
+	}	
+	
+	public int doAfterBody() {
+		System.out.println("enter in Cache doAfterBody");
+
+
 		
-		file = new File(pathFile);
-		try {
-			file.createNewFile();
-			FileWriter fw = new FileWriter(file);
+		BodyContent bodyContent = getBodyContent();
+		if (bodyContent != null){
+			System.out.println("ICI");
+			System.out.println(bodyContent.getString());
 			
-			StringWriter sw = new StringWriter();
-			getJspBody().invoke(sw);
-
-			fw.write(sw.toString());
-			fw.flush();
+			//bodyContent.clearBody();
 			
-			JspWriter out = pageContext.getOut();
-			out.print(sw);
-
-			fw.close();
-		} catch (IOException e) {
-			//TODO
-			e.printStackTrace();
-		} catch (JspException e) {
-			//TODO
-			e.printStackTrace();
 		}
+		
+		
+
+		
+		
+		
+		return SKIP_BODY;
 	}
+	
+	
+	
+	
+	
+	
 	
 
 	public String getKey() {

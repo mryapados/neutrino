@@ -13,7 +13,6 @@
 <%-- init : Obligatoire dans le JSP contenant le Doctype --%>
 <my:init test="${!initialized}"/>
 
-<my:cache>
 <!DOCTYPE html>
 <html lang="${language}">
 <my:head>
@@ -33,6 +32,9 @@
 	<link href="<c:url value='/style/project.css'/>" rel="stylesheet">
 </my:head>
 <my:body>
+
+	<my:cache>
+
 	<section id="control">
 		<header>
 			<my:block position="header" />
@@ -64,7 +66,8 @@
 		</article>
 	</section>
 
+
+	</my:cache>
+
 </my:body>
 </html>
-			
-		</my:cache>	

@@ -491,6 +491,21 @@ public class InitialisationBase {
 		templateFR.setName(name + "_" + langFR.getCode().toUpperCase());
 		templateFR.setDescription(name + " description fr");
 		templateService.save(templateFR);
+		
+		
+		
+		templateEN = templateService.translate(new Template(), langEN);
+		name = "testcache";
+		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		templateEN.setDescription(name + " description en");
+		templateEN.setPath("tests/cache/cache");
+		templateEN.setType(Template.TemplateType.BLOCK);
+		templateService.save(templateEN);
+		
+		templateFR = templateService.translate(templateEN, langFR);
+		templateFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		templateFR.setDescription(name + " description fr");
+		templateService.save(templateFR);
 	}
 	public void initPageBlocs() throws ServiceException{
 		System.out.println("init Page blocs");
@@ -581,6 +596,7 @@ public class InitialisationBase {
 		
 		mapTemplates.add(addMapTemplate("home_EN","blockTest3_EN", "article", 10));
 		mapTemplates.add(addMapTemplate("home_EN","socialNetwork_EN", "article", 20));
+		mapTemplates.add(addMapTemplate("home_EN","testcache_EN", "article", 10));
 		
 		return mapTemplates;
 	}
