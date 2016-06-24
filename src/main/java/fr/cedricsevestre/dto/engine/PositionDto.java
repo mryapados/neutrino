@@ -45,13 +45,13 @@ public class PositionDto implements Serializable {
 		return new PositionDto(position.getId(), position.getName(), new ArrayList<>());
 	}
 
-	public static Position to(PositionDto positionDto){
-		List<MapTemplate> mapTemplates = new ArrayList<>();
-		for (MapTemplateDto mapTemplateDto : positionDto.getMapTemplateDtos()) {
-			mapTemplates.add(MapTemplateDto.to(mapTemplateDto, positionDto));
-		}
-		return new Position(positionDto.getId(), positionDto.getName(), mapTemplates);
-	}
+//	public static Position to(PositionDto positionDto){
+//		List<MapTemplate> mapTemplates = new ArrayList<>();
+//		for (MapTemplateDto mapTemplateDto : positionDto.getMapTemplateDtos()) {
+//			mapTemplates.add(MapTemplateDto.to(mapTemplateDto, positionDto));
+//		}
+//		return new Position(positionDto.getId(), positionDto.getName(), mapTemplates);
+//	}
 
 	public Integer getId() {
 		return id;

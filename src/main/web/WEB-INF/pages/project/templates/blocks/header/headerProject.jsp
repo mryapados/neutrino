@@ -11,7 +11,7 @@
        		<img src="<c:url value='/image/front/logo.png'/>" />
         </a>
     </div>
-    <a class="navbar-brand" href="#"><p><c:out value="${project}" /></p></a>
+    <a class="navbar-brand" href="#"><p><c:out value="${activeObject.name} - ${activeObject.id}" /></p></a>
 
 	<div id="navbar" class="navbar-collapse collapse">
 		<div class="navbar-form navbar-right">

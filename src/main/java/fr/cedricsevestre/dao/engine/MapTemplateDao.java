@@ -9,9 +9,10 @@ import org.springframework.stereotype.Repository;
 import fr.cedricsevestre.entity.engine.MapTemplate;
 import fr.cedricsevestre.entity.engine.Position;
 import fr.cedricsevestre.entity.engine.Template;
+import fr.cedricsevestre.entity.engine.Translation;
 
 @Repository
 public interface MapTemplateDao extends BaseDao<MapTemplate> {
 	@Query("SELECT mt FROM MapTemplate mt WHERE mt.model=:model AND mt.position=:position ORDER BY mt.ordered")
-	List<MapTemplate> findAllForModelAndPosition(@Param("model") Template model, @Param("position") Position position);
+	List<MapTemplate> findAllForModelAndPosition(@Param("model") Translation model, @Param("position") Position position);
 }

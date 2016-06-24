@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.entity.engine.Page;
+import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.entity.engine.User;
 
 @Component
@@ -31,7 +32,11 @@ public class Body extends TagSupport {
 				User surfer = (User) pageContext.getAttribute("surfer", PageContext.REQUEST_SCOPE);
 				if (surfer.getRole().equals(User.ROLE_ADMIN)){
 					Page page = (Page) pageContext.getAttribute("page", PageContext.REQUEST_SCOPE);
-					out.println("<body data-ng-app=\"backApp\" data-ng-controller=\"BlockManagementCtrl\" data-ng-init=\"init('" + page.getName() + "')\">");
+					Translation activeObject = (Translation) pageContext.getAttribute("activeObject", PageContext.REQUEST_SCOPE);
+					String initObjects = "'" + page.getName() + "'";
+					if (activeObject != null) initObjects += "," + activeObject.getId();
+					
+					out.println("<body data-ng-app=\"backApp\" data-ng-controller=\"BlockManagementCtrl\" data-ng-init=\"init('" + initObjects + "')\">");
 				} else {
 					out.println("<body data-ng-app=\"frontApp\">");
 				}

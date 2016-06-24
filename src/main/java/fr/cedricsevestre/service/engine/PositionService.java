@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import fr.cedricsevestre.dao.engine.PositionDao;
 import fr.cedricsevestre.entity.engine.Position;
 import fr.cedricsevestre.entity.engine.Template;
+import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 
 @Service
@@ -30,23 +31,19 @@ public class PositionService extends BaseService<Position>{
 			throw new ServiceException("erreur findById position", e);
 		}
 	}
-	
+
 	@Deprecated
-	public Position findByNameWithMaps(String name) throws ServiceException {
+	public Position findByNameForModelWithMaps(Translation model, String positionName) throws ServiceException {
 		try {
-			return positionDao.findByNameWithMaps(name);
+			return positionDao.findByNameForModelWithMaps(model, positionName);
 		} catch (PersistenceException e) {
 			throw new ServiceException("erreur findById position", e);
 		}
 	}
-	public Position findByNameForModelWithMaps(Template model, String positionName) throws ServiceException {
+	
+	public Position findByNameForModelsWithMaps(List<Translation> models, String positionName) throws ServiceException {
 		try {
-			
-//			Position pos = positionDao.findByNameWithMaps(model, position);
-//			if (pos == null) System.out.println("model = " + model.getName() + ", position = " + position + ", NULL");
-//			else System.out.println("model = " + model.getName() + ", position = " + position + ", " + pos.getName());
-			
-			return positionDao.findByNameForModelWithMaps(model, positionName);
+			return positionDao.findByNameForModelsWithMaps(models, positionName);
 		} catch (PersistenceException e) {
 			throw new ServiceException("erreur findById position", e);
 		}
@@ -55,14 +52,6 @@ public class PositionService extends BaseService<Position>{
 	public List<Position> findAll() throws ServiceException {
 		try {
 			return positionDao.findAll();
-		} catch (PersistenceException e) {
-			throw new ServiceException("erreur findAll Position", e);
-		}
-	}
-	
-	public List<Position> findAllWithMaps() throws ServiceException {
-		try {
-			return positionDao.findAllWithMaps();
 		} catch (PersistenceException e) {
 			throw new ServiceException("erreur findAll Position", e);
 		}

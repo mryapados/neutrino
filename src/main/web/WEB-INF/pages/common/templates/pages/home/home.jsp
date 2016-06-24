@@ -33,7 +33,7 @@
 </my:head>
 <my:body>
 
-	<my:cache>
+<%-- 	<my:cache> --%>
 
 	<section id="control">
 		<header>
@@ -67,7 +67,7 @@
 	</section>
 
 
-	</my:cache>
+<%-- 	</my:cache> --%>
 
 </my:body>
 </html>

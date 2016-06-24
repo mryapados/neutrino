@@ -24,7 +24,7 @@ public class LoginController extends AbtractController {
 		System.out.println("login controller");
 		ModelAndView modelAndView = null;
 		try {
-			modelAndView = baseView(LOGINPAGE);
+			modelAndView = baseView(LOGINPAGE, null);
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

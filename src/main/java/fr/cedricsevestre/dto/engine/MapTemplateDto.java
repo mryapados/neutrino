@@ -3,6 +3,7 @@ package fr.cedricsevestre.dto.engine;
 import java.io.Serializable;
 
 import fr.cedricsevestre.entity.engine.MapTemplate;
+import fr.cedricsevestre.entity.engine.Template;
 
 public class MapTemplateDto implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -13,7 +14,7 @@ public class MapTemplateDto implements Serializable {
 	// mapTemplates et que chaque mapTemplate à une position
 	
 	private Integer id;
-	private TemplateDto model;
+	private BaseDto model;
 	private TemplateDto block;
 	private Integer ordered;
 
@@ -21,7 +22,7 @@ public class MapTemplateDto implements Serializable {
 
 	}
 
-	public MapTemplateDto(Integer id, TemplateDto model, TemplateDto block, Integer ordered) {
+	public MapTemplateDto(Integer id, BaseDto model, TemplateDto block, Integer ordered) {
 		super();
 		this.id = id;
 		this.model = model;
@@ -30,13 +31,13 @@ public class MapTemplateDto implements Serializable {
 	}
 
 	public static MapTemplateDto from(MapTemplate mapTemplate) {
-		return new MapTemplateDto(mapTemplate.getId(), TemplateDto.from(mapTemplate.getModel()), TemplateDto.from(mapTemplate.getBlock()), mapTemplate.getOrdered());
+		return new MapTemplateDto(mapTemplate.getId(), BaseDto.from(mapTemplate.getModel()), TemplateDto.from(mapTemplate.getBlock()), mapTemplate.getOrdered());
 	}
 	
-	// Si on veut convertir un objet MapTemplateDto, il faut fournir sa position
-	public static MapTemplate to(MapTemplateDto mapTemplateDto, PositionDto positionDto) {
-		return new MapTemplate(mapTemplateDto.getId(), TemplateDto.to(mapTemplateDto.getModel()), TemplateDto.to(mapTemplateDto.getBlock()), PositionDto.to(positionDto), mapTemplateDto.getOrdered());
-	}
+//	// Si on veut convertir un objet MapTemplateDto, il faut fournir sa position
+//	public static MapTemplate to(MapTemplateDto mapTemplateDto, PositionDto positionDto) {
+//		return new MapTemplate(mapTemplateDto.getId(), TemplateDto.to(mapTemplateDto.getModel()), TemplateDto.to(mapTemplateDto.getBlock()), PositionDto.to(positionDto), mapTemplateDto.getOrdered());
+//	}
 
 	
 	public Integer getId() {
@@ -47,11 +48,11 @@ public class MapTemplateDto implements Serializable {
 		this.id = id;
 	}
 
-	public TemplateDto getModel() {
+	public BaseDto getModel() {
 		return model;
 	}
 
-	public void setModel(TemplateDto model) {
+	public void setModel(BaseDto model) {
 		this.model = model;
 	}
 

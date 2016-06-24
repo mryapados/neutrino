@@ -28,7 +28,7 @@ public class MapTemplate implements Serializable{
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name="model")
-	private Template model;
+	private Translation model;
 
 	@NotNull
 	@ManyToOne
@@ -72,11 +72,11 @@ public class MapTemplate implements Serializable{
 		this.id = id;
 	}
 
-	public Template getModel() {
+	public Translation getModel() {
 		return model;
 	}
 
-	public void setModel(Template model) {
+	public void setModel(Translation model) {
 		this.model = model;
 	}
 

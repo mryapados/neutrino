@@ -19,17 +19,8 @@ public class StaticController extends AbtractController {
 		System.out.println("static controller");
 		
 		ModelAndView modelAndView = null;
-		
 		try {
-
-//			String pageName = page;
-//			Page page2 = common.getPage(pageName);
-//			Template model = page2.getModel();
-//			modelAndView = baseView(model, page2.getContext());
-//			modelAndView.addObject("page", page);
-			
-			modelAndView = baseView(page);
-			
+			modelAndView = baseView(page, null);
 
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block

@@ -17,22 +17,24 @@ import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.entity.custom.Member;
 import fr.cedricsevestre.entity.engine.Page;
 import fr.cedricsevestre.entity.engine.Template;
+import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.entity.engine.User;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.TemplateService;
+import fr.cedricsevestre.service.engine.TranslationService;
 import fr.cedricsevestre.service.engine.UserService;
 
 @Controller
 @Scope("prototype")
 @SessionAttributes( value="blockPreview", types={Boolean.class} )
-public class AbtractController {
+public abstract class AbtractController {
 	
 	@Autowired
 	private UserService userService;
 	
 	@Autowired
 	private TemplateService templateService;
-	
+		
 	@ModelAttribute("surfer")
 	public User addUserToScope() throws ServiceException {
 		System.out.println("Enter in addUserToScope()");
@@ -67,19 +69,19 @@ public class AbtractController {
 	@Autowired
 	protected Common common;
 
-	public ModelAndView baseView(String pageNameWithoutLangCode) throws ServiceException {
+	public ModelAndView baseView(String pageNameWithoutLangCode, Translation activeObject) throws ServiceException {
 		Locale locale = LocaleContextHolder.getLocale();
-		return baseView(common.getPage(pageNameWithoutLangCode, locale.getLanguage()));
+		return baseView(common.getPage(pageNameWithoutLangCode, locale.getLanguage()), activeObject);
 	}
 	
-	
-	public ModelAndView baseView(Page page) throws ServiceException {
+	public ModelAndView baseView(Page page, Translation activeObject) throws ServiceException {
 		if (Common.DEBUG) System.out.println(this.getClass() + " - baseview - page : " + page.getName());
 		Template model = page.getModel();
 		String pathContext = page.getContext();
 		ModelAndView modelAndView = baseView(model, pathContext);
 		
 		modelAndView.addObject("page", page);
+		modelAndView.addObject("activeObject", activeObject);
 		
 		return modelAndView;
 	}

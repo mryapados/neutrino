@@ -23,6 +23,7 @@ import fr.cedricsevestre.entity.engine.NType.ValueType;
 import fr.cedricsevestre.entity.engine.Page;
 import fr.cedricsevestre.entity.engine.Position;
 import fr.cedricsevestre.entity.engine.Template;
+import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.AlbumService;
 import fr.cedricsevestre.service.custom.MemberService;
@@ -85,9 +86,11 @@ public class InitialisationBase {
 		initPositions();
 		initBlocs();
 		initPageBlocs();
+		
+		initProject();
+		
 		initMapTemplates();
 
-		initProject();
 		initAlbum();
 		
 		initNDatas();
@@ -565,9 +568,9 @@ public class InitialisationBase {
 //		templateService.save(template);
 	}
 	
-	public MapTemplate addMapTemplate(String model, String block, String position, Integer ordered) throws ServiceException{
+	public MapTemplate addMapTemplate(Translation model, String block, String position, Integer ordered) throws ServiceException{
 		MapTemplate mapTemplate = new MapTemplate();
-		mapTemplate.setModel(templateService.findByName(model));
+		mapTemplate.setModel(model);
 		mapTemplate.setBlock(templateService.findByName(block));
 		mapTemplate.setPosition(positionService.findByName(position));
 		mapTemplate.setOrdered(ordered);
@@ -575,32 +578,39 @@ public class InitialisationBase {
 		return mapTemplate;
 	}
 	
-	
+
 	
 	public List<MapTemplate> initMapTemplates() throws ServiceException{
 		logger.debug("init maps");
 		
 		ArrayList<MapTemplate> mapTemplates = new ArrayList<>();
 		
-		mapTemplates.add(addMapTemplate("homeProject_EN","headerProject_EN", "header", 10));
-		mapTemplates.add(addMapTemplate("homeProject_EN","socialNetwork_EN", "aside", 10));
-		mapTemplates.add(addMapTemplate("homeProject_EN","album_EN", "nav", 10));
-		mapTemplates.add(addMapTemplate("homeProject_EN","blockTest1_EN", "nav", 20));
-		mapTemplates.add(addMapTemplate("homeProject_EN","blockTest2_EN", "nav", 30));
-//		mapTemplates.add(addMapTemplate("homeProject_EN","articleContent", "article", 10));
-//		mapTemplates.add(addMapTemplate("homeProject_EN","articleTitle", "article", 10));
+		mapTemplates.add(addMapTemplate(templateService.findByName("homeProject_EN"),"headerProject_EN", "header", 10));
+		mapTemplates.add(addMapTemplate(templateService.findByName("homeProject_EN"),"socialNetwork_EN", "aside", 10));
+		mapTemplates.add(addMapTemplate(templateService.findByName("homeProject_EN"),"album_EN", "nav", 10));
+		mapTemplates.add(addMapTemplate(templateService.findByName("homeProject_EN"),"blockTest1_EN", "nav", 20));
+		mapTemplates.add(addMapTemplate(templateService.findByName("homeProject_EN"),"blockTest2_EN", "nav", 30));
+//		mapTemplates.add(addMapTemplate(templateService.findByName("homeProject_EN"),"articleContent", "article", 10));
+//		mapTemplates.add(addMapTemplate(templateService.findByName("homeProject_EN"),"articleTitle", "article", 10));
 		
-		mapTemplates.add(addMapTemplate("article_EN","articleTitle_EN", "title", 10));
-		mapTemplates.add(addMapTemplate("article_EN","articleContent_EN", "content", 20));
-		mapTemplates.add(addMapTemplate("homeProject_EN","article_EN", "article", 10));
+		mapTemplates.add(addMapTemplate(templateService.findByName("article_EN"),"articleTitle_EN", "title", 10));
+		mapTemplates.add(addMapTemplate(templateService.findByName("article_EN"),"articleContent_EN", "content", 20));
+		mapTemplates.add(addMapTemplate(templateService.findByName("homeProject_EN"),"article_EN", "article", 10));
 		
-		mapTemplates.add(addMapTemplate("article2_EN","socialNetwork_EN", "title", 10));
-		mapTemplates.add(addMapTemplate("homeProject_EN","article2_EN", "article", 10));
+		mapTemplates.add(addMapTemplate(templateService.findByName("article2_EN"),"socialNetwork_EN", "title", 10));
+		mapTemplates.add(addMapTemplate(templateService.findByName("homeProject_EN"),"article2_EN", "article", 10));
 		
 		
-		mapTemplates.add(addMapTemplate("home_EN","blockTest3_EN", "article", 10));
-		mapTemplates.add(addMapTemplate("home_EN","socialNetwork_EN", "article", 20));
-		mapTemplates.add(addMapTemplate("home_EN","testcache_EN", "article", 10));
+		mapTemplates.add(addMapTemplate(projectService.findByName("testproject_EN"),"map_EN", "article", 10));
+		mapTemplates.add(addMapTemplate(projectService.findByName("testproject_FR"),"vectormapfra_EN", "article", 10));
+		
+		
+		mapTemplates.add(addMapTemplate(templateService.findByName("home_EN"),"blockTest3_EN", "article", 10));
+		mapTemplates.add(addMapTemplate(templateService.findByName("home_EN"),"socialNetwork_EN", "article", 20));
+		mapTemplates.add(addMapTemplate(templateService.findByName("home_EN"),"testcache_EN", "article", 10));
+		
+		
+		
 		
 		return mapTemplates;
 	}
