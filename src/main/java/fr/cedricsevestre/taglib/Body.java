@@ -36,7 +36,7 @@ public class Body extends TagSupport {
 					String initObjects = "'" + page.getName() + "'";
 					if (activeObject != null) initObjects += "," + activeObject.getId();
 					
-					out.println("<body data-ng-app=\"backApp\" data-ng-controller=\"BlockManagementCtrl\" data-ng-init=\"init('" + initObjects + "')\">");
+					out.println("<body data-ng-app=\"backApp\" data-ng-controller=\"BlockManagementCtrl\" data-ng-init=\"init(" + initObjects + ")\">");
 				} else {
 					out.println("<body data-ng-app=\"frontApp\">");
 				}

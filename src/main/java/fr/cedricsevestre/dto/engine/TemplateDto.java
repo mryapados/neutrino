@@ -12,7 +12,7 @@ import fr.cedricsevestre.entity.engine.MapTemplate;
 import fr.cedricsevestre.entity.engine.Template;
 import fr.cedricsevestre.entity.engine.Template.TemplateType;
 
-public class TemplateDto extends BaseDto {
+public class TemplateDto extends TranslationDto {
 	private static final long serialVersionUID = 1L;
 
 	@NotNull
@@ -35,9 +35,9 @@ public class TemplateDto extends BaseDto {
 
 	}
 
-	public TemplateDto(Integer id, String name, Date dateAdd, String description, LangDto langDto, TemplateType type, String path,
+	public TemplateDto(String objectType, Integer id, String name, Date dateAdd, String description, LangDto langDto, TemplateType type, String path,
 			String metaDescription, String metaTitle, String metaKeyWords) {
-		super(id, name, dateAdd, description, langDto);
+		super(objectType, id, name, dateAdd, description, langDto);
 		this.type = type;
 		this.path = path;
 		this.metaDescription = metaDescription;
@@ -46,7 +46,7 @@ public class TemplateDto extends BaseDto {
 	}
 
 	public static TemplateDto from(Template template) {
-		return new TemplateDto(template.getId(), template.getName(), template.getDateAdd(), template.getDescription(), LangDto.from(template.getLang()), 
+		return new TemplateDto(template.getObjectType(), template.getId(), template.getName(), template.getDateAdd(), template.getDescription(), LangDto.from(template.getLang()), 
 				template.getType(), template.getPath(), template.getMetaDescription(), template.getMetaTitle(),
 				template.getMetaKeyWords());
 	}

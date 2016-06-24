@@ -1,31 +1,21 @@
 package fr.cedricsevestre.controller.rest;
 
-import java.io.File;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 import javax.validation.Valid;
 
-import org.hibernate.loader.custom.Return;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,7 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.controller.engine.AbtractController;
-import fr.cedricsevestre.dao.engine.PageDao;
+import fr.cedricsevestre.dto.engine.TranslationDto;
 import fr.cedricsevestre.dto.engine.BlockDto;
 import fr.cedricsevestre.dto.engine.LangDto;
 import fr.cedricsevestre.dto.engine.MapTemplateDto;
@@ -51,13 +41,16 @@ import fr.cedricsevestre.entity.engine.Page;
 import fr.cedricsevestre.entity.engine.Position;
 import fr.cedricsevestre.entity.engine.Template;
 import fr.cedricsevestre.entity.engine.Template.TemplateType;
+import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.exception.FormException;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.LangService;
 import fr.cedricsevestre.service.engine.MapTemplateService;
 import fr.cedricsevestre.service.engine.PageService;
 import fr.cedricsevestre.service.engine.PositionService;
+import fr.cedricsevestre.service.engine.TObjectService;
 import fr.cedricsevestre.service.engine.TemplateService;
+import fr.cedricsevestre.service.engine.TranslationService;
 
 @RestController
 @Scope("prototype")
@@ -79,6 +72,9 @@ public class BackController extends AbtractController {
 	
 	@Autowired
 	private MapTemplateService mapTemplateService;
+	
+	@Autowired
+	private TObjectService tObjectService;
 	
 	@RequestMapping(value = "/templates/exist/", method = RequestMethod.GET)
 	public @ResponseBody Boolean checkJSPExist(@ModelAttribute("context") String context, @ModelAttribute("type") String type, @ModelAttribute("path") String path, @ModelAttribute("name") String name) throws ServiceException {
@@ -105,13 +101,26 @@ public class BackController extends AbtractController {
 		return mapPositions;
 	}
 
-	@RequestMapping(value = "models/{model}/positions/{position}/blocks", method = RequestMethod.GET)
+	@RequestMapping(value = "models/{model}/activeobjects/{activeobject}/positions/{position}/blocks", method = RequestMethod.GET)
 	public @ResponseBody List<BlockDto> getBlocksForPosition(
 			@PathVariable(value = "model") String modelName, 
+			@PathVariable(value = "activeobject") Integer activeObjectId, 
 			@PathVariable(value = "position") String positionName) throws ServiceException {
 		List<BlockDto> blockDtos = new ArrayList<>();
+		
+		List<Translation> models = new ArrayList<>();
 		Template template = templateService.findByName(modelName);
-		Position pos = positionService.findByNameForModelWithMaps(template, positionName);
+		models.add(template);
+
+		Translation activeObject = null;
+		if (activeObjectId > 0){
+			activeObject = tObjectService.findById(activeObjectId);
+		}
+		if (activeObject != null){
+			models.add(activeObject);
+		}
+		Position pos = positionService.findByNameForModelsWithMaps(models, positionName);
+
 		if (pos != null){
 			List<MapTemplate> mapTemplates;
 			mapTemplates = pos.getMapTemplates();
@@ -202,7 +211,11 @@ public class BackController extends AbtractController {
 		return langsDto;
 	}
 	
-	
+	@RequestMapping(value = "/tobjects/{id}", method = RequestMethod.GET)
+	public @ResponseBody TranslationDto getTObject(@PathVariable(value = "id") Integer id) throws ServiceException {
+		Translation translation = tObjectService.findById(id);
+		return TranslationDto.from(translation);
+	}
 	
 	@RequestMapping(value = "/pages/{name}", method = RequestMethod.GET)
 	public @ResponseBody PageDto getPage(@PathVariable(value = "name") String pageName) throws ServiceException {

@@ -72,10 +72,14 @@ public class Block extends TagSupport {
 				User surfer = (User) pageContext.getAttribute("surfer", PageContext.REQUEST_SCOPE);
 				if (surfer.getRole().equals(User.ROLE_ADMIN)){
 					Template model = (Template) pageContext.getAttribute("activeBlock", PageContext.REQUEST_SCOPE);
+					Translation activeObject = (Translation) pageContext.getAttribute("activeObject", PageContext.REQUEST_SCOPE);
 					Page page = (Page) pageContext.getAttribute("page", PageContext.REQUEST_SCOPE);
 					if (model == null) model = page.getModel();
 					
-					out.println("<data-ui-position model=\"" + model.getName() + "\" position=\"" + position + "\" />");
+					Integer activeObjectId = 0;
+					if (activeObject != null) activeObjectId = activeObject.getId();
+					
+					out.println("<data-ui-position model=\"" + model.getName() + "\" activeobject=\"" + activeObjectId + "\" position=\"" + position + "\" />");
 				} else {
 					getJsp();
 				}

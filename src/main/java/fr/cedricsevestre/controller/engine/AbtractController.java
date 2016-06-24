@@ -21,7 +21,6 @@ import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.entity.engine.User;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.TemplateService;
-import fr.cedricsevestre.service.engine.TranslationService;
 import fr.cedricsevestre.service.engine.UserService;
 
 @Controller

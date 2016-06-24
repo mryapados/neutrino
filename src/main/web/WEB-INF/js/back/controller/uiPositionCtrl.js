@@ -2,13 +2,13 @@ var bModule = angular.module('backApp');
 
 bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateService, TemplateService, BlockManagementService) {
 	TemplateService.getTemplate($scope.model).then(function(data) {
-
 		var model = data;
 		var position = $scope.position;
-		
+		var activeObject = $scope.activeobject;
+
 		$scope.modelType = model.type;	
 		
-		BlockService.getBlocksForModelPosition(model.name, position).then(function(data) {
+		BlockService.getBlocksForModelPosition(model.name, activeObject, position).then(function(data) {
 			$scope.blocks = data;
 		});
 		

@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 import fr.cedricsevestre.entity.engine.Page;
 
-public class PageDto extends BaseDto {
+public class PageDto extends TranslationDto {
 	private static final long serialVersionUID = 1L;
 
 	@NotNull
@@ -22,14 +22,14 @@ public class PageDto extends BaseDto {
 
 	}
 
-	public PageDto(Integer id, String name, Date dateAdd, String description, LangDto langDto, String context, TemplateDto model) {
-		super(id, name, dateAdd, description, langDto);
+	public PageDto(String objectType, Integer id, String name, Date dateAdd, String description, LangDto langDto, String context, TemplateDto model) {
+		super(objectType, id, name, dateAdd, description, langDto);
 		this.context = context;
 		this.model = model;
 	}
 
 	public static PageDto from(Page page) {
-		return new PageDto(page.getId(), page.getName(), page.getDateAdd(), 
+		return new PageDto(page.getObjectType(), page.getId(), page.getName(), page.getDateAdd(), 
 				page.getDescription(), LangDto.from(page.getLang()),
 				page.getContext(), TemplateDto.from(page.getModel()));
 	}

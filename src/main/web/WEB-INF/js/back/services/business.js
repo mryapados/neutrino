@@ -1,8 +1,9 @@
 (function() {
 	var bModule = angular.module('backServices');
 
-	bModule.service('BlockManagementService', function($rootScope, $q, $modal, LangService, PageService, TemplateService, BlockService, MapTemplateService, PATH) {
+	bModule.service('BlockManagementService', function($rootScope, $q, $modal, LangService, PageService, TemplateService, BlockService, MapTemplateService, TObjectService, PATH) {
 		var page;
+		var activeObject = null;
 		self = this;
 		
 		var templates;
@@ -14,14 +15,23 @@
 			return langs;
 		};
 		
-		self.init = function(viewPage) {
+		self.init = function(pageName, activeObjectId) {
 			var deferred = $q.defer();
-			var promise = PageService.getPage(viewPage)
+			var promise = PageService.getPage(pageName)
 			.then(function(data){
 				page = data;
 			})
 			.then(function(){
+				if (activeObjectId != null){
+					TObjectService.getTObject(activeObjectId).then(function(data){
+						activeObject = data;
+					});
+				}
+			})
+			.then(function(){
 				self.initLangs();
+				
+				
 			})
 			.then(function(){
 				self.initTemplates();
@@ -36,11 +46,28 @@
 		};
 		
 		
+		
+
+		
 		self.initLangs = function() {
 			var deferred = $q.defer();
 			if (!langs) {
 				LangService.getLangs().then(function(data) {
 					langs = data;
+					deferred.resolve();
+				});
+			} else {
+				deferred.resolve();
+			}
+			return deferred.promise;
+		};
+		
+		self.initTemplates = function() {
+			var deferred = $q.defer();
+			if (!templates) {
+				TemplateService.getTemplates().then(function(data) {
+					templates = data;
+					console.log(data);
 					deferred.resolve();
 				});
 			} else {
@@ -61,7 +88,6 @@
 			}
 			return deferred.promise;
 		};
-		
 		self.getParsedBlock = function(blockName) {
 			return PATH.URL_SERVER_REST + '@back/parsedblock/' + page.name + '/' + blockName;
 		}
@@ -173,10 +199,19 @@
 			return PageResource.getAll().$promise;
 		};
 	});
+	bModule.service('TObjectService', function(TObjectResource, PATH) {
+		self = this;
+		self.getTObject = function(id) {
+			return TObjectResource.get({id : id}).$promise;
+		};
+	});
+	
+	
+	
 	bModule.service('BlockService', function(BlockResource, PATH) {
 		self = this;
-		self.getBlocksForModelPosition = function(modelName, positionName) {
-			return BlockResource.getAll({model : modelName, position : positionName}).$promise;
+		self.getBlocksForModelPosition = function(modelName, activeObject, positionName) {
+			return BlockResource.getAll({model : modelName, activeobject:activeObject, position : positionName}).$promise;
 		};
 	});
 	bModule.service('PositionService', function(PositionRepository, PATH) {

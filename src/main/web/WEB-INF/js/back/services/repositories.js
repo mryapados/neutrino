@@ -65,8 +65,8 @@
 	});
 	
 	bModule.factory("BlockResource", function($resource, PATH) {
-	  	var API_URI = '@back/models/:model/positions/:position/blocks';  				
-	  	return $resource(PATH.URL_SERVER_REST + API_URI, {model: '@model', positions: '@positions'}, {
+	  	var API_URI = '@back/models/:model/activeobjects/:activeobject/positions/:position/blocks';  				
+	  	return $resource(PATH.URL_SERVER_REST + API_URI, {model: '@model', activeobject: '@activeobject', positions: '@position'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -138,7 +138,16 @@
 	  	});
 	});
 	
-	
+	bModule.factory("TObjectResource", function($resource, PATH) {
+	  	var API_URI = '@back/tobjects/:id';			
+	  	return $resource(PATH.URL_SERVER_REST + API_URI, {id: '@id'}, {
+	  		save:   {method: 'POST'},
+	  		get:    {method: 'GET'},
+	  		getAll: {method: 'GET', isArray: true},
+	  		remove: {method: 'DELETE'},
+	  		update: {method: 'PUT'}
+	  	});
+	});
 	
 	
 }());

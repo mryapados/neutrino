@@ -90,6 +90,7 @@
 			scope: {
 				position: '@',
 				model: '@',
+				activeobject: '@',
 			},
 			restrict: 'E',
 			templateUrl: PATH.URL_TEMPLATE_JS + 'ui-position.html', 

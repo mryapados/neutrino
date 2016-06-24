@@ -10,9 +10,10 @@ import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 import fr.cedricsevestre.entity.engine.Translation;
 
-public class BaseDto implements Serializable {
+public class TranslationDto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	private String objectType;
 	
 	private Integer id;
 	
@@ -20,6 +21,7 @@ public class BaseDto implements Serializable {
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	private String name;
 	
+	@NotNull
 	private Date dateAdd;
 	
 	@NotNull
@@ -28,12 +30,13 @@ public class BaseDto implements Serializable {
 
 	private LangDto lang;
 	
-	public BaseDto() {
+	public TranslationDto() {
 
 	}
 
-	public BaseDto(Integer id, String name, Date dateAdd, String description, LangDto lang) {
+	public TranslationDto(String objectType, Integer id, String name, Date dateAdd, String description, LangDto lang) {
 		super();
+		this.objectType = objectType;
 		this.id = id;
 		this.name = name;
 		this.dateAdd = dateAdd;
@@ -41,8 +44,17 @@ public class BaseDto implements Serializable {
 		this.lang = lang;
 	}
 
-	public static BaseDto from(Translation base) {
-		return new BaseDto(base.getId(), base.getName(), base.getDateAdd(), base.getDescription(), LangDto.from(base.getLang()));
+	public static TranslationDto from(Translation translation) {
+		return new TranslationDto(translation.getObjectType(), translation.getId(), translation.getName(), translation.getDateAdd(), translation.getDescription(), LangDto.from(translation.getLang()));
+	}
+
+	
+	public String getObjectType() {
+		return objectType;
+	}
+
+	public void setObjectType(String objectType) {
+		this.objectType = objectType;
 	}
 
 	public Integer getId() {

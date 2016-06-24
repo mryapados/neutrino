@@ -15,7 +15,6 @@ import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.entity.engine.TranslationProvider;
 import fr.cedricsevestre.exception.ServiceException;
 
-@Service
 @Scope(value = "singleton")
 public abstract class TranslationService<T extends Translation> extends BaseService<T>{
 

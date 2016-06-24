@@ -14,7 +14,7 @@ public class MapTemplateDto implements Serializable {
 	// mapTemplates et que chaque mapTemplate à une position
 	
 	private Integer id;
-	private BaseDto model;
+	private TranslationDto model;
 	private TemplateDto block;
 	private Integer ordered;
 
@@ -22,7 +22,7 @@ public class MapTemplateDto implements Serializable {
 
 	}
 
-	public MapTemplateDto(Integer id, BaseDto model, TemplateDto block, Integer ordered) {
+	public MapTemplateDto(Integer id, TranslationDto model, TemplateDto block, Integer ordered) {
 		super();
 		this.id = id;
 		this.model = model;
@@ -31,7 +31,7 @@ public class MapTemplateDto implements Serializable {
 	}
 
 	public static MapTemplateDto from(MapTemplate mapTemplate) {
-		return new MapTemplateDto(mapTemplate.getId(), BaseDto.from(mapTemplate.getModel()), TemplateDto.from(mapTemplate.getBlock()), mapTemplate.getOrdered());
+		return new MapTemplateDto(mapTemplate.getId(), TranslationDto.from(mapTemplate.getModel()), TemplateDto.from(mapTemplate.getBlock()), mapTemplate.getOrdered());
 	}
 	
 //	// Si on veut convertir un objet MapTemplateDto, il faut fournir sa position
@@ -48,11 +48,11 @@ public class MapTemplateDto implements Serializable {
 		this.id = id;
 	}
 
-	public BaseDto getModel() {
+	public TranslationDto getModel() {
 		return model;
 	}
 
-	public void setModel(BaseDto model) {
+	public void setModel(TranslationDto model) {
 		this.model = model;
 	}
 
