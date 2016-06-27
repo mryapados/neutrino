@@ -27,7 +27,7 @@ public class Init extends TagSupport {
 		if (test){
 			JspWriter out = pageContext.getOut();
 			try {
-				pageContext.include(Common.BASEADMINPATH + "components/init.jsp");
+				pageContext.include(Common.BASE_WEBINF_ADMIN_PATH + "components/init.jsp");
 				pageContext.setAttribute("initialized", true, PageContext.REQUEST_SCOPE);
 			} catch (IOException | ServletException e) {
 				try {

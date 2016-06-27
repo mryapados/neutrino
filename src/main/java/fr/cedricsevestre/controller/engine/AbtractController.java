@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -76,7 +77,7 @@ public abstract class AbtractController {
 	public ModelAndView baseView(Page page, Translation activeObject) throws ServiceException {
 		if (Common.DEBUG) System.out.println(this.getClass() + " - baseview - page : " + page.getName());
 		Template model = page.getModel();
-		String pathContext = page.getContext();
+		String pathContext = Common.BASE_PAGES_VIEWS_PATH + page.getContext();
 		ModelAndView modelAndView = baseView(model, pathContext);
 		
 		modelAndView.addObject("page", page);
@@ -86,7 +87,7 @@ public abstract class AbtractController {
 	}
 	
 	public ModelAndView baseView(Template template, String pathContext) throws ServiceException {
-		String pathModelAndView = "pages/" + pathContext + "/templates/" + templateService.pathType(template) + "/" + template.getPath();
+		String pathModelAndView = pathContext + "/templates/" + templateService.pathType(template) + "/" + template.getPath();
 		ModelAndView modelAndView = new ModelAndView(pathModelAndView);
 		modelAndView.addObject("applicationFolder", common.getApplicationFolder());
 		modelAndView.addObject("template", template);

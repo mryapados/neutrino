@@ -39,8 +39,14 @@ public class Common {
 	public static final String BACK = "back";
 	public static final String FRONT = "front";
 	
-	public static final String BASEADMINPATH = "/WEB-INF/admin/";
-	public static final String BASEPAGESPATH = "/WEB-INF/pages/";
+	public static final String BASE_WEBINF = "/WEB-INF/";
+	public static final String BASE_PAGES_VIEWS_PATH = "pages/views/";
+	public static final String BASE_WEBINF_ADMIN_PATH = BASE_WEBINF + "admin/";
+	public static final String BASE_WEBINF_PAGES_VIEWS_PATH = BASE_WEBINF + BASE_PAGES_VIEWS_PATH;
+	public static final String BASE_PAGES_COMMON_PATH = "pages/common/";
+	public static final String BASE_WEBINF_PAGES_COMMON_PATH = BASE_WEBINF + "pages/common/";
+	
+	
 	
 	public static final String COMMONCONTEXT = "common";
 	

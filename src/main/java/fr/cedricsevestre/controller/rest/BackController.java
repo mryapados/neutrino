@@ -142,9 +142,9 @@ public class BackController extends AbtractController {
 			Page page = pageService.findByName(pageName);
 			Template block = templateService.findByName(blockName);
 
-			String pathContext = page.getContext();			
+			String pathContext = Common.BASE_PAGES_VIEWS_PATH + page.getContext();		
 			if (!templateService.checkJSPExist(common.getWebInfFolder(), pathContext, block)){
-				pathContext = Common.COMMONCONTEXT;
+				pathContext = Common.BASE_PAGES_COMMON_PATH;
 			}
 			
 			modelAndView = baseView(block, pathContext);

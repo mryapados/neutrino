@@ -41,9 +41,10 @@ public class Head extends TagSupport {
 		logger.debug("Enter in doEndTag()");
 		JspWriter out = pageContext.getOut();
 		try {
-			pageContext.include(Common.BASEPAGESPATH + "common/components/css.jsp");
+			pageContext.include(Common.BASE_WEBINF_PAGES_COMMON_PATH + "components/css.jsp");
 			User surfer = (User) pageContext.getAttribute("surfer", PageContext.REQUEST_SCOPE);
 			if (surfer.getRole().equals(User.ROLE_ADMIN)){
+				//TODO change applicationFolder to c:url
 				String applicationFolder = (String) pageContext.getAttribute("applicationFolder", PageContext.REQUEST_SCOPE);
 				out.println("<link href=\"" + applicationFolder + "/style/app.css\" rel=\"stylesheet\">");
 			} 

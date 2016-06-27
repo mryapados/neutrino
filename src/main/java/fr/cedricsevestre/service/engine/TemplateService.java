@@ -78,7 +78,7 @@ public class TemplateService extends TranslationService<Template>{
 	public String pathJSP(String pathContext, Template template) throws ServiceException{	
 		String pathBlock = pathType(template) + "/" + template.getPath();
 		StringBuilder path = new StringBuilder();
-		path.append(Common.BASEPAGESPATH);
+		//path.append(Common.BASE_PAGES_VIEWS_PATH);
 		path.append(pathContext);
 		path.append("/templates/");
 		path.append(pathBlock);

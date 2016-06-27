@@ -58,7 +58,7 @@ public class Body extends TagSupport {
 		logger.debug("Enter in doEndTag()");
 		JspWriter out = pageContext.getOut();
 		try {
-			pageContext.include(Common.BASEPAGESPATH + "common/components/scripts.jsp");
+			pageContext.include(Common.BASE_WEBINF_PAGES_COMMON_PATH + "components/scripts.jsp");
 			String engineScript = (String) pageContext.getAttribute("NEngineScript", PageContext.REQUEST_SCOPE); 
 			if (engineScript != null){
 				out.println(engineScript);		
@@ -66,11 +66,11 @@ public class Body extends TagSupport {
 			
 			User surfer = (User) pageContext.getAttribute("surfer", PageContext.REQUEST_SCOPE);
 			if (surfer.getRole().equals(User.ROLE_ADMIN)){
-				pageContext.include(Common.BASEADMINPATH + "components/blockPreview.jsp");
+				pageContext.include(Common.BASE_WEBINF_ADMIN_PATH + "components/blockPreview.jsp");
 				
 				Boolean blockPreview = (Boolean) pageContext.getAttribute("blockPreview", PageContext.REQUEST_SCOPE);
 				if (blockPreview){
-					pageContext.include(Common.BASEADMINPATH + "components/backManagement.jsp");
+					pageContext.include(Common.BASE_WEBINF_ADMIN_PATH + "components/backManagement.jsp");
 				}
 			}
 			out.println("</body>");

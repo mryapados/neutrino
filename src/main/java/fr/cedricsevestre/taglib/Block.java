@@ -145,12 +145,12 @@ public class Block extends TagSupport {
 						}
 					}
 					
-					String pathContext = page.getContext();
+					String pathContext = Common.BASE_WEBINF_PAGES_VIEWS_PATH + page.getContext();
 					String path = null;				
 					if (templateService.checkJSPExist(common.getWebInfFolder(), pathContext, activeBlock)){
 						path = templateService.pathJSP(pathContext, activeBlock);
 					} else {
-						path = templateService.pathJSP(Common.COMMONCONTEXT, activeBlock);
+						path = templateService.pathJSP(Common.BASE_WEBINF_PAGES_COMMON_PATH, activeBlock);
 						System.out.println("COMMONCONTEXT " + path);
 					}
 
