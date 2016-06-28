@@ -46,14 +46,10 @@ public class Common {
 	public static final String BASE_PAGES_COMMON_PATH = "pages/common/";
 	public static final String BASE_WEBINF_PAGES_COMMON_PATH = BASE_WEBINF + "pages/common/";
 	
-	
-	
-	public static final String COMMONCONTEXT = "common";
-	
 	public String getWebInfFolder() {
-		// TODO double check lockin
-		if (webInfFolder == null) 
-			webInfFolder = servletContext.getRealPath("/WEB-INF/");
+		if (webInfFolder == null) {
+			webInfFolder = servletContext.getRealPath(BASE_WEBINF);
+		}
 		return webInfFolder;
 	}
 	
@@ -69,7 +65,6 @@ public class Common {
 	}
 		
 	public String getApplicationFolder() {
-		// TODO double check lockin
 		if (applicationFolder == null) 
 			applicationFolder = environment.getProperty("application.folder");
 		return applicationFolder;

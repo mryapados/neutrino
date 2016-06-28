@@ -10,7 +10,6 @@ import fr.cedricsevestre.exception.ServiceException;
 
 @Controller
 @Scope("prototype")
-//@RequestMapping(value = "/")
 public class HomeController extends AbtractController{
 	public static final String HOMEPAGE = "home";
 	

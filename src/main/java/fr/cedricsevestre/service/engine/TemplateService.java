@@ -78,7 +78,7 @@ public class TemplateService extends TranslationService<Template>{
 	public String pathJSP(String pathContext, Template template) throws ServiceException{	
 		String pathBlock = pathType(template) + "/" + template.getPath();
 		StringBuilder path = new StringBuilder();
-		//path.append(Common.BASE_PAGES_VIEWS_PATH);
+		path.append(Common.BASE_WEBINF);
 		path.append(pathContext);
 		path.append("/templates/");
 		path.append(pathBlock);
@@ -90,6 +90,7 @@ public class TemplateService extends TranslationService<Template>{
 		File d = new File(webInfFolder);
 		System.out.println("webInfFolder = " + webInfFolder);
 		String path = d.getParent().replace("\\", "/") + pathJSP(pathContext, template);
+		//String path = webInfFolder.replace("\\", "/") + pathJSP(pathContext, template);
 		System.out.println("path = " + path);
 		File f = new File(path);
 		if(f.exists() && !f.isDirectory()) { 
