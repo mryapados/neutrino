@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,6 +33,7 @@ import fr.cedricsevestre.service.custom.AlbumService;
 import fr.cedricsevestre.service.custom.MemberService;
 import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.custom.TagService;
+import fr.cedricsevestre.service.engine.IBaseService;
 import fr.cedricsevestre.service.engine.LangService;
 import fr.cedricsevestre.service.engine.MapTemplateService;
 import fr.cedricsevestre.service.engine.NDataService;
@@ -55,9 +58,11 @@ public class InitialisationBase {
 	@Autowired
 	private AlbumService albumService;
 
+//	@Resource(name="tagService")
+//	private IBaseService<Tag> tagService;
+	
 	@Autowired
 	private TagService tagService;
-	
 	
 	@Autowired
 	private LangService langService;

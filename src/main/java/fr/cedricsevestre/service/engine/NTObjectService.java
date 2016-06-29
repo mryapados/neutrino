@@ -8,7 +8,7 @@ import fr.cedricsevestre.entity.engine.Translation;
 
 @Service
 @Scope(value = "singleton")
-public class NTObjectService extends BaseService<NoTranslation>{
+public class NTObjectService extends NoTranslationService<NoTranslation>{
 
 
 

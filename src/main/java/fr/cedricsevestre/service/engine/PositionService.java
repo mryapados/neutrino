@@ -50,14 +50,6 @@ public class PositionService extends BaseService<Position>{
 		}
 	}
 	
-	public List<Position> findAll() throws ServiceException {
-		try {
-			return positionDao.findAll();
-		} catch (PersistenceException e) {
-			throw new ServiceException("erreur findAll Position", e);
-		}
-	}
-	
 	public List<Position> findAllForModelWithMaps(Template modelName) throws ServiceException {
 		try {
 			return positionDao.findAllForModelWithMaps(modelName);
@@ -73,16 +65,5 @@ public class PositionService extends BaseService<Position>{
 			throw new ServiceException("erreur findAllEmptyWithMaps Position", e);
 		}
 	}
-	
-	
-	public Logger getLogger() {
-		return logger;
-	}
-
-	public void setLogger(Logger logger) {
-		this.logger = logger;
-	}
-
-
 
 }

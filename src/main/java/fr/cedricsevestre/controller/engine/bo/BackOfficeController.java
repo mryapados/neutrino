@@ -19,6 +19,7 @@ import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.engine.NTObjectService;
+import fr.cedricsevestre.service.engine.TObjectService;
 import fr.cedricsevestre.service.engine.TemplateService;
 
 @Controller
@@ -58,6 +59,9 @@ public class BackOfficeController extends AbtractController {
 	@Autowired
 	private NTObjectService nTObjectService;
 	
+	@Autowired
+	private TObjectService tObjectService;
+	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView viewList(@ModelAttribute("type") String type) {
 		ModelAndView modelAndView = null;
@@ -80,7 +84,10 @@ public class BackOfficeController extends AbtractController {
 //			}
 			
 			
-			
+			List<Translation> translations = tObjectService.findAll();
+			for (Translation translation : translations) {
+				System.out.println(translation.getObjectType() + " - " + translation.getName());
+			}
 			
 			List<NoTranslation> noTranslations = nTObjectService.findAll();
 			for (NoTranslation noTranslation : noTranslations) {

@@ -27,14 +27,6 @@ public class UserService extends BaseService<User>{
 			throw new ServiceException("erreur findByLogin player", e);
 		}
 	}
-	
-	public Logger getLogger() {
-		return logger;
-	}
-
-	public void setLogger(Logger logger) {
-		this.logger = logger;
-	}
 
 
 }

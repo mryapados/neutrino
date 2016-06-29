@@ -16,14 +16,14 @@ import fr.cedricsevestre.exception.ServiceException;
 
 @Service
 @Scope(value = "singleton")
-public abstract class BaseService<T>{
+public abstract class BaseService<T> implements IBaseService<T>{
 
 	private Logger logger = Logger.getLogger(BaseService.class);
 
 	@Autowired
 	private BaseDao<T> baseDao;
 
-
+	@Override
 	@Transactional
 	public T save(T base) throws ServiceException {
 		logger.debug("appel de la methode save Base ");
@@ -35,7 +35,7 @@ public abstract class BaseService<T>{
 		}
 	}
 
-
+	@Override
 	@Transactional
 	public void remove(T base) throws ServiceException {
 		logger.debug("appel de la methode remove Base ");
@@ -53,7 +53,7 @@ public abstract class BaseService<T>{
 		}
 	}
 
-
+	@Override
 	@Transactional(rollbackFor = ServiceException.class)
 	public void removeById(Integer id) throws ServiceException {
 		logger.debug("appel de la methode removeById Base id " + id);
@@ -71,7 +71,7 @@ public abstract class BaseService<T>{
 		}
 	}
 	
-
+	@Override
 	public T findById(Integer id) throws ServiceException {
 		try {
 			return baseDao.findOne(id);
@@ -80,7 +80,7 @@ public abstract class BaseService<T>{
 		}
 	}
 	
-
+	@Override
 	public List<T> findAll() throws ServiceException {
 		try {
 			return baseDao.findAll();
