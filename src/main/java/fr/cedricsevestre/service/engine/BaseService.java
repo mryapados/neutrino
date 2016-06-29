@@ -23,6 +23,7 @@ public abstract class BaseService<T>{
 	@Autowired
 	private BaseDao<T> baseDao;
 
+
 	@Transactional
 	public T save(T base) throws ServiceException {
 		logger.debug("appel de la methode save Base ");
@@ -33,6 +34,7 @@ public abstract class BaseService<T>{
 			throw new ServiceException("erreur save Base", e);
 		}
 	}
+
 
 	@Transactional
 	public void remove(T base) throws ServiceException {
@@ -51,6 +53,7 @@ public abstract class BaseService<T>{
 		}
 	}
 
+
 	@Transactional(rollbackFor = ServiceException.class)
 	public void removeById(Integer id) throws ServiceException {
 		logger.debug("appel de la methode removeById Base id " + id);
@@ -68,6 +71,7 @@ public abstract class BaseService<T>{
 		}
 	}
 	
+
 	public T findById(Integer id) throws ServiceException {
 		try {
 			return baseDao.findOne(id);
@@ -75,6 +79,8 @@ public abstract class BaseService<T>{
 			throw new ServiceException("erreur findById Base", e);
 		}
 	}
+	
+
 	public List<T> findAll() throws ServiceException {
 		try {
 			return baseDao.findAll();
@@ -83,14 +89,7 @@ public abstract class BaseService<T>{
 		}
 	}
 
-	public Logger getLogger() {
-		return logger;
-	}
-
-	public void setLogger(Logger logger) {
-		this.logger = logger;
-	}
-
+	
 
 
 

@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import fr.cedricsevestre.dao.engine.PositionDao;
+import fr.cedricsevestre.entity.custom.Tag;
 import fr.cedricsevestre.entity.engine.Position;
 import fr.cedricsevestre.entity.engine.Template;
 import fr.cedricsevestre.entity.engine.Translation;

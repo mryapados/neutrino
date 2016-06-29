@@ -18,7 +18,7 @@ import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 @Entity
-@Table(name = "translation")
+@Table(name = "notranslation")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name="object_type")
 public abstract class NoTranslation implements IdProvider, Serializable {

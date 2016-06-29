@@ -1,5 +1,7 @@
 package fr.cedricsevestre.controller.engine.bo;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.annotation.Secured;
@@ -11,9 +13,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import fr.cedricsevestre.controller.engine.AbtractController;
 import fr.cedricsevestre.entity.custom.Project;
+import fr.cedricsevestre.entity.engine.IdProvider;
+import fr.cedricsevestre.entity.engine.NoTranslation;
 import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.ProjectService;
+import fr.cedricsevestre.service.engine.NTObjectService;
 import fr.cedricsevestre.service.engine.TemplateService;
 
 @Controller
@@ -43,5 +48,75 @@ public class BackOfficeController extends AbtractController {
 //	private Translation getActiveObject(String projectName) throws ServiceException{
 //		return projectService.findByName(projectName);
 //	}
+	
+	
+	
+	
+//	@Autowired
+//	private ObjectService objectService;
+	
+	@Autowired
+	private NTObjectService nTObjectService;
+	
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView viewList(@ModelAttribute("type") String type) {
+		ModelAndView modelAndView = null;
+		
+		try {
+//			
+//			List<Object> objects = objectService.findAll();
+//			for (Object object : objects) {
+//				
+//				
+//				IdProvider provided = (IdProvider) object;
+//				System.out.println(provided.getObjectType() + " - " + provided.getName() + " - " + provided.getId());
+//
+//				
+////				System.out.println(object.toString());
+//				
+////				System.out.println(noTranslation.getObjectType() + " - " + noTranslation.getName());
+//
+//				
+//			}
+			
+			
+			
+			
+			List<NoTranslation> noTranslations = nTObjectService.findAll();
+			for (NoTranslation noTranslation : noTranslations) {
+				System.out.println(noTranslation.getObjectType() + " - " + noTranslation.getName());
+			}
+//			
+			
+			
+			
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+//		try {
+//			//modelAndView = baseView(HOMEPROJECTPAGE, getActiveObject(project));
+//			modelAndView.addObject("project", project);
+//		} catch (ServiceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		return modelAndView;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

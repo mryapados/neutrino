@@ -4,6 +4,9 @@
        <to>/admin/index</to>
     </rule>
 
+
+
+
     <rule>
        <from>^/article-([0-9])/$</from>
        <to>/article/article?id=$1</to>

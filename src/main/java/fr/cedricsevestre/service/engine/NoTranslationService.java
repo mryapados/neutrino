@@ -6,51 +6,42 @@ import javax.persistence.PersistenceException;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.cedricsevestre.dao.engine.TranslationDao;
-import fr.cedricsevestre.dao.engine.TranslationProviderDao;
-import fr.cedricsevestre.entity.engine.Lang;
-import fr.cedricsevestre.entity.engine.Translation;
-import fr.cedricsevestre.entity.engine.TranslationProvider;
+import fr.cedricsevestre.dao.engine.NoTranslationDao;
+import fr.cedricsevestre.entity.engine.NoTranslation;
 import fr.cedricsevestre.exception.ServiceException;
 
 @Service
 @Scope(value = "singleton")
-public abstract class TranslationService<T extends Translation>{
+public abstract class NoTranslationService<T extends NoTranslation> implements IBaseService<T>{
 
-	private Logger logger = Logger.getLogger(TranslationService.class);
-
-	@Autowired
-	private TranslationDao<T> translationDao;
+	private Logger logger = Logger.getLogger(NoTranslationService.class);
 
 	@Autowired
-	protected TranslationProviderDao translationProviderDao;
-	
-	
-	
+	private NoTranslationDao<T> noTranslationDao;
+
+	@Override
 	@Transactional
 	public T save(T base) throws ServiceException {
 		logger.debug("appel de la methode save Base ");
 		try {
-			return translationDao.save(base);
+			return noTranslationDao.save(base);
 		} catch (PersistenceException e) {
 			logger.error("erreur save Base " + e.getMessage());
 			throw new ServiceException("erreur save Base", e);
 		}
 	}
 
-
+	@Override
 	@Transactional
 	public void remove(T base) throws ServiceException {
 		logger.debug("appel de la methode remove Base ");
 		try {
-			translationDao.delete(base);
+			noTranslationDao.delete(base);
 		} catch (EmptyResultDataAccessException e) {
 			logger.error("erreur remove Base " + e.getMessage());
 			throw new ServiceException("Base id doesn't exist", e);
@@ -63,12 +54,12 @@ public abstract class TranslationService<T extends Translation>{
 		}
 	}
 
-
+	@Override
 	@Transactional(rollbackFor = ServiceException.class)
 	public void removeById(Integer id) throws ServiceException {
 		logger.debug("appel de la methode removeById Base id " + id);
 		try {
-			translationDao.delete(id);
+			noTranslationDao.delete(id);
 		} catch (EmptyResultDataAccessException e) {
 			logger.error("erreur remove Base " + e.getMessage());
 			throw new ServiceException("Base id doesn't exist", e);
@@ -81,19 +72,19 @@ public abstract class TranslationService<T extends Translation>{
 		}
 	}
 	
-
+	@Override
 	public T findById(Integer id) throws ServiceException {
 		try {
-			return translationDao.findOne(id);
+			return noTranslationDao.findOne(id);
 		} catch (PersistenceException e) {
 			throw new ServiceException("erreur findById Base", e);
 		}
 	}
 	
-
+	@Override
 	public List<T> findAll() throws ServiceException {
 		try {
-			return translationDao.findAll();
+			return noTranslationDao.findAll();
 		} catch (PersistenceException e) {
 			throw new ServiceException("erreur findAll Base", e);
 		}
@@ -101,44 +92,13 @@ public abstract class TranslationService<T extends Translation>{
 
 	public T findByName(String name) throws ServiceException {
 		try {
-			System.out.println("findbyname " + name + " " + translationDao);
+			System.out.println("findbyname " + name + " " + noTranslationDao);
 			
-			return translationDao.findByName(name);
+			return noTranslationDao.findByName(name);
 		} catch (PersistenceException e) {
 			throw new ServiceException("erreur findByName Base", e);
 		}
 	}
-
-	@Transactional
-	public T translate(T base, Lang lang, Class<T> cls) throws ServiceException, InstantiationException, IllegalAccessException {
-		T translated = cls.newInstance(); 
-
-		TranslationProvider translation = base.getTranslation();
-		if (translation == null){
-			translation = translationProviderDao.save(new TranslationProvider());
-		}
-		translated.setLang(lang);
-		translated.setTranslation(translation);
-		translated.setName(base.getName());
-
-		return translated;
-	}
-
-	
-	public Logger getLogger() {
-		return logger;
-	}
-
-	public void setLogger(Logger logger) {
-		this.logger = logger;
-	}
-
-
-
-
-
-
-
 
 
 }

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.custom.Album.AlbumType;
 import fr.cedricsevestre.entity.custom.Member;
 import fr.cedricsevestre.entity.custom.Project;
+import fr.cedricsevestre.entity.custom.Tag;
 import fr.cedricsevestre.entity.engine.Lang;
 import fr.cedricsevestre.entity.engine.MapTemplate;
 import fr.cedricsevestre.entity.engine.NData;
@@ -28,6 +30,7 @@ import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.AlbumService;
 import fr.cedricsevestre.service.custom.MemberService;
 import fr.cedricsevestre.service.custom.ProjectService;
+import fr.cedricsevestre.service.custom.TagService;
 import fr.cedricsevestre.service.engine.LangService;
 import fr.cedricsevestre.service.engine.MapTemplateService;
 import fr.cedricsevestre.service.engine.NDataService;
@@ -52,6 +55,10 @@ public class InitialisationBase {
 	@Autowired
 	private AlbumService albumService;
 
+	@Autowired
+	private TagService tagService;
+	
+	
 	@Autowired
 	private LangService langService;
 	
@@ -91,7 +98,8 @@ public class InitialisationBase {
 		
 		initMapTemplates();
 
-		initAlbum();
+		initAlbums();
+		initTags();
 		
 		initNDatas();
 		
@@ -656,8 +664,8 @@ public class InitialisationBase {
 	}
 	
 	
-	public void initAlbum() throws ServiceException, InstantiationException, IllegalAccessException{
-		logger.debug("init album");
+	public void initAlbums() throws ServiceException, InstantiationException, IllegalAccessException{
+		logger.debug("init albums");
 		String name = "";
 		
 		Album albumEN = albumService.translate(new Album(), langEN, Album.class);
@@ -677,7 +685,20 @@ public class InitialisationBase {
 		
 	}
 	
-	
+	public void initTags() throws ServiceException, InstantiationException, IllegalAccessException{
+		logger.debug("init tags");
+		
+		Tag tag = new Tag();
+		tag.setName("testtag");
+		tag.setDescription("description tag");
+		tagService.save(tag);
+			
+		tag = new Tag();
+		tag.setName("testtag2");
+		tag.setDescription("description tag2");
+		tagService.save(tag);
+			
+	}
 
 	public void initNDatas() throws ServiceException{
 		logger.debug("init nDatas");
