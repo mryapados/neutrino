@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.custom.Album.AlbumType;
+import fr.cedricsevestre.entity.custom.Marker;
 import fr.cedricsevestre.entity.custom.Member;
 import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.custom.Tag;
@@ -30,6 +31,7 @@ import fr.cedricsevestre.entity.engine.Template;
 import fr.cedricsevestre.entity.engine.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.AlbumService;
+import fr.cedricsevestre.service.custom.MarkerService;
 import fr.cedricsevestre.service.custom.MemberService;
 import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.custom.TagService;
@@ -57,12 +59,12 @@ public class InitialisationBase {
 	
 	@Autowired
 	private AlbumService albumService;
-
-//	@Resource(name="tagService")
-//	private IBaseService<Tag> tagService;
 	
 	@Autowired
 	private TagService tagService;
+	
+	@Autowired
+	private MarkerService markerService;
 	
 	@Autowired
 	private LangService langService;
@@ -105,6 +107,7 @@ public class InitialisationBase {
 
 		initAlbums();
 		initTags();
+		initMarkers();
 		
 		initNDatas();
 		
@@ -704,7 +707,21 @@ public class InitialisationBase {
 		tagService.save(tag);
 			
 	}
-
+	
+	public void initMarkers() throws ServiceException, InstantiationException, IllegalAccessException{
+		logger.debug("init markers");
+		
+		Marker marker = new Marker();
+		marker.setName("testmarker");
+		marker.setDescription("description marker");
+		markerService.save(marker);
+			
+		marker = new Marker();
+		marker.setName("testmarker2");
+		marker.setDescription("description marker2");
+		markerService.save(marker);
+			
+	}
 	public void initNDatas() throws ServiceException{
 		logger.debug("init nDatas");
 		

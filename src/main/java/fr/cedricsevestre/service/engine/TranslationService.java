@@ -42,6 +42,14 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 		}
 	}
 
+	public List<Translation> findAllForType(String type) throws ServiceException {
+		try {
+			return translationDao.findAllForType(type);
+		} catch (PersistenceException e) {
+			throw new ServiceException("erreur findAll Base", e);
+		}
+	}
+	
 	@Transactional
 	public T translate(T base, Lang lang, Class<T> cls) throws ServiceException, InstantiationException, IllegalAccessException {
 		T translated = cls.newInstance(); 

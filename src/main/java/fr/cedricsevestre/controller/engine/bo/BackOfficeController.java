@@ -84,12 +84,12 @@ public class BackOfficeController extends AbtractController {
 //			}
 			
 			
-			List<Translation> translations = tObjectService.findAll();
+			List<Translation> translations = tObjectService.findAllForType(type);
 			for (Translation translation : translations) {
 				System.out.println(translation.getObjectType() + " - " + translation.getName());
 			}
 			
-			List<NoTranslation> noTranslations = nTObjectService.findAll();
+			List<NoTranslation> noTranslations = nTObjectService.findAllForType(type);
 			for (NoTranslation noTranslation : noTranslations) {
 				System.out.println(noTranslation.getObjectType() + " - " + noTranslation.getName());
 			}

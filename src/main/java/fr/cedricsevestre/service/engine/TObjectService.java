@@ -9,7 +9,4 @@ import fr.cedricsevestre.entity.engine.Translation;
 @Scope(value = "singleton")
 public class TObjectService extends TranslationService<Translation>{
 
-
-
-
 }

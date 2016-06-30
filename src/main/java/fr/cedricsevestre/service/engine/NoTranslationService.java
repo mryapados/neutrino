@@ -34,6 +34,13 @@ public abstract class NoTranslationService<T extends NoTranslation> extends Base
 			throw new ServiceException("erreur findByName Base", e);
 		}
 	}
-
+	
+	public List<NoTranslation> findAllForType(String type) throws ServiceException {
+		try {
+			return noTranslationDao.findAllForType(type);
+		} catch (PersistenceException e) {
+			throw new ServiceException("erreur findAll Base", e);
+		}
+	}
 
 }
