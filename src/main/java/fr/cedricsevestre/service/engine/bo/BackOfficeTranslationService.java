@@ -24,28 +24,13 @@ public class BackOfficeTranslationService{
 
 	private Logger logger = Logger.getLogger(BackOfficeTranslationService.class);
 
-//	@Autowired
-//	private TranslationService<Translation> translationService;
-	
-	
 	@Autowired
 	private TObjectService tObjectService;
-	
 
-	public List<Translation> getAll(String type) throws ServiceException{
-		
-		
-		List<Translation> translations = tObjectService.findAll();
-		for (Translation translation : translations) {
-			System.out.println(translation.getObjectType() + " - " + translation.getName());
-		}
-		
-		
+	public List<Translation> findAllForType(String type) throws ServiceException{
+		List<Translation> translations = tObjectService.findAllForType(type);
 		return translations;
 	}
-
-
-
 
 
 

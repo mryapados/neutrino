@@ -18,6 +18,7 @@ import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.ProjectService;
+import fr.cedricsevestre.service.engine.bo.BackOfficeTranslationService;
 import fr.cedricsevestre.service.engine.notranslation.NTObjectService;
 import fr.cedricsevestre.service.engine.translation.TObjectService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
@@ -62,38 +63,39 @@ public class BackOfficeController extends AbtractController {
 	@Autowired
 	private TObjectService tObjectService;
 	
+	@Autowired
+	private BackOfficeTranslationService backOfficeTranslationService;
+	
+	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView viewList(@ModelAttribute("type") String type) {
 		ModelAndView modelAndView = null;
 		
 		try {
-//			
-//			List<Object> objects = objectService.findAll();
-//			for (Object object : objects) {
-//				
-//				
-//				IdProvider provided = (IdProvider) object;
-//				System.out.println(provided.getObjectType() + " - " + provided.getName() + " - " + provided.getId());
-//
-//				
-////				System.out.println(object.toString());
-//				
-////				System.out.println(noTranslation.getObjectType() + " - " + noTranslation.getName());
-//
-//				
+
+			
+			
+//			List<Translation> translations = tObjectService.findAllForType(type);
+//			for (Translation translation : translations) {
+//				System.out.println(translation.getObjectType() + " - " + translation.getName());
 //			}
-			
-			
-			List<Translation> translations = tObjectService.findAllForType(type);
-			for (Translation translation : translations) {
-				System.out.println(translation.getObjectType() + " - " + translation.getName());
-			}
-			
-			List<NoTranslation> noTranslations = nTObjectService.findAllForType(type);
-			for (NoTranslation noTranslation : noTranslations) {
-				System.out.println(noTranslation.getObjectType() + " - " + noTranslation.getName());
-			}
 //			
+//			List<NoTranslation> noTranslations = nTObjectService.findAllForType(type);
+//			for (NoTranslation noTranslation : noTranslations) {
+//				System.out.println(noTranslation.getObjectType() + " - " + noTranslation.getName());
+//			}
+
+			
+			
+			
+			List<Translation> translations = backOfficeTranslationService.findAllForType(type);
+			for (Translation translation : translations) {
+				Project project = (Project) translation;
+				
+				System.out.println(project.getObjectType() + " - " + project.getName());
+			}
+			
+			
 			
 			
 			
