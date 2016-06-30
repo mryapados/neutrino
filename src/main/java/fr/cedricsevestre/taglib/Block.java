@@ -15,20 +15,20 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.common.Common;
-import fr.cedricsevestre.entity.engine.MapTemplate;
-import fr.cedricsevestre.entity.engine.NData;
-import fr.cedricsevestre.entity.engine.NSchema;
-import fr.cedricsevestre.entity.engine.NSchema.ScopeType;
-import fr.cedricsevestre.entity.engine.Page;
-import fr.cedricsevestre.entity.engine.Position;
-import fr.cedricsevestre.entity.engine.Template;
-import fr.cedricsevestre.entity.engine.Template.TemplateType;
-import fr.cedricsevestre.entity.engine.Translation;
-import fr.cedricsevestre.entity.engine.User;
+import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
+import fr.cedricsevestre.entity.engine.independant.objects.NData;
+import fr.cedricsevestre.entity.engine.independant.objects.NSchema;
+import fr.cedricsevestre.entity.engine.independant.objects.Position;
+import fr.cedricsevestre.entity.engine.independant.objects.User;
+import fr.cedricsevestre.entity.engine.independant.objects.NSchema.ScopeType;
+import fr.cedricsevestre.entity.engine.translation.Translation;
+import fr.cedricsevestre.entity.engine.translation.objects.Page;
+import fr.cedricsevestre.entity.engine.translation.objects.Template;
+import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateType;
 import fr.cedricsevestre.exception.ServiceException;
-import fr.cedricsevestre.service.engine.NDataService;
-import fr.cedricsevestre.service.engine.PositionService;
-import fr.cedricsevestre.service.engine.TemplateService;
+import fr.cedricsevestre.service.engine.independant.objects.NDataService;
+import fr.cedricsevestre.service.engine.independant.objects.PositionService;
+import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 
 @Component
 @Scope(value = "singleton")

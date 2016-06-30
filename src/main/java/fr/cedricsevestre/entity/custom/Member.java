@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
-import fr.cedricsevestre.entity.engine.User;
+import fr.cedricsevestre.entity.engine.independant.objects.User;
 
 @Entity
 @DiscriminatorValue(value = "member")

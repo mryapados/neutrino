@@ -21,7 +21,7 @@ import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 import fr.cedricsevestre.conf.core.CsrfHeaderFilter;
-import fr.cedricsevestre.service.engine.LoginService;
+import fr.cedricsevestre.service.engine.independant.objects.LoginService;
 
 @Configuration
 @EnableWebSecurity

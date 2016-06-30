@@ -7,7 +7,7 @@ import javax.persistence.Table;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
-import fr.cedricsevestre.entity.engine.Translation;
+import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Entity
 @Table(name = "album")

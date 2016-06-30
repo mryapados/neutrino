@@ -35,22 +35,22 @@ import fr.cedricsevestre.dto.engine.MapTemplateSimpleDto;
 import fr.cedricsevestre.dto.engine.PageDto;
 import fr.cedricsevestre.dto.engine.PositionDto;
 import fr.cedricsevestre.dto.engine.TemplateDto;
-import fr.cedricsevestre.entity.engine.Lang;
-import fr.cedricsevestre.entity.engine.MapTemplate;
-import fr.cedricsevestre.entity.engine.Page;
-import fr.cedricsevestre.entity.engine.Position;
-import fr.cedricsevestre.entity.engine.Template;
-import fr.cedricsevestre.entity.engine.Template.TemplateType;
-import fr.cedricsevestre.entity.engine.Translation;
+import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
+import fr.cedricsevestre.entity.engine.independant.objects.Position;
+import fr.cedricsevestre.entity.engine.translation.Lang;
+import fr.cedricsevestre.entity.engine.translation.Translation;
+import fr.cedricsevestre.entity.engine.translation.objects.Page;
+import fr.cedricsevestre.entity.engine.translation.objects.Template;
+import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateType;
 import fr.cedricsevestre.exception.FormException;
 import fr.cedricsevestre.exception.ServiceException;
-import fr.cedricsevestre.service.engine.LangService;
-import fr.cedricsevestre.service.engine.MapTemplateService;
-import fr.cedricsevestre.service.engine.PageService;
-import fr.cedricsevestre.service.engine.PositionService;
-import fr.cedricsevestre.service.engine.TObjectService;
-import fr.cedricsevestre.service.engine.TemplateService;
-import fr.cedricsevestre.service.engine.TranslationService;
+import fr.cedricsevestre.service.engine.independant.objects.MapTemplateService;
+import fr.cedricsevestre.service.engine.independant.objects.PositionService;
+import fr.cedricsevestre.service.engine.translation.LangService;
+import fr.cedricsevestre.service.engine.translation.TObjectService;
+import fr.cedricsevestre.service.engine.translation.TranslationService;
+import fr.cedricsevestre.service.engine.translation.objects.PageService;
+import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 
 @RestController
 @Scope("prototype")

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import fr.cedricsevestre.entity.engine.Template;
+import fr.cedricsevestre.entity.engine.translation.objects.Template;
 
 @Repository
 public interface TemplateDao extends TranslationDao<Template> {

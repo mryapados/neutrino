@@ -2,8 +2,8 @@ package fr.cedricsevestre.dto.engine;
 
 import java.io.Serializable;
 
-import fr.cedricsevestre.entity.engine.MapTemplate;
-import fr.cedricsevestre.entity.engine.Template;
+import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
+import fr.cedricsevestre.entity.engine.translation.objects.Template;
 
 public class MapTemplateDto implements Serializable {
 	private static final long serialVersionUID = 1L;

@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import fr.cedricsevestre.entity.engine.Translation;
+import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Entity
 @Table(name = "file")

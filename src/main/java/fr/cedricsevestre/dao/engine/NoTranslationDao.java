@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import fr.cedricsevestre.entity.engine.NoTranslation;
+import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 
 @Repository
 public interface NoTranslationDao<T extends NoTranslation> extends BaseDao<T> {

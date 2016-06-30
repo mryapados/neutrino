@@ -10,10 +10,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import fr.cedricsevestre.controller.engine.AbtractController;
 import fr.cedricsevestre.entity.custom.Project;
-import fr.cedricsevestre.entity.engine.Translation;
+import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.ProjectService;
-import fr.cedricsevestre.service.engine.TemplateService;
+import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 
 @Controller
 @Scope("prototype")

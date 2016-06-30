@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import fr.cedricsevestre.entity.engine.Translation;
+import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Entity
 @Table(name = "project")

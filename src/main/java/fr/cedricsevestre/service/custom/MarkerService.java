@@ -9,7 +9,7 @@ import fr.cedricsevestre.dao.custom.TagDao;
 import fr.cedricsevestre.entity.custom.Marker;
 import fr.cedricsevestre.entity.custom.Tag;
 import fr.cedricsevestre.service.engine.BaseService;
-import fr.cedricsevestre.service.engine.NoTranslationService;
+import fr.cedricsevestre.service.engine.notranslation.NoTranslationService;
 
 @Service
 @Scope(value = "singleton")

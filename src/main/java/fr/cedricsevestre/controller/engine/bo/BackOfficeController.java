@@ -14,13 +14,13 @@ import org.springframework.web.servlet.ModelAndView;
 import fr.cedricsevestre.controller.engine.AbtractController;
 import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.engine.IdProvider;
-import fr.cedricsevestre.entity.engine.NoTranslation;
-import fr.cedricsevestre.entity.engine.Translation;
+import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
+import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.ProjectService;
-import fr.cedricsevestre.service.engine.NTObjectService;
-import fr.cedricsevestre.service.engine.TObjectService;
-import fr.cedricsevestre.service.engine.TemplateService;
+import fr.cedricsevestre.service.engine.notranslation.NTObjectService;
+import fr.cedricsevestre.service.engine.translation.TObjectService;
+import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 
 @Controller
 @Scope("prototype")

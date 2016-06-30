@@ -2,7 +2,7 @@ package fr.cedricsevestre.bean;
 
 import java.io.Serializable;
 
-import fr.cedricsevestre.entity.engine.NType.ValueType;
+import fr.cedricsevestre.entity.engine.independant.objects.NType.ValueType;
 
 public class NDataValue implements Serializable { 
 

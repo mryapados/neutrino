@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import fr.cedricsevestre.entity.engine.Position;
-import fr.cedricsevestre.entity.engine.Template;
-import fr.cedricsevestre.entity.engine.Translation;
+import fr.cedricsevestre.entity.engine.independant.objects.Position;
+import fr.cedricsevestre.entity.engine.translation.Translation;
+import fr.cedricsevestre.entity.engine.translation.objects.Template;
 
 @Repository
 public interface PositionDao extends BaseDao<Position> {

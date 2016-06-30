@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.query.Param;
 
-import fr.cedricsevestre.entity.engine.User;
+import fr.cedricsevestre.entity.engine.independant.objects.User;
 
 @NoRepositoryBean
 public interface UserDao extends BaseDao<User> {

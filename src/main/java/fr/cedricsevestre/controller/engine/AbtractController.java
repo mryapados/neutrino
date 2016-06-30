@@ -16,13 +16,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.entity.custom.Member;
-import fr.cedricsevestre.entity.engine.Page;
-import fr.cedricsevestre.entity.engine.Template;
-import fr.cedricsevestre.entity.engine.Translation;
-import fr.cedricsevestre.entity.engine.User;
+import fr.cedricsevestre.entity.engine.independant.objects.User;
+import fr.cedricsevestre.entity.engine.translation.Translation;
+import fr.cedricsevestre.entity.engine.translation.objects.Page;
+import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
-import fr.cedricsevestre.service.engine.TemplateService;
-import fr.cedricsevestre.service.engine.UserService;
+import fr.cedricsevestre.service.engine.independant.objects.UserService;
+import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 
 @Controller
 @Scope("prototype")

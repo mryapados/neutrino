@@ -9,8 +9,8 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
-import fr.cedricsevestre.entity.engine.MapTemplate;
-import fr.cedricsevestre.entity.engine.Position;
+import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
+import fr.cedricsevestre.entity.engine.independant.objects.Position;
 
 public class PositionDto implements Serializable {
 	private static final long serialVersionUID = 1L;

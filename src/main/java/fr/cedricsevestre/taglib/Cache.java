@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.common.Common;
-import fr.cedricsevestre.entity.engine.Template;
+import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.exception.TagException;
 

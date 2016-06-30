@@ -8,9 +8,9 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
-import fr.cedricsevestre.entity.engine.MapTemplate;
-import fr.cedricsevestre.entity.engine.Template;
-import fr.cedricsevestre.entity.engine.Template.TemplateType;
+import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
+import fr.cedricsevestre.entity.engine.translation.objects.Template;
+import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateType;
 
 public class TemplateDto extends TranslationDto {
 	private static final long serialVersionUID = 1L;

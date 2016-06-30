@@ -12,9 +12,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import fr.cedricsevestre.entity.engine.Page;
+import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.exception.ServiceException;
-import fr.cedricsevestre.service.engine.PageService;
+import fr.cedricsevestre.service.engine.translation.objects.PageService;
 
 @Component
 @Scope(value = "singleton")

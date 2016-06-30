@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import fr.cedricsevestre.entity.engine.NoTranslation;
+import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 
 @Entity
 @Table(name = "tag")
