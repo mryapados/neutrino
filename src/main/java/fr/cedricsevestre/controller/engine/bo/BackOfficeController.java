@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import fr.cedricsevestre.bean.NField;
 import fr.cedricsevestre.controller.engine.AbtractController;
 import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.engine.IdProvider;
@@ -92,11 +93,16 @@ public class BackOfficeController extends AbtractController {
 			for (Translation translation : translations) {
 				Project project = (Project) translation;
 				
+				
+				List<NField> fields = backOfficeTranslationService.getFields(translation.getClass());
+
+				
+				
+				
 				System.out.println(project.getObjectType() + " - " + project.getName());
 			}
 			
-			
-			
+
 			
 			
 		} catch (ServiceException e) {

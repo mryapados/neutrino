@@ -21,6 +21,9 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
+import fr.cedricsevestre.annotation.BOField;
+import fr.cedricsevestre.annotation.BOField.ValueType;
+
 @Entity
 @Table(name = "translation")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -36,6 +39,8 @@ public abstract class Translation implements ITranslation, Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
+	
+	@BOField(type = ValueType.TEXT)
 	@NotNull
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "name")
