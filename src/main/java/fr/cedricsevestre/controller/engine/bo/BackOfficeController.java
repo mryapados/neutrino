@@ -1,6 +1,7 @@
 package fr.cedricsevestre.controller.engine.bo;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import fr.cedricsevestre.bean.NField;
+import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.controller.engine.AbtractController;
 import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.engine.IdProvider;
@@ -19,7 +21,9 @@ import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.ProjectService;
+import fr.cedricsevestre.service.engine.bo.BackOfficeService;
 import fr.cedricsevestre.service.engine.bo.BackOfficeTranslationService;
+import fr.cedricsevestre.service.engine.bo.IBackOfficeObjectService;
 import fr.cedricsevestre.service.engine.notranslation.NTObjectService;
 import fr.cedricsevestre.service.engine.translation.TObjectService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
@@ -66,14 +70,37 @@ public class BackOfficeController extends AbtractController {
 	
 	@Autowired
 	private BackOfficeTranslationService backOfficeTranslationService;
+
+	@Autowired
+	BackOfficeService backOfficeService;
 	
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView viewList(@ModelAttribute("type") String type) {
-		ModelAndView modelAndView = null;
+		String pathModelAndView = Common.BASE_BO_VIEWS_PATH + "/list/list";
+		ModelAndView modelAndView = new ModelAndView(pathModelAndView);
 		
 		try {
 
+			Class<?> object = backOfficeService.getEntity(type);
+			List<NField> fields = backOfficeService.getFields(object);
+			if (object.getSuperclass().equals(Translation.class)){
+
+				List<Map<String, Object>> translations = backOfficeTranslationService.findAllForType(type);
+				modelAndView.addObject("datas", translations);
+				
+				
+
+				
+			} else if (object.getSuperclass().equals(NoTranslation.class)){
+
+				
+			}
+			
+			
+			modelAndView.addObject("fields", fields);
+			
+			
 			
 			
 //			List<Translation> translations = tObjectService.findAllForType(type);
@@ -89,18 +116,11 @@ public class BackOfficeController extends AbtractController {
 			
 			
 			
-			List<Translation> translations = backOfficeTranslationService.findAllForType(type);
-			for (Translation translation : translations) {
-				Project project = (Project) translation;
-				
-				
-				List<NField> fields = backOfficeTranslationService.getFields(translation.getClass());
-
-				
-				
-				
-				System.out.println(project.getObjectType() + " - " + project.getName());
-			}
+//			List<Translation> translations = backOfficeTranslationService.findAllForType(type);
+//			for (Translation translation : translations) {
+//				Project project = (Project) translation;
+//				System.out.println(project.getObjectType() + " - " + project.getName());
+//			}
 			
 
 			

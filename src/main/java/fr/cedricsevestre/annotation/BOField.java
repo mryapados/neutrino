@@ -23,5 +23,5 @@ public @interface BOField {
 
 	ValueType ofType() default ValueType.NULL;
 
-	boolean inList() default false;
+	boolean inList() default true;
 }

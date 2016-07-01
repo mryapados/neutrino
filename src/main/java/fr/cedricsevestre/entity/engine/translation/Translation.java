@@ -46,23 +46,25 @@ public abstract class Translation implements ITranslation, Serializable {
 	@Column(name = "name")
 	private String name;
 	
+	@BOField(type = ValueType.DATETIME)
 	@NotNull
 	@Column(name = "date_add")
 	private Date dateAdd;
 	
+	@BOField(type = ValueType.HTML)
 	@SafeHtml(whitelistType = WhiteListType.BASIC)
 	@Column(name = "description")
 	private String description;
 
+	@BOField(type = ValueType.OBJECT)
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="id_lang")
 	private Lang lang;
 	
+	@BOField(type = ValueType.OBJECT)
 	@ManyToOne
 	@JoinColumn(name="id_translation")
 	private TranslationProvider translation;
-	
-	
 	
 	public Translation() {
 		super();
