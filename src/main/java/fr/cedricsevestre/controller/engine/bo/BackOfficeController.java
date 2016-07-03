@@ -27,6 +27,7 @@ import fr.cedricsevestre.service.engine.bo.IBackOfficeObjectService;
 import fr.cedricsevestre.service.engine.notranslation.NTObjectService;
 import fr.cedricsevestre.service.engine.translation.TObjectService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
+import java.lang.reflect.Field;
 
 @Controller
 @Scope("prototype")
@@ -83,10 +84,11 @@ public class BackOfficeController extends AbtractController {
 		try {
 
 			Class<?> object = backOfficeService.getEntity(type);
-			List<NField> fields = backOfficeService.getFields(object);
+			List<Field> fields = backOfficeService.getFields(object);
+			
 			if (object.getSuperclass().equals(Translation.class)){
 
-				List<Map<String, Object>> translations = backOfficeTranslationService.findAllForType(type);
+				List<Map<String, Object>> translations = backOfficeTranslationService.findAllForType(type, fields);
 				modelAndView.addObject("datas", translations);
 				
 				

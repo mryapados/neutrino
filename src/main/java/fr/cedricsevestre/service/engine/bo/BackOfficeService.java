@@ -19,7 +19,7 @@ import fr.cedricsevestre.service.engine.translation.TObjectService;
 
 @Service
 @Scope(value = "singleton")
-public class BackOfficeService{
+public abstract class BackOfficeService implements IBackOfficeObjectService{
 
 	private Logger logger = Logger.getLogger(BackOfficeService.class);
 
@@ -31,8 +31,8 @@ public class BackOfficeService{
 		}
 	}
 	
-	public List<NField> getFields(Class<?> classObject) throws ServiceException{
-		List<NField> fields = new ArrayList<>();
+	public List<Field> getFields(Class<?> classObject) throws ServiceException{
+		List<Field> fields = new ArrayList<>();
 		
 		Class<?> superClass = classObject.getSuperclass();
 		if (superClass != null){
@@ -51,13 +51,22 @@ public class BackOfficeService{
 					BOField nType = (BOField) annotation;
 			        System.out.println("--- --- --- type : " + nType.type());
 			        System.out.println("--- --- --- ofType: " + nType.ofType());
-			        fields.add(new NField(nType.type(), nType.ofType(), classObjectField.getName()));
+			        fields.add(classObjectField);
 				}
 			}
 		}
 		return fields;
 	}
 	
+	public Object getFieldValue(Object object, Field field) throws ServiceException {
+	    try {
+	        field.setAccessible(true);
+	        return field.get(object);
+	    } catch (IllegalAccessException e) {
+	        logger.error("Failed to get value from field", e);
+	        throw new ServiceException("Erreur getFieldValue", e);
+	    }
+	}
 
 
 }

@@ -11,6 +11,8 @@ public class NField implements Serializable {
 	private ValueType type;
 	private ValueType ofType;
 	private String name;
+	private boolean inList;
+	
 	public ValueType getType() {
 		return type;
 	}
@@ -29,17 +31,22 @@ public class NField implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public NField(ValueType type, String name) {
-		super();
-		this.type = type;
-		this.name = name;
+	public boolean isInList() {
+		return inList;
 	}
-	public NField(ValueType type, ValueType ofType, String name) {
+	public void setInList(boolean inList) {
+		this.inList = inList;
+	}
+	
+	public NField(ValueType type, ValueType ofType, String name, boolean inList) {
 		super();
 		this.type = type;
 		this.ofType = ofType;
 		this.name = name;
+		this.inList = inList;
 	}
+	
+	
 	
 
 	

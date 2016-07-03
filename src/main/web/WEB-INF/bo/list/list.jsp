@@ -4,11 +4,12 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 
-<c:forEach var="field" items="${fields}" varStatus="status">
-	<p>Field = ${field.name} : ${field.type} - ${field.ofType}</p>
-</c:forEach>
-
+<%-- <c:forEach var="field" items="${fields}" varStatus="status"> --%>
+<%-- 	<p>Field = ${field.name} : ${field.type} - ${field.ofType}</p> --%>
+<%-- </c:forEach> --%>
 
 <c:forEach var="object" items="${datas}" varStatus="status">
-	<p>name = ${object.getAttribute('namecccc')}</p>
+	<c:forEach var="field" items="${object}" varStatus="status">
+		<p>key = ${field.key} - value = ${field.value}</p>
+	</c:forEach>
 </c:forEach>
