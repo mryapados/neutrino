@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import fr.cedricsevestre.bean.NField;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.translation.TObjectService;
@@ -27,6 +28,8 @@ public class BackOfficeTranslationService extends BackOfficeService{
 	public List<Map<String, Object>> findAllForType(String type, List<Field> fields) throws ServiceException{
 		List<Translation> translations = tObjectService.findAllForType(type);
 		List<Map<String, Object>> result = new ArrayList<>();
+		
+//		List<NField> nfFields =  
 		for (Translation translation : translations) {
 			System.out.println(translation.getName());
 			Map<String, Object> record = new HashMap<>();

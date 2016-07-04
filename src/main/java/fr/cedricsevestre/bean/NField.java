@@ -4,15 +4,16 @@ import java.io.Serializable;
 
 import fr.cedricsevestre.annotation.BOField.ValueType;
 
-public class NField implements Serializable { 
+public class NField implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private ValueType type;
 	private ValueType ofType;
 	private String name;
+	private String objectType;
 	private boolean inList;
-	
+
 	public ValueType getType() {
 		return type;
 	}
@@ -31,26 +32,25 @@ public class NField implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public String getObjectType() {
+		return objectType;
+	}
+	public void setObjectType(String objectType) {
+		this.objectType = objectType;
+	}
 	public boolean isInList() {
 		return inList;
 	}
 	public void setInList(boolean inList) {
 		this.inList = inList;
 	}
-	
-	public NField(ValueType type, ValueType ofType, String name, boolean inList) {
+
+	public NField(ValueType type, ValueType ofType, String name, String objectType, boolean inList) {
 		super();
 		this.type = type;
 		this.ofType = ofType;
 		this.name = name;
+		this.objectType = objectType;
 		this.inList = inList;
 	}
-	
-	
-	
-
-	
-	
-	
-	
 }

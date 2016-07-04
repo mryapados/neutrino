@@ -58,6 +58,21 @@ public abstract class BackOfficeService implements IBackOfficeObjectService{
 		return fields;
 	}
 	
+	public NField mkNField(Field field) throws ServiceException{
+		Annotation[] annotations = field.getDeclaredAnnotations();
+		for (Annotation annotation : annotations) {
+			Class<? extends Annotation> annotationType = annotation.annotationType();
+			System.out.println("--- --- annotation = " + annotationType.getName());
+			if(annotation instanceof BOField){
+				BOField nType = (BOField) annotation;
+		        System.out.println("--- --- --- type : " + nType.type());
+		        System.out.println("--- --- --- ofType: " + nType.ofType());
+		        return new NField(nType.type(), nType.ofType(), field.getName(), field.getType().getName(), nType.inList());
+			}
+		}
+		throw new ServiceException("BoField not found");
+	}
+	
 	public Object getFieldValue(Object object, Field field) throws ServiceException {
 	    try {
 	        field.setAccessible(true);
