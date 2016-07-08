@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.bean.NField;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.controller.engine.AbtractController;
@@ -88,8 +89,8 @@ public class BackOfficeController extends AbtractController {
 			
 			if (object.getSuperclass().equals(Translation.class)){
 
-				List<Map<String, Object>> translations = backOfficeTranslationService.findAllForType(type, fields);
-				modelAndView.addObject("datas", translations);
+				NData tData = backOfficeTranslationService.findAllForType(type, fields);
+				modelAndView.addObject("datas", tData);
 				
 				
 

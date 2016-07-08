@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import fr.cedricsevestre.annotation.BOField;
+import fr.cedricsevestre.annotation.BOField.ValueType;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Entity
@@ -14,6 +16,7 @@ public class Project extends Translation {
 
 	private static final long serialVersionUID = 1L;
 	
+	@BOField(type = ValueType.TOBJECT)
 	@OneToMany(mappedBy = "project")
 	private List<Album> albums;
 
