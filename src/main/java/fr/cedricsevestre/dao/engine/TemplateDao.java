@@ -6,10 +6,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 
 @Repository
 public interface TemplateDao extends TranslationDao<Template> {
+	
+
+	@Query("SELECT e FROM Template e")
+	List<Translation> findAllFetched();
 	
 //	@Query("SELECT t FROM Template t WHERE t.name =:name")
 //	Template findByName(@Param("name") String name);
@@ -25,9 +30,5 @@ public interface TemplateDao extends TranslationDao<Template> {
 	
 	@Query("SELECT t FROM Template t LEFT JOIN FETCH t.models m")
 	List<Template> findAllWithModels();
-	
-	
-	
-	
 	
 }

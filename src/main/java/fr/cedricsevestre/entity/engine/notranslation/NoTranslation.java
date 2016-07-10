@@ -17,6 +17,8 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
+import fr.cedricsevestre.annotation.BOField;
+import fr.cedricsevestre.annotation.BOField.ValueType;
 import fr.cedricsevestre.entity.engine.IdProvider;
 
 @Entity
@@ -30,19 +32,23 @@ public abstract class NoTranslation implements IdProvider, Serializable {
 	@Column(name = "object_type", insertable = false, updatable = false)
     private String objectType;
 	
+	@BOField(type = ValueType.INTEGER)
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
+	@BOField(type = ValueType.TEXT)
 	@NotNull
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "name")
 	private String name;
 	
+	@BOField(type = ValueType.DATETIME)
 	@NotNull
 	@Column(name = "date_add")
 	private Date dateAdd;
 	
+	@BOField(type = ValueType.HTML)
 	@SafeHtml(whitelistType = WhiteListType.BASIC)
 	@Column(name = "description")
 	private String description;

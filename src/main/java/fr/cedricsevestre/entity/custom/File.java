@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import fr.cedricsevestre.annotation.BOField;
+import fr.cedricsevestre.annotation.BOField.ValueType;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Entity
@@ -27,27 +29,34 @@ public class File extends Translation {
 		VIDEO, IMAGE
 	}
 	
+	@BOField(type = ValueType.DOUBLE)
 	@Column(name = "longitude")
 	private Double longitude;
 	
+	@BOField(type = ValueType.DOUBLE)
 	@Column(name = "latitude")
 	private Double latitude;
 	
+	@BOField(type = ValueType.DOUBLE)
 	@Column(name = "altitude")
 	private Double altitude;
 	
+	@BOField(type = ValueType.DATETIME)
 	@Column(name = "date_shooting")
 	private Date dateShooting;
 	
+	@BOField(type = ValueType.VARCHAR50)
 	@NotNull
 	@Column
 	@Enumerated(EnumType.STRING)
 	private FileType type;
 	
+	@BOField(type = ValueType.INTEGER)
 	@NotNull
 	@Column
-	private Integer fileZize;	
+	private Integer fileZize;
 	
+	@BOField(type = ValueType.NTOBJECT)
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
 		name = "mark", 
@@ -59,6 +68,7 @@ public class File extends Translation {
 			referencedColumnName = "id")})
 	private List<Tag> tags;
 
+	@BOField(type = ValueType.TOBJECT)
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name="idalbum")

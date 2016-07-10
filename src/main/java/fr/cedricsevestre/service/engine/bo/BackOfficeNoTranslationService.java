@@ -17,32 +17,32 @@ import org.springframework.stereotype.Service;
 import fr.cedricsevestre.annotation.BOField;
 import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.bean.NField;
+import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.CustomServiceLocator;
 
 @Service
 @Scope(value = "singleton")
-public class BackOfficeTranslationService implements IBackOfficeObjectService{
+public class BackOfficeNoTranslationService implements IBackOfficeObjectService{
 
-	private Logger logger = Logger.getLogger(BackOfficeTranslationService.class);
-	
+	private Logger logger = Logger.getLogger(BackOfficeNoTranslationService.class);
+
 	@Autowired
 	BackOfficeService backOfficeService;
 	
 	@Autowired
 	CustomServiceLocator customServiceLocator;
 	
-	
 	@SuppressWarnings("unchecked")
-	private List<Translation> getDatas(Class<?> entity) throws ServiceException{
+	private List<NoTranslation> getDatas(Class<?> entity) throws ServiceException{
 		try {
 			Class<?> params[] = {};
 			Object paramsObj[] = {};
 			Object service = customServiceLocator.getService(entity.getSimpleName());
 			Class<?> clazz = Class.forName(service.getClass().getName());
 			Method findAllFetched = clazz.getMethod("findAllFetched", params);
-			return (List<Translation>) findAllFetched.invoke(service, paramsObj);
+			return (List<NoTranslation>) findAllFetched.invoke(service, paramsObj);
 		} catch (ClassNotFoundException e) {
 			logger.error("getDatas -> ClassNotFoundException", e);
 			throw new ServiceException("Error getList", e);
@@ -78,13 +78,13 @@ public class BackOfficeTranslationService implements IBackOfficeObjectService{
 	
 	public NData findAll(Class<?> entity) throws ServiceException{
 		List<Map<String, Object>> datas = new ArrayList<>();
-		List<Translation> translations = getDatas(entity);
+		List<NoTranslation> noTranslations = getDatas(entity);
 		List<Field> fields = backOfficeService.getFields(entity);
 		List<NField> nfFields = getNField(fields);
-		for (Translation translation : translations) {
+		for (NoTranslation noTranslation : noTranslations) {
 			Map<String, Object> record = new HashMap<>();
 			for (Field field : fields) {
-				record.put(field.getName(), backOfficeService.getFieldValue(translation, field));
+				record.put(field.getName(), backOfficeService.getFieldValue(noTranslation, field));
 			}
 			datas.add(record);
 		}

@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import fr.cedricsevestre.annotation.BOField;
+import fr.cedricsevestre.annotation.BOField.ValueType;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Entity
@@ -24,16 +26,19 @@ public class Album extends Translation {
 		DEFAULT, OTHER
 	}
 
+	@BOField(type = ValueType.VARCHAR50)
 	@NotNull
 	@Column
 	@Enumerated(EnumType.STRING)
 	private AlbumType type;
 	
+	@BOField(type = ValueType.TOBJECT)
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name="idproject")
 	private Project project;
 	
+	@BOField(type = ValueType.TOBJECT)
 	@OneToMany(mappedBy = "album")
 	private List<File> files;
 

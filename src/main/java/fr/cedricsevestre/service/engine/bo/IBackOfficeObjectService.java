@@ -8,5 +8,5 @@ import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.exception.ServiceException;
 
 public interface IBackOfficeObjectService {
-	NData findAllForType(String type, List<Field> fields) throws ServiceException;
+	NData findAll(Class<?> entity) throws ServiceException;
 }

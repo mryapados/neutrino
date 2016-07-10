@@ -12,14 +12,12 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 @Repository
 public interface TranslationDao<T extends Translation> extends BaseDao<T> {
 	
+	@Query("SELECT e FROM #{#entityName} e")
+	List<Translation> findAllFetched();
+	
 //	@Query("SELECT t FROM #{#entityName} t WHERE t.name =:name OR (t.name =:name AND t.objectType = #{#entityName})")
 //	T findByName(@Param("name") String name);
 	
-	@Query("SELECT t FROM #{#entityName} t WHERE t.name =:name AND t.objectType = #{#entityName}")
+	@Query("SELECT t FROM #{#entityName} t WHERE t.name =:name")
 	T findByName(@Param("name") String name);
-	
-	@Query("SELECT t FROM Translation t WHERE t.objectType = :type")
-	List<Translation> findAllForType(@Param("type") String type);
-	
-	
 }

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import fr.cedricsevestre.annotation.BOField;
+import fr.cedricsevestre.annotation.BOField.ValueType;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 
 @Entity
@@ -15,6 +17,7 @@ public class Tag extends NoTranslation implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
+	@BOField(type = ValueType.TOBJECT)
 	@ManyToMany(mappedBy = "tags")
 	private List<File> files;
 

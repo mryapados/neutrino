@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.dao.engine.TemplateDao;
 import fr.cedricsevestre.entity.engine.translation.Lang;
+import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.TranslationProvider;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateType;
@@ -28,6 +29,15 @@ public class TemplateService extends TranslationService<Template>{
 
 	@Autowired
 	private TemplateDao templateDao;
+	
+	@Override
+	public List<Translation> findAllFetched() throws ServiceException {
+		try {
+			return templateDao.findAllFetched();
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAllFetched", e);
+		}
+	}
 	
 	public Template findByNameWithAllExceptData(String name) throws ServiceException {
 		try {

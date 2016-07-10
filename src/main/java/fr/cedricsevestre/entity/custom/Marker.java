@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import fr.cedricsevestre.annotation.BOField;
+import fr.cedricsevestre.annotation.BOField.ValueType;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 
 @Entity
@@ -14,9 +16,11 @@ public class Marker extends NoTranslation implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
+	@BOField(type = ValueType.DOUBLE)
 	@Column(name = "longitude")
 	private Double longitude;
 	
+	@BOField(type = ValueType.DOUBLE)
 	@Column(name = "latitude")
 	private Double latitude;
 

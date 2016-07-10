@@ -22,11 +22,11 @@ import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.ProjectService;
+import fr.cedricsevestre.service.engine.bo.BackOfficeNoTranslationService;
 import fr.cedricsevestre.service.engine.bo.BackOfficeService;
 import fr.cedricsevestre.service.engine.bo.BackOfficeTranslationService;
 import fr.cedricsevestre.service.engine.bo.IBackOfficeObjectService;
 import fr.cedricsevestre.service.engine.notranslation.NTObjectService;
-import fr.cedricsevestre.service.engine.translation.TObjectService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 import java.lang.reflect.Field;
 
@@ -61,20 +61,16 @@ public class BackOfficeController extends AbtractController {
 	
 	
 	
-//	@Autowired
-//	private ObjectService objectService;
-	
-	@Autowired
-	private NTObjectService nTObjectService;
-	
-	@Autowired
-	private TObjectService tObjectService;
+
 	
 	@Autowired
 	private BackOfficeTranslationService backOfficeTranslationService;
 
 	@Autowired
-	BackOfficeService backOfficeService;
+	private BackOfficeNoTranslationService backOfficeNoTranslationService;
+	
+	@Autowired
+	BackOfficeService backOfficeUtils;
 	
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -83,64 +79,21 @@ public class BackOfficeController extends AbtractController {
 		ModelAndView modelAndView = new ModelAndView(pathModelAndView);
 		
 		try {
-
-			Class<?> object = backOfficeService.getEntity(type);
-			List<Field> fields = backOfficeService.getFields(object);
-			
+			Class<?> object = backOfficeUtils.getEntity(type);
 			if (object.getSuperclass().equals(Translation.class)){
-
-				NData tData = backOfficeTranslationService.findAllForType(type, fields);
+				NData tData = backOfficeTranslationService.findAll(object);
 				modelAndView.addObject("datas", tData);
-				
-				
-
-				
 			} else if (object.getSuperclass().equals(NoTranslation.class)){
-
-				
+				NData tData = backOfficeNoTranslationService.findAll(object);
+				modelAndView.addObject("datas", tData);
 			}
-			
-			
-			modelAndView.addObject("fields", fields);
-			
-			
-			
-			
-//			List<Translation> translations = tObjectService.findAllForType(type);
-//			for (Translation translation : translations) {
-//				System.out.println(translation.getObjectType() + " - " + translation.getName());
-//			}
-//			
-//			List<NoTranslation> noTranslations = nTObjectService.findAllForType(type);
-//			for (NoTranslation noTranslation : noTranslations) {
-//				System.out.println(noTranslation.getObjectType() + " - " + noTranslation.getName());
-//			}
 
-			
-			
-			
-//			List<Translation> translations = backOfficeTranslationService.findAllForType(type);
-//			for (Translation translation : translations) {
-//				Project project = (Project) translation;
-//				System.out.println(project.getObjectType() + " - " + project.getName());
-//			}
-			
-
-			
 			
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		
-//		try {
-//			//modelAndView = baseView(HOMEPROJECTPAGE, getActiveObject(project));
-//			modelAndView.addObject("project", project);
-//		} catch (ServiceException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		return modelAndView;
 	}
 	

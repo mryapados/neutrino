@@ -1,12 +1,18 @@
 package fr.cedricsevestre.service.engine.translation.objects;
 
+import java.util.List;
 import java.util.Map;
 
+import javax.persistence.PersistenceException;
+
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.cedricsevestre.dao.engine.PageDao;
+import fr.cedricsevestre.dao.engine.TemplateDao;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.TranslationProvider;
@@ -21,6 +27,18 @@ public class PageService extends TranslationService<Page>{
 
 	private Logger logger = Logger.getLogger(PageService.class);
 
+	@Autowired
+	private PageDao pageDao;
+	
+	@Override
+	public List<Translation> findAllFetched() throws ServiceException {
+		try {
+			return pageDao.findAllFetched();
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAllFetched", e);
+		}
+	}
+	
 	@Transactional
 	public Page translate(Page page, Lang lang) throws ServiceException {
 		Page translated = new Page();

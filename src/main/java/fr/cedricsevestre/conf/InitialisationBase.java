@@ -62,9 +62,9 @@ public class InitialisationBase {
 	
 	@Autowired
 	private TagService tagService;
-	
-	@Autowired
-	private MarkerService markerService;
+
+//	@Autowired
+//	private MarkerService markerService;
 	
 	@Autowired
 	private LangService langService;
@@ -711,15 +711,15 @@ public class InitialisationBase {
 	public void initMarkers() throws ServiceException, InstantiationException, IllegalAccessException{
 		logger.debug("init markers");
 		
-		Marker marker = new Marker();
-		marker.setName("testmarker");
-		marker.setDescription("description marker");
-		markerService.save(marker);
-			
-		marker = new Marker();
-		marker.setName("testmarker2");
-		marker.setDescription("description marker2");
-		markerService.save(marker);
+//		Marker marker = new Marker();
+//		marker.setName("testmarker");
+//		marker.setDescription("description marker");
+//		markerService.save(marker);
+//			
+//		marker = new Marker();
+//		marker.setName("testmarker2");
+//		marker.setDescription("description marker2");
+//		markerService.save(marker);
 			
 	}
 	public void initNDatas() throws ServiceException{

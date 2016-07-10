@@ -7,9 +7,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
+import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Repository
 public interface NoTranslationDao<T extends NoTranslation> extends BaseDao<T> {
+	
+	@Query("SELECT e FROM #{#entityName} e")
+	List<NoTranslation> findAllFetched();
 	
 //	@Query("SELECT t FROM #{#entityName} t WHERE t.name =:name OR (t.name =:name AND t.objectType = #{#entityName})")
 //	T findByName(@Param("name") String name);

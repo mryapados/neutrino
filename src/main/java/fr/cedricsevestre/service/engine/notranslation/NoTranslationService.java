@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.cedricsevestre.dao.engine.NoTranslationDao;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
+import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.BaseService;
 
@@ -26,6 +27,9 @@ public abstract class NoTranslationService<T extends NoTranslation> extends Base
 	@Autowired
 	private NoTranslationDao<T> noTranslationDao;
 
+	
+	public abstract List<NoTranslation> findAllFetched() throws ServiceException;
+	
 	public T findByName(String name) throws ServiceException {
 		try {
 			System.out.println("findbyname " + name + " " + noTranslationDao);
@@ -43,5 +47,7 @@ public abstract class NoTranslationService<T extends NoTranslation> extends Base
 			throw new ServiceException("erreur findAll Base", e);
 		}
 	}
+
+
 
 }

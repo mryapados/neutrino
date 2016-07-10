@@ -26,7 +26,7 @@ public abstract class BaseService<T> implements IBaseService<T>{
 	@Override
 	@Transactional
 	public T save(T base) throws ServiceException {
-		logger.debug("appel de la methode save Base ");
+		logger.debug("appel de la methode save Base " + base.getClass());
 		try {
 			return baseDao.save(base);
 		} catch (PersistenceException e) {
@@ -88,13 +88,6 @@ public abstract class BaseService<T> implements IBaseService<T>{
 			throw new ServiceException("erreur findAll Base", e);
 		}
 	}
-
-	
-
-
-
-
-
 
 
 
