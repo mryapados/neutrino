@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +29,8 @@ public abstract class NoTranslationService<T extends NoTranslation> extends Base
 	@Autowired
 	private NoTranslationDao<T> noTranslationDao;
 
-	
 	public abstract List<NoTranslation> findAllFetched() throws ServiceException;
+	public abstract Page<NoTranslation> findAllFetched(Pageable pageable) throws ServiceException;
 	
 	public T findByName(String name) throws ServiceException {
 		try {
@@ -39,15 +41,5 @@ public abstract class NoTranslationService<T extends NoTranslation> extends Base
 			throw new ServiceException("erreur findByName Base", e);
 		}
 	}
-	
-	public List<NoTranslation> findAllForType(String type) throws ServiceException {
-		try {
-			return noTranslationDao.findAllForType(type);
-		} catch (PersistenceException e) {
-			throw new ServiceException("erreur findAll Base", e);
-		}
-	}
-
-
 
 }

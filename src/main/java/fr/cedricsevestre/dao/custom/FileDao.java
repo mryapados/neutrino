@@ -8,9 +8,5 @@ import fr.cedricsevestre.entity.custom.File;
 @Repository
 public interface FileDao extends TranslationDao<File> {
 	
-//	@Query("SELECT f FROM File f WHERE f.name =:name")
-//	File FindByName(@Param("name") String name);
-	
-	
 	
 }

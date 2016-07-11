@@ -8,6 +8,8 @@ import javax.persistence.PersistenceException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +40,14 @@ public class TemplateService extends TranslationService<Template>{
 			throw new ServiceException("Error findAllFetched", e);
 		}
 	}
+	@Override
+	public Page<Translation> findAllFetched(Pageable pageable) throws ServiceException {
+		try {
+			return templateDao.findAllFetched(pageable);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAllFetched", e);
+		}
+	}
 	
 	public Template findByNameWithAllExceptData(String name) throws ServiceException {
 		try {
@@ -49,7 +59,7 @@ public class TemplateService extends TranslationService<Template>{
 	
 	public List<Template> findAll() throws ServiceException {
 		try {
-			return templateDao.findAll();
+			return (List<Template>) templateDao.findAll();
 		} catch (PersistenceException e) {
 			throw new ServiceException("erreur findAll Template", e);
 		}

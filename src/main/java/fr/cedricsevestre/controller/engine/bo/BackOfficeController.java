@@ -1,10 +1,8 @@
 package fr.cedricsevestre.controller.engine.bo;
 
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,22 +11,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import fr.cedricsevestre.bean.NData;
-import fr.cedricsevestre.bean.NField;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.controller.engine.AbtractController;
-import fr.cedricsevestre.entity.custom.Project;
-import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
-import fr.cedricsevestre.service.custom.ProjectService;
-import fr.cedricsevestre.service.engine.bo.BackOfficeNoTranslationService;
 import fr.cedricsevestre.service.engine.bo.BackOfficeService;
-import fr.cedricsevestre.service.engine.bo.BackOfficeTranslationService;
-import fr.cedricsevestre.service.engine.bo.IBackOfficeObjectService;
-import fr.cedricsevestre.service.engine.notranslation.NTObjectService;
-import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
-import java.lang.reflect.Field;
 
 @Controller
 @Scope("prototype")
@@ -58,33 +46,25 @@ public class BackOfficeController extends AbtractController {
 //		return projectService.findByName(projectName);
 //	}
 	
-	
-	
-	
-
-	
-	@Autowired
-	private BackOfficeTranslationService backOfficeTranslationService;
 
 	@Autowired
-	private BackOfficeNoTranslationService backOfficeNoTranslationService;
+	private BackOfficeService<NoTranslation> backOfficeNoTranslationService;
 	
 	@Autowired
-	BackOfficeService backOfficeUtils;
-	
+	private BackOfficeService<Translation> backOfficeTranslationService;
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView viewList(@ModelAttribute("type") String type) {
+	public ModelAndView viewList(@ModelAttribute("type") String type, Pageable pageRequest) {	
 		String pathModelAndView = Common.BASE_BO_VIEWS_PATH + "/list/list";
 		ModelAndView modelAndView = new ModelAndView(pathModelAndView);
 		
 		try {
-			Class<?> object = backOfficeUtils.getEntity(type);
+			Class<?> object = BackOfficeService.getEntity(type);
 			if (object.getSuperclass().equals(Translation.class)){
-				NData tData = backOfficeTranslationService.findAll(object);
+				NData tData = backOfficeTranslationService.findAll(object, pageRequest);
 				modelAndView.addObject("datas", tData);
 			} else if (object.getSuperclass().equals(NoTranslation.class)){
-				NData tData = backOfficeNoTranslationService.findAll(object);
+				NData tData = backOfficeNoTranslationService.findAll(object, pageRequest);
 				modelAndView.addObject("datas", tData);
 			}
 

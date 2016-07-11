@@ -6,6 +6,8 @@ import javax.persistence.PersistenceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import fr.cedricsevestre.annotation.CustomService;
@@ -33,5 +35,12 @@ public class TagService extends NoTranslationService<Tag>{
 			throw new ServiceException("Error findAllFetched", e);
 		}
 	}
-
+	@Override
+	public Page<NoTranslation> findAllFetched(Pageable pageable) throws ServiceException {
+		try {
+			return tagDao.findAllFetched(pageable);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAllFetched", e);
+		}
+	}
 }

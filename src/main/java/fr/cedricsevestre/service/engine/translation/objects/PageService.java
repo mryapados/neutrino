@@ -8,6 +8,7 @@ import javax.persistence.PersistenceException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +35,14 @@ public class PageService extends TranslationService<Page>{
 	public List<Translation> findAllFetched() throws ServiceException {
 		try {
 			return pageDao.findAllFetched();
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAllFetched", e);
+		}
+	}
+	@Override
+	public org.springframework.data.domain.Page<Translation> findAllFetched(Pageable pageable) throws ServiceException {
+		try {
+			return pageDao.findAllFetched(pageable);
 		} catch (PersistenceException e) {
 			throw new ServiceException("Error findAllFetched", e);
 		}

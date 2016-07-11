@@ -17,6 +17,6 @@ public interface IBaseService<T> {
 
 	T findById(Integer id) throws ServiceException;
 
-	List<T> findAll() throws ServiceException;
+	Iterable<T>findAll() throws ServiceException;
 
 }

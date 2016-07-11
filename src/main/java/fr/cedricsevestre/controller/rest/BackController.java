@@ -93,7 +93,7 @@ public class BackController extends AbtractController {
 
 	@RequestMapping(value = "/positions", method = RequestMethod.GET)
 	public @ResponseBody Map<String, PositionDto> getPositions() throws ServiceException {
-		List<Position> positions = positionService.findAll();
+		Iterable<Position> positions = positionService.findAll();
 		Map<String, PositionDto> mapPositions = new HashMap<>();
 		for (Position position : positions) {
 			mapPositions.put(position.getName(), PositionDto.fromWithoutMapTemplate(position));
@@ -203,7 +203,7 @@ public class BackController extends AbtractController {
 	// RESTFull (ngResource)
 	@RequestMapping(value = "/langs", method = RequestMethod.GET)
 	public @ResponseBody List<LangDto> getLangs() throws ServiceException {
-		List<Lang> langs = langService.findAll();
+		Iterable<Lang> langs = langService.findAll();
 		List<LangDto> langsDto = new ArrayList<>();
 		for (Lang lang : langs) {
 			langsDto.add(LangDto.from(lang));

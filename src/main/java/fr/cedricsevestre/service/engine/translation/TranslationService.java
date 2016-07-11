@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,7 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 	private Logger logger = Logger.getLogger(TranslationService.class);
 
 	public abstract List<Translation> findAllFetched() throws ServiceException;
+	public abstract Page<Translation> findAllFetched(Pageable pageable) throws ServiceException;
 	
 	@Autowired
 	private TranslationDao<T> translationDao;

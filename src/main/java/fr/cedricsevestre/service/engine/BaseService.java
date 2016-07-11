@@ -81,7 +81,7 @@ public abstract class BaseService<T> implements IBaseService<T>{
 	}
 	
 	@Override
-	public List<T> findAll() throws ServiceException {
+	public Iterable<T> findAll() throws ServiceException {
 		try {
 			return baseDao.findAll();
 		} catch (PersistenceException e) {

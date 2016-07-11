@@ -668,6 +668,19 @@ public class InitialisationBase {
 		projectService.save(projectFR);
 	
 	
+		for (int i = 0; i < 150; i++) {
+			projectEN =   projectService.translate(new Project(), langEN, Project.class);
+			name = "generatedProject_" + i;
+			projectEN.setName(name + "_" + langEN.getCode().toUpperCase());
+			projectEN.setDescription(name + " description en");
+			projectService.save(projectEN);
+			
+			projectFR = projectService.translate(projectEN, langFR, Project.class);
+			projectFR.setName(name + "_" + langFR.getCode().toUpperCase());
+			projectFR.setDescription(name + " description fr");
+			projectService.save(projectFR);
+		}
+		
 	
 	}
 	
@@ -675,21 +688,42 @@ public class InitialisationBase {
 	public void initAlbums() throws ServiceException, InstantiationException, IllegalAccessException{
 		logger.debug("init albums");
 		String name = "";
+
+
+		Project ProjectEN = projectService.findByName("testproject_EN");
+		Project ProjectFR = projectService.findByName("testproject_FR");
 		
 		Album albumEN = albumService.translate(new Album(), langEN, Album.class);
-		name = "testalbum";
+		name = "testAlbum";
 		albumEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		albumEN.setDescription(name + " description en");
-		albumEN.setProject(projectService.findByName("testproject_EN"));
+		albumEN.setProject(ProjectEN);
 		albumEN.setType(AlbumType.DEFAULT);
 		albumService.save(albumEN);
 		
 		Album albumFR = albumService.translate(albumEN, langFR, Album.class);
 		albumFR.setName(name + "_" + langFR.getCode().toUpperCase());
 		albumFR.setDescription(name + " description fr");
-		albumFR.setProject(projectService.findByName("testproject_FR"));
+		albumFR.setProject(ProjectFR);
 		albumFR.setType(AlbumType.DEFAULT);
-		albumService.save(albumFR);		
+		albumService.save(albumFR);
+		
+		for (int i = 0; i < 250; i++) {
+			albumEN =   albumService.translate(new Album(), langEN, Album.class);
+			name = "generatedAlbum_" + i;
+			albumEN.setName(name + "_" + langEN.getCode().toUpperCase());
+			albumEN.setDescription(name + " description en");
+			albumEN.setProject(ProjectEN);
+			albumEN.setType(AlbumType.DEFAULT);
+			albumService.save(albumEN);
+			
+			albumFR = albumService.translate(albumEN, langFR, Album.class);
+			albumFR.setName(name + "_" + langFR.getCode().toUpperCase());
+			albumFR.setDescription(name + " description fr");
+			albumFR.setProject(ProjectFR);
+			albumFR.setType(AlbumType.DEFAULT);
+			albumService.save(albumFR);
+		}
 		
 	}
 	
@@ -705,6 +739,14 @@ public class InitialisationBase {
 		tag.setName("testtag2");
 		tag.setDescription("description tag2");
 		tagService.save(tag);
+
+		for (int i = 0; i < 250; i++) {
+			tag = new Tag();
+			tag.setName("testTag_" + i);
+			tag.setDescription("description tag" + i);
+			tagService.save(tag);
+		}
+		
 			
 	}
 	

@@ -50,6 +50,8 @@ public class Common {
 	public static final String BASE_BO_VIEWS_PATH = "bo/";
 	
 	public static final String CUSTOM_ENTITY_PACKAGE = "fr.cedricsevestre.entity.custom";
+	
+	@Deprecated
 	public static final String CUSTOM_SERVICE_PACKAGE = "fr.cedricsevestre.service.custom";
 	
 	public String getWebInfFolder() {

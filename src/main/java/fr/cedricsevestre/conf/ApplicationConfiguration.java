@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -40,6 +41,7 @@ import fr.cedricsevestre.taglib.Head;
 @EnableWebMvc
 @EnableTransactionManagement
 @EnableAspectJAutoProxy(proxyTargetClass = true)
+@EnableSpringDataWebSupport
 public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 
 	

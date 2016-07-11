@@ -13,8 +13,4 @@ import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 @Repository
 public interface MarkerDao extends NoTranslationDao<Marker> {
 	
-	
-	@Query("SELECT e FROM Marker e")
-	List<NoTranslation> findAllFetched();
-	
 }
