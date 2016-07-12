@@ -16,9 +16,15 @@ public final class ServerNameExtractingWebArgumentResolver implements WebArgumen
 		if (mp.getParameterType().equals(Folder.class)) {
 			// Assumes that a MyObject is bound to the session elsewhere using
 			// attribute key "myobjkey" on a successful authentication.
+//			if ((argument = nwr.getAttribute("folder", REQUEST_SCOPE)) == null) {
+//				throw new Exception("Fail, no Folder bound to request!");
+//			}
+			
+			
 			if ((argument = nwr.getAttribute("folder", REQUEST_SCOPE)) == null) {
 				throw new Exception("Fail, no Folder bound to request!");
 			}
+			
 		}
 		return argument;
 	}

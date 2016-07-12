@@ -22,9 +22,10 @@ public class ServerNameInterceptor extends HandlerInterceptorAdapter {
 		String serverName = request.getParameter("servername");
 		if (serverName == null){
 			serverName = request.getServerName();
-			//request.setAttribute("folder", common.getFolder(serverName));
-			request.setAttribute("folder", new Folder(0, "test","test"));
 		}
+		//request.setAttribute("folder", common.getFolder(serverName));
+		request.setAttribute("folder", new Folder(0, "test","test"));
+		
 		return true;
 	}
 }
