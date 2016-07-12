@@ -12,8 +12,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.service.engine.independant.objects.FolderService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
 
 @Component
@@ -21,12 +23,16 @@ import fr.cedricsevestre.service.engine.translation.objects.PageService;
 @PropertySource(value = "classpath:config.properties", name = "config")
 public class Common {	
 	private Map<String, Page> pages;
+	private Map<String, Folder> folders;
 	
 	private String applicationFolder;
 	private String webInfFolder;
 	
 	@Autowired
 	ServletContext servletContext;
+	
+	@Autowired
+	private FolderService folderService;
 	
 	@Autowired
 	private PageService pageService;
@@ -59,6 +65,16 @@ public class Common {
 			webInfFolder = servletContext.getRealPath(BASE_WEBINF);
 		}
 		return webInfFolder;
+	}
+	
+	public Folder getFolder(String serverName) throws ServiceException {
+		if (folders == null){
+			folders = new HashMap<>();
+		}
+		if(!folders.containsKey(serverName)){
+			folders.put(serverName, folderService.findByServerName(serverName));
+		}
+		return folders.get(serverName);
 	}
 	
 	public Page getPage(String pageNameWithoutLangCode, String langCode) throws ServiceException {

@@ -84,6 +84,14 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 		LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
 		interceptor.setParamName("lang");
 		registry.addInterceptor(interceptor);
+		
+		
+		
+		
+		
+		
+		ServerNameInterceptor serverNameInterceptor = new ServerNameInterceptor();
+		registry.addInterceptor(serverNameInterceptor);
 	}
 	
 	
