@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.controller.engine.AbtractController;
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
@@ -54,7 +55,9 @@ public class BackOfficeController extends AbtractController {
 	private BackOfficeService<Translation> backOfficeTranslationService;
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView viewList(@ModelAttribute("type") String type, Pageable pageRequest) {	
+	public ModelAndView viewList(@ModelAttribute("type") String type, Pageable pageRequest, Folder folder) {	
+		System.out.println("SERVERNAME = " + folder.getServerName());
+		
 		String pathModelAndView = Common.BASE_BO_VIEWS_PATH + "/list/list";
 		ModelAndView modelAndView = new ModelAndView(pathModelAndView);
 		

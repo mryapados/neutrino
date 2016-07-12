@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import fr.cedricsevestre.common.Common;
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 
 @Component
 public class ServerNameInterceptor extends HandlerInterceptorAdapter {
@@ -22,6 +23,7 @@ public class ServerNameInterceptor extends HandlerInterceptorAdapter {
 		if (serverName == null){
 			serverName = request.getServerName();
 			//request.setAttribute("folder", common.getFolder(serverName));
+			request.setAttribute("folder", new Folder(0, "test","test"));
 		}
 		return true;
 	}
