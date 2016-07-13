@@ -23,7 +23,9 @@ import fr.cedricsevestre.service.engine.translation.objects.PageService;
 @PropertySource(value = "classpath:config.properties", name = "config")
 public class Common {	
 	private Map<String, Page> pages;
-	private Map<String, Folder> folders;
+	
+	private Map<String, Folder> foldersByName;
+	private Map<String, Folder> foldersByServerName;
 	
 	private String applicationFolder;
 	private String webInfFolder;
@@ -67,14 +69,26 @@ public class Common {
 		return webInfFolder;
 	}
 	
+	private void addFolder(String serverName) throws ServiceException{
+		Folder folder = folderService.findByServerName(serverName);
+		String folderName = folder.getName();
+		if (foldersByName.containsKey(folderName)){
+			folder = foldersByName.get(folderName);
+		} else {
+			foldersByName.put(folderName, folder);
+		}
+		foldersByServerName.put(serverName, folder);
+	}
+	
 	public Folder getFolder(String serverName) throws ServiceException {
-		if (folders == null){
-			folders = new HashMap<>();
+		if (foldersByName == null){
+			foldersByName = new HashMap<>();
+			foldersByServerName = new HashMap<>();
 		}
-		if(!folders.containsKey(serverName)){
-			folders.put(serverName, folderService.findByServerName(serverName));
+		if(!foldersByServerName.containsKey(serverName)){
+			addFolder(serverName);
 		}
-		return folders.get(serverName);
+		return foldersByServerName.get(serverName);
 	}
 	
 	public Page getPage(String pageNameWithoutLangCode, String langCode) throws ServiceException {

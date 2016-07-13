@@ -15,7 +15,7 @@ import fr.cedricsevestre.service.engine.BaseService;
 
 @Service
 @Scope(value = "singleton")
-public class FolderService extends BaseService<Position>{
+public class FolderService extends BaseService<Folder>{
 
 	private Logger logger = Logger.getLogger(FolderService.class);
 

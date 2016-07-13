@@ -19,6 +19,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -43,7 +44,6 @@ import fr.cedricsevestre.taglib.Head;
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableSpringDataWebSupport
 public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
-
 	
 	@Bean
 	public UrlBasedViewResolver urlBasedViewResolver() {
@@ -84,16 +84,21 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 		LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
 		interceptor.setParamName("lang");
 		registry.addInterceptor(interceptor);
-		
-		
-		
-		
-		
-		
-		ServerNameInterceptor serverNameInterceptor = new ServerNameInterceptor();
-		registry.addInterceptor(serverNameInterceptor);
+
+		//ServerNameInterceptor serverNameInterceptor = new ServerNameInterceptor();
+		//registry.addInterceptor(serverNameInterceptor);
 	}
 	
+
+	@Bean
+	public ServerNameExtractingWebArgumentResolver serverNameExtractingWebArgumentResolver() {
+		return new ServerNameExtractingWebArgumentResolver();
+	}
+	
+	@Override
+	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+		argumentResolvers.add(serverNameExtractingWebArgumentResolver());
+	}
 	
 	@Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {

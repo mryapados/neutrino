@@ -19,6 +19,7 @@ import fr.cedricsevestre.entity.custom.Marker;
 import fr.cedricsevestre.entity.custom.Member;
 import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.custom.Tag;
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
 import fr.cedricsevestre.entity.engine.independant.objects.NData;
 import fr.cedricsevestre.entity.engine.independant.objects.NSchema;
@@ -36,6 +37,7 @@ import fr.cedricsevestre.service.custom.MemberService;
 import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.custom.TagService;
 import fr.cedricsevestre.service.engine.IBaseService;
+import fr.cedricsevestre.service.engine.independant.objects.FolderService;
 import fr.cedricsevestre.service.engine.independant.objects.MapTemplateService;
 import fr.cedricsevestre.service.engine.independant.objects.NDataService;
 import fr.cedricsevestre.service.engine.independant.objects.NSchemaService;
@@ -90,12 +92,18 @@ public class InitialisationBase {
 	@Autowired
 	private PageService pageService;
 	
+	@Autowired
+	private FolderService folderService;
+	
 	public void run() throws ServiceException, InstantiationException, IllegalAccessException {
 		logger.debug("init");
+		initFolders();
+		
 		initLangs();
 		initUsers();
 		initNSchemas();
 		initTemplates();
+		
 		initPages();
 		initPositions();
 		initBlocs();
@@ -217,6 +225,33 @@ public class InitialisationBase {
 		templateService.save(homeArticleFr);
 
 	}
+
+	public void initFolders() throws ServiceException{
+		logger.debug("init initFolders");
+		
+		List<String> serverNames = null;
+		Folder folder = null;
+		
+		folder = new Folder();
+		folder.setName("back");
+		serverNames = new ArrayList<>();
+		serverNames.add("back");
+		folder.setServerName(serverNames);
+		folder.setPath("back");
+		folderService.save(folder);
+		
+		folder = new Folder();
+		folder.setName("front");
+		serverNames = new ArrayList<>();
+		serverNames.add("localhost");
+		serverNames.add("127.0.0.1");
+		serverNames.add("front");
+		folder.setServerName(serverNames);
+		folder.setPath("front");
+		folderService.save(folder);
+	}
+	
+	
 	
 	public void initPages() throws ServiceException{
 		logger.debug("init templates");

@@ -11,6 +11,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 
+@Deprecated
 @Component
 public class ServerNameInterceptor extends HandlerInterceptorAdapter {
 	
@@ -23,9 +24,8 @@ public class ServerNameInterceptor extends HandlerInterceptorAdapter {
 		if (serverName == null){
 			serverName = request.getServerName();
 		}
-		//request.setAttribute("folder", common.getFolder(serverName));
-		request.setAttribute("folder", new Folder(0, "test","test"));
-		
+		System.out.println("ServerNameInterceptor: serverName = " + serverName);
+		request.setAttribute("serverName", serverName);
 		return true;
 	}
 }

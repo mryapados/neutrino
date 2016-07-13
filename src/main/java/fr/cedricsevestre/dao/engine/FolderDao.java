@@ -12,7 +12,7 @@ public interface FolderDao extends BaseDao<Folder> {
 	@Query("SELECT p FROM Folder p WHERE p.name =:name")
 	Folder findByName(@Param("name") String name);	
 	
-	@Query("SELECT p FROM Folder p WHERE p.serverName =:serverName")
+	@Query("SELECT p FROM Folder p WHERE :serverName IN elements(p.serverName)")
 	Folder findByServerName(@Param("serverName") String serverName);	
 	
 }
