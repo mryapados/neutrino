@@ -15,6 +15,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.common.Common;
+import fr.cedricsevestre.common.Common.TypeBase;
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
 import fr.cedricsevestre.entity.engine.independant.objects.NData;
 import fr.cedricsevestre.entity.engine.independant.objects.NSchema;
@@ -63,17 +65,25 @@ public class Block extends TagSupport {
 		
 	private String position = null;
 
+	private static final String BLOCKPREVIEW = "blockPreview";
+	private static final String FOLDER = "folder";
+	private static final String SURFER = "surfer";
+	private static final String ACTIVEBLOCK = "activeBlock";
+	private static final String ACTIVEOBJECT = "activeObject";
+	private static final String PAGE = "page";
+	
 	public int doStartTag() {
 		logger.debug("Enter in doStartTag()");
 		JspWriter out = pageContext.getOut();
 		try {
-			Boolean blockPreview = (Boolean) pageContext.getAttribute("blockPreview", PageContext.REQUEST_SCOPE);
+			Boolean blockPreview = (Boolean) pageContext.getAttribute(BLOCKPREVIEW, PageContext.REQUEST_SCOPE);
+			Folder folder = (Folder) pageContext.getAttribute(FOLDER, PageContext.REQUEST_SCOPE);
 			if (blockPreview){
-				User surfer = (User) pageContext.getAttribute("surfer", PageContext.REQUEST_SCOPE);
+				User surfer = (User) pageContext.getAttribute(SURFER, PageContext.REQUEST_SCOPE);
 				if (surfer.getRole().equals(User.ROLE_ADMIN)){
-					Template model = (Template) pageContext.getAttribute("activeBlock", PageContext.REQUEST_SCOPE);
-					Translation activeObject = (Translation) pageContext.getAttribute("activeObject", PageContext.REQUEST_SCOPE);
-					Page page = (Page) pageContext.getAttribute("page", PageContext.REQUEST_SCOPE);
+					Template model = (Template) pageContext.getAttribute(ACTIVEBLOCK, PageContext.REQUEST_SCOPE);
+					Translation activeObject = (Translation) pageContext.getAttribute(ACTIVEOBJECT, PageContext.REQUEST_SCOPE);
+					Page page = (Page) pageContext.getAttribute(PAGE, PageContext.REQUEST_SCOPE);
 					if (model == null) model = page.getModel();
 					
 					Integer activeObjectId = 0;
@@ -81,9 +91,9 @@ public class Block extends TagSupport {
 					
 					out.println("<data-ui-position model=\"" + model.getName() + "\" activeobject=\"" + activeObjectId + "\" position=\"" + position + "\" />");
 				} else {
-					getJsp();
+					getJsp(folder);
 				}
-			} else getJsp();
+			} else getJsp(folder);
 		} catch (ServletException | IOException e) {
 			try {
 				out.println("<p class=\"bg-danger\">" + e.getMessage() + "</p>");
@@ -100,7 +110,7 @@ public class Block extends TagSupport {
 	 * else Container = activeObject if not null and if contains blocks
 	 * else Container = page;
 	 */
-	public void getJsp() throws ServletException, IOException{
+	public void getJsp(Folder folder) throws ServletException, IOException{
 		logger.debug("Enter in getJsp()");
 		JspWriter out = pageContext.getOut();
 		if (Common.DEBUG) out.print("<p class=\"debug\">" + "Enter in getJSP()" + "</p>");
@@ -145,13 +155,17 @@ public class Block extends TagSupport {
 						}
 					}
 					
-					String path = null;	
-					String pathContext = Common.BASE_PAGES_VIEWS_PATH + page.getContext();
-					if (templateService.checkJSPExist(common.getWebInfFolder(), pathContext, activeBlock)){
-						path = templateService.pathJSP(pathContext, activeBlock);
-					} else {
-						path = templateService.pathJSP(Common.BASE_PAGES_COMMON_PATH, activeBlock);
-					}
+					
+					String path = templateService.getPathJSP(true, folder, page.getContext(), activeBlock, true);
+					System.out.println(path);
+//					String path = null;	
+//					String pathContext = common.getBasePath(false, folder, TypeBase.VIEWS) + page.getContext();
+//					
+//					if (templateService.checkJSPExist(common.getWebInfFolder(), pathContext, activeBlock)){
+//						path = templateService.pathJSP(pathContext, activeBlock);
+//					} else {
+//						path = templateService.pathJSP(Common.BASE_PAGES_COMMON_PATH, activeBlock);
+//					}
 
 					if (Common.DEBUG) out.print("<p class=\"debug\">" + "path = " + path + "</p>");
 					pageContext.setAttribute("activeBlock", activeBlock, PageContext.REQUEST_SCOPE);
@@ -237,9 +251,9 @@ public class Block extends TagSupport {
 					String path = null;	
 					String pathContext = Common.BASE_PAGES_VIEWS_PATH + page.getContext();
 					if (templateService.checkJSPExist(common.getWebInfFolder(), pathContext, activeBlock)){
-						path = templateService.pathJSP(pathContext, activeBlock);
+						path = templateService.pathJSP(true, pathContext, activeBlock, true);
 					} else {
-						path = templateService.pathJSP(Common.BASE_PAGES_COMMON_PATH, activeBlock);
+						path = templateService.pathJSP(true, Common.BASE_PAGES_COMMON_PATH, activeBlock, true);
 					}
 
 					if (Common.DEBUG) out.print("<p class=\"debug\">" + "path = " + path + "</p>");

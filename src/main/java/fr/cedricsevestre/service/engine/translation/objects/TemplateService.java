@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.cedricsevestre.common.Common;
+import fr.cedricsevestre.common.Common.TypeBase;
 import fr.cedricsevestre.dao.engine.TemplateDao;
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.TranslationProvider;
@@ -31,6 +33,9 @@ public class TemplateService extends TranslationService<Template>{
 
 	@Autowired
 	private TemplateDao templateDao;
+	
+	@Autowired
+	private Common common;
 	
 	@Override
 	public List<Translation> findAllFetched() throws ServiceException {
@@ -96,21 +101,21 @@ public class TemplateService extends TranslationService<Template>{
 		else throw new ServiceException("erreur pathType Template");
 	}
 	
-	public String pathJSP(String pathContext, Template template) throws ServiceException{	
+	public String pathJSP(boolean webInf, String pathContext, Template template, boolean jsp) throws ServiceException{	
 		String pathBlock = pathType(template) + "/" + template.getPath();
 		StringBuilder path = new StringBuilder();
-		path.append(Common.BASE_WEBINF);
+		if (webInf) path.append(Common.BASE_WEBINF);
 		path.append(pathContext);
 		path.append("/templates/");
 		path.append(pathBlock);
-		path.append(".jsp");
+		if (jsp) path.append(".jsp");
 		return path.toString();
 	}
 	
 	public Boolean checkJSPExist(String webInfFolder, String pathContext, Template template) throws ServiceException{
 		File d = new File(webInfFolder);
 		System.out.println("webInfFolder = " + webInfFolder);
-		String path = d.getParent().replace("\\", "/") + pathJSP(pathContext, template);
+		String path = d.getParent().replace("\\", "/") + pathJSP(true, pathContext, template, true);
 		//String path = webInfFolder.replace("\\", "/") + pathJSP(pathContext, template);
 		System.out.println("path = " + path);
 		File f = new File(path);
@@ -118,6 +123,25 @@ public class TemplateService extends TranslationService<Template>{
 		    return true;
 		}
 		return false;
+	}
+	
+	public String getPathJSP(Boolean webInf, Folder folder, String context, Template template, boolean jsp) throws ServiceException{
+		String pathContext = common.getBasePath(false, folder, TypeBase.VIEWS) + context;
+		if (checkJSPExist(common.getWebInfFolder(), pathContext, template)){
+			return pathJSP(webInf, pathContext, template, jsp);
+		} else {
+			pathContext = common.getBasePath(false, folder, TypeBase.COMMON);
+			if (checkJSPExist(common.getWebInfFolder(), pathContext, template)){
+				return pathJSP(webInf,pathContext, template, jsp);
+			} else {
+				pathContext = common.getBasePath(false, null, TypeBase.COMMON);
+				if (checkJSPExist(common.getWebInfFolder(), pathContext, template)){
+					return pathJSP(webInf,pathContext, template, jsp);
+				} else {
+					throw new ServiceException("JSP not found");
+				}
+			}
+		}
 	}
 	
 	//@Override

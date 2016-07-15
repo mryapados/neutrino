@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.exception.ServiceException;
 
 @Controller
@@ -20,7 +21,7 @@ public class HomeController extends AbtractController{
 	}
 
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public ModelAndView view() {
+	public ModelAndView view(Folder folder) {
 		System.out.println("home controller");
 		ModelAndView modelAndView = null;
 		try {

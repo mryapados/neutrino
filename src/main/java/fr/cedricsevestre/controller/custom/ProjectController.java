@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import fr.cedricsevestre.controller.engine.AbtractController;
 import fr.cedricsevestre.entity.custom.Project;
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.ProjectService;
@@ -26,7 +27,7 @@ public class ProjectController extends AbtractController {
 	public static final String HOMEPROJECTPAGE = "project";
 	
 	@RequestMapping(value = "/project", method = RequestMethod.GET)
-	public ModelAndView view(@ModelAttribute("p") String project) {
+	public ModelAndView view(@ModelAttribute("p") String project, Folder folder) {
 		ModelAndView modelAndView = null;
 		try {
 			modelAndView = baseView(HOMEPROJECTPAGE, getActiveObject(project));

@@ -42,19 +42,40 @@ public class Common {
 	@Resource
 	private Environment environment;
 	
+
+	public enum TypeBase {
+		VIEWS("views/"),
+		COMMON("common/"),
+		ADMIN("admin/")
+	    ;
+	    private final String text;
+	    private TypeBase(final String text) {
+	        this.text = text;
+	    }
+	    @Override
+	    public String toString() {
+	        return text;
+	    }
+	}
+	
 	public static final Boolean DEBUG = false;
 	
 	public static final String BACK = "back";
 	public static final String FRONT = "front";
 	
 	public static final String BASE_WEBINF = "/WEB-INF/";
-	public static final String BASE_PAGES_VIEWS_PATH = "pages/views/";
-
-	public static final String BASE_WEBINF_PAGES_VIEWS_PATH = BASE_WEBINF + BASE_PAGES_VIEWS_PATH;
-	public static final String BASE_PAGES_COMMON_PATH = "pages/common/";
-	public static final String BASE_WEBINF_PAGES_COMMON_PATH = BASE_WEBINF + "pages/common/";
 	
+	@Deprecated
+	public static final String BASE_PAGES_VIEWS_PATH = "pages/views/";
+	@Deprecated
+	public static final String BASE_WEBINF_PAGES_VIEWS_PATH = BASE_WEBINF + BASE_PAGES_VIEWS_PATH;
+	@Deprecated
+	public static final String BASE_PAGES_COMMON_PATH = "pages/common/";
+	@Deprecated
+	public static final String BASE_WEBINF_PAGES_COMMON_PATH = BASE_WEBINF + "pages/common/";
+	@Deprecated
 	public static final String BASE_WEBINF_ADMIN_PATH = BASE_WEBINF + "admin/";
+	@Deprecated
 	public static final String BASE_BO_VIEWS_PATH = "bo/";
 	
 	public static final String CUSTOM_ENTITY_PACKAGE = "fr.cedricsevestre.entity.custom";
@@ -101,6 +122,20 @@ public class Common {
 		}
 		return pages.get(pageName);
 	}
+	
+	public String getBasePath(Boolean webInf, Folder folder, TypeBase typeBase){
+		return (webInf ? BASE_WEBINF : "") + 
+			   (folder != null ? folder.getPath() : "") + 
+			   (typeBase.toString());
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 		
 	public String getApplicationFolder() {
 		if (applicationFolder == null) 

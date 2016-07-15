@@ -91,13 +91,13 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 	
 
 	@Bean
-	public ServerNameExtractingWebArgumentResolver serverNameExtractingWebArgumentResolver() {
-		return new ServerNameExtractingWebArgumentResolver();
+	public ServerNameHandlerMethodArgumentResolver serverNameHandlerMethodArgumentResolver() {
+		return new ServerNameHandlerMethodArgumentResolver();
 	}
 	
 	@Override
 	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-		argumentResolvers.add(serverNameExtractingWebArgumentResolver());
+		argumentResolvers.add(serverNameHandlerMethodArgumentResolver());
 	}
 	
 	@Override

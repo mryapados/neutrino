@@ -237,7 +237,7 @@ public class InitialisationBase {
 		serverNames = new ArrayList<>();
 		serverNames.add("back");
 		folder.setServerName(serverNames);
-		folder.setPath("back");
+		folder.setPath("back/");
 		folderService.save(folder);
 		
 		folder = new Folder();
@@ -247,7 +247,7 @@ public class InitialisationBase {
 		serverNames.add("127.0.0.1");
 		serverNames.add("front");
 		folder.setServerName(serverNames);
-		folder.setPath("front");
+		folder.setPath("pages/");
 		folderService.save(folder);
 	}
 	

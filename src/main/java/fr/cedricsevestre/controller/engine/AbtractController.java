@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import fr.cedricsevestre.common.Common;
+import fr.cedricsevestre.common.Common.TypeBase;
 import fr.cedricsevestre.entity.custom.Member;
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.User;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Page;
@@ -34,7 +36,10 @@ public abstract class AbtractController {
 	
 	@Autowired
 	private TemplateService templateService;
-		
+	
+	@Autowired
+	protected Common common;
+	
 	@ModelAttribute("surfer")
 	public User addUserToScope() throws ServiceException {
 		System.out.println("Enter in addUserToScope()");
@@ -65,9 +70,7 @@ public abstract class AbtractController {
 		System.out.println("Enter in addBlocPreviewToSessionScope()");
 		return false;
 	}
-	
-	@Autowired
-	protected Common common;
+
 
 	public ModelAndView baseView(String pageNameWithoutLangCode, Translation activeObject) throws ServiceException {
 		Locale locale = LocaleContextHolder.getLocale();
@@ -77,8 +80,19 @@ public abstract class AbtractController {
 	public ModelAndView baseView(Page page, Translation activeObject) throws ServiceException {
 		if (Common.DEBUG) System.out.println(this.getClass() + " - baseview - page : " + page.getName());
 		Template model = page.getModel();
-		String pathContext = Common.BASE_PAGES_VIEWS_PATH + page.getContext();
-		ModelAndView modelAndView = baseView(model, pathContext);
+		
+//		Folder folder = new Folder();
+//		folder.setPath("pages/");
+//		String pathContext = common.getBasePath(false, folder, TypeBase.VIEWS) + page.getContext();
+//		
+
+		
+		
+//		System.out.println("ICI");
+//		System.out.println(pathContext);
+		String pathContext = (Common.BASE_PAGES_VIEWS_PATH + page.getContext());
+		
+		ModelAndView modelAndView = baseView(page, model);
 		
 		modelAndView.addObject("page", page);
 		modelAndView.addObject("activeObject", activeObject);
@@ -86,8 +100,24 @@ public abstract class AbtractController {
 		return modelAndView;
 	}
 	
-	public ModelAndView baseView(Template template, String pathContext) throws ServiceException {
-		String pathModelAndView = pathContext + "/templates/" + templateService.pathType(template) + "/" + template.getPath();
+	public ModelAndView baseView(Page page, Template template) throws ServiceException {
+		 
+//			
+//		(Folder) request.getAttribute("folder")
+//		
+		 
+		 
+		Folder folder = new Folder();
+		folder.setPath("pages/");
+		 
+		
+		String pathModelAndView = templateService.getPathJSP(false, folder, page.getContext(), template, false);
+		
+		System.out.println("pathModelAndView 1 : " + pathModelAndView);
+		String pathContext = (Common.BASE_PAGES_VIEWS_PATH + page.getContext());
+		System.out.println("pathModelAndView 2 : " + pathContext + "/templates/" + templateService.pathType(template) + "/" + template.getPath()); 
+		
+		
 		ModelAndView modelAndView = new ModelAndView(pathModelAndView);
 		modelAndView.addObject("applicationFolder", common.getApplicationFolder());
 		modelAndView.addObject("template", template);
@@ -96,5 +126,18 @@ public abstract class AbtractController {
 		return modelAndView;
 	}
 	
-	
+//	public ModelAndView baseView(Template template, String pathContext) throws ServiceException {
+////		 templateService.getPathJSP(false, (Folder) request.getAttribute("folder"), page.getContext(), block);
+////			
+////		(Folder) request.getAttribute("folder")
+////		
+//		
+//		String pathModelAndView = pathContext + "/templates/" + templateService.pathType(template) + "/" + template.getPath();
+//		ModelAndView modelAndView = new ModelAndView(pathModelAndView);
+//		modelAndView.addObject("applicationFolder", common.getApplicationFolder());
+//		modelAndView.addObject("template", template);
+//		modelAndView.addObject("context", pathContext);
+//		modelAndView.addObject("initialized", false);
+//		return modelAndView;
+//	}	
 }

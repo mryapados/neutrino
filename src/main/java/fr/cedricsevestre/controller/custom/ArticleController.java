@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import fr.cedricsevestre.controller.engine.AbtractController;
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.ProjectService;
@@ -23,7 +24,7 @@ public class ArticleController extends AbtractController {
 //	private ArticleService articleService;
 	
 	@RequestMapping(value = "/article", method = RequestMethod.GET)
-	public ModelAndView view(@ModelAttribute("id") Integer id) {
+	public ModelAndView view(@ModelAttribute("id") Integer id, Folder folder) {
 		ModelAndView modelAndView = null;
 		try {
 			modelAndView = baseView(HOMEARTICLEPAGE, null);

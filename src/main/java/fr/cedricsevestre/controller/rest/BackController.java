@@ -35,6 +35,7 @@ import fr.cedricsevestre.dto.engine.MapTemplateSimpleDto;
 import fr.cedricsevestre.dto.engine.PageDto;
 import fr.cedricsevestre.dto.engine.PositionDto;
 import fr.cedricsevestre.dto.engine.TemplateDto;
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
 import fr.cedricsevestre.entity.engine.independant.objects.Position;
 import fr.cedricsevestre.entity.engine.translation.Lang;
@@ -142,12 +143,18 @@ public class BackController extends AbtractController {
 			Page page = pageService.findByName(pageName);
 			Template block = templateService.findByName(blockName);
 
+			//String path = templateService.getPathJSP(false, (Folder) request.getAttribute("folder"), page.getContext(), block);
+			
+			
 			String pathContext = Common.BASE_PAGES_VIEWS_PATH + page.getContext();		
 			if (!templateService.checkJSPExist(common.getWebInfFolder(), pathContext, block)){
 				pathContext = Common.BASE_PAGES_COMMON_PATH;
 			}
 			
-			modelAndView = baseView(block, pathContext);
+			//modelAndView = baseView(block, pathContext);
+			modelAndView = baseView(page, block);
+			
+			
 			modelAndView.addObject("page", page);
 			modelAndView.addObject("activeBlock", block);
 			response.addHeader("Object-Type", "parsedBlock");  
