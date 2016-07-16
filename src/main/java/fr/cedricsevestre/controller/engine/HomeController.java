@@ -25,7 +25,7 @@ public class HomeController extends AbtractController{
 		System.out.println("home controller");
 		ModelAndView modelAndView = null;
 		try {
-			modelAndView = baseView(HOMEPAGE, null);
+			modelAndView = baseView(HOMEPAGE, null, folder);
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

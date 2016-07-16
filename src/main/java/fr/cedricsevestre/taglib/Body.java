@@ -8,10 +8,13 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.common.Common;
+import fr.cedricsevestre.common.Common.TypeBase;
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.User;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Page;
@@ -22,17 +25,30 @@ public class Body extends TagSupport {
 
 	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(Body.class);
-
+	
+	private static Common common;
+	@Autowired
+	public void Common(Common common) {
+		this.common = common;
+	}
+	
+	private static final String BLOCKPREVIEW = "blockPreview";
+	private static final String FOLDER = "folder";
+	private static final String SURFER = "surfer";
+	private static final String PAGE = "page";
+	private static final String ACTIVEOBJECT = "activeObject";
+	private static final String NENGINESCRIPT = "NEngineScript";
+	
 	public int doStartTag() {
 		logger.debug("Enter in doStartTag()");
 		JspWriter out = pageContext.getOut();
 		try {			
-			Boolean blockPreview = (Boolean) pageContext.getAttribute("blockPreview", PageContext.REQUEST_SCOPE);
+			Boolean blockPreview = (Boolean) pageContext.getAttribute(BLOCKPREVIEW, PageContext.REQUEST_SCOPE);
 			if (blockPreview){
-				User surfer = (User) pageContext.getAttribute("surfer", PageContext.REQUEST_SCOPE);
+				User surfer = (User) pageContext.getAttribute(SURFER, PageContext.REQUEST_SCOPE);
 				if (surfer.getRole().equals(User.ROLE_ADMIN)){
-					Page page = (Page) pageContext.getAttribute("page", PageContext.REQUEST_SCOPE);
-					Translation activeObject = (Translation) pageContext.getAttribute("activeObject", PageContext.REQUEST_SCOPE);
+					Page page = (Page) pageContext.getAttribute(PAGE, PageContext.REQUEST_SCOPE);
+					Translation activeObject = (Translation) pageContext.getAttribute(ACTIVEOBJECT, PageContext.REQUEST_SCOPE);
 					String initObjects = "'" + page.getName() + "'";
 					if (activeObject != null) initObjects += "," + activeObject.getId();
 					
@@ -58,17 +74,24 @@ public class Body extends TagSupport {
 		logger.debug("Enter in doEndTag()");
 		JspWriter out = pageContext.getOut();
 		try {
+			
+			
+			System.out.println("RST " + Common.BASE_WEBINF_PAGES_COMMON_PATH + "components/scripts.jsp");
+			
+			Folder folder = (Folder) pageContext.getAttribute(FOLDER, PageContext.REQUEST_SCOPE);
+			System.out.println("RST " + common.getBasePath(true, folder, TypeBase.COMMON));
+			
 			pageContext.include(Common.BASE_WEBINF_PAGES_COMMON_PATH + "components/scripts.jsp");
-			String engineScript = (String) pageContext.getAttribute("NEngineScript", PageContext.REQUEST_SCOPE); 
+			String engineScript = (String) pageContext.getAttribute(NENGINESCRIPT, PageContext.REQUEST_SCOPE); 
 			if (engineScript != null){
 				out.println(engineScript);		
 			}
 			
-			User surfer = (User) pageContext.getAttribute("surfer", PageContext.REQUEST_SCOPE);
+			User surfer = (User) pageContext.getAttribute(SURFER, PageContext.REQUEST_SCOPE);
 			if (surfer.getRole().equals(User.ROLE_ADMIN)){
 				pageContext.include(Common.BASE_WEBINF_ADMIN_PATH + "components/blockPreview.jsp");
 				
-				Boolean blockPreview = (Boolean) pageContext.getAttribute("blockPreview", PageContext.REQUEST_SCOPE);
+				Boolean blockPreview = (Boolean) pageContext.getAttribute(BLOCKPREVIEW, PageContext.REQUEST_SCOPE);
 				if (blockPreview){
 					pageContext.include(Common.BASE_WEBINF_ADMIN_PATH + "components/backManagement.jsp");
 				}

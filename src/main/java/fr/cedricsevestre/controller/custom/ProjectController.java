@@ -30,7 +30,7 @@ public class ProjectController extends AbtractController {
 	public ModelAndView view(@ModelAttribute("p") String project, Folder folder) {
 		ModelAndView modelAndView = null;
 		try {
-			modelAndView = baseView(HOMEPROJECTPAGE, getActiveObject(project));
+			modelAndView = baseView(HOMEPROJECTPAGE, getActiveObject(project), folder);
 			modelAndView.addObject("project", project);
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block

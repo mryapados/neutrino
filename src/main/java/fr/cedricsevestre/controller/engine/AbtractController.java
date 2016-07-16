@@ -66,78 +66,32 @@ public abstract class AbtractController {
 		return authentication != null && !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();
 	}
 	@ModelAttribute("blockPreview")
-	public Boolean addBlocPreviewToSessionScope() throws ServiceException {
-		System.out.println("Enter in addBlocPreviewToSessionScope()");
+	public Boolean addBlockPreviewToSessionScope() throws ServiceException {
+		System.out.println("Enter in addBlockPreviewToSessionScope()");
 		return false;
 	}
 
-
-	public ModelAndView baseView(String pageNameWithoutLangCode, Translation activeObject) throws ServiceException {
+	public ModelAndView baseView(String pageNameWithoutLangCode, Translation activeObject, Folder folder) throws ServiceException {
 		Locale locale = LocaleContextHolder.getLocale();
-		return baseView(common.getPage(pageNameWithoutLangCode, locale.getLanguage()), activeObject);
+		return baseView(common.getPage(pageNameWithoutLangCode, locale.getLanguage()), activeObject, folder);
 	}
 	
-	public ModelAndView baseView(Page page, Translation activeObject) throws ServiceException {
+	public ModelAndView baseView(Page page, Translation activeObject, Folder folder) throws ServiceException {
 		if (Common.DEBUG) System.out.println(this.getClass() + " - baseview - page : " + page.getName());
 		Template model = page.getModel();
-		
-//		Folder folder = new Folder();
-//		folder.setPath("pages/");
-//		String pathContext = common.getBasePath(false, folder, TypeBase.VIEWS) + page.getContext();
-//		
-
-		
-		
-//		System.out.println("ICI");
-//		System.out.println(pathContext);
-		String pathContext = (Common.BASE_PAGES_VIEWS_PATH + page.getContext());
-		
-		ModelAndView modelAndView = baseView(page, model);
-		
+		ModelAndView modelAndView = baseView(page, model, folder);
 		modelAndView.addObject("page", page);
 		modelAndView.addObject("activeObject", activeObject);
-		
 		return modelAndView;
 	}
 	
-	public ModelAndView baseView(Page page, Template template) throws ServiceException {
-		 
-//			
-//		(Folder) request.getAttribute("folder")
-//		
-		 
-		 
-		Folder folder = new Folder();
-		folder.setPath("pages/");
-		 
-		
+	public ModelAndView baseView(Page page, Template template, Folder folder) throws ServiceException {
 		String pathModelAndView = templateService.getPathJSP(false, folder, page.getContext(), template, false);
-		
-		System.out.println("pathModelAndView 1 : " + pathModelAndView);
-		String pathContext = (Common.BASE_PAGES_VIEWS_PATH + page.getContext());
-		System.out.println("pathModelAndView 2 : " + pathContext + "/templates/" + templateService.pathType(template) + "/" + template.getPath()); 
-		
-		
 		ModelAndView modelAndView = new ModelAndView(pathModelAndView);
 		modelAndView.addObject("applicationFolder", common.getApplicationFolder());
 		modelAndView.addObject("template", template);
-		modelAndView.addObject("context", pathContext);
 		modelAndView.addObject("initialized", false);
 		return modelAndView;
 	}
 	
-//	public ModelAndView baseView(Template template, String pathContext) throws ServiceException {
-////		 templateService.getPathJSP(false, (Folder) request.getAttribute("folder"), page.getContext(), block);
-////			
-////		(Folder) request.getAttribute("folder")
-////		
-//		
-//		String pathModelAndView = pathContext + "/templates/" + templateService.pathType(template) + "/" + template.getPath();
-//		ModelAndView modelAndView = new ModelAndView(pathModelAndView);
-//		modelAndView.addObject("applicationFolder", common.getApplicationFolder());
-//		modelAndView.addObject("template", template);
-//		modelAndView.addObject("context", pathContext);
-//		modelAndView.addObject("initialized", false);
-//		return modelAndView;
-//	}	
 }

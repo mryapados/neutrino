@@ -137,24 +137,12 @@ public class BackController extends AbtractController {
 
 
 	@RequestMapping(value = "/parsedblock/{pageName}/{blockName}", method = RequestMethod.GET)
-	public ModelAndView getParsedBlock(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "pageName") String pageName, @PathVariable(value = "blockName") String blockName) throws ServiceException {
+	public ModelAndView getParsedBlock(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "pageName") String pageName, @PathVariable(value = "blockName") String blockName, Folder folder) throws ServiceException {
 		ModelAndView modelAndView = null;
 		try {
 			Page page = pageService.findByName(pageName);
 			Template block = templateService.findByName(blockName);
-
-			//String path = templateService.getPathJSP(false, (Folder) request.getAttribute("folder"), page.getContext(), block);
-			
-			
-			String pathContext = Common.BASE_PAGES_VIEWS_PATH + page.getContext();		
-			if (!templateService.checkJSPExist(common.getWebInfFolder(), pathContext, block)){
-				pathContext = Common.BASE_PAGES_COMMON_PATH;
-			}
-			
-			//modelAndView = baseView(block, pathContext);
-			modelAndView = baseView(page, block);
-			
-			
+			modelAndView = baseView(page, block, folder);
 			modelAndView.addObject("page", page);
 			modelAndView.addObject("activeBlock", block);
 			response.addHeader("Object-Type", "parsedBlock");  

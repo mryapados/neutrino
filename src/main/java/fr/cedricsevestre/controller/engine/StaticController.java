@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.exception.ServiceException;
 
 @Controller
@@ -15,12 +16,12 @@ import fr.cedricsevestre.exception.ServiceException;
 public class StaticController extends AbtractController {
 
 	@RequestMapping(value = "/static", method = RequestMethod.GET)
-	public ModelAndView view(@ModelAttribute("p") String page) {
+	public ModelAndView view(@ModelAttribute("p") String page, Folder folder) {
 		System.out.println("static controller");
 		
 		ModelAndView modelAndView = null;
 		try {
-			modelAndView = baseView(page, null);
+			modelAndView = baseView(page, null, folder);
 
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block

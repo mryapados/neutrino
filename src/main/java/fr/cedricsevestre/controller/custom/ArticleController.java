@@ -27,7 +27,7 @@ public class ArticleController extends AbtractController {
 	public ModelAndView view(@ModelAttribute("id") Integer id, Folder folder) {
 		ModelAndView modelAndView = null;
 		try {
-			modelAndView = baseView(HOMEARTICLEPAGE, null);
+			modelAndView = baseView(HOMEARTICLEPAGE, null, folder);
 
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block
