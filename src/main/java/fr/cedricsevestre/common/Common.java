@@ -66,16 +66,6 @@ public class Common {
 	public static final String BASE_WEBINF = "/WEB-INF/";
 	
 	@Deprecated
-	public static final String BASE_PAGES_VIEWS_PATH = "pages/views/";
-	@Deprecated
-	public static final String BASE_WEBINF_PAGES_VIEWS_PATH = BASE_WEBINF + BASE_PAGES_VIEWS_PATH;
-	@Deprecated
-	public static final String BASE_PAGES_COMMON_PATH = "pages/common/";
-	@Deprecated
-	public static final String BASE_WEBINF_PAGES_COMMON_PATH = BASE_WEBINF + "pages/common/";
-	@Deprecated
-	public static final String BASE_WEBINF_ADMIN_PATH = BASE_WEBINF + "admin/";
-	@Deprecated
 	public static final String BASE_BO_VIEWS_PATH = "bo/";
 	
 	public static final String CUSTOM_ENTITY_PACKAGE = "fr.cedricsevestre.entity.custom";

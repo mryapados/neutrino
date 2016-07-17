@@ -8,10 +8,12 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.common.Common;
+import fr.cedricsevestre.common.Common.TypeBase;
 
 @Component
 @Scope(value = "singleton")
@@ -19,7 +21,13 @@ public class Init extends TagSupport {
 
 	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(Init.class);
-
+	
+	private static Common common;
+	@Autowired
+	public void Common(Common common) {
+		this.common = common;
+	}
+	
 	private Boolean test = null;
 	
 	public int doStartTag() {
@@ -27,7 +35,7 @@ public class Init extends TagSupport {
 		if (test){
 			JspWriter out = pageContext.getOut();
 			try {
-				pageContext.include(Common.BASE_WEBINF_ADMIN_PATH + "components/init.jsp");
+				pageContext.include(common.getBasePath(true, null, TypeBase.ADMIN) + "components/init.jsp");
 				pageContext.setAttribute("initialized", true, PageContext.REQUEST_SCOPE);
 			} catch (IOException | ServletException e) {
 				try {

@@ -74,14 +74,8 @@ public class Body extends TagSupport {
 		logger.debug("Enter in doEndTag()");
 		JspWriter out = pageContext.getOut();
 		try {
-			
-			
-			System.out.println("RST " + Common.BASE_WEBINF_PAGES_COMMON_PATH + "components/scripts.jsp");
-			
 			Folder folder = (Folder) pageContext.getAttribute(FOLDER, PageContext.REQUEST_SCOPE);
-			System.out.println("RST " + common.getBasePath(true, folder, TypeBase.COMMON));
-			
-			pageContext.include(Common.BASE_WEBINF_PAGES_COMMON_PATH + "components/scripts.jsp");
+			pageContext.include(common.getBasePath(true, folder, TypeBase.COMMON) + "components/scripts.jsp");
 			String engineScript = (String) pageContext.getAttribute(NENGINESCRIPT, PageContext.REQUEST_SCOPE); 
 			if (engineScript != null){
 				out.println(engineScript);		
@@ -89,11 +83,11 @@ public class Body extends TagSupport {
 			
 			User surfer = (User) pageContext.getAttribute(SURFER, PageContext.REQUEST_SCOPE);
 			if (surfer.getRole().equals(User.ROLE_ADMIN)){
-				pageContext.include(Common.BASE_WEBINF_ADMIN_PATH + "components/blockPreview.jsp");
-				
+				String adminPath = common.getBasePath(true, null, TypeBase.ADMIN);
+				pageContext.include(adminPath + "components/blockPreview.jsp");
 				Boolean blockPreview = (Boolean) pageContext.getAttribute(BLOCKPREVIEW, PageContext.REQUEST_SCOPE);
 				if (blockPreview){
-					pageContext.include(Common.BASE_WEBINF_ADMIN_PATH + "components/backManagement.jsp");
+					pageContext.include(adminPath + "components/backManagement.jsp");
 				}
 			}
 			out.println("</body>");

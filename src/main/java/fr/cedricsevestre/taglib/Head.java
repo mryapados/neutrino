@@ -8,10 +8,13 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.common.Common;
+import fr.cedricsevestre.common.Common.TypeBase;
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.User;
 
 @Component
@@ -20,7 +23,17 @@ public class Head extends TagSupport {
 	
 	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(Head.class);
-
+	
+	private static final String FOLDER = "folder";
+	private static final String SURFER = "surfer";
+	private static final String APPLICATIONFOLDER = "applicationFolder";
+	
+	private static Common common;
+	@Autowired
+	public void Common(Common common) {
+		this.common = common;
+	}
+	
 	public int doStartTag() {
 		logger.debug("Enter in doStartTag()");
 		JspWriter out = pageContext.getOut();
@@ -41,11 +54,12 @@ public class Head extends TagSupport {
 		logger.debug("Enter in doEndTag()");
 		JspWriter out = pageContext.getOut();
 		try {
-			pageContext.include(Common.BASE_WEBINF_PAGES_COMMON_PATH + "components/css.jsp");
-			User surfer = (User) pageContext.getAttribute("surfer", PageContext.REQUEST_SCOPE);
+			Folder folder = (Folder) pageContext.getAttribute(FOLDER, PageContext.REQUEST_SCOPE);
+			pageContext.include(common.getBasePath(true, folder, TypeBase.COMMON) + "components/css.jsp");
+			User surfer = (User) pageContext.getAttribute(SURFER, PageContext.REQUEST_SCOPE);
 			if (surfer.getRole().equals(User.ROLE_ADMIN)){
 				//TODO change applicationFolder to c:url
-				String applicationFolder = (String) pageContext.getAttribute("applicationFolder", PageContext.REQUEST_SCOPE);
+				String applicationFolder = (String) pageContext.getAttribute(APPLICATIONFOLDER, PageContext.REQUEST_SCOPE);
 				out.println("<link href=\"" + applicationFolder + "/style/app.css\" rel=\"stylesheet\">");
 			} 
 			out.println("</head>");

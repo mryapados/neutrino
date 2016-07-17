@@ -34,33 +34,33 @@ import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 
 @Component
 @Scope(value = "singleton")
-public class Block extends TagSupport {
+public class Include extends TagSupport {
 
 	private static final long serialVersionUID = 1L;
-	private Logger logger = Logger.getLogger(Block.class);
+	private Logger logger = Logger.getLogger(Include.class);
 
 	private static Common common;
 	@Autowired
 	public void Common(Common common) {
-		Block.common = common;
+		Include.common = common;
 	}
 
 	private static PositionService positionService;
 	@Autowired
 	public void PositionService(PositionService positionService) {
-		Block.positionService = positionService;
+		Include.positionService = positionService;
 	}
 	
 	private static TemplateService templateService;
 	@Autowired
 	public void TemplateService(TemplateService templateService) {
-		Block.templateService = templateService;
+		Include.templateService = templateService;
 	}
 
 	private static NDataService nDataService;
 	@Autowired
 	public void NDataService(NDataService nDataService) {
-		Block.nDataService = nDataService;
+		Include.nDataService = nDataService;
 	}
 		
 	private String position = null;
