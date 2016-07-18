@@ -3,9 +3,4 @@
 <%@ taglib prefix="my" uri="/WEB-INF/taglibs/neutrino.tld" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<%-- <jsp:include page="/WEB-INF/pages/common/templates/pages/home/home.jsp" /> --%>
-<%-- <my:include page="/templates/pages/home/home.jsp" /> --%>
-
-
-
-<my:include page="/templates/pages/home/test.jsp" />
+<h1>OK</h1>

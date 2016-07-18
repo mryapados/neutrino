@@ -40,6 +40,15 @@
 		</attribute>
 	</tag>
 	<tag>
+		<name>include</name>
+		<tag-class>fr.cedricsevestre.taglib.Include</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>page</name>
+			<required>true</required>
+		</attribute>
+	</tag>
+	<tag>
 		<name>discrimin</name>
 		<tag-class>fr.cedricsevestre.taglib.Discrimin</tag-class>
 		<body-content>scriptless</body-content>
