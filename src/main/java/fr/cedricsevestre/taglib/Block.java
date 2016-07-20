@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -34,7 +35,7 @@ import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 
 @Component
 @Scope(value = "singleton")
-public class Block extends TagSupport {
+public class Block extends TagSupport implements IIncludeJSP {
 
 	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(Block.class);
@@ -72,12 +73,11 @@ public class Block extends TagSupport {
 	private static final String ACTIVEOBJECT = "activeObject";
 	private static final String PAGE = "page";
 	
-	public int doStartTag() {
+	public int doStartTag() throws JspException {
 		logger.debug("Enter in doStartTag()");
 		JspWriter out = pageContext.getOut();
 		try {
 			Boolean blockPreview = (Boolean) pageContext.getAttribute(BLOCKPREVIEW, PageContext.REQUEST_SCOPE);
-			Folder folder = (Folder) pageContext.getAttribute(FOLDER, PageContext.REQUEST_SCOPE);
 			if (blockPreview){
 				User surfer = (User) pageContext.getAttribute(SURFER, PageContext.REQUEST_SCOPE);
 				if (surfer.getRole().equals(User.ROLE_ADMIN)){
@@ -91,10 +91,10 @@ public class Block extends TagSupport {
 					
 					out.println("<data-ui-position model=\"" + model.getName() + "\" activeobject=\"" + activeObjectId + "\" position=\"" + position + "\" />");
 				} else {
-					getJsp(folder);
+					getJsp();
 				}
-			} else getJsp(folder);
-		} catch (ServletException | IOException e) {
+			} else getJsp();
+		} catch (IOException e) {
 			try {
 				out.println("<p class=\"bg-danger\">" + e.getMessage() + "</p>");
 			} catch (IOException ex) {
@@ -110,15 +110,16 @@ public class Block extends TagSupport {
 	 * else Container = activeObject if not null and if contains blocks
 	 * else Container = page;
 	 */
-	public void getJsp(Folder folder) throws ServletException, IOException{
+	public void getJsp() throws JspException{
 		logger.debug("Enter in getJsp()");
 		JspWriter out = pageContext.getOut();
-		if (Common.DEBUG) out.print("<p class=\"debug\">" + "Enter in getJSP()" + "</p>");
 		try {
+			if (Common.DEBUG) out.print("<p class=\"debug\">" + "Enter in getJSP()" + "</p>");
 			
+			Folder folder = (Folder) pageContext.getAttribute(FOLDER, PageContext.REQUEST_SCOPE);
 			List<Translation> models = new ArrayList<>();
 			Translation model = (Template) pageContext.getAttribute("parentPageBlock", PageContext.REQUEST_SCOPE);
-			Page page = (Page) pageContext.getAttribute("page", PageContext.REQUEST_SCOPE);
+			Page page = (Page) pageContext.getAttribute(PAGE, PageContext.REQUEST_SCOPE);
 			if (model == null) model = page.getModel();
 			models.add(model);
 			
@@ -178,7 +179,25 @@ public class Block extends TagSupport {
 					
 				}
 			}
+			
+			
+			if (Common.DEBUG) out.print("<p class=\"debug\">" + "Exit getJSP()" + "</p>");
+			
 		} catch (ServiceException e) {
+			try {
+				out.println("<p class=\"bg-danger\">" + e.getMessage() + "</p>");
+			} catch (IOException ex) {
+				logger.error("Erreur Block " + ex.getMessage());
+				ex.printStackTrace();
+			}
+		} catch (IOException e) {
+			try {
+				out.println("<p class=\"bg-danger\">" + e.getMessage() + "</p>");
+			} catch (IOException ex) {
+				logger.error("Erreur Block " + ex.getMessage());
+				ex.printStackTrace();
+			}
+		} catch (ServletException e) {
 			try {
 				out.println("<p class=\"bg-danger\">" + e.getMessage() + "</p>");
 			} catch (IOException ex) {
@@ -187,7 +206,7 @@ public class Block extends TagSupport {
 			}
 		}
 		
-		if (Common.DEBUG) out.print("<p class=\"debug\">" + "Exit getJSP()" + "</p>");
+		
 	}
 	
 	public void setPosition(String position) {

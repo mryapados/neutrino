@@ -106,7 +106,7 @@ public class TemplateService extends TranslationService<Template>{
 		StringBuilder path = new StringBuilder();
 		if (webInf) path.append(Common.BASE_WEBINF);
 		path.append(pathContext);
-		path.append("/templates/");
+		path.append("templates/");
 		path.append(pathBlock);
 		if (jsp) path.append(".jsp");
 		return path.toString();
@@ -126,7 +126,7 @@ public class TemplateService extends TranslationService<Template>{
 	}
 	
 	public String getPathJSP(Boolean webInf, Folder folder, String context, Template template, boolean jsp) throws ServiceException{
-		String pathContext = common.getBasePath(false, folder, TypeBase.VIEWS) + context;
+		String pathContext = common.getBasePath(false, folder, TypeBase.VIEWS) + context + "/";
 		if (checkJSPExist(common.getWebInfFolder(), pathContext, template)){
 			return pathJSP(webInf, pathContext, template, jsp);
 		} else {

@@ -91,6 +91,10 @@ public abstract class AbtractController {
 		modelAndView.addObject("applicationFolder", common.getApplicationFolder());
 		modelAndView.addObject("template", template);
 		modelAndView.addObject("initialized", false);
+		
+		Locale locale = LocaleContextHolder.getLocale();
+		modelAndView.addObject("language", locale.getLanguage());
+		
 		return modelAndView;
 	}
 	

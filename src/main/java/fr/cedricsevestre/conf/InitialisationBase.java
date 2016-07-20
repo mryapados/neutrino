@@ -702,8 +702,8 @@ public class InitialisationBase {
 		projectFR.setDescription(name + " description fr");
 		projectService.save(projectFR);
 	
-	
-		for (int i = 0; i < 150; i++) {
+		Integer max = 0;
+		for (int i = 0; i < max; i++) {
 			projectEN =   projectService.translate(new Project(), langEN, Project.class);
 			name = "generatedProject_" + i;
 			projectEN.setName(name + "_" + langEN.getCode().toUpperCase());
@@ -743,7 +743,8 @@ public class InitialisationBase {
 		albumFR.setType(AlbumType.DEFAULT);
 		albumService.save(albumFR);
 		
-		for (int i = 0; i < 250; i++) {
+		Integer max = 0;
+		for (int i = 0; i < max; i++) {
 			albumEN =   albumService.translate(new Album(), langEN, Album.class);
 			name = "generatedAlbum_" + i;
 			albumEN.setName(name + "_" + langEN.getCode().toUpperCase());
@@ -775,7 +776,8 @@ public class InitialisationBase {
 		tag.setDescription("description tag2");
 		tagService.save(tag);
 
-		for (int i = 0; i < 250; i++) {
+		Integer max = 0;
+		for (int i = 0; i < max; i++) {
 			tag = new Tag();
 			tag.setName("testTag_" + i);
 			tag.setDescription("description tag" + i);
