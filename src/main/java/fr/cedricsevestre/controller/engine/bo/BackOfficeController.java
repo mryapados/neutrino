@@ -54,11 +54,20 @@ public class BackOfficeController extends AbtractController {
 	@Autowired
 	private BackOfficeService<Translation> backOfficeTranslationService;
 	
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView viewList(@ModelAttribute("type") String type, Pageable pageRequest, Folder folder) {	
+	@RequestMapping(value = "/exlist", method = RequestMethod.GET)
+	public ModelAndView viewList(@ModelAttribute("type") String type, Pageable pageRequest) {	
+		
+		Folder folder = null;
+		try {
+			folder = common.getFolder("back");
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		System.out.println("SERVERNAME = " + folder.getServerName());
 		
-		String pathModelAndView = Common.BASE_BO_VIEWS_PATH + "/list/list";
+		String pathModelAndView = folder.getPath() + "/views/list/templates/pages/home/list";
 		ModelAndView modelAndView = new ModelAndView(pathModelAndView);
 		
 		try {

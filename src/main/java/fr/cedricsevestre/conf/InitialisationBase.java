@@ -221,8 +221,34 @@ public class InitialisationBase {
 		
 		Template homeArticleFr = templateService.translate(homeArticleEN, langFR);
 		homeArticleFr.setName("homeArticle_" + langFR.getCode().toUpperCase());
-		homeArticleFr.setDescription("homeArticle description fr");
+		homeArticleFr.setDescription(" description fr");
 		templateService.save(homeArticleFr);
+		
+		
+		
+		String name = "";
+		
+		name = "@bo_list";
+		Template bo_listEN = templateService.translate(new Template(), langEN);
+		bo_listEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		bo_listEN.setDescription(name + " description en");
+		bo_listEN.setMetaTitle("{0}");
+		bo_listEN.setMetaDescription("MetaDescription");
+		bo_listEN.setPath("home/home");
+		bo_listEN.setType(Template.TemplateType.PAGE);
+		templateService.save(bo_listEN);
+		
+		Template bo_listFR = templateService.translate(bo_listEN, langFR);
+		bo_listFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		bo_listFR.setDescription(name + " description fr");
+		templateService.save(bo_listFR);
+		
+		
+		
+		
+		
+		
+		
 
 	}
 
@@ -306,6 +332,30 @@ public class InitialisationBase {
 		articleFr.setName("article_" + langFR.getCode().toUpperCase());
 		articleFr.setDescription("article description fr");
 		pageService.save(articleFr);
+		
+		
+		
+		
+		String name = "";
+		
+		name = "@bo_list";
+		Page bo_listEN = pageService.translate(new Page(), langEN);
+		bo_listEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		bo_listEN.setContext("list");
+		bo_listEN.setDescription(name + " description en");
+		bo_listEN.setModel(templateService.findByNameWithAllExceptData(name + "_" + langEN.getCode().toUpperCase()));
+		pageService.save(bo_listEN);
+		
+		Page bo_listFR = pageService.translate(bo_listEN, langFR);
+		bo_listFR.setName("article_" + langFR.getCode().toUpperCase());
+		bo_listFR.setDescription("article description fr");
+		pageService.save(bo_listFR);
+		
+		
+		
+		
+		
+		
 		
 	}
 

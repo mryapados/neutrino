@@ -71,6 +71,9 @@ public abstract class AbtractController {
 		return false;
 	}
 
+	public ModelAndView baseView(String pageNameWithoutLangCode, Folder folder) throws ServiceException {
+		return baseView(pageNameWithoutLangCode, null, folder);
+	}
 	public ModelAndView baseView(String pageNameWithoutLangCode, Translation activeObject, Folder folder) throws ServiceException {
 		Locale locale = LocaleContextHolder.getLocale();
 		return baseView(common.getPage(pageNameWithoutLangCode, locale.getLanguage()), activeObject, folder);
@@ -91,7 +94,7 @@ public abstract class AbtractController {
 		modelAndView.addObject("applicationFolder", common.getApplicationFolder());
 		modelAndView.addObject("template", template);
 		modelAndView.addObject("initialized", false);
-		
+		modelAndView.addObject("folder", folder);
 		Locale locale = LocaleContextHolder.getLocale();
 		modelAndView.addObject("language", locale.getLanguage());
 		

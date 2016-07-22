@@ -32,13 +32,12 @@ public final class ServerNameHandlerMethodArgumentResolver implements HandlerMet
                                   NativeWebRequest nativeWebRequest,
                                   WebDataBinderFactory webDataBinderFactory) throws Exception {
 		System.out.println("Enter in resolveArgument");
-		HttpServletRequest httpServletRequest = (HttpServletRequest) nativeWebRequest.getNativeRequest();
     	String serverName = nativeWebRequest.getParameter("servername");
 		if (serverName == null || serverName.equals("")){
+			HttpServletRequest httpServletRequest = (HttpServletRequest) nativeWebRequest.getNativeRequest();
 			serverName = httpServletRequest.getServerName();
 		}
 		Folder folder =  common.getFolder(serverName);
-		httpServletRequest.setAttribute("folder", folder);
     	return folder;
     }
  

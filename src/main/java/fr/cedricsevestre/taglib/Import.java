@@ -1,13 +1,6 @@
 package fr.cedricsevestre.taglib;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -15,8 +8,6 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.PageContext;
 
-import org.apache.taglibs.standard.resources.Resources;
-import org.apache.taglibs.standard.tag.common.core.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -24,7 +15,6 @@ import org.springframework.stereotype.Component;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.NData;
 import fr.cedricsevestre.entity.engine.independant.objects.NSchema;
-import fr.cedricsevestre.entity.engine.independant.objects.NSchema.ScopeType;
 import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateType;
@@ -36,9 +26,7 @@ import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 @Scope(value = "singleton")
 public class Import extends org.apache.taglibs.standard.tag.common.core.ImportSupport implements IIncludeJSP {
 	private static final long serialVersionUID = 1L;
-	private static final String FOLDER = "folder";
-	private static final String PAGE = "page";
-	
+
 	private String template = null;
 	
 	private static TemplateService templateService;
@@ -86,19 +74,19 @@ public class Import extends org.apache.taglibs.standard.tag.common.core.ImportSu
 				}
 			}
 			
-			Folder folder = (Folder) pageContext.getAttribute(FOLDER, PageContext.REQUEST_SCOPE);
-			Page page = (Page) pageContext.getAttribute(PAGE, PageContext.REQUEST_SCOPE);
+			Folder folder = (Folder) pageContext.getAttribute(Attributes.FOLDER.toString(), PageContext.REQUEST_SCOPE);
+			Page page = (Page) pageContext.getAttribute(Attributes.PAGE.toString(), PageContext.REQUEST_SCOPE);
 			String path = templateService.getPathJSP(true, folder, page.getContext(), target, true);
 			
 			if (target.getType() == TemplateType.BLOCK){
-				pageContext.setAttribute("activeBlock", target, PageContext.REQUEST_SCOPE);
+				pageContext.setAttribute(Attributes.ACTIVEBLOCK.toString(), target, PageContext.REQUEST_SCOPE);
 				pageContext.include(path);
 				
 			} else if (target.getType() == TemplateType.PAGEBLOCK){
-				pageContext.setAttribute("activeBlock", target, PageContext.REQUEST_SCOPE);
-				pageContext.setAttribute("parentPageBlock", target, PageContext.REQUEST_SCOPE);
+				pageContext.setAttribute(Attributes.ACTIVEBLOCK.toString(), target, PageContext.REQUEST_SCOPE);
+				pageContext.setAttribute(Attributes.PARENTPAGEBLOCK.toString(), target, PageContext.REQUEST_SCOPE);
 				pageContext.include(path);
-				pageContext.removeAttribute("parentPageBlock");
+				pageContext.removeAttribute(Attributes.PARENTPAGEBLOCK.toString());
 				
 			} else {
 				pageContext.include(path);

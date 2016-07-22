@@ -16,14 +16,13 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.common.Common;
-import fr.cedricsevestre.common.Common.TypeBase;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
 import fr.cedricsevestre.entity.engine.independant.objects.NData;
 import fr.cedricsevestre.entity.engine.independant.objects.NSchema;
+import fr.cedricsevestre.entity.engine.independant.objects.NSchema.ScopeType;
 import fr.cedricsevestre.entity.engine.independant.objects.Position;
 import fr.cedricsevestre.entity.engine.independant.objects.User;
-import fr.cedricsevestre.entity.engine.independant.objects.NSchema.ScopeType;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
@@ -39,12 +38,6 @@ public class Block extends TagSupport implements IIncludeJSP {
 
 	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(Block.class);
-
-	private static Common common;
-	@Autowired
-	public void Common(Common common) {
-		Block.common = common;
-	}
 
 	private static PositionService positionService;
 	@Autowired
@@ -66,24 +59,17 @@ public class Block extends TagSupport implements IIncludeJSP {
 		
 	private String position = null;
 
-	private static final String BLOCKPREVIEW = "blockPreview";
-	private static final String FOLDER = "folder";
-	private static final String SURFER = "surfer";
-	private static final String ACTIVEBLOCK = "activeBlock";
-	private static final String ACTIVEOBJECT = "activeObject";
-	private static final String PAGE = "page";
-	
 	public int doStartTag() throws JspException {
 		logger.debug("Enter in doStartTag()");
 		JspWriter out = pageContext.getOut();
 		try {
-			Boolean blockPreview = (Boolean) pageContext.getAttribute(BLOCKPREVIEW, PageContext.REQUEST_SCOPE);
+			Boolean blockPreview = (Boolean) pageContext.getAttribute(Attributes.BLOCKPREVIEW.toString(), PageContext.REQUEST_SCOPE);
 			if (blockPreview){
-				User surfer = (User) pageContext.getAttribute(SURFER, PageContext.REQUEST_SCOPE);
+				User surfer = (User) pageContext.getAttribute(Attributes.SURFER.toString(), PageContext.REQUEST_SCOPE);
 				if (surfer.getRole().equals(User.ROLE_ADMIN)){
-					Template model = (Template) pageContext.getAttribute(ACTIVEBLOCK, PageContext.REQUEST_SCOPE);
-					Translation activeObject = (Translation) pageContext.getAttribute(ACTIVEOBJECT, PageContext.REQUEST_SCOPE);
-					Page page = (Page) pageContext.getAttribute(PAGE, PageContext.REQUEST_SCOPE);
+					Template model = (Template) pageContext.getAttribute(Attributes.ACTIVEBLOCK.toString(), PageContext.REQUEST_SCOPE);
+					Translation activeObject = (Translation) pageContext.getAttribute(Attributes.ACTIVEOBJECT.toString(), PageContext.REQUEST_SCOPE);
+					Page page = (Page) pageContext.getAttribute(Attributes.PAGE.toString(), PageContext.REQUEST_SCOPE);
 					if (model == null) model = page.getModel();
 					
 					Integer activeObjectId = 0;
@@ -116,14 +102,14 @@ public class Block extends TagSupport implements IIncludeJSP {
 		try {
 			if (Common.DEBUG) out.print("<p class=\"debug\">" + "Enter in getJSP()" + "</p>");
 			
-			Folder folder = (Folder) pageContext.getAttribute(FOLDER, PageContext.REQUEST_SCOPE);
+			Folder folder = (Folder) pageContext.getAttribute(Attributes.FOLDER.toString(), PageContext.REQUEST_SCOPE);
 			List<Translation> models = new ArrayList<>();
-			Translation model = (Template) pageContext.getAttribute("parentPageBlock", PageContext.REQUEST_SCOPE);
-			Page page = (Page) pageContext.getAttribute(PAGE, PageContext.REQUEST_SCOPE);
+			Translation model = (Template) pageContext.getAttribute(Attributes.PARENTPAGEBLOCK.toString(), PageContext.REQUEST_SCOPE);
+			Page page = (Page) pageContext.getAttribute(Attributes.PAGE.toString(), PageContext.REQUEST_SCOPE);
 			if (model == null) model = page.getModel();
 			models.add(model);
 			
-			Translation activeObject = (Translation) pageContext.getAttribute("activeObject", PageContext.REQUEST_SCOPE);
+			Translation activeObject = (Translation) pageContext.getAttribute(Attributes.ACTIVEOBJECT.toString(), PageContext.REQUEST_SCOPE);
 			if (activeObject != null){
 				models.add(activeObject);
 			}
@@ -159,12 +145,12 @@ public class Block extends TagSupport implements IIncludeJSP {
 					String path = templateService.getPathJSP(true, folder, page.getContext(), activeBlock, true);
 
 					if (Common.DEBUG) out.print("<p class=\"debug\">" + "path = " + path + "</p>");
-					pageContext.setAttribute("activeBlock", activeBlock, PageContext.REQUEST_SCOPE);
+					pageContext.setAttribute(Attributes.ACTIVEBLOCK.toString(), activeBlock, PageContext.REQUEST_SCOPE);
 					
 					if (activeBlock.getType() == TemplateType.PAGEBLOCK){
-						pageContext.setAttribute("parentPageBlock", activeBlock, PageContext.REQUEST_SCOPE);
+						pageContext.setAttribute(Attributes.PARENTPAGEBLOCK.toString(), activeBlock, PageContext.REQUEST_SCOPE);
 						pageContext.include(path.toString());
-						pageContext.removeAttribute("parentPageBlock");
+						pageContext.removeAttribute(Attributes.PARENTPAGEBLOCK.toString());
 					} else {
 						pageContext.include(path.toString());
 					}
