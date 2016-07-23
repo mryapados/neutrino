@@ -6,8 +6,9 @@
 <%-- 
 	Objets disponibles :  
 	language : Scope Request, String , en / fr / es / ..., objet fourni par le controller, provient d'un cookie.
-	frontLang : Scope Request, Bundle de traduction pour le front
-	applicationFolder : Scope Request, String, dossier de l'application
+
+	TO DO...
+
 --%>
 
 <%-- init : Obligatoire dans le JSP contenant le Doctype --%>
@@ -19,51 +20,41 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<%-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags --%>
 	<meta name="description" content="">
 	<meta name="author" content="Cédric Sevestre">
 	<link rel="icon" href="favicon.ico">
 	
-	<title>
-		<spring:message code="project.pages.home.title" arguments="${project}" />
-	</title>
+	<title><spring:message code="project.pages.home.title" arguments="${project}" /></title>
 	
 	<!-- Custom styles for this template -->
-	<link href="<c:url value='/style/project.css'/>" rel="stylesheet">
+	<link href="<c:url value='/style/back.css'/>" rel="stylesheet">
 </my:head>
 <my:body>
 
-<%-- 	<my:cache> --%>
 
 	<section id="control">
 		<header>
-			<my:block position="header" />
+			<my:block position="@bo_header" />
 		</header>
 
 		<div class="container-fluid">
 			<div class="row">
 				<nav class="col-lg-2 col-md-2 col-sm-3 hidden-xs">
-					<my:block position="nav" />
+					<my:block position="@bo_nav" />
 				</nav>
 				<article class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
-					<my:block position="article" />
+					<my:block position="@bo_article" />
 				</article>
 				<aside class="col-lg-2 col-md-2 col-sm-3 hidden-xs">
-					<my:block position="aside" />
+					<my:block position="@bo_aside" />
 				</aside>
 			</div>
 		</div>
 		
 		<footer>
-			<my:block position="footer" />
+			<my:block position="@bo_footer" />
 		</footer>
-	</section>
-
-
-	<section id="map">
-		<article>
-			<my:block position="map" />
-		</article>
 	</section>
 
 
@@ -79,11 +70,6 @@
 	</c:forEach>
 
 
-
-
-
-
-<%-- 	</my:cache> --%>
 
 </my:body>
 </html>

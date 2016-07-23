@@ -29,7 +29,7 @@ public class Body extends TagSupport {
 	private static Common common;
 	@Autowired
 	public void Common(Common common) {
-		this.common = common;
+		Body.common = common;
 	}
 	
 	private static final String BLOCKPREVIEW = "blockPreview";
@@ -47,9 +47,10 @@ public class Body extends TagSupport {
 			if (blockPreview){
 				User surfer = (User) pageContext.getAttribute(SURFER, PageContext.REQUEST_SCOPE);
 				if (surfer.getRole().equals(User.ROLE_ADMIN)){
+					Folder folder = (Folder) pageContext.getAttribute(FOLDER, PageContext.REQUEST_SCOPE);
 					Page page = (Page) pageContext.getAttribute(PAGE, PageContext.REQUEST_SCOPE);
 					Translation activeObject = (Translation) pageContext.getAttribute(ACTIVEOBJECT, PageContext.REQUEST_SCOPE);
-					String initObjects = "'" + page.getName() + "'";
+					String initObjects = "'" + folder.getName() + "', '" + page.getName() + "'";
 					if (activeObject != null) initObjects += "," + activeObject.getId();
 					
 					out.println("<body data-ng-app=\"backApp\" data-ng-controller=\"BlockManagementCtrl\" data-ng-init=\"init(" + initObjects + ")\">");

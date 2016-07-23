@@ -1,7 +1,8 @@
 (function() {
 	var bModule = angular.module('backServices');
 
-	bModule.service('BlockManagementService', function($rootScope, $q, $modal, LangService, PageService, TemplateService, BlockService, MapTemplateService, TObjectService, PATH) {
+	bModule.service('BlockManagementService', function($rootScope, $q, $modal, FolderService, LangService, PageService, TemplateService, BlockService, MapTemplateService, TObjectService, PATH) {
+		var folder;
 		var page;
 		var activeObject = null;
 		self = this;
@@ -15,11 +16,14 @@
 			return langs;
 		};
 		
-		self.init = function(pageName, activeObjectId) {
+		self.init = function(folderName, pageName, activeObjectId) {
 			var deferred = $q.defer();
-			var promise = PageService.getPage(pageName)
-			.then(function(data){
-				page = data;
+			
+			var promise = FolderService.getFolder(folderName).then(function(data){
+				folder = data;
+			})
+			.then(function(){
+				self.initPage(pageName);
 			})
 			.then(function(){
 				if (activeObjectId != null){
@@ -30,24 +34,75 @@
 			})
 			.then(function(){
 				self.initLangs();
-				
-				
 			})
 			.then(function(){
 				self.initTemplates();
 			})
 			.catch(function(error) {
+				console.log('errrrrrrrrrrrrrrrrrrrrror');
 				console.log(error);
 			})
 			.finally(function() {
 				deferred.resolve();
 			});
+			
+			
+			
+//			var promise = PageService.getPage(pageName)
+//			.then(function(data){
+//				page = data;
+//			})
+//			.then(function(){
+//				if (activeObjectId != null){
+//					TObjectService.getTObject(activeObjectId).then(function(data){
+//						activeObject = data;
+//					});
+//				}
+//			})
+//			.then(function(){
+//				self.initLangs();
+//				
+//				
+//			})
+//			.then(function(){
+//				self.initTemplates();
+//			})
+//			.catch(function(error) {
+//				console.log(error);
+//			})
+//			.finally(function() {
+//				deferred.resolve();
+//			});
+			return deferred.promise;
+			
+			
+		};
+		
+		self.initFolder = function(folderName) {
+			var deferred = $q.defer();
+			if (!folder) {
+				FolderService.getFolder(folderName).then(function(data){
+					folder = data;
+					deferred.resolve();
+				});
+			} else {
+				deferred.resolve();
+			}
 			return deferred.promise;
 		};
 		
-		
-		
-
+		self.initPage = function(pageName) {
+			var deferred = $q.defer();
+			if (!page) {
+				PageService.getPage(pageName).then(function(data){
+					page = data;
+					deferred.resolve();
+				});
+			} else {
+				deferred.resolve();
+			}
+			return deferred.promise;
+		};
 		
 		self.initLangs = function() {
 			var deferred = $q.defer();
@@ -62,19 +117,19 @@
 			return deferred.promise;
 		};
 		
-		self.initTemplates = function() {
-			var deferred = $q.defer();
-			if (!templates) {
-				TemplateService.getTemplates().then(function(data) {
-					templates = data;
-					console.log(data);
-					deferred.resolve();
-				});
-			} else {
-				deferred.resolve();
-			}
-			return deferred.promise;
-		};
+//		self.initTemplates = function() {
+//			var deferred = $q.defer();
+//			if (!templates) {
+//				TemplateService.getTemplates().then(function(data) {
+//					templates = data;
+//					console.log(data);
+//					deferred.resolve();
+//				});
+//			} else {
+//				deferred.resolve();
+//			}
+//			return deferred.promise;
+//		};
 		
 		self.initTemplates = function() {
 			var deferred = $q.defer();
@@ -89,7 +144,7 @@
 			return deferred.promise;
 		};
 		self.getParsedBlock = function(blockName) {
-			return PATH.URL_SERVER_REST + '@back/parsedblock/' + page.name + '/' + blockName;
+			return PATH.URL_SERVER_REST + '@back/parsedblock/' + page.name + '/' + blockName + '?servername=' + folder.serverName[0];
 		}
 
 		self.setMapBlock = function(modelName, blockName, positionName, ordered) {
@@ -188,6 +243,15 @@
 		};
 		self.getLangs = function() {
 			return LangResource.getAll().$promise;
+		};
+	});
+	bModule.service('FolderService', function(FolderResource, PATH) {
+		self = this;
+		self.getFolder = function(folderName) {
+			return FolderResource.get({name : folderName}).$promise;
+		};
+		self.getFolders = function() {
+			return FolderResource.getAll().$promise;
 		};
 	});
 	bModule.service('PageService', function(PageResource, PATH) {

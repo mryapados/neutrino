@@ -55,6 +55,14 @@ public class Folder implements IdProvider, Serializable{
 	public Folder(){
 		
 	}
+	public Folder(Integer id, String name, List<String> serverName, String path) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.serverName = serverName;
+		this.path = path;
+	}
+	
 	public Integer getId() {
 		return id;
 	}

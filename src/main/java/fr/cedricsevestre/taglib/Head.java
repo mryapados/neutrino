@@ -31,7 +31,7 @@ public class Head extends TagSupport {
 	private static Common common;
 	@Autowired
 	public void Common(Common common) {
-		this.common = common;
+		Head.common = common;
 	}
 	
 	public int doStartTag() {

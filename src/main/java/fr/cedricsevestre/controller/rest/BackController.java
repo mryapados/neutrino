@@ -29,6 +29,7 @@ import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.controller.engine.AbtractController;
 import fr.cedricsevestre.dto.engine.TranslationDto;
 import fr.cedricsevestre.dto.engine.BlockDto;
+import fr.cedricsevestre.dto.engine.FolderDto;
 import fr.cedricsevestre.dto.engine.LangDto;
 import fr.cedricsevestre.dto.engine.MapTemplateDto;
 import fr.cedricsevestre.dto.engine.MapTemplateSimpleDto;
@@ -45,6 +46,7 @@ import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateType;
 import fr.cedricsevestre.exception.FormException;
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.service.engine.independant.objects.FolderService;
 import fr.cedricsevestre.service.engine.independant.objects.MapTemplateService;
 import fr.cedricsevestre.service.engine.independant.objects.PositionService;
 import fr.cedricsevestre.service.engine.translation.LangService;
@@ -61,6 +63,9 @@ public class BackController extends AbtractController {
 	
 	@Autowired
 	private LangService langService;
+	
+	@Autowired
+	private FolderService folderService;
 	
 	@Autowired
 	private PageService pageService;
@@ -210,6 +215,12 @@ public class BackController extends AbtractController {
 	public @ResponseBody TranslationDto getTObject(@PathVariable(value = "id") Integer id) throws ServiceException {
 		Translation translation = tObjectService.findById(id);
 		return TranslationDto.from(translation);
+	}
+	
+	@RequestMapping(value = "/folders/{name}", method = RequestMethod.GET)
+	public @ResponseBody FolderDto getFolder(@PathVariable(value = "name") String folderName) throws ServiceException {
+		Folder folder = folderService.findByName(folderName);
+		return FolderDto.from(folder);
 	}
 	
 	@RequestMapping(value = "/pages/{name}", method = RequestMethod.GET)
