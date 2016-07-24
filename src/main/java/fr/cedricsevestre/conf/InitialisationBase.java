@@ -20,10 +20,12 @@ import fr.cedricsevestre.entity.custom.Marker;
 import fr.cedricsevestre.entity.custom.Member;
 import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.custom.Tag;
+import fr.cedricsevestre.entity.engine.bo.Link;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
 import fr.cedricsevestre.entity.engine.independant.objects.NData;
 import fr.cedricsevestre.entity.engine.independant.objects.NSchema;
+import fr.cedricsevestre.entity.engine.independant.objects.NSchema.ScopeType;
 import fr.cedricsevestre.entity.engine.independant.objects.NType;
 import fr.cedricsevestre.entity.engine.independant.objects.Position;
 import fr.cedricsevestre.entity.engine.independant.objects.NType.ValueType;
@@ -38,6 +40,7 @@ import fr.cedricsevestre.service.custom.MemberService;
 import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.custom.TagService;
 import fr.cedricsevestre.service.engine.IBaseService;
+import fr.cedricsevestre.service.engine.bo.LinkService;
 import fr.cedricsevestre.service.engine.independant.objects.FolderService;
 import fr.cedricsevestre.service.engine.independant.objects.MapTemplateService;
 import fr.cedricsevestre.service.engine.independant.objects.NDataService;
@@ -66,6 +69,9 @@ public class InitialisationBase {
 	@Autowired
 	private TagService tagService;
 
+	@Autowired
+	private LinkService linkService;
+	
 //	@Autowired
 //	private MarkerService markerService;
 	
@@ -344,23 +350,22 @@ public class InitialisationBase {
 		pageService.save(articleFr);
 		
 		
-		
-		
-		String name = "";
-		
-		name = "@bo_list";
-		Page bo_listEN = pageService.translate(new Page(), langEN);
-		bo_listEN.setName(name + "_" + langEN.getCode().toUpperCase());
-		bo_listEN.setContext("list");
-		bo_listEN.setDescription(name + " description en");
-		bo_listEN.setModel(templateService.findByNameWithAllExceptData(name + "_" + langEN.getCode().toUpperCase()));
-		pageService.save(bo_listEN);
-		
-		Page bo_listFR = pageService.translate(bo_listEN, langFR);
-		bo_listFR.setName("article_" + langFR.getCode().toUpperCase());
-		bo_listFR.setDescription("article description fr");
-		pageService.save(bo_listFR);
-		
+
+//		String name = "";
+//		
+//		name = "@bo_list";
+//		Page bo_listEN = pageService.translate(new Page(), langEN);
+//		bo_listEN.setName(name + "_" + langEN.getCode().toUpperCase());
+//		bo_listEN.setContext("list");
+//		bo_listEN.setDescription(name + " description en");
+//		bo_listEN.setModel(templateService.findByNameWithAllExceptData(name + "_" + langEN.getCode().toUpperCase()));
+//		pageService.save(bo_listEN);
+//		
+//		Page bo_listFR = pageService.translate(bo_listEN, langFR);
+//		bo_listFR.setName("article_" + langFR.getCode().toUpperCase());
+//		bo_listFR.setDescription("article description fr");
+//		pageService.save(bo_listFR);
+
 		
 		
 		
@@ -1017,30 +1022,22 @@ public class InitialisationBase {
 		return position;
 	}
 	
-	public MapTemplate addMapTemplate(Translation model, Template block, Position position, Integer ordered) throws ServiceException{
+	public MapTemplate addMapTemplate(Translation model, Translation block, Position position, Integer ordered) throws ServiceException{
 		MapTemplate mapTemplate = new MapTemplate();
 		mapTemplate.setModel(model);
-		mapTemplate.setBlock(block);
+		mapTemplate.setBlock((Template) block);
 		mapTemplate.setPosition(position);
 		mapTemplate.setOrdered(ordered);
 		mapService.save(mapTemplate);
 		return mapTemplate;
 	}
-	public Map<Lang, MapTemplate> addMapTemplate(Map<Lang, Translation> models, Map<Lang, Template> blocks, Position position) throws ServiceException{
+	public Map<Lang, MapTemplate> addMapTemplate(Map<Lang, Translation> models, Map<Lang, Translation> blocks, Position position) throws ServiceException{
 		Map<Lang, MapTemplate> mapTemplates = new HashMap<>();
 		for (Lang lang : langs) {
 			mapTemplates.put(lang, addMapTemplate(models.get(lang), blocks.get(lang), position, orderBlock(position)));
 		}
 		return mapTemplates;
 	}
-	public Map<Lang, Translation> mapOfTemplateToMapOfTranslation(Map<Lang, Template> templates){
-		Map<Lang, Translation> mapTranslation = new HashMap<>();
-		for (Entry<Lang, Template> e : templates.entrySet()) {
-			mapTranslation.put(e.getKey(), e.getValue());
-		}
-		return mapTranslation;
-	}
-	
 	
 	private Map<Position, Integer> countPosition;
 	public Integer orderBlock(Position position){
@@ -1053,7 +1050,34 @@ public class InitialisationBase {
 		countPosition.put(position, count);
 		return count;
 	}
-	
+
+	public Map<Lang, Translation> mkPage(String name) throws ServiceException{
+		return mkModel(name, name);
+	}
+	public Map<Lang, Translation> mkPage(String name, String context, Map<Lang, Translation> models) throws ServiceException{
+		Map<Lang, Translation> map = new HashMap<>();
+		Page first = null;
+		for (Lang lang : langs) {
+			Page page = null;
+			if (first == null){
+				page = pageService.translate(new Page(), lang);
+				page.setName(name + "_" + lang.getCode().toUpperCase());
+				page.setDescription(name + " Page description " + lang.getCode());
+				page.setContext(context);
+				page.setModel((Template) models.get(lang));
+				pageService.save(page);
+				first = page;
+			} else {
+				page = pageService.translate(first, lang);
+				page.setName(name + "_" + lang.getCode().toUpperCase());
+				page.setDescription(name + " Model description " + lang.getCode());
+				pageService.save(page);
+			}
+			map.put(lang, page);
+		}
+		return map;
+	}
+
 	public Map<Lang, Translation> mkModel(String name) throws ServiceException{
 		return mkModel(name, name + "/" + name);
 	}
@@ -1071,6 +1095,7 @@ public class InitialisationBase {
 				template.setPath(path);
 				template.setType(Template.TemplateType.PAGE);
 				templateService.save(template);
+				first = template;
 			} else {
 				template = templateService.translate(first, lang);
 				template.setName(name + "_" + lang.getCode().toUpperCase());
@@ -1083,11 +1108,14 @@ public class InitialisationBase {
 
 	}
 	
-	public Map<Lang, Template> mkPageBlock(String name) throws ServiceException{
-		return mkPageBlock(name, name + "/" + name);
+	public Map<Lang, Translation> mkPageBlock(String name) throws ServiceException{
+		return mkPageBlock(name, name + "/" + name, null);
 	}
-	public Map<Lang, Template> mkPageBlock(String name, String path) throws ServiceException{
-		Map<Lang, Template> map = new HashMap<>();
+	public Map<Lang, Translation> mkPageBlock(String name, String path) throws ServiceException{
+		return mkPageBlock(name, path, null);
+	}
+	public Map<Lang, Translation> mkPageBlock(String name, String path, NSchema nSchema) throws ServiceException{
+		Map<Lang, Translation> map = new HashMap<>();
 		Template first = null;
 		for (Lang lang : langs) {
 			Template template = null;
@@ -1097,7 +1125,9 @@ public class InitialisationBase {
 				template.setDescription(name + " PageBlock description " + lang.getCode());
 				template.setPath(path);
 				template.setType(Template.TemplateType.PAGEBLOCK);
+				template.setSchema(nSchema);
 				templateService.save(template);
+				first = template;
 			} else {
 				template = templateService.translate(first, lang);
 				template.setName(name + "_" + lang.getCode().toUpperCase());
@@ -1108,12 +1138,15 @@ public class InitialisationBase {
 		}
 		return map;
 	}
-
-	public Map<Lang, Template> mkBlock(String name) throws ServiceException{
-		return mkBlock(name, name + "/" + name);
+	
+	public Map<Lang, Translation> mkBlock(String name) throws ServiceException{
+		return mkBlock(name, name + "/" + name, null);
 	}
-	public Map<Lang, Template> mkBlock(String name, String path) throws ServiceException{
-		Map<Lang, Template> map = new HashMap<>();
+	public Map<Lang, Translation> mkBlock(String name, String path) throws ServiceException{
+		return mkBlock(name, path, null);
+	}
+	public Map<Lang, Translation> mkBlock(String name, String path, NSchema nSchema) throws ServiceException{
+		Map<Lang, Translation> map = new HashMap<>();
 		Template first = null;
 		for (Lang lang : langs) {
 			Template template = null;
@@ -1123,7 +1156,9 @@ public class InitialisationBase {
 				template.setDescription(name + " Block description " + lang.getCode());
 				template.setPath(path);
 				template.setType(Template.TemplateType.BLOCK);
+				template.setSchema(nSchema);
 				templateService.save(template);
+				first = template;
 			} else {
 				template = templateService.translate(first, lang);
 				template.setName(name + "_" + lang.getCode().toUpperCase());
@@ -1135,13 +1170,29 @@ public class InitialisationBase {
 		return map;
 	}
 
+	public NSchema mkNSchema(Map<String, NType> columns, NSchema.ScopeType scopeType) throws ServiceException{
+		NSchema nSchema = new NSchema();
+		nSchema.setColumns(columns);
+		nSchema.setScope(scopeType);
+		nSchemaService.save(nSchema);
+		return nSchema;
+	}
 	
-	
-	
-	
-	
-	
-	
+	public Link addLink(Link master, Lang lang, String name, String title, String description, String url, String picto) throws ServiceException{
+		try {
+			Link link = linkService.translate(master, lang, Link.class);
+			link.setName(name);
+			link.setDescription(description);
+			link.setTitle(title);
+			link.setUrl(url);
+			link.setPicto(picto);
+			linkService.save(link);
+			return link;
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new ServiceException("error addLink", e);
+		}
+
+	}
 	
 	
 	
@@ -1149,9 +1200,9 @@ public class InitialisationBase {
 	
 	
 
-	
+	@SuppressWarnings("unused")
 	private void initBo() throws ServiceException{
-		//Positions
+		// Positions
 		Map<String, Position> mapPosition = new HashMap<>();
 		Position pHeader = addPosition(mapPosition, "@bo_header");
 		Position pheaderMenu = addPosition(mapPosition, "@bo_headerMenu");
@@ -1160,27 +1211,46 @@ public class InitialisationBase {
 		Position pArticle = addPosition(mapPosition, "@bo_article");
 		Position pFooter = addPosition(mapPosition, "@bo_footer");
 		
-		
-		//Models
+		// Models
 		Map<Lang, Translation> mList = mkModel("@bo_list", "home/home");
 
-		//PageBlocks
-		Map<Lang, Template> pbHeader = mkPageBlock("@bo_header", "header/header");
+		// Pages
+		Map<Lang, Translation> pgList = mkPage("@bo_list", "list", mList);
 		
-		//Blocks
-		Map<Lang, Template> bMenu = mkBlock("@bo_menu", "header/menu/headerMenu");
+		// PageBlocks
+		Map<Lang, Translation> pbHeader = mkPageBlock("@bo_header", "header/header");
 		
-		//Set MapTemplate PageBlock
-		Map<Lang, MapTemplate> mtHeaderMenu1 = addMapTemplate(mapOfTemplateToMapOfTranslation(pbHeader), bMenu, pheaderMenu);
-		Map<Lang, MapTemplate> mtHeaderMenu2 = addMapTemplate(mapOfTemplateToMapOfTranslation(pbHeader), bMenu, pheaderMenu);
-		Map<Lang, MapTemplate> mtHeaderMenu3 = addMapTemplate(mapOfTemplateToMapOfTranslation(pbHeader), bMenu, pheaderMenu);
+		// Blocks
 		
+		Map<String, NType> columns = new HashMap<>();
+		columns.put("title", new NType(NType.ValueType.VARCHAR50));
+		columns.put("links", new NType(NType.ValueType.COLLECTION, NType.ValueType.TOBJECT));
+		Map<Lang, Translation> bMenu = mkBlock("@bo_menu", "header/menu/headerMenu", mkNSchema(columns, ScopeType.ONE));
 		
+		String LinkName = "@bo_project";
+		Link lkprojectEN = addLink(new Link(), langEN, LinkName, "Projects", null, null, null);
+		Link lkprojectFR = addLink(lkprojectEN, langFR, LinkName, "Projets", null, null, null);
+
+		// Set MapTemplate PageBlock
+		Map<Lang, MapTemplate> mtHeaderMenu1 = addMapTemplate(pbHeader, bMenu, pheaderMenu);
+		Map<Lang, MapTemplate> mtHeaderMenu2 = addMapTemplate(pbHeader, bMenu, pheaderMenu);
+		Map<Lang, MapTemplate> mtHeaderMenu3 = addMapTemplate(pbHeader, bMenu, pheaderMenu);
+
+		NData nData = new NData();
+		nData.setvVarchar50("Translated objects");
+		nData.setVarType(ValueType.VARCHAR50);
+		nData.setPropertyName("title");
+		nData.setMapTemplate(mtHeaderMenu1.get(langEN));
+		nDataService.save(nData);
 		
+		nData = new NData();
+		nData.setvVarchar50("Objects traduits");
+		nData.setVarType(ValueType.VARCHAR50);
+		nData.setPropertyName("title");
+		nData.setMapTemplate(mtHeaderMenu1.get(langFR));
+		nDataService.save(nData);
 		
-		
-		
-		//Set MapTemplate
+		// Set MapTemplate
 		Map<Lang, MapTemplate> mtHeader = addMapTemplate(mList, pbHeader, pHeader);
 	}
 	
