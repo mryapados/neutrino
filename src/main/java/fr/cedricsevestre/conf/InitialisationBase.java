@@ -1194,7 +1194,144 @@ public class InitialisationBase {
 
 	}
 	
-	
+	public void generateMenu(Map<Lang, Translation> models, Position position) throws ServiceException{
+		Map<String, NType> columns = new HashMap<>();
+		columns.put("title", new NType(NType.ValueType.VARCHAR50));
+		columns.put("links", new NType(NType.ValueType.COLLECTION, NType.ValueType.TOBJECT));
+		Map<Lang, Translation> bMenu = mkBlock("@bo_menu", "header/menu/headerMenu", mkNSchema(columns, ScopeType.ONE));
+		
+		NData nData = null;
+		NData nDataCollection = null;
+		NData nDataCollectionItem = null;
+		
+		Map<Lang, MapTemplate> mtHeaderMenu1 = addMapTemplate(models, bMenu, position);
+		
+		//Menu Translated objects
+		//EN
+		nData = new NData();
+		nData.setvVarchar50("Translated objects");
+		nData.setVarType(ValueType.VARCHAR50);
+		nData.setPropertyName("title");
+		nData.setMapTemplate(mtHeaderMenu1.get(langEN));
+		nDataService.save(nData);
+		
+		nDataCollection = new NData();
+		nDataCollection.setvCollection(true);
+		nDataCollection.setVarType(ValueType.COLLECTION);
+		nDataCollection.setPropertyName("links");
+		nDataCollection.setMapTemplate(mtHeaderMenu1.get(langEN));
+		nDataService.save(nDataCollection);
+		
+		Link lkProjectEN = addLink(new Link(), langEN, "@bo_project", "Projects", null, null, null);
+		nDataCollectionItem = new NData();
+		nDataCollectionItem.setvTObject(lkProjectEN);
+		nDataCollectionItem.setVarType(ValueType.TOBJECT);
+		nDataCollectionItem.setOrdered(5);
+		nDataCollectionItem.setData(nDataCollection);
+		nDataService.save(nDataCollectionItem);
+		
+		Link lkAlbumEN = addLink(new Link(), langEN, "@bo_project", "Albums", null, null, null);
+		nDataCollectionItem = new NData();
+		nDataCollectionItem.setvTObject(lkAlbumEN);
+		nDataCollectionItem.setVarType(ValueType.TOBJECT);
+		nDataCollectionItem.setOrdered(10);
+		nDataCollectionItem.setData(nDataCollection);
+		nDataService.save(nDataCollectionItem);
+		
+		//FR
+		nData = new NData();
+		nData.setvVarchar50("Objets traduisibles");
+		nData.setVarType(ValueType.VARCHAR50);
+		nData.setPropertyName("title");
+		nData.setMapTemplate(mtHeaderMenu1.get(langFR));
+		nDataService.save(nData);
+		
+		nDataCollection = new NData();
+		nDataCollection.setvCollection(true);
+		nDataCollection.setVarType(ValueType.COLLECTION);
+		nDataCollection.setPropertyName("links");
+		nDataCollection.setMapTemplate(mtHeaderMenu1.get(langFR));
+		nDataService.save(nDataCollection);
+		
+		Link lkProjectFR = addLink(new Link(), langFR, "@bo_project", "Projets", null, null, null);
+		nDataCollectionItem = new NData();
+		nDataCollectionItem.setvTObject(lkProjectFR);
+		nDataCollectionItem.setVarType(ValueType.TOBJECT);
+		nDataCollectionItem.setOrdered(5);
+		nDataCollectionItem.setData(nDataCollection);
+		nDataService.save(nDataCollectionItem);
+		
+		Link lkAlbumFR = addLink(new Link(), langFR, "@bo_project", "Albums", null, null, null);
+		nDataCollectionItem = new NData();
+		nDataCollectionItem.setvTObject(lkAlbumFR);
+		nDataCollectionItem.setVarType(ValueType.TOBJECT);
+		nDataCollectionItem.setOrdered(10);
+		nDataCollectionItem.setData(nDataCollection);
+		nDataService.save(nDataCollectionItem);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+//		nData = new NData();
+//		nData.setvVarchar50("Objects traduits");
+//		nData.setVarType(ValueType.VARCHAR50);
+//		nData.setPropertyName("title");
+//		nData.setMapTemplate(mtHeaderMenu1.get(langFR));
+//		nDataService.save(nData);
+//		
+//		
+//		
+//		
+//		Link lkProjectFR = addLink(lkProjectEN, langFR, LinkName, "Projets", null, null, null);
+//		Link lkAlbumFR = addLink(lkAlbumEN, langFR, LinkName, "Albums", null, null, null);
+//		
+//		
+//		
+//		NData ndMenu1Link1 = new NData();
+//		ndMenu1Link1.setvTObject(lkProjectEN);
+//		ndMenu1Link1.setVarType(ValueType.TOBJECT);
+//		ndMenu1Link1.setPropertyName("links");
+//		ndMenu1Link1.setMapTemplate(mtHeaderMenu1.get(langEN));
+//		nDataService.save(nData);
+//		
+//		Map<Lang, MapTemplate> mtHeaderMenu2 = addMapTemplate(models, bMenu, position);
+//		Map<Lang, MapTemplate> mtHeaderMenu3 = addMapTemplate(models, bMenu, position);
+	}
 	
 	
 	
@@ -1221,34 +1358,15 @@ public class InitialisationBase {
 		Map<Lang, Translation> pbHeader = mkPageBlock("@bo_header", "header/header");
 		
 		// Blocks
+		generateMenu(pbHeader, pheaderMenu);
 		
-		Map<String, NType> columns = new HashMap<>();
-		columns.put("title", new NType(NType.ValueType.VARCHAR50));
-		columns.put("links", new NType(NType.ValueType.COLLECTION, NType.ValueType.TOBJECT));
-		Map<Lang, Translation> bMenu = mkBlock("@bo_menu", "header/menu/headerMenu", mkNSchema(columns, ScopeType.ONE));
 		
-		String LinkName = "@bo_project";
-		Link lkprojectEN = addLink(new Link(), langEN, LinkName, "Projects", null, null, null);
-		Link lkprojectFR = addLink(lkprojectEN, langFR, LinkName, "Projets", null, null, null);
-
-		// Set MapTemplate PageBlock
-		Map<Lang, MapTemplate> mtHeaderMenu1 = addMapTemplate(pbHeader, bMenu, pheaderMenu);
-		Map<Lang, MapTemplate> mtHeaderMenu2 = addMapTemplate(pbHeader, bMenu, pheaderMenu);
-		Map<Lang, MapTemplate> mtHeaderMenu3 = addMapTemplate(pbHeader, bMenu, pheaderMenu);
-
-		NData nData = new NData();
-		nData.setvVarchar50("Translated objects");
-		nData.setVarType(ValueType.VARCHAR50);
-		nData.setPropertyName("title");
-		nData.setMapTemplate(mtHeaderMenu1.get(langEN));
-		nDataService.save(nData);
 		
-		nData = new NData();
-		nData.setvVarchar50("Objects traduits");
-		nData.setVarType(ValueType.VARCHAR50);
-		nData.setPropertyName("title");
-		nData.setMapTemplate(mtHeaderMenu1.get(langFR));
-		nDataService.save(nData);
+		
+		
+		
+		
+		
 		
 		// Set MapTemplate
 		Map<Lang, MapTemplate> mtHeader = addMapTemplate(mList, pbHeader, pHeader);
