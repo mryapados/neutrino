@@ -1051,9 +1051,6 @@ public class InitialisationBase {
 		return count;
 	}
 
-	public Map<Lang, Translation> mkPage(String name) throws ServiceException{
-		return mkModel(name, name);
-	}
 	public Map<Lang, Translation> mkPage(String name, String context, Map<Lang, Translation> models) throws ServiceException{
 		Map<Lang, Translation> map = new HashMap<>();
 		Page first = null;
@@ -1069,8 +1066,15 @@ public class InitialisationBase {
 				first = page;
 			} else {
 				page = pageService.translate(first, lang);
+				
+				
+				
+				System.out.println("MODEL !!! " + page.getModel().getName());
+				
+				
+				
 				page.setName(name + "_" + lang.getCode().toUpperCase());
-				page.setDescription(name + " Model description " + lang.getCode());
+				page.setDescription(name + " Page description " + lang.getCode());
 				pageService.save(page);
 			}
 			map.put(lang, page);

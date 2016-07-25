@@ -52,6 +52,9 @@ public class PageService extends TranslationService<Page>{
 	public Page translate(Page page, Lang lang) throws ServiceException {
 		Page translated = new Page();
 		
+		
+		if (page.getId() != null) page = pageDao.findOne(page.getId());
+		
 		TranslationProvider translation = page.getTranslation();
 		if (translation == null){
 			translation = translationProviderDao.save(new TranslationProvider());
@@ -61,12 +64,21 @@ public class PageService extends TranslationService<Page>{
 		translated.setName(page.getName());
 		translated.setContext(page.getContext());
 
+		
+		System.out.println(page.getName());
+		
 		Template pageModel = page.getModel();
 		if (pageModel != null){
+			System.out.println(pageModel.getName());
+			
 			TranslationProvider pageModelTranslation = pageModel.getTranslation();
 			if (pageModelTranslation != null){
+				System.out.println("pageModelTranslation " + pageModelTranslation.getId());
+				
 				Map<Lang, Translation> translations = pageModelTranslation.getTranslations();
 				if (translations != null){
+					System.out.println(translations.size());
+					
 					translated.setModel((Template) translations.get(lang));
 				}
 			}
