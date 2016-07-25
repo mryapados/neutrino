@@ -3,5 +3,5 @@
 
 <%-- Here set all CSS files would be load to end of head --%>
 <link href="<c:url value='/style/bootstrap-3.3.5-dist/css/bootstrap.min.css'/>" rel="stylesheet">
-
-
+<link href="<c:url value='/style/font-awesome/css/font-awesome.min.css'/>" rel="stylesheet">
+<link href="<c:url value='/style/bootstrap-languages/languages.min.css'/>" rel="stylesheet"/>

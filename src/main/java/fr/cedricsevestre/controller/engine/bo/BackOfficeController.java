@@ -56,6 +56,7 @@ public class BackOfficeController extends AbtractController {
 			modelAndView = baseView(BOLISTPAGE, folder);
 
 			Class<?> object = BackOfficeService.getEntity(type);
+			modelAndView.addObject("objectType", object.getSimpleName());
 			if (object.getSuperclass().equals(Translation.class)){
 				NData tData = backOfficeTranslationService.findAll(object, pageRequest);
 				modelAndView.addObject("datas", tData);

@@ -147,6 +147,7 @@ public class TemplateService extends TranslationService<Template>{
 	//@Override
 	@Transactional
 	public Template translate(Template template, Lang lang) throws ServiceException {
+		if (template.getId() != null) template = templateDao.findOne(template.getId()); //Refresh object
 		Template translated = new Template();
 		
 		TranslationProvider translation = template.getTranslation();

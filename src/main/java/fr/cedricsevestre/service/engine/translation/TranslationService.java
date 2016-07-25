@@ -50,6 +50,7 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 
 	@Transactional
 	public T translate(T base, Lang lang, Class<T> cls) throws ServiceException, InstantiationException, IllegalAccessException {
+		if (base.getId() != null) base = translationDao.findOne(base.getId()); //Refresh object
 		T translated = cls.newInstance(); 
 
 		TranslationProvider translation = base.getTranslation();

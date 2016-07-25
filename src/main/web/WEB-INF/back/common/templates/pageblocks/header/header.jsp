@@ -30,13 +30,44 @@
 				</li>
 				<my:block position="@bo_headerMenu" />
 			</ul>
+			
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="../navbar/">Default</a></li>
-				<li><a href="../navbar-static-top/">Static top</a></li>
-				<li class="active"><a href="./">Fixed top <span class="sr-only">(current)</span></a></li>
+				<li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <span class="fa fa-user fa-fw"></span> <span class="fa fa-caret-down"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><span class="fa fa-user fa-fw"></span> <spring:message code="bo.connexion.user-profile" /></a></li>
+                        <li><a href="#"><span class="fa fa-gear fa-fw"></span> <spring:message code="bo.connexion.settings" /></a></li>
+                        <li class="divider"></li>
+                        <li><a href="<c:url value='/logout'/>"><span class="fa fa-sign-out fa-fw"></span> <spring:message code="bo.connexion.logout" /></a></li>
+                    </ul>
+                </li>
+				<li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                       <span class="lang-sm lang-lbl-full" lang="${language}"></span> <span class="caret"></span>
+                    </a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="ar"></span></a></li>
+						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="be"></span></a></li>
+						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="bg"></span></a></li>
+						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="cs"></span></a></li>
+						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="da"></span></a></li>
+						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="de"></span></a></li>
+						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="el"></span></a></li>
+						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="en"></span></a></li>
+						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="es"></span></a></li>
+						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="et"></span></a></li>
+						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="fi"></span></a></li>
+						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="fr"></span></a></li>
+						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="ga"></span></a></li>
+						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="hi"></span></a></li>
+						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="hr"></span></a></li>
+					</ul>
+				</li>
 			</ul>
 		</div>
-		<!--/.nav-collapse -->
+
 	</div>
 </nav>
 

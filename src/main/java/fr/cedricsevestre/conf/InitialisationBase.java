@@ -773,7 +773,7 @@ public class InitialisationBase {
 		projectFR.setDescription(name + " description fr");
 		projectService.save(projectFR);
 	
-		Integer max = 0;
+		Integer max = 100;
 		for (int i = 0; i < max; i++) {
 			projectEN =   projectService.translate(new Project(), langEN, Project.class);
 			name = "generatedProject_" + i;
@@ -1364,6 +1364,7 @@ public class InitialisationBase {
 		// Blocks
 		generateMenu(pbHeader, pheaderMenu);
 		
+		Map<Lang, Translation> bDatas = mkBlock("@bo_datas", "datas/datas");
 		
 		
 		

@@ -7,3 +7,7 @@ p.debug{
 p.debug:before{
 	content: "debug : ";
 }
+
+#page{
+	margin: 50px 0 0;
+}
