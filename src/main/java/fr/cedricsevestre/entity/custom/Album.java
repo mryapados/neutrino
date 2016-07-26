@@ -38,7 +38,7 @@ public class Album extends Translation {
 	@JoinColumn(name="idproject")
 	private Project project;
 	
-	@BOField(type = ValueType.TOBJECT)
+	@BOField(type = ValueType.COLLECTION, ofType = ValueType.TOBJECT)
 	@OneToMany(mappedBy = "album")
 	private List<File> files;
 

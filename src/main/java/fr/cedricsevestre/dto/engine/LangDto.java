@@ -20,24 +20,30 @@ public class LangDto implements Serializable {
 	@Column(length = 5, name = "code")
 	private String code;
 
+	@NotNull
+	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
+	@Column(name = "name")
+	private String name;
+	
 	public LangDto() {
 
 	}
 
-	public LangDto(Integer id, String code) {
+	public LangDto(Integer id, String code, String name) {
 		super();
 		this.id = id;
 		this.code = code;
+		this.name = name;
 	}
 
 	public static LangDto from(Lang lang) {
 		if (lang == null) return null;
-		return new LangDto(lang.getId(), lang.getCode());
+		return new LangDto(lang.getId(), lang.getCode(), lang.getName());
 	}
 
 	public static Lang to(LangDto langDto) {
 		if (langDto == null) return null;
-		return new Lang(langDto.getId(), langDto.getCode());
+		return new Lang(langDto.getId(), langDto.getCode(), langDto.getName());
 	}
 
 	public Integer getId() {
@@ -56,6 +62,12 @@ public class LangDto implements Serializable {
 		this.code = code;
 	}
 	
-	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 }

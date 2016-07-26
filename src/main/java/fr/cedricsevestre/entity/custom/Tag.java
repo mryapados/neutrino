@@ -17,7 +17,7 @@ public class Tag extends NoTranslation implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	@BOField(type = ValueType.TOBJECT)
+	@BOField(type = ValueType.COLLECTION, ofType = ValueType.TOBJECT)
 	@ManyToMany(mappedBy = "tags")
 	private List<File> files;
 

@@ -8,14 +8,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
+import fr.cedricsevestre.entity.engine.IdProvider;
+
 @Entity
 @Table(name = "lang")
-public class Lang implements Serializable {
+public class Lang implements IdProvider, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,19 +31,31 @@ public class Lang implements Serializable {
 	@Column(length = 5, name = "code")
 	private String code;
 
+	@NotNull
+	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
+	@Column(name = "name")
+	private String name;
+	
+	@Transient
+	public String getObjectType() {
+		return "Lang";
+	}
+	
 	public Lang() {
 
 	}
 
-	public Lang(String code) {
+	public Lang(String code, String name) {
 		super();
 		this.code = code;
+		this.name = name;
 	}
 
-	public Lang(Integer id, String code) {
+	public Lang(Integer id, String code, String name) {
 		super();
 		this.id = id;
 		this.code = code;
+		this.name = name;
 	}
 
 	public Integer getId() {
@@ -57,6 +72,14 @@ public class Lang implements Serializable {
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override

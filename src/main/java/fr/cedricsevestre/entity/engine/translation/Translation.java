@@ -62,7 +62,6 @@ public abstract class Translation implements ITranslation, Serializable {
 	@JoinColumn(name="id_lang")
 	private Lang lang;
 	
-	@BOField(type = ValueType.OBJECT)
 	@ManyToOne
 	@JoinColumn(name="id_translation")
 	private TranslationProvider translation;

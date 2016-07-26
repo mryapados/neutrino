@@ -138,11 +138,11 @@ public class InitialisationBase {
 		logger.debug("init langs");
 		langs = new ArrayList<>();
 
-		langEN = new Lang("en");
+		langEN = new Lang("en", "English");
 		langs.add(langEN);
 		langService.save(langEN);
 		
-		langFR = new Lang("fr");
+		langFR = new Lang("fr", "Français");
 		langs.add(langFR);
 		langService.save(langFR);
 		
@@ -814,7 +814,7 @@ public class InitialisationBase {
 		albumFR.setType(AlbumType.DEFAULT);
 		albumService.save(albumFR);
 		
-		Integer max = 0;
+		Integer max = 20;
 		for (int i = 0; i < max; i++) {
 			albumEN =   albumService.translate(new Album(), langEN, Album.class);
 			name = "generatedAlbum_" + i;
@@ -847,7 +847,7 @@ public class InitialisationBase {
 		tag.setDescription("description tag2");
 		tagService.save(tag);
 
-		Integer max = 0;
+		Integer max = 30;
 		for (int i = 0; i < max; i++) {
 			tag = new Tag();
 			tag.setName("testTag_" + i);
@@ -1375,6 +1375,7 @@ public class InitialisationBase {
 		
 		// Set MapTemplate
 		Map<Lang, MapTemplate> mtHeader = addMapTemplate(mList, pbHeader, pHeader);
+		Map<Lang, MapTemplate> mtArticle = addMapTemplate(mList, bDatas, pArticle);
 	}
 	
 	
