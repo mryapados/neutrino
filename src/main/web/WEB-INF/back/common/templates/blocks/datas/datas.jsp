@@ -9,7 +9,7 @@
 
 
 <div class="panel-group">
-	<div class="panel panel-default">
+	<div class="panel panel-primary">
 		<div class="panel-heading">List</div>
 		<div class="panel-body">
 		
@@ -44,15 +44,23 @@
 					</tr>
 				</thead>
 				<tbody>
-				
 					<c:forEach var="object" items="${datas.datas}" varStatus="status">
 						<tr>
-							<c:forEach var="field" items="${object}" varStatus="status">
-								<td>key = ${field.key} - value = ${field.value}</td>
+							<c:forEach var="field" items="${datas.fields}" varStatus="status">
+								<td>
+									<c:set var="finalObject" value="${object[field.name]}" scope="request" />
+									<c:set var="finalField" value="${field}" scope="request" />
+									<c:set var="finalFieldType" value="${finalField.type}" scope="request" />
+									
+									<jsp:include page="field.jsp" />
+
+									<c:remove var="finalObject"/>
+									<c:remove var="finalField"/>
+									<c:remove var="finalFieldType"/>
+								</td>
 							</c:forEach>
 						</tr>
 					</c:forEach>
-				
 				</tbody>
 			</table>
 		</div>

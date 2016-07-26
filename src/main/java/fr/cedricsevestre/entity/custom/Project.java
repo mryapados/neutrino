@@ -16,7 +16,7 @@ public class Project extends Translation {
 
 	private static final long serialVersionUID = 1L;
 	
-	@BOField(type = ValueType.TOBJECT)
+	@BOField(type = ValueType.COLLECTION, ofType = ValueType.TOBJECT)
 	@OneToMany(mappedBy = "project")
 	private List<Album> albums;
 

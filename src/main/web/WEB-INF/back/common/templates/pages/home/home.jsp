@@ -26,9 +26,6 @@
 	<link rel="icon" href="favicon.ico">
 	
 	<title><spring:message code="project.pages.home.title" arguments="${project}" /></title>
-	
-	<!-- Custom styles for this template -->
-	<link href="<c:url value='/style/back.css'/>" rel="stylesheet">
 </my:head>
 <my:body>
 
