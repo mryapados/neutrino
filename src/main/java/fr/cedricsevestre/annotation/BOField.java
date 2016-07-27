@@ -18,10 +18,20 @@ public @interface BOField {
 		TOBJECT, NTOBJECT, OBJECT, 
 		COLLECTION
 	}
+	public enum SortType {
+		NULL, ASC, DESC
+	}
 
 	ValueType type();
 
 	ValueType ofType() default ValueType.NULL;
 
 	boolean inList() default true;
+	
+	SortType sortBy() default SortType.NULL;
+	int sortPriority() default 100;
+	
+	boolean defaultField() default false;
+	
+	
 }

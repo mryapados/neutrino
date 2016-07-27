@@ -126,9 +126,6 @@ public class Block extends TagSupport implements IIncludeJSP {
 					NSchema nSchema =  activeBlock.getSchema();
 					List<NData> nDatas = null;
 					if (nSchema != null){
-						
-						System.out.println("C COOL");
-						
 						//pb lazy
 						//activeBlock ne contient pas datas qui n'est pas initialisé car lazy
 						//Il faut donc recharger le template en demandant explicitement les datas.
@@ -137,7 +134,6 @@ public class Block extends TagSupport implements IIncludeJSP {
 							nDatas = nDataService.findAllForTemplate(activeBlock);
 						} else if (nSchema.getScope() == ScopeType.ONE){
 							nDatas = nDataService.findAllForMapTemplate(mapTemplate);
-							System.out.println("C + COOL");
 						}
 						
 //						List<Object> properties = new ArrayList<>();

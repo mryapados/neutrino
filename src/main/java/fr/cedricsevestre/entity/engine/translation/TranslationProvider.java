@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "translation_provider")
@@ -26,6 +27,11 @@ public class TranslationProvider implements Serializable {
 	@MapKey(name = "lang")
 	private Map<Lang, Translation> translations;
 
+	@Transient
+	public String getObjectType() {
+		return "TranslationProvider";
+	}
+	
 	public Integer getId() {
 		return id;
 	}

@@ -66,6 +66,7 @@ public abstract class NoTranslation implements IdProvider, Serializable {
 		this.description = description;
 	}
 
+	@Override
 	public String getObjectType() {
 		return objectType;
 	}

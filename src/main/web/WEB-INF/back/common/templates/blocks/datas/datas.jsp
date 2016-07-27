@@ -5,18 +5,14 @@
 
 <my:init test="${!initialized}"/>
 
-<h1><c:out value="${objectType}"/></h1>
-
+<h1>
+	<spring:message code="bo.list" text="${objectType}" />
+	<spring:message code="bo.${objectType}.entity.name" text="${objectType}" />
+</h1>
 
 <div class="panel-group">
 	<div class="panel panel-primary">
 		<div class="panel-heading">List</div>
-		<div class="panel-body">
-		
-		
-
-
-		
 		
 <%-- 		<c:forEach var="field" items="${datas.fields}" varStatus="status"> --%>
 <%-- 			<p>Field = ${field.name} : ${field.type} - ${field.ofType} - ${field.inList}</p> --%>
@@ -27,19 +23,16 @@
 <%-- 				<p>key = ${field.key} - value = ${field.value}</p> --%>
 <%-- 			</c:forEach> --%>
 <%-- 		</c:forEach> --%>
-		
-		
-		
-		
-		
-		
-		</div>
+
 		<div class="table-responsive">
 			<table class="table table-hover">
 				<thead>
 					<tr>
 						<c:forEach var="field" items="${datas.fields}" varStatus="status">
-							<th>${field.name}</th>
+							<c:if test="${field.inList}">
+								<spring:message var="defaultMessage" code="bo.field.${field.name}" text="${field.name}" />
+								<th><spring:message code="bo.${objectType}.field.${field.name}" text="${defaultMessage}" /></th>
+							</c:if>
 						</c:forEach>
 					</tr>
 				</thead>
@@ -47,17 +40,19 @@
 					<c:forEach var="object" items="${datas.datas}" varStatus="status">
 						<tr>
 							<c:forEach var="field" items="${datas.fields}" varStatus="status">
-								<td>
-									<c:set var="finalObject" value="${object[field.name]}" scope="request" />
-									<c:set var="finalField" value="${field}" scope="request" />
-									<c:set var="finalFieldType" value="${finalField.type}" scope="request" />
-									
-									<jsp:include page="field.jsp" />
-
-									<c:remove var="finalObject"/>
-									<c:remove var="finalField"/>
-									<c:remove var="finalFieldType"/>
-								</td>
+								<c:if test="${field.inList}">
+									<td>
+										<c:set var="finalObject" value="${object[field.name]}" scope="request" />
+										<c:set var="finalField" value="${field}" scope="request" />
+										<c:set var="finalFieldType" value="${finalField.type}" scope="request" />
+										
+										<jsp:include page="field.jsp" />
+	
+										<c:remove var="finalObject"/>
+										<c:remove var="finalField"/>
+										<c:remove var="finalFieldType"/>
+									</td>
+								</c:if>
 							</c:forEach>
 						</tr>
 					</c:forEach>

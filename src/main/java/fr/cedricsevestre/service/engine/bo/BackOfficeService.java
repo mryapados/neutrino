@@ -7,16 +7,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import fr.cedricsevestre.annotation.BOField;
+import fr.cedricsevestre.annotation.BOField.SortType;
 import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.bean.NField;
 import fr.cedricsevestre.common.Common;
@@ -115,7 +120,7 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 			BOField annotation = field.getAnnotation(BOField.class);
 			if (annotation != null){
 				BOField nType = (BOField) annotation;
-				nfFields.add(new NField(nType.type(), nType.ofType(), field.getName(), field.getType().getName(), nType.inList()));
+				nfFields.add(new NField(nType.type(), nType.ofType(), field.getName(), field.getType().getSimpleName(), nType.inList(), nType.sortBy(), nType.sortPriority(), nType.defaultField()));
 			}
 		}
 		return nfFields;
@@ -128,17 +133,50 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	@Override
 	public NData findAll(Class<?> entity, Pageable pageRequest) throws ServiceException{
 		List<Map<String, Object>> datas = new ArrayList<>();
-		Page<T> translations = getDatas(entity, pageRequest);
+		
 		List<Field> fields = getFields(entity);
 		List<NField> nfFields = getNField(fields);
-		for (T translation : translations) {
+		
+		pageRequest = transformPageRequest(nfFields, pageRequest);
+		
+		Page<T> objectDatas = getDatas(entity, pageRequest);
+
+		for (T objectData : objectDatas) {
 			Map<String, Object> record = new HashMap<>();
 			for (Field field : fields) {
-				record.put(field.getName(), getFieldValue(translation, field));
+				record.put(field.getName(), getFieldValue(objectData, field));
 			}
 			datas.add(record);
 		}
 		return new NData(nfFields, datas);
+	}
+	
+	private Pageable transformPageRequest(List<NField> nfFields, Pageable pageRequest){
+		Sort sort = pageRequest.getSort();
+		TreeMap<Integer, Sort> treeMap = new TreeMap<>();
+		for (NField nField : nfFields) {
+			if (nField.getSortBy() != SortType.NULL){
+				System.out.println("getSortBy = " + nField.getName() + " - " + nField.getSortBy() + " - " + nField.getSortPriority());
+				Direction direction = null;
+				if (nField.getSortBy() == SortType.ASC){
+					direction = Direction.ASC;
+				} else {
+					direction = Direction.DESC;
+				}
+				treeMap.put(nField.getSortPriority(), new Sort(direction, nField.getName()));
+			}
+		}
+		for (Map.Entry<Integer, Sort> andSort : treeMap.entrySet()) {
+			System.out.println("andSort = " + andSort);
+			if (sort == null){
+				sort = andSort.getValue();
+			} else {
+				sort.and(andSort.getValue());
+			}
+		}
+		System.out.println("sort = " + sort);
+		
+		return new PageRequest(pageRequest.getPageNumber(), pageRequest.getPageSize(), sort);
 	}
 	
 	

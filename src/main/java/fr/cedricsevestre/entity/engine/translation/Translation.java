@@ -22,6 +22,7 @@ import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 import fr.cedricsevestre.annotation.BOField;
+import fr.cedricsevestre.annotation.BOField.SortType;
 import fr.cedricsevestre.annotation.BOField.ValueType;
 
 @Entity
@@ -41,18 +42,18 @@ public abstract class Translation implements ITranslation, Serializable {
 	private Integer id;
 
 	
-	@BOField(type = ValueType.TEXT)
+	@BOField(type = ValueType.TEXT, defaultField = true)
 	@NotNull
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "name")
 	private String name;
 	
-	@BOField(type = ValueType.DATETIME)
+	@BOField(type = ValueType.DATETIME, sortBy = SortType.DESC)
 	@NotNull
 	@Column(name = "date_add")
 	private Date dateAdd;
 	
-	@BOField(type = ValueType.HTML)
+	@BOField(type = ValueType.HTML, sortBy = SortType.ASC, sortPriority = 5)
 	@SafeHtml(whitelistType = WhiteListType.BASIC)
 	@Column(name = "description")
 	private String description;
@@ -62,6 +63,7 @@ public abstract class Translation implements ITranslation, Serializable {
 	@JoinColumn(name="id_lang")
 	private Lang lang;
 	
+	@BOField(type = ValueType.OBJECT, inList = false)
 	@ManyToOne
 	@JoinColumn(name="id_translation")
 	private TranslationProvider translation;
