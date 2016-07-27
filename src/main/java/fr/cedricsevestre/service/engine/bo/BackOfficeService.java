@@ -37,22 +37,11 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	@Autowired
 	CustomServiceLocator customServiceLocator;
 	
-	
-	
 	private Logger logger = Logger.getLogger(BackOfficeService.class);
 
 	public static Class<?> getEntity(String entityName) throws ServiceException{
 		try {
 			return Class.forName(Common.CUSTOM_ENTITY_PACKAGE + "." + entityName);
-		} catch (ClassNotFoundException e) {
-			throw new ServiceException("erreur getEntity", e);
-		}
-	}
-	
-	@Deprecated
-	public static Class<?> getEntityService(String entityName) throws ServiceException{
-		try {
-			return Class.forName(Common.CUSTOM_SERVICE_PACKAGE + "." + entityName + "Service");
 		} catch (ClassNotFoundException e) {
 			throw new ServiceException("erreur getEntity", e);
 		}
@@ -148,7 +137,7 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 			}
 			datas.add(record);
 		}
-		return new NData(nfFields, datas);
+		return new NData(nfFields, datas, objectDatas.getTotalPages());
 	}
 	
 	private Pageable transformPageRequest(List<NField> nfFields, Pageable pageRequest){
@@ -156,26 +145,18 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 		TreeMap<Integer, Sort> treeMap = new TreeMap<>();
 		for (NField nField : nfFields) {
 			if (nField.getSortBy() != SortType.NULL){
-				System.out.println("getSortBy = " + nField.getName() + " - " + nField.getSortBy() + " - " + nField.getSortPriority());
 				Direction direction = null;
-				if (nField.getSortBy() == SortType.ASC){
-					direction = Direction.ASC;
-				} else {
-					direction = Direction.DESC;
-				}
-				treeMap.put(nField.getSortPriority(), new Sort(direction, nField.getName()));
+				if (nField.getSortBy() == SortType.ASC) direction = Direction.ASC;
+				else direction = Direction.DESC;
+				Integer key = nField.getSortPriority() * 100;
+				while (treeMap.containsKey(key)) key += 1;
+				treeMap.put(key, new Sort(direction, nField.getName()));
 			}
 		}
 		for (Map.Entry<Integer, Sort> andSort : treeMap.entrySet()) {
-			System.out.println("andSort = " + andSort);
-			if (sort == null){
-				sort = andSort.getValue();
-			} else {
-				sort.and(andSort.getValue());
-			}
+			if (sort == null) sort = andSort.getValue();
+			else sort = sort.and(andSort.getValue());
 		}
-		System.out.println("sort = " + sort);
-		
 		return new PageRequest(pageRequest.getPageNumber(), pageRequest.getPageSize(), sort);
 	}
 	

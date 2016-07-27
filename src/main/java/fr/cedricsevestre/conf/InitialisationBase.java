@@ -1,6 +1,8 @@
 package fr.cedricsevestre.conf;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -761,15 +763,19 @@ public class InitialisationBase {
 		logger.debug("init project");
 		
 		String name = "";
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.YEAR, 1);
 		
 		Project projectEN =   projectService.translate(new Project(), langEN, Project.class);
 		name = "testproject";
+		projectEN.setDateAdd(c.getTime());
 		projectEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		projectEN.setDescription(name + " description en");
 		projectService.save(projectEN);
 		
 		Project projectFR = projectService.translate(projectEN, langFR, Project.class);
 		projectFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		projectFR.setDateAdd(c.getTime());
 		projectFR.setDescription(name + " description fr");
 		projectService.save(projectFR);
 	

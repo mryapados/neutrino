@@ -12,7 +12,9 @@
 
 <div class="panel-group">
 	<div class="panel panel-primary">
-		<div class="panel-heading">List</div>
+		<div class="panel-heading">	
+			Showing <span class="label label-info">5</span> to <span class="label label-info">12</span> of <span class="label label-info">25</span> entries
+		</div>
 		
 <%-- 		<c:forEach var="field" items="${datas.fields}" varStatus="status"> --%>
 <%-- 			<p>Field = ${field.name} : ${field.type} - ${field.ofType} - ${field.inList}</p> --%>
@@ -25,7 +27,7 @@
 <%-- 		</c:forEach> --%>
 
 		<div class="table-responsive">
-			<table class="table table-hover">
+			<table class="table table-striped table-bordered table-hover" role="grid">
 				<thead>
 					<tr>
 						<c:forEach var="field" items="${datas.fields}" varStatus="status">
@@ -59,7 +61,39 @@
 				</tbody>
 			</table>
 		</div>
-		
+
+		<div class="panel-footer">
+			<div class="row">
+				<div class="col-md-6">
+
+				</div>
+				<div class="col-md-6">
+
+					<ul class="pagination pull-right">
+						<li class="paginate_button previous" id="example_previous"><a
+							href="#" aria-controls="example" data-dt-idx="0" tabindex="0">Previous</a></li>
+						<li class="paginate_button "><a href="#"
+							aria-controls="example" data-dt-idx="1" tabindex="0">1</a></li>
+						<li class="paginate_button "><a href="#"
+							aria-controls="example" data-dt-idx="2" tabindex="0">2</a></li>
+						<li class="paginate_button "><a href="#"
+							aria-controls="example" data-dt-idx="3" tabindex="0">3</a></li>
+						<li class="paginate_button "><a href="#"
+							aria-controls="example" data-dt-idx="4" tabindex="0">4</a></li>
+						<li class="paginate_button "><a href="#"
+							aria-controls="example" data-dt-idx="5" tabindex="0">5</a></li>
+						<li class="paginate_button active"><a href="#"
+							aria-controls="example" data-dt-idx="6" tabindex="0">6</a></li>
+						<li class="paginate_button next disabled" id="example_next"><a
+							href="#" aria-controls="example" data-dt-idx="7" tabindex="0">Next</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+
+
+
 	</div>
 </div>
 

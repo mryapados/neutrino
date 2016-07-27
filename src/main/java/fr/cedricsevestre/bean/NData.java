@@ -10,11 +10,13 @@ public class NData implements Serializable {
 
 	private List<NField> fields;
 	private List<Map<String, Object>> datas;
+	private Integer totalPages;
 	
-	public NData(List<NField> fields, List<Map<String, Object>> datas) {
+	public NData(List<NField> fields, List<Map<String, Object>> datas, Integer totalPages) {
 		super();
 		this.fields = fields;
 		this.datas = datas;
+		this.totalPages = totalPages;
 	}
 
 	public List<NField> getFields() {
@@ -33,4 +35,13 @@ public class NData implements Serializable {
 		this.datas = datas;
 	}
 
+	public Integer getTotalPages() {
+		return totalPages;
+	}
+
+	public void setTotalPages(Integer totalPages) {
+		this.totalPages = totalPages;
+	}
+
+	
 }

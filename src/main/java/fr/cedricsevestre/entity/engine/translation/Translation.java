@@ -42,18 +42,18 @@ public abstract class Translation implements ITranslation, Serializable {
 	private Integer id;
 
 	
-	@BOField(type = ValueType.TEXT, defaultField = true)
+	@BOField(type = ValueType.TEXT, defaultField = true, sortBy = SortType.DESC, sortPriority = 200)
 	@NotNull
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "name")
 	private String name;
 	
-	@BOField(type = ValueType.DATETIME, sortBy = SortType.DESC)
+	@BOField(type = ValueType.DATETIME, sortBy = SortType.DESC, sortPriority = 100)
 	@NotNull
 	@Column(name = "date_add")
 	private Date dateAdd;
 	
-	@BOField(type = ValueType.HTML, sortBy = SortType.ASC, sortPriority = 5)
+	@BOField(type = ValueType.HTML)
 	@SafeHtml(whitelistType = WhiteListType.BASIC)
 	@Column(name = "description")
 	private String description;
