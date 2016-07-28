@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -17,7 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import fr.cedricsevestre.annotation.BOField;
@@ -26,7 +24,6 @@ import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.bean.NField;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.entity.engine.IdProvider;
-import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.CustomServiceLocator;
 
@@ -63,6 +60,7 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 		return fields;
 	}
 
+	@Deprecated
 	private Object getFieldValue(Object object, Field field) throws ServiceException {
 	    try {
 	        field.setAccessible(true);
@@ -116,28 +114,15 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	}
 	
 	@Override
-	public NData findAll(Class<?> entity) throws ServiceException{
+	public NData<T> findAll(Class<?> entity) throws ServiceException{
 		return findAll(entity, null);
 	}
 	@Override
-	public NData findAll(Class<?> entity, Pageable pageRequest) throws ServiceException{
-		List<Map<String, Object>> datas = new ArrayList<>();
-		
+	public NData<T> findAll(Class<?> entity, Pageable pageRequest) throws ServiceException{		
 		List<Field> fields = getFields(entity);
-		List<NField> nfFields = getNField(fields);
-		
-		pageRequest = transformPageRequest(nfFields, pageRequest);
-		
-		Page<T> objectDatas = getDatas(entity, pageRequest);
-
-		for (T objectData : objectDatas) {
-			Map<String, Object> record = new HashMap<>();
-			for (Field field : fields) {
-				record.put(field.getName(), getFieldValue(objectData, field));
-			}
-			datas.add(record);
-		}
-		return new NData(nfFields, datas, objectDatas.getTotalPages());
+		List<NField> nFields = getNField(fields);
+		pageRequest = transformPageRequest(nFields, pageRequest);
+		return new NData<T>(nFields, getDatas(entity, pageRequest));
 	}
 	
 	private Pageable transformPageRequest(List<NField> nfFields, Pageable pageRequest){

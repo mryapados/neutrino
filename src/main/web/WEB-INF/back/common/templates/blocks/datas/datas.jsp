@@ -5,6 +5,18 @@
 
 <my:init test="${!initialized}"/>
 
+<c:set var="pNumber" value="${datas.objectDatas.number}"/>
+<c:set var="pNumberOfElements" value="${datas.objectDatas.numberOfElements}"/>
+<c:set var="pSize" value="${datas.objectDatas.size}"/>
+<c:set var="pSort" value="${datas.objectDatas.sort}"/>
+<c:set var="pTotalElements" value="${datas.objectDatas.totalElements}"/>
+<c:set var="pTotalPages" value="${datas.objectDatas.totalPages}"/>
+
+<c:set var="pBegin" value="${pNumber * pSize}"/>
+<c:set var="pEnd" value="${pBegin + pNumberOfElements}"/>
+
+<c:set var="finalNMaxPages" value="2" />
+
 <h1>
 	<spring:message code="bo.list" text="${objectType}" />
 	<spring:message code="bo.${objectType}.entity.name" text="${objectType}" />
@@ -13,18 +25,11 @@
 <div class="panel-group">
 	<div class="panel panel-primary">
 		<div class="panel-heading">	
-			Showing <span class="label label-info">5</span> to <span class="label label-info">12</span> of <span class="label label-info">25</span> entries
+			Showing <span class="label label-info">${pBegin}</span> to <span class="label label-info">${pEnd}</span> of <span class="label label-info">${pTotalElements}</span> entries
 		</div>
 		
-<%-- 		<c:forEach var="field" items="${datas.fields}" varStatus="status"> --%>
-<%-- 			<p>Field = ${field.name} : ${field.type} - ${field.ofType} - ${field.inList}</p> --%>
-<%-- 		</c:forEach> --%>
-		
-<%-- 		<c:forEach var="object" items="${datas.datas}" varStatus="status"> --%>
-<%-- 			<c:forEach var="field" items="${object}" varStatus="status"> --%>
-<%-- 				<p>key = ${field.key} - value = ${field.value}</p> --%>
-<%-- 			</c:forEach> --%>
-<%-- 		</c:forEach> --%>
+
+
 
 		<div class="table-responsive">
 			<table class="table table-striped table-bordered table-hover" role="grid">
@@ -39,7 +44,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="object" items="${datas.datas}" varStatus="status">
+					<c:forEach var="object" items="${datas.objectDatas.content}" varStatus="status">
 						<tr>
 							<c:forEach var="field" items="${datas.fields}" varStatus="status">
 								<c:if test="${field.inList}">
@@ -70,30 +75,52 @@
 				<div class="col-md-6">
 
 					<ul class="pagination pull-right">
-						<li class="paginate_button previous" id="example_previous"><a
-							href="#" aria-controls="example" data-dt-idx="0" tabindex="0">Previous</a></li>
-						<li class="paginate_button "><a href="#"
-							aria-controls="example" data-dt-idx="1" tabindex="0">1</a></li>
-						<li class="paginate_button "><a href="#"
-							aria-controls="example" data-dt-idx="2" tabindex="0">2</a></li>
-						<li class="paginate_button "><a href="#"
-							aria-controls="example" data-dt-idx="3" tabindex="0">3</a></li>
-						<li class="paginate_button "><a href="#"
-							aria-controls="example" data-dt-idx="4" tabindex="0">4</a></li>
-						<li class="paginate_button "><a href="#"
-							aria-controls="example" data-dt-idx="5" tabindex="0">5</a></li>
-						<li class="paginate_button active"><a href="#"
-							aria-controls="example" data-dt-idx="6" tabindex="0">6</a></li>
-						<li class="paginate_button next disabled" id="example_next"><a
-							href="#" aria-controls="example" data-dt-idx="7" tabindex="0">Next</a></li>
+						<li class="paginate_button previous"><a href="#" >Previous</a></li>
+						
+						<c:set var="active" value="${pNumber + 1}" />
+						<c:set var="total" value="${pTotalPages - 1}" />
+						<c:set var="max" value="${total}" />
+						<c:if test="${max > finalNMaxPages}">
+							<c:set var="max" value="${finalNMaxPages}" />
+						</c:if>
+						<c:forEach var="i" begin="1" end="${max}">
+							<li><a href="#">${i}</a></li>
+						</c:forEach>
+						<c:choose>
+							<c:when test="${total - max > 2}">
+								<li class="disabled"><a href="#">...</a></li>
+								<li><a href="#">${total}</a></li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="#">${total - 1}</a></li>
+								<li><a href="#">${total}</a></li>
+							</c:otherwise>
+						</c:choose>
+
+
+<!-- 						<li class="paginate_button active"><a href="#">6</a></li> -->
+						<li class="paginate_button next disabled" id="example_next"><a href="#">Next</a></li>
 					</ul>
 				</div>
 			</div>
 		</div>
 
-
-
-
 	</div>
 </div>
 
+${datas.objectDatas.number}<br/>
+${datas.objectDatas.numberOfElements}<br/>
+${datas.objectDatas.size}<br/>
+${datas.objectDatas.sort}<br/>
+${datas.objectDatas.totalElements}<br/>
+${datas.objectDatas.totalPages}<br/>
+
+<%-- 		<c:forEach var="field" items="${datas.fields}" varStatus="status"> --%>
+<%-- 			<p>Field = ${field.name} : ${field.type} - ${field.ofType} - ${field.inList}</p> --%>
+<%-- 		</c:forEach> --%>
+		
+<%-- 		<c:forEach var="object" items="${datas.datas}" varStatus="status"> --%>
+<%-- 			<c:forEach var="field" items="${object}" varStatus="status"> --%>
+<%-- 				<p>key = ${field.key} - value = ${field.value}</p> --%>
+<%-- 			</c:forEach> --%>
+<%-- 		</c:forEach> --%>
