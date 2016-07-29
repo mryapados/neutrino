@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="my" uri="/WEB-INF/taglibs/neutrino.tld" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ page import="java.util.SortedSet" %>
+<%@ page import="java.util.TreeSet" %>
 
 <my:init test="${!initialized}"/>
 
@@ -15,7 +17,7 @@
 <c:set var="pBegin" value="${pNumber * pSize}"/>
 <c:set var="pEnd" value="${pBegin + pNumberOfElements}"/>
 
-<c:set var="finalNMaxPages" value="2" />
+<c:set var="finalNMaxPages" value="6" />
 
 <h1>
 	<spring:message code="bo.list" text="${objectType}" />
@@ -75,29 +77,88 @@
 				<div class="col-md-6">
 
 					<ul class="pagination pull-right">
-						<li class="paginate_button previous"><a href="#" >Previous</a></li>
 						
-						<c:set var="active" value="${pNumber + 1}" />
-						<c:set var="total" value="${pTotalPages - 1}" />
-						<c:set var="max" value="${total}" />
-						<c:if test="${max > finalNMaxPages}">
-							<c:set var="max" value="${finalNMaxPages}" />
-						</c:if>
-						<c:forEach var="i" begin="1" end="${max}">
-							<li><a href="#">${i}</a></li>
+
+						<c:set var="first" value="1" />
+						<c:set var="last" value="${pTotalPages}" />
+						<c:set var="max" value="${finalNMaxPages}" />
+						<c:set var="active" value="${pNumber}" />
+					
+						<li><a href="#">${first}</a></li>
+
+						<%
+						
+						
+							int active = Integer.parseInt(pageContext.getAttribute("active").toString());
+							int first = Integer.parseInt(pageContext.getAttribute("first").toString());
+							int last = Integer.parseInt(pageContext.getAttribute("last").toString());
+							int max = Integer.parseInt(pageContext.getAttribute("max").toString());
+							int count = max;
+							
+							System.out.println("/////////////////////////////////////////////////////////////");
+							System.out.println(active);
+							System.out.println(first);
+							System.out.println(last);
+							System.out.println(count);
+							System.out.println("/////////////////////////////////////////////////////////////");
+							
+							
+							SortedSet<Integer> r = new TreeSet<>(); 
+							r.add(active);
+							
+							int p = 0;
+							int sens = -1;
+							if (active >= last / 2){
+								sens = 1;
+							}
+							for (int m = 1; m <= max; m++){
+								
+								if (count == 0) break;
+								//endroit
+								p = active + (m * sens);
+								if (p < last && p > first){
+									count--;
+									r.add(p);
+								}
+								
+								if (count == 0) break;
+								//envers
+								p = active - (m * sens);
+								if (p < last && p > first){
+									count--;
+									r.add(p);
+								}
+								
+								
+							}
+							
+							pageContext.setAttribute("resultSet", r);
+						%>
+					
+					
+					
+					
+						<c:forEach var="page" items="${resultSet}" varStatus="status">
+							<c:set var="classActive" value="" />
+							<c:if test="${page eq active}">
+								<c:set var="classActive" value=" class=\"active\"" />
+							</c:if>
+							<li${classActive}><a href="#">${page}</a></li>
 						</c:forEach>
-						<c:choose>
-							<c:when test="${total - max > 2}">
-								<li class="disabled"><a href="#">...</a></li>
-								<li><a href="#">${total}</a></li>
-							</c:when>
-							<c:otherwise>
-								<li><a href="#">${total - 1}</a></li>
-								<li><a href="#">${total}</a></li>
-							</c:otherwise>
-						</c:choose>
-
-
+						
+			
+					
+					
+					
+					
+					
+						<li><a href="#">${last}</a></li>
+					
+					
+					
+					
+<!-- 						<li class="paginate_button previous"><a href="#" >Previous</a></li> -->
+						
 <!-- 						<li class="paginate_button active"><a href="#">6</a></li> -->
 						<li class="paginate_button next disabled" id="example_next"><a href="#">Next</a></li>
 					</ul>
