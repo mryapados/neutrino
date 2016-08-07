@@ -1,7 +1,7 @@
 (function() {
 	
 	
-	var fModule = angular.module('frontApp', ['uiGmapgoogle-maps']);
+	var fModule = angular.module('frontApp', ['ui.bootstrap', 'uiGmapgoogle-maps']);
 	fModule.config(function(uiGmapGoogleMapApiProvider) {
 	    uiGmapGoogleMapApiProvider.configure({
 	        key: 'AIzaSyCZJrwJoh_Nu95T5Wp2iZFKbe3W00vFMck',

@@ -1,5 +1,5 @@
 (function() {
-	var bModule = angular.module('backApp', [ 'backServices', 'ngSanitize', 'pascalprecht.translate', 'ngCookies', 'ui.bootstrap', 'ngResource', 'frontApp' ]);
+	var bModule = angular.module('backApp', [ 'backServices', 'ngSanitize', 'pascalprecht.translate', 'ngCookies', 'ngResource', 'frontApp' ]);
 	bModule.config(function($translateProvider) {
 		var $cookies;
 		angular.injector(['ngCookies']).invoke(['$cookies', function(_$cookies_) {
