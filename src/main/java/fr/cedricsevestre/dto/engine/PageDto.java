@@ -22,20 +22,20 @@ public class PageDto extends TranslationDto {
 
 	}
 
-	public PageDto(String objectType, Integer id, String name, Date dateAdd, String description, LangDto langDto, String context, TemplateDto model) {
-		super(objectType, id, name, dateAdd, description, langDto);
+	public PageDto(String objectType, Integer id, String name, Date dateAdded, Date dateUpdated, String description, LangDto langDto, String context, TemplateDto model) {
+		super(objectType, id, name, dateAdded, dateUpdated, description, langDto);
 		this.context = context;
 		this.model = model;
 	}
 
 	public static PageDto from(Page page) {
-		return new PageDto(page.getObjectType(), page.getId(), page.getName(), page.getDateAdd(), 
-				page.getDescription(), LangDto.from(page.getLang()),
+		return new PageDto(page.getObjectType(), page.getId(), page.getName(), page.getDateAdded(), 
+				page.getDateUpdated(), page.getDescription(), LangDto.from(page.getLang()),
 				page.getContext(), TemplateDto.from(page.getModel()));
 	}
 
 	public static Page to(PageDto pageDto){
-		return new Page(pageDto.getId(), pageDto.getName(), pageDto.getDateAdd(), pageDto.getDescription(), LangDto.to(pageDto.getLang()), pageDto.getContext(), TemplateDto.to(pageDto.getModel()));
+		return new Page(pageDto.getId(), pageDto.getName(), pageDto.getDateAdded(), pageDto.getDateUpdated(), pageDto.getDescription(), LangDto.to(pageDto.getLang()), pageDto.getContext(), TemplateDto.to(pageDto.getModel()));
 	}
 
 	public String getContext() {

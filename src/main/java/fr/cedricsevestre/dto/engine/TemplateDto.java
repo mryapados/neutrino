@@ -35,9 +35,9 @@ public class TemplateDto extends TranslationDto {
 
 	}
 
-	public TemplateDto(String objectType, Integer id, String name, Date dateAdd, String description, LangDto langDto, TemplateType type, String path,
+	public TemplateDto(String objectType, Integer id, String name, Date dateAdded, Date dateUpdated, String description, LangDto langDto, TemplateType type, String path,
 			String metaDescription, String metaTitle, String metaKeyWords) {
-		super(objectType, id, name, dateAdd, description, langDto);
+		super(objectType, id, name, dateAdded, dateUpdated, description, langDto);
 		this.type = type;
 		this.path = path;
 		this.metaDescription = metaDescription;
@@ -46,13 +46,13 @@ public class TemplateDto extends TranslationDto {
 	}
 
 	public static TemplateDto from(Template template) {
-		return new TemplateDto(template.getObjectType(), template.getId(), template.getName(), template.getDateAdd(), template.getDescription(), LangDto.from(template.getLang()), 
+		return new TemplateDto(template.getObjectType(), template.getId(), template.getName(), template.getDateAdded(), template.getDateUpdated(), template.getDescription(), LangDto.from(template.getLang()), 
 				template.getType(), template.getPath(), template.getMetaDescription(), template.getMetaTitle(),
 				template.getMetaKeyWords());
 	}
 
 	public static Template to(TemplateDto templateDto){
-		return new Template(templateDto.getId(), templateDto.getName(), templateDto.getDateAdd(), templateDto.getDescription(), LangDto.to(templateDto.getLang()), templateDto.getType(), templateDto.getPath(), new ArrayList<MapTemplate>(), new ArrayList<MapTemplate>(), templateDto.getMetaDescription(), templateDto.getMetaTitle(), templateDto.getMetaKeyWords());
+		return new Template(templateDto.getId(), templateDto.getName(), templateDto.getDateAdded(), templateDto.getDateUpdated(), templateDto.getDescription(), LangDto.to(templateDto.getLang()), templateDto.getType(), templateDto.getPath(), new ArrayList<MapTemplate>(), new ArrayList<MapTemplate>(), templateDto.getMetaDescription(), templateDto.getMetaTitle(), templateDto.getMetaKeyWords());
 	}
 
 	public TemplateType getType() {

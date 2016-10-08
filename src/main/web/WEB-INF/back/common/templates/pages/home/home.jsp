@@ -38,15 +38,61 @@
 
 		<div id="page" class="container-fluid">
 			<div class="row">
-				<nav class="col-lg-2 col-md-2 col-sm-3 hidden-xs">
-					<my:block position="@bo_nav" />
-				</nav>
-				<article class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
-					<my:block position="@bo_article" />
-				</article>
-				<aside class="col-lg-2 col-md-2 col-sm-3 hidden-xs">
-					<my:block position="@bo_aside" />
-				</aside>
+			
+			
+				
+				<my:hasBlock position="@bo_nav" var="hasBlockA"/>
+				
+			
+				<c:set var="showColA" value="X"/>
+				<c:set var="showColB" value="X"/>
+				<c:set var="showColC" value="X"/>
+				<c:set var="showCode" value="${showColA}${showColB}${showColC}"/>
+				<c:choose>
+					<c:when test="${showCode eq 'XXX'}">
+						<c:set var="classA" value="col-lg-2 col-md-2 col-sm-3 col-xs-12"/>
+						<c:set var="classB" value="col-lg-8 col-md-8 col-sm-6 col-xs-12"/>
+						<c:set var="classC" value="col-lg-2 col-md-2 col-sm-3 col-xs-12"/>
+					</c:when>
+					<c:when test="${showCode eq 'XXO'}">
+						<c:set var="classA" value="col-lg-2 col-md-2 col-sm-3 col-xs-12"/>
+						<c:set var="classB" value="col-lg-10 col-md-10 col-sm-9 col-xs-12"/>
+					</c:when>
+					<c:when test="${showCode eq 'XOO'}">
+						<c:set var="classA" value="col-lg-12 col-md-12 col-sm-12 col-xs-12"/>
+					</c:when>
+					<c:when test="${showCode eq 'OXX'}">
+						<c:set var="classB" value="col-lg-10 col-md-10 col-sm-9 col-xs-12"/>
+						<c:set var="classC" value="col-lg-2 col-md-2 col-sm-3 col-xs-12"/>
+					</c:when>
+					<c:when test="${showCode eq 'OOX'}">
+						<c:set var="classC" value="col-lg-12 col-md-12 col-sm-12 col-xs-12"/>
+					</c:when>
+					<c:when test="${showCode eq 'XOX'}">
+						<c:set var="classA" value="col-lg-6 col-md-6 col-sm-6 col-xs-12"/>
+						<c:set var="classC" value="col-lg-6 col-md-6 col-sm-6 col-xs-12"/>
+					</c:when>
+					<c:when test="${showCode eq 'OXO'}">
+						<c:set var="classB" value="col-lg-12 col-md-12 col-sm-12 col-xs-12"/>
+					</c:when>
+				</c:choose>
+				
+				<c:if test="${showColA eq 'X'}">
+					<nav class="${classA}">
+						<my:block position="@bo_nav" />
+					</nav>
+				</c:if>
+				<c:if test="${showColB eq 'X'}">
+					<article class="${classB}">
+						<my:block position="@bo_article" />
+					</article>
+				</c:if>
+				<c:if test="${showColC eq 'X'}">
+					<aside class="${classC}">
+						<my:block position="@bo_aside" />
+					</aside>
+				</c:if>
+				
 			</div>
 		</div>
 		

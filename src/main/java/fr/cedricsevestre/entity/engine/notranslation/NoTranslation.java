@@ -18,6 +18,7 @@ import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 import fr.cedricsevestre.annotation.BOField;
+import fr.cedricsevestre.annotation.BOField.SortType;
 import fr.cedricsevestre.annotation.BOField.ValueType;
 import fr.cedricsevestre.entity.engine.IdProvider;
 
@@ -43,10 +44,15 @@ public abstract class NoTranslation implements IdProvider, Serializable {
 	@Column(name = "name")
 	private String name;
 	
-	@BOField(type = ValueType.DATETIME)
+	@BOField(type = ValueType.DATETIME, sortBy = SortType.DESC, sortPriority = 100)
 	@NotNull
-	@Column(name = "date_add")
-	private Date dateAdd;
+	@Column(name = "date_added")
+	private Date dateAdded;
+	
+	@BOField(type = ValueType.DATETIME, sortBy = SortType.DESC, sortPriority = 100)
+	@NotNull
+	@Column(name = "date_updated")
+	private Date dateUpdated;
 	
 	@BOField(type = ValueType.HTML)
 	@SafeHtml(whitelistType = WhiteListType.BASIC)
@@ -55,14 +61,16 @@ public abstract class NoTranslation implements IdProvider, Serializable {
 
 	public NoTranslation() {
 		super();
-		this.setDateAdd(new Date());
+		this.setDateAdded(new Date());
+		this.setDateUpdated(new Date());
 	}
 
-	public NoTranslation(Integer id, String name, Date dateAdd, String description) {
+	public NoTranslation(Integer id, String name, Date dateAdded, Date dateUpdated, String description) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.dateAdd = dateAdd;
+		this.dateAdded = dateAdded;
+		this.dateUpdated = dateUpdated;
 		this.description = description;
 	}
 
@@ -91,12 +99,20 @@ public abstract class NoTranslation implements IdProvider, Serializable {
 		this.name = name;
 	}
 
-	public Date getDateAdd() {
-		return dateAdd;
+	public Date getDateAdded() {
+		return dateAdded;
 	}
 
-	public void setDateAdd(Date dateAdd) {
-		this.dateAdd = dateAdd;
+	public void setDateAdded(Date dateAdded) {
+		this.dateAdded = dateAdded;
+	}
+
+	public Date getDateUpdated() {
+		return dateUpdated;
+	}
+
+	public void setDateUpdated(Date dateUpdated) {
+		this.dateUpdated = dateUpdated;
 	}
 
 	public String getDescription() {

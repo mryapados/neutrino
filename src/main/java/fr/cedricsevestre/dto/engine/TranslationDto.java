@@ -22,7 +22,10 @@ public class TranslationDto implements Serializable {
 	private String name;
 	
 	@NotNull
-	private Date dateAdd;
+	private Date dateAdded;
+	
+	@NotNull
+	private Date dateUpdated;
 	
 	@NotNull
 	@SafeHtml(whitelistType = WhiteListType.BASIC)
@@ -34,18 +37,19 @@ public class TranslationDto implements Serializable {
 
 	}
 
-	public TranslationDto(String objectType, Integer id, String name, Date dateAdd, String description, LangDto lang) {
+	public TranslationDto(String objectType, Integer id, String name, Date dateAdded, Date dateUpdated, String description, LangDto lang) {
 		super();
 		this.objectType = objectType;
 		this.id = id;
 		this.name = name;
-		this.dateAdd = dateAdd;
+		this.dateAdded = dateAdded;
+		this.dateUpdated = dateUpdated;
 		this.description = description;
 		this.lang = lang;
 	}
 
 	public static TranslationDto from(Translation translation) {
-		return new TranslationDto(translation.getObjectType(), translation.getId(), translation.getName(), translation.getDateAdd(), translation.getDescription(), LangDto.from(translation.getLang()));
+		return new TranslationDto(translation.getObjectType(), translation.getId(), translation.getName(), translation.getDateAdded(), translation.getDateUpdated(), translation.getDescription(), LangDto.from(translation.getLang()));
 	}
 
 	
@@ -73,12 +77,20 @@ public class TranslationDto implements Serializable {
 		this.name = name;
 	}
 
-	public Date getDateAdd() {
-		return dateAdd;
+	public Date getDateAdded() {
+		return dateAdded;
 	}
 
-	public void setDateAdd(Date dateAdd) {
-		this.dateAdd = dateAdd;
+	public void setDateAdded(Date dateAdded) {
+		this.dateAdded = dateAdded;
+	}
+
+	public Date getDateUpdated() {
+		return dateUpdated;
+	}
+
+	public void setDateUpdated(Date dateUpdated) {
+		this.dateUpdated = dateUpdated;
 	}
 
 	public String getDescription() {

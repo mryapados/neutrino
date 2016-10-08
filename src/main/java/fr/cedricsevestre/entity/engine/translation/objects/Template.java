@@ -73,10 +73,10 @@ public class Template extends Translation {
 		super();
 	}
 
-	public Template(Integer id, String name, Date dateAdd, String description, Lang lang, TemplateType type, String path,
+	public Template(Integer id, String name, Date dateAdd, Date dateUpdated, String description, Lang lang, TemplateType type, String path,
 			List<MapTemplate> models, List<MapTemplate> blocks, String metaDescription, String metaTitle,
 			String metaKeyWords) {
-		super(id, name, dateAdd, description, lang);
+		super(id, name, dateAdd, dateUpdated, description, lang);
 		this.type = type;
 		this.path = path;
 		this.models = models;

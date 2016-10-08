@@ -34,8 +34,8 @@ public class Page extends Translation {
 		
 	}
 	
-	public Page(Integer id, String name, Date dateAdd, String description, Lang lang, String context, Template model) {
-		super(id, name, dateAdd, description, lang);
+	public Page(Integer id, String name, Date dateAdd, Date dateUpdated, String description, Lang lang, String context, Template model) {
+		super(id, name, dateAdd, dateUpdated, description, lang);
 		this.context = context;
 		this.model = model;
 	}

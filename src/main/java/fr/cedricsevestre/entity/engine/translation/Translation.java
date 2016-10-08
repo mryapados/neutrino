@@ -50,8 +50,13 @@ public abstract class Translation implements ITranslation, Serializable {
 	
 	@BOField(type = ValueType.DATETIME, sortBy = SortType.DESC, sortPriority = 100)
 	@NotNull
-	@Column(name = "date_add")
-	private Date dateAdd;
+	@Column(name = "date_added")
+	private Date dateAdded;
+	
+	@BOField(type = ValueType.DATETIME, sortBy = SortType.DESC, sortPriority = 100)
+	@NotNull
+	@Column(name = "date_updated")
+	private Date dateUpdated;
 	
 	@BOField(type = ValueType.HTML)
 	@SafeHtml(whitelistType = WhiteListType.BASIC)
@@ -70,14 +75,16 @@ public abstract class Translation implements ITranslation, Serializable {
 	
 	public Translation() {
 		super();
-		this.setDateAdd(new Date());
+		this.setDateAdded(new Date());
+		this.setDateUpdated(new Date());
 	}
 
-	public Translation(Integer id, String name, Date dateAdd, String description, Lang lang) {
+	public Translation(Integer id, String name, Date dateAdded, Date dateUpdated, String description, Lang lang) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.dateAdd = dateAdd;
+		this.dateAdded = dateAdded;
+		this.dateUpdated = dateUpdated;
 		this.description = description;
 		this.lang = lang;
 	}
@@ -106,12 +113,20 @@ public abstract class Translation implements ITranslation, Serializable {
 		this.name = name;
 	}
 
-	public Date getDateAdd() {
-		return dateAdd;
+	public Date getDateAdded() {
+		return dateAdded;
 	}
 
-	public void setDateAdd(Date dateAdd) {
-		this.dateAdd = dateAdd;
+	public void setDateAdded(Date dateAdded) {
+		this.dateAdded = dateAdded;
+	}
+
+	public Date getDateUpdated() {
+		return dateUpdated;
+	}
+
+	public void setDateUpdated(Date dateUpdated) {
+		this.dateUpdated = dateUpdated;
 	}
 
 	public String getDescription() {
