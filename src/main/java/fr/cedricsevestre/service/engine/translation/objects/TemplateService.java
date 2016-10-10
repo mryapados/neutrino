@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.cedricsevestre.annotation.BOService;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.common.Common.TypeBase;
 import fr.cedricsevestre.dao.engine.TemplateDao;
@@ -25,6 +26,7 @@ import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateType
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.translation.TranslationService;
 
+@BOService
 @Service
 @Scope(value = "singleton")
 public class TemplateService extends TranslationService<Template>{

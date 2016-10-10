@@ -1361,10 +1361,14 @@ public class InitialisationBase {
 		Position pFooter = addPosition(mapPosition, "@bo_footer");
 		
 		// Models
-		Map<Lang, Translation> mList = mkModel("@bo_list", "home/home");
-
+		Map<Lang, Translation> mHome = mkModel("@bo_home", "home/home");
+		Map<Lang, Translation> mList = mkModel("@bo_list", "default/default");
+		Map<Lang, Translation> mView = mkModel("@bo_view", "default/default");
+		
 		// Pages
-		Map<Lang, Translation> pgList = mkPage("@bo_list", "list", mList);
+		Map<Lang, Translation> pgHome = mkPage("@bo_home", "home", mHome);
+		Map<Lang, Translation> pgList = mkPage("@bo_list", "default", mList);
+		Map<Lang, Translation> pgView = mkPage("@bo_view", "default", mView);
 		
 		// PageBlocks
 		Map<Lang, Translation> pbHeader = mkPageBlock("@bo_header", "header/header");

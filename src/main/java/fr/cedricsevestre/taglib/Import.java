@@ -8,6 +8,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.PageContext;
 
+import org.apache.taglibs.standard.tag.common.core.ImportSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,7 @@ import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 
 @Component
 @Scope(value = "singleton")
-public class Import extends org.apache.taglibs.standard.tag.common.core.ImportSupport implements IIncludeJSP {
+public class Import extends ImportSupport implements IIncludeJSP {
 	private static final long serialVersionUID = 1L;
 
 	private String template = null;

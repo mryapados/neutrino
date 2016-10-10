@@ -24,21 +24,31 @@ import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.bean.NField;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.entity.engine.IdProvider;
+import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
-import fr.cedricsevestre.service.engine.CustomServiceLocator;
+import fr.cedricsevestre.service.engine.ServiceLocator;
 
 @Service
 @Scope(value = "singleton")
 public class BackOfficeService<T extends IdProvider> implements IBackOfficeService{
 
 	@Autowired
-	CustomServiceLocator customServiceLocator;
+	ServiceLocator customServiceLocator;
 	
 	private Logger logger = Logger.getLogger(BackOfficeService.class);
 
+	public static final String TEMPLATE = "Template";
+	
 	public static Class<?> getEntity(String entityName) throws ServiceException{
 		try {
-			return Class.forName(Common.CUSTOM_ENTITY_PACKAGE + "." + entityName);
+			switch (entityName) {
+			case TEMPLATE:
+				return Template.class;
+
+			default:
+				return Class.forName(Common.CUSTOM_ENTITY_PACKAGE + "." + entityName);
+			}
+
 		} catch (ClassNotFoundException e) {
 			throw new ServiceException("erreur getEntity", e);
 		}
@@ -76,7 +86,14 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 		try {
 			Class<?> params[] = {Pageable.class};
 			Object paramsObj[] = {pageable};
+			
+			System.out.println("LOOK FOR = " + entity.getSimpleName());
+			
 			Object service = customServiceLocator.getService(entity.getSimpleName());
+			
+			
+			System.out.println("FOUND = " + service.getClass().getName());
+			
 			Class<?> clazz = Class.forName(service.getClass().getName());
 			Method findAllFetched = clazz.getMethod("findAllFetched", params);
 			return (Page<T>) findAllFetched.invoke(service, paramsObj);
