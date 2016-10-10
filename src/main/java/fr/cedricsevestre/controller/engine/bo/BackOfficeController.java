@@ -34,11 +34,17 @@ public class BackOfficeController extends AbtractController {
 	@Autowired
 	private BackOfficeService<Translation> backOfficeTranslationService;
 	
-	public static final String BOLISTURL = "list";
+	public static final String BOHOMEURL = "";
+	public static final String BOHOMEPAGE = "@bo_home";
+	
+	public static final String BOLISTURL = "/list";
 	public static final String BOLISTPAGE = "@bo_list";
 	
-	public static final String BOEDITURL = "edit";
+	public static final String BOEDITURL = "/edit";
 	public static final String BOEDITPAGE = "@bo_edit";
+	
+	public static final String BOVIEWURL = "/view";
+	public static final String BOVIEWPAGE = "@bo_view";
 	
 	private Folder getBOFolder() throws JspException{
 		try {
@@ -47,8 +53,24 @@ public class BackOfficeController extends AbtractController {
 			throw new JspException("Can't obtain BO folder", e);
 		}
 	}
+	
+	
+	@RequestMapping(value = BOHOMEURL, method = RequestMethod.GET)
+	public ModelAndView home() throws JspException   {
+		Folder folder = getBOFolder();
+		ModelAndView modelAndView = null;
+		try {
+			modelAndView = baseView(BOHOMEPAGE, folder);
 
-	@RequestMapping(value = "/" + BOLISTURL, method = RequestMethod.GET)
+		} catch (ServiceException e) {
+			throw new JspException(e);
+		}
+		return modelAndView;
+	}
+	
+	
+
+	@RequestMapping(value = BOLISTURL, method = RequestMethod.GET)
 	public ModelAndView list(@ModelAttribute("type") String type, Pageable pageRequest) throws JspException   {
 		Folder folder = getBOFolder();
 		ModelAndView modelAndView = null;
@@ -58,10 +80,10 @@ public class BackOfficeController extends AbtractController {
 			Class<?> object = BackOfficeService.getEntity(type);
 			modelAndView.addObject("objectType", object.getSimpleName());
 			if (object.getSuperclass().equals(Translation.class)){
-				NData tData = backOfficeTranslationService.findAll(object, pageRequest);
+				NData<Translation> tData = backOfficeTranslationService.findAll(object, pageRequest);
 				modelAndView.addObject("datas", tData);
 			} else if (object.getSuperclass().equals(NoTranslation.class)){
-				NData tData = backOfficeNoTranslationService.findAll(object, pageRequest);
+				NData<NoTranslation> tData = backOfficeNoTranslationService.findAll(object, pageRequest);
 				modelAndView.addObject("datas", tData);
 			}
 
@@ -71,8 +93,8 @@ public class BackOfficeController extends AbtractController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/" + BOEDITURL, method = RequestMethod.GET)
-	public ModelAndView edit(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id, Pageable pageRequest) throws JspException   {
+	@RequestMapping(value = BOEDITURL, method = RequestMethod.GET)
+	public ModelAndView edit(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id) throws JspException   {
 		Folder folder = getBOFolder();
 		ModelAndView modelAndView = null;
 		try {
@@ -83,5 +105,20 @@ public class BackOfficeController extends AbtractController {
 		}
 		return modelAndView;
 	}
+	
+	@RequestMapping(value = BOVIEWURL, method = RequestMethod.GET)
+	public ModelAndView view(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id) throws JspException   {
+		Folder folder = getBOFolder();
+		ModelAndView modelAndView = null;
+		try {
+			modelAndView = baseView(BOVIEWPAGE, folder);
+
+		} catch (ServiceException e) {
+			throw new JspException(e);
+		}
+		return modelAndView;
+	}
+	
+	
 
 }
