@@ -81,14 +81,16 @@
 
 	<div class="btn-group" role="group" aria-label="...">
 		<div class="btn-group" role="group">
-
-			<button type="button" class="btn btn-danger">
-			  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remove
+			<button id="delete_button" type="submit" class="btn btn-danger">
+				<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remove
 			</button>
 			
-			<button type="button" class="btn btn-success">
-			  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
-			</button>
+			<c:url var="url" value="./new/" scope="request">
+				<c:param name="type" value="${objectType}"/>
+			</c:url>
+			<a href="${url}" role="button" class="btn btn-primary">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
+			</a>
 		</div>
 	</div>
 

@@ -78,18 +78,10 @@ public class HasBlock extends TagSupport {
 			System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGG");
 			System.out.println(position);
 			System.out.println(model.getId());
-			Position pos = positionService.findByNameForModelsWithMaps(models, position);
+			Integer count = positionService.countByNameForModelsWithMaps(models, position);
 			
-			
-			
-			
-			
-			
-			pageContext.setAttribute(var, 5, contextScope);
-			
-			
-		
-		
+			pageContext.setAttribute(var, count > 0, contextScope);
+
 		} catch (ServiceException e) {
 			try {
 				out.println("<p class=\"bg-danger\">" + e.getMessage() + "</p>");

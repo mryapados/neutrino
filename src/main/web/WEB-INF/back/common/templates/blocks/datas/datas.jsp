@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="my" uri="/WEB-INF/taglibs/neutrino.tld" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
@@ -21,55 +22,57 @@
 				<jsp:include page="detail/toolbar.jsp" />
 			</div>
 			<div class="table-responsive">
-				<table class="table table-striped table-bordered table-hover" role="grid">
-					<thead>
-						<tr>
-							<th><input type="checkbox" name="vehicle" value="Bike"></th>
-							<th><s:message code="bo.field.action" text="Action" /></th>
-							<c:forEach var="field" items="${datas.fields}" varStatus="status">
-								<c:if test="${field.inList}">
-									<s:message var="defaultMessage" code="bo.field.${field.name}" text="${field.name}" />
-									<th><s:message code="bo.${objectType}.field.${field.name}" text="${defaultMessage}" /></th>
-								</c:if>
-							</c:forEach>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="object" items="${datas.objectDatas.content}" varStatus="status">
+				<form:form id="delete" action="" method="post">
+					<table class="table table-striped table-bordered table-hover" role="grid">
+						<thead>
 							<tr>
-								<th><input type="checkbox" name="${objectType}_${object['id']}"></th>
-								<td class="text-center">
-									<c:url var="url" value="./edit/" scope="request">
-										<c:param name="type" value="${objectType}"/>
-										<c:param name="id" value="${object['id']}"/>
-									</c:url>
-									<a href="${url}" title="edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-									&nbsp
-									<c:url var="url" value="./view/" scope="request">
-										<c:param name="type" value="${param.type}"/>
-										<c:param name="id" value="${object['id']}"/>
-									</c:url>
-									<a href="${url}" title="see"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-								</td>
+								<th><input type="checkbox" id="select_all"></th>
+								<th><s:message code="bo.field.action" text="Action" /></th>
 								<c:forEach var="field" items="${datas.fields}" varStatus="status">
 									<c:if test="${field.inList}">
-										<td>
-											<c:set var="finalObject" value="${object[field.name]}" scope="request" />
-											<c:set var="finalField" value="${field}" scope="request" />
-											<c:set var="finalFieldType" value="${finalField.type}" scope="request" />
-											
-											<jsp:include page="detail/field.jsp" />
-		
-											<c:remove var="finalObject"/>
-											<c:remove var="finalField"/>
-											<c:remove var="finalFieldType"/>
-										</td>
+										<s:message var="defaultMessage" code="bo.field.${field.name}" text="${field.name}" />
+										<th><s:message code="bo.${objectType}.field.${field.name}" text="${defaultMessage}" /></th>
 									</c:if>
 								</c:forEach>
 							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							<c:forEach var="object" items="${datas.objectDatas.content}" varStatus="status">
+								<tr>
+									<th><input type="checkbox" name="${objectType}_${object['id']}"></th>
+									<td class="text-center">
+										<c:url var="url" value="./edit/" scope="request">
+											<c:param name="type" value="${objectType}"/>
+											<c:param name="id" value="${object['id']}"/>
+										</c:url>
+										<a href="${url}" title="edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+										&nbsp
+										<c:url var="url" value="./view/" scope="request">
+											<c:param name="type" value="${param.type}"/>
+											<c:param name="id" value="${object['id']}"/>
+										</c:url>
+										<a href="${url}" title="see"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+									</td>
+									<c:forEach var="field" items="${datas.fields}" varStatus="status">
+										<c:if test="${field.inList}">
+											<td>
+												<c:set var="finalObject" value="${object[field.name]}" scope="request" />
+												<c:set var="finalField" value="${field}" scope="request" />
+												<c:set var="finalFieldType" value="${finalField.type}" scope="request" />
+												
+												<jsp:include page="detail/field.jsp" />
+			
+												<c:remove var="finalObject"/>
+												<c:remove var="finalField"/>
+												<c:remove var="finalFieldType"/>
+											</td>
+										</c:if>
+									</c:forEach>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</form:form>
 			</div>
 			<div class="panel-footer">
 				<jsp:include page="detail/toolbar.jsp" />
@@ -77,3 +80,31 @@
 		</div>
 	</div>
 </div>
+
+
+
+
+
+
+<my:script>
+	$(function() {
+		$('#select_all').change(function() {
+			var checkboxes = $(this).closest('form').find(':checkbox');
+			if ($(this).is(':checked')) {
+				checkboxes.prop('checked', true);
+			} else {
+				checkboxes.prop('checked', false);
+			}
+		});
+
+		$("#delete_button").click(function() {
+			if (confirm("Click OK to remove all lines checked ?")) {
+				$('form#delete').submit();
+			}
+		});
+	});
+</my:script>
+
+
+
+

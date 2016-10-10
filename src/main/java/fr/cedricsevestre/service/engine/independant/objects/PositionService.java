@@ -51,6 +51,14 @@ public class PositionService extends BaseService<Position>{
 		}
 	}
 	
+	public Integer countByNameForModelsWithMaps(List<Translation> models, String positionName) throws ServiceException {
+		try {
+			return positionDao.countByNameForModelsWithMaps(models, positionName);
+		} catch (PersistenceException e) {
+			throw new ServiceException("erreur findById position", e);
+		}
+	}
+	
 	public List<Position> findAllForModelWithMaps(Template modelName) throws ServiceException {
 		try {
 			return positionDao.findAllForModelWithMaps(modelName);
