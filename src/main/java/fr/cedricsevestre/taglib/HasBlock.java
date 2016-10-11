@@ -80,7 +80,10 @@ public class HasBlock extends TagSupport {
 			System.out.println(model.getId());
 			Integer count = positionService.countByNameForModelsWithMaps(models, position);
 			
-			pageContext.setAttribute(var, count > 0, contextScope);
+			Integer result = 0;
+			if (count > 0) result = 1;
+			
+			pageContext.setAttribute(var, result, contextScope);
 
 		} catch (ServiceException e) {
 			try {
