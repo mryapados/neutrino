@@ -17,8 +17,11 @@ public class NField implements Serializable {
 	private SortType sortBy;
 	private int sortPriority;
 	private boolean defaultField;
+	private int displayOrder;
+	private String tabName;
+	private String groupName;
 	
-	public NField(ValueType type, ValueType ofType, String name, String className, boolean inList, SortType sortBy, int sortPriority, boolean defaultField) {
+	public NField(ValueType type, ValueType ofType, String name, String className, boolean inList, SortType sortBy, int sortPriority, boolean defaultField, int displayOrder, String tabName, String groupName) {
 		super();
 		this.type = type;
 		this.ofType = ofType;
@@ -28,6 +31,9 @@ public class NField implements Serializable {
 		this.sortBy = sortBy;
 		this.sortPriority = sortPriority;
 		this.defaultField = defaultField;
+		this.displayOrder = displayOrder;
+		this.tabName = tabName;
+		this.groupName = groupName;
 	}
 	
 	public ValueType getType() {
@@ -77,6 +83,24 @@ public class NField implements Serializable {
 	}
 	public void setDefaultField(boolean defaultField) {
 		this.defaultField = defaultField;
+	}
+	public int getDisplayOrder() {
+		return displayOrder;
+	}
+	public void setDisplayOrder(int displayOrder) {
+		this.displayOrder = displayOrder;
+	}
+	public String getTabName() {
+		return tabName;
+	}
+	public void setTabName(String tabName) {
+		this.tabName = tabName;
+	}
+	public String getGroupName() {
+		return groupName;
+	}
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
 	}
 
 }

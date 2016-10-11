@@ -33,5 +33,9 @@ public @interface BOField {
 	
 	boolean defaultField() default false;
 	
+	int displayOrder() default 9999;
+	
+	String tabName() default "";
+	String groupName() default "";
 	
 }
