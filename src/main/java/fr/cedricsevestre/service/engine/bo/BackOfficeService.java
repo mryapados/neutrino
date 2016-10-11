@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import fr.cedricsevestre.annotation.BOField;
 import fr.cedricsevestre.annotation.BOField.SortType;
 import fr.cedricsevestre.bean.NData;
+import fr.cedricsevestre.bean.NDatas;
 import fr.cedricsevestre.bean.NField;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.entity.engine.IdProvider;
@@ -97,6 +99,7 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 			Class<?> clazz = Class.forName(service.getClass().getName());
 			Method findAllFetched = clazz.getMethod("findAllFetched", params);
 			return (Page<T>) findAllFetched.invoke(service, paramsObj);
+			
 		} catch (ClassNotFoundException e) {
 			logger.error("getDatas -> ClassNotFoundException", e);
 			throw new ServiceException("Error getList", e);
@@ -118,28 +121,90 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	private T getData(Class<?> entity, Integer id) throws ServiceException{
+				
+		try {
+			Class<?> params[] = {Integer.class};
+			Object paramsObj[] = {id};
+			
+			System.out.println("LOOK FOR = " + entity.getSimpleName());
+			
+			Object service = customServiceLocator.getService(entity.getSimpleName());
+
+			System.out.println("FOUND = " + service.getClass().getName());
+			
+			Class<?> clazz = Class.forName(service.getClass().getName());
+			Method findById = clazz.getMethod("findById", params);
+			return (T) findById.invoke(service, paramsObj);
+			
+		} catch (ClassNotFoundException e) {
+			logger.error("getDatas -> ClassNotFoundException", e);
+			throw new ServiceException("Error getList", e);
+		} catch (NoSuchMethodException e) {
+			logger.error("getDatas -> NoSuchMethodException", e);
+			throw new ServiceException("Error getList", e);
+		} catch (SecurityException e) {
+			logger.error("getDatas -> SecurityException", e);
+			throw new ServiceException("Error getList", e);
+		} catch (IllegalAccessException e) {
+			logger.error("getDatas -> IllegalAccessException", e);
+			throw new ServiceException("Error getList", e);
+		} catch (IllegalArgumentException e) {
+			logger.error("getDatas -> IllegalArgumentException", e);
+			throw new ServiceException("Error getList", e);
+		} catch (InvocationTargetException e) {
+			logger.error("getDatas -> InvocationTargetException", e);
+			throw new ServiceException("Error getList", e);
+		}
+	}
+	
+	private NField mkNFieldFromBOField(Field field, BOField nType){
+		return new NField(nType.type(), nType.ofType(), field.getName(), field.getType().getSimpleName(), nType.inList(), nType.sortBy(), nType.sortPriority(), nType.defaultField(), nType.displayOrder(), nType.tabName(), nType.groupName());
+	}
+	
 	private List<NField> getNField(List<Field> fields) throws ServiceException{
 		List<NField> nfFields = new ArrayList<>();
 		for (Field field : fields) {
-			BOField annotation = field.getAnnotation(BOField.class);
-			if (annotation != null){
-				BOField nType = (BOField) annotation;
-				nfFields.add(new NField(nType.type(), nType.ofType(), field.getName(), field.getType().getSimpleName(), nType.inList(), nType.sortBy(), nType.sortPriority(), nType.defaultField()));
+			BOField nType = field.getAnnotation(BOField.class);
+			if (nType != null){
+				nfFields.add(mkNFieldFromBOField(field, nType));
 			}
 		}
 		return nfFields;
 	}
 	
+	//Retourne une liste de NField par GroupName par TabName
+	private Map<String, Map<String, List<NField>>> getMapNField(List<Field> fields) throws ServiceException{
+		Map<String, Map<String, List<NField>>> nfTabsGroupsFields = new HashMap<>();
+		for (Field field : fields) {
+			BOField nType = field.getAnnotation(BOField.class);
+			if (nType != null){
+				if (!nfTabsGroupsFields.containsKey(nType.tabName())){
+					nfTabsGroupsFields.put(nType.tabName(), new HashMap<>());
+				}
+				Map<String, List<NField>> nfGroupsFields = nfTabsGroupsFields.get((nType.tabName()));
+				
+				if (!nfGroupsFields.containsKey(nType.groupName())){
+					nfGroupsFields.put(nType.groupName(), new ArrayList<>());
+				}
+				List<NField> nfFields = nfGroupsFields.get((nType.groupName()));
+				nfFields.add(mkNFieldFromBOField(field, nType));
+			}
+		}
+		return nfTabsGroupsFields;
+	}
+
 	@Override
-	public NData<T> findAll(Class<?> entity) throws ServiceException{
+	public NDatas<T> findAll(Class<?> entity) throws ServiceException{
 		return findAll(entity, null);
 	}
 	@Override
-	public NData<T> findAll(Class<?> entity, Pageable pageRequest) throws ServiceException{		
+	public NDatas<T> findAll(Class<?> entity, Pageable pageRequest) throws ServiceException{		
 		List<Field> fields = getFields(entity);
 		List<NField> nFields = getNField(fields);
 		pageRequest = transformPageRequest(nFields, pageRequest);
-		return new NData<T>(nFields, getDatas(entity, pageRequest));
+		return new NDatas<T>(nFields, getDatas(entity, pageRequest));
 	}
 	
 	private Pageable transformPageRequest(List<NField> nfFields, Pageable pageRequest){
@@ -160,6 +225,13 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 			else sort = sort.and(andSort.getValue());
 		}
 		return new PageRequest(pageRequest.getPageNumber(), pageRequest.getPageSize(), sort);
+	}
+
+	@Override
+	public NData<T> findOne(Class<?> entity, Integer id) throws ServiceException {
+		List<Field> fields = getFields(entity);
+		Map<String, Map<String, List<NField>>> nMapFields = getMapNField(fields);
+		return new NData<T>(nMapFields, getData(entity, id));
 	}
 	
 	

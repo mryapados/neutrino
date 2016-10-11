@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import fr.cedricsevestre.bean.NData;
+import fr.cedricsevestre.bean.NDatas;
 import fr.cedricsevestre.controller.engine.AbtractController;
 import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
@@ -80,11 +81,11 @@ public class BackOfficeController extends AbtractController {
 			Class<?> object = BackOfficeService.getEntity(type);
 			modelAndView.addObject("objectType", object.getSimpleName());
 			if (object.getSuperclass().equals(Translation.class)){
-				NData<Translation> tData = backOfficeTranslationService.findAll(object, pageRequest);
-				modelAndView.addObject("datas", tData);
+				NDatas<Translation> tDatas = backOfficeTranslationService.findAll(object, pageRequest);
+				modelAndView.addObject("datas", tDatas);
 			} else if (object.getSuperclass().equals(NoTranslation.class)){
-				NData<NoTranslation> tData = backOfficeNoTranslationService.findAll(object, pageRequest);
-				modelAndView.addObject("datas", tData);
+				NDatas<NoTranslation> tDatas = backOfficeNoTranslationService.findAll(object, pageRequest);
+				modelAndView.addObject("datas", tDatas);
 			}
 
 		} catch (ServiceException e) {
@@ -112,6 +113,16 @@ public class BackOfficeController extends AbtractController {
 		ModelAndView modelAndView = null;
 		try {
 			modelAndView = baseView(BOVIEWPAGE, folder);
+
+			Class<?> object = BackOfficeService.getEntity(type);
+			modelAndView.addObject("objectType", object.getSimpleName());
+			if (object.getSuperclass().equals(Translation.class)){
+				NData<Translation> tData = backOfficeTranslationService.findOne(object, id);
+				modelAndView.addObject("data", tData);
+			} else if (object.getSuperclass().equals(NoTranslation.class)){
+				NData<NoTranslation> tData = backOfficeNoTranslationService.findOne(object, id);
+				modelAndView.addObject("data", tData);
+			}
 
 		} catch (ServiceException e) {
 			throw new JspException(e);

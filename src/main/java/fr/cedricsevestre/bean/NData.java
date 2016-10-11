@@ -12,32 +12,31 @@ public class NData<T extends IdProvider> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private List<NField> fields;
-	private Page<T> objectDatas;
+	private Map<String, Map<String, List<NField>>> fields;
+	private T objectData;
 	
-	public NData(List<NField> fields, Page<T> objectDatas) {
+	public NData(Map<String, Map<String, List<NField>>> fields, T objectData) {
 		super();
 		this.fields = fields;
-		this.objectDatas = objectDatas;
+		this.objectData = objectData;
 	}
 
-	public List<NField> getFields() {
+	public Map<String, Map<String, List<NField>>> getFields() {
 		return fields;
 	}
 
-	public void setFields(List<NField> fields) {
+	public void setFields(Map<String, Map<String, List<NField>>> fields) {
 		this.fields = fields;
 	}
 
-	public Page<T> getObjectDatas() {
-		return objectDatas;
+	public T getObjectData() {
+		return objectData;
 	}
 
-	public void setObjectDatas(Page<T> objectDatas) {
-		this.objectDatas = objectDatas;
+	public void setObjectData(T objectData) {
+		this.objectData = objectData;
 	}
 
 
 
-	
 }
