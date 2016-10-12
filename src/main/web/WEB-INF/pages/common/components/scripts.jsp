@@ -9,7 +9,7 @@
 <script src="<c:url value='/js/lib/angular-translate.min.js'/>"></script>
 <script src="<c:url value='/js/lib/angular-cookies.min.js'/>"></script>
 <script src="<c:url value='/js/lib/angular-resource.min.js'/>"></script>
-<script src="<c:url value='/js/lib/ui-bootstrap-tpls.js'/>"></script>
+<script src="<c:url value='/js/lib/ui-bootstrap-tpls-2.2.0.min.js'/>"></script>
 
 
 

@@ -27,6 +27,8 @@ public @interface BOField {
 	ValueType ofType() default ValueType.NULL;
 
 	boolean inList() default true;
+	boolean inView() default true;
+	boolean editable() default true;
 	
 	SortType sortBy() default SortType.NULL;
 	int sortPriority() default 100;

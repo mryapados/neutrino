@@ -1,7 +1,7 @@
 (function() {
 	var bModule = angular.module('backServices');
 
-	bModule.service('BlockManagementService', function($rootScope, $q, $modal, FolderService, LangService, PageService, TemplateService, BlockService, MapTemplateService, TObjectService, PATH) {
+	bModule.service('BlockManagementService', function($rootScope, $q, $uibModal, FolderService, LangService, PageService, TemplateService, BlockService, MapTemplateService, TObjectService, PATH) {
 		var folder;
 		var page;
 		var activeObject = null;
@@ -166,7 +166,7 @@
         }
         
         self.openModal = function(templateId) {
-			var instance = $modal.open({
+			var instance = $uibModal.open({
 				templateUrl: PATH.URL_TEMPLATE_MODAL_EDIT,
 				controller: 'TemplateModalCtrl',
 				resolve: {

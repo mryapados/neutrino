@@ -1,6 +1,6 @@
 var bModule = angular.module("backApp");
 
-bModule.controller('ModalDemoCtrl', function ($scope, $modal, $log) {
+bModule.controller('ModalDemoCtrl', function ($scope, $uibModal, $log) {
 
   $scope.items = ['item1', 'item2', 'item3'];
 
@@ -14,7 +14,7 @@ bModule.controller('ModalDemoCtrl', function ($scope, $modal, $log) {
             modalInstance.dismiss('cancel');
     };      
     
-    modalInstance = $modal.open({
+    modalInstance = $uibModal.open({
       template: '<my-modal></my-modal>',
       size: size,
       scope: modalScope

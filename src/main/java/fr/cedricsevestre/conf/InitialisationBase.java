@@ -1377,7 +1377,7 @@ public class InitialisationBase {
 		generateMenu(pbHeader, pheaderMenu);
 		
 		Map<Lang, Translation> bDatas = mkBlock("@bo_datas", "datas/datas");
-		
+		Map<Lang, Translation> bData = mkBlock("@bo_data", "data/data");
 		
 		
 		
@@ -1387,7 +1387,8 @@ public class InitialisationBase {
 		
 		// Set MapTemplate
 		Map<Lang, MapTemplate> mtHeader = addMapTemplate(mList, pbHeader, pHeader);
-		Map<Lang, MapTemplate> mtArticle = addMapTemplate(mList, bDatas, pArticle);
+		Map<Lang, MapTemplate> mtArticleList = addMapTemplate(mList, bDatas, pArticle);
+		Map<Lang, MapTemplate> mtArticleView = addMapTemplate(mView, bData, pArticle);
 	}
 	
 	

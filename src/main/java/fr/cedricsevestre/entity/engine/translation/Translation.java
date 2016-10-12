@@ -36,7 +36,7 @@ public abstract class Translation implements ITranslation, Serializable {
 	@Column(name = "object_type", insertable = false, updatable = false)
     private String objectType;
 	
-	@BOField(type = ValueType.INTEGER)
+	@BOField(type = ValueType.INTEGER, editable = false)
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;

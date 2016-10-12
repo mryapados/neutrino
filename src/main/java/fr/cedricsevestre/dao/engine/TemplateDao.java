@@ -26,4 +26,20 @@ public interface TemplateDao extends TranslationDao<Template> {
 	@Query("SELECT t FROM Template t LEFT JOIN FETCH t.models m")
 	List<Template> findAllWithModels();
 	
+	
+	
+	@Override
+	@Query("SELECT t FROM Template t LEFT JOIN FETCH t.models m JOIN FETCH t.blocks b")
+	List<Translation> findAllFetched();
+
+	@Override
+	@Query(value = "SELECT t FROM Template t LEFT JOIN FETCH t.models m JOIN FETCH t.blocks b", countQuery = "select count(t) FROM Template t")
+	Page<Translation> findAllFetched(Pageable pageable);
+	
+	
+	
+	
+	
+	
+	
 }

@@ -12,15 +12,20 @@
 		<fmt:formatDate value="${finalObject}"/>
 	</c:when>
 	<c:when test="${finalFieldType eq 'TOBJECT' || finalFieldType eq 'NTOBJECT'}">
-		<a class="linked" href="<c:url value='/bo/view?type=${objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a>
+		<a class="linked" href="<c:url value='/bo/view?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a>
 	</c:when>
 	<c:when test="${finalFieldType eq 'TOBJECT' || finalFieldType eq 'NTOBJECT'}">
 		<c:out value="${finalObject.name}"/>
 	</c:when>
 	<c:when test="${finalFieldType eq 'OBJECT'}">
-		<c:if test="${finalObject.objectType eq 'Lang'}">
-			<span class="lang-sm lang-lbl" lang="${finalObject.code}"></span>
-		</c:if>
+		<c:choose>
+			<c:when test="${finalObject.objectType eq 'Lang'}">
+				<span class="lang-sm lang-lbl" lang="${finalObject.code}"></span>
+			</c:when>
+			<c:otherwise>
+				<a class="linked" href="<c:url value='/bo/view?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="object"/></a>
+			</c:otherwise>
+		</c:choose>
 	</c:when>
 	<c:when test="${finalFieldType eq 'COLLECTION'}">
 		<c:set var="collection" value="${finalObject}" />
@@ -28,11 +33,12 @@
 		<c:if test="${size > 0}">
 			<ul class="linked">
 				<c:set var="max" value="${size}" />
+				
 				<c:if test="${max > finalMaxElement}">
 					<c:set var="max" value="${finalMaxElement}" />
 				</c:if>
 				<c:forEach var="i" begin="0" end="${max - 1}">
-					<c:set var="finalObject" value="${collection[i]}" scope="request" />
+					<c:set var="finalObject" value="${collection.toArray()[i]}" scope="request" />
 					<c:set var="finalFieldType" value="${finalField.ofType}" scope="request" />
 					<li>
 						<jsp:include page="field.jsp" />

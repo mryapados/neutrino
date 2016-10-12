@@ -2,6 +2,7 @@ package fr.cedricsevestre.dto.engine;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 import javax.validation.constraints.NotNull;
 
@@ -52,7 +53,7 @@ public class TemplateDto extends TranslationDto {
 	}
 
 	public static Template to(TemplateDto templateDto){
-		return new Template(templateDto.getId(), templateDto.getName(), templateDto.getDateAdded(), templateDto.getDateUpdated(), templateDto.getDescription(), LangDto.to(templateDto.getLang()), templateDto.getType(), templateDto.getPath(), new ArrayList<MapTemplate>(), new ArrayList<MapTemplate>(), templateDto.getMetaDescription(), templateDto.getMetaTitle(), templateDto.getMetaKeyWords());
+		return new Template(templateDto.getId(), templateDto.getName(), templateDto.getDateAdded(), templateDto.getDateUpdated(), templateDto.getDescription(), LangDto.to(templateDto.getLang()), templateDto.getType(), templateDto.getPath(), new HashSet<MapTemplate>(), new HashSet<MapTemplate>(), templateDto.getMetaDescription(), templateDto.getMetaTitle(), templateDto.getMetaKeyWords());
 	}
 
 	public TemplateType getType() {

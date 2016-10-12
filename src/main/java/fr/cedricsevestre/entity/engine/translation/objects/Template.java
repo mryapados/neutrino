@@ -2,6 +2,7 @@ package fr.cedricsevestre.entity.engine.translation.objects;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,8 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
+import fr.cedricsevestre.annotation.BOField;
+import fr.cedricsevestre.annotation.BOField.ValueType;
 import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
 import fr.cedricsevestre.entity.engine.independant.objects.NData;
 import fr.cedricsevestre.entity.engine.independant.objects.NSchema;
@@ -39,25 +42,31 @@ public class Template extends Translation {
 	@Enumerated(EnumType.STRING)
 	private TemplateType type;
 	
+	@BOField(type = ValueType.VARCHAR255, inList = false)
 	@NotNull
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "path")
 	private String path;
 
+	@BOField(type = ValueType.COLLECTION, ofType = ValueType.OBJECT)
 	@OneToMany(mappedBy = "block")
-	private List<MapTemplate> models;
+	private Set<MapTemplate> models;
 
+	@BOField(type = ValueType.COLLECTION, ofType = ValueType.OBJECT)
 	@OneToMany(mappedBy = "model")
-	private List<MapTemplate> blocks;
+	private Set<MapTemplate> blocks;
 	
+	@BOField(type = ValueType.TEXT, tabName = "01_seo", groupName = "02_group2")
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "meta_description")
 	private String metaDescription;
 	
+	@BOField(type = ValueType.TEXT, tabName = "01_seo", groupName = "01_group1")
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "meta_title")
 	private String metaTitle;
 	
+	@BOField(type = ValueType.TEXT, tabName = "01_seo", groupName = "01_group1")
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "meta_keywords")
 	private String metaKeyWords;
@@ -74,7 +83,7 @@ public class Template extends Translation {
 	}
 
 	public Template(Integer id, String name, Date dateAdd, Date dateUpdated, String description, Lang lang, TemplateType type, String path,
-			List<MapTemplate> models, List<MapTemplate> blocks, String metaDescription, String metaTitle,
+			Set<MapTemplate> models, Set<MapTemplate> blocks, String metaDescription, String metaTitle,
 			String metaKeyWords) {
 		super(id, name, dateAdd, dateUpdated, description, lang);
 		this.type = type;
@@ -104,19 +113,19 @@ public class Template extends Translation {
 		this.path = path;
 	}
 
-	public List<MapTemplate> getModels() {
+	public Set<MapTemplate> getModels() {
 		return models;
 	}
 
-	public void setModels(List<MapTemplate> models) {
+	public void setModels(Set<MapTemplate> models) {
 		this.models = models;
 	}
 
-	public List<MapTemplate> getBlocks() {
+	public Set<MapTemplate> getBlocks() {
 		return blocks;
 	}
 
-	public void setBlocks(List<MapTemplate> blocks) {
+	public void setBlocks(Set<MapTemplate> blocks) {
 		this.blocks = blocks;
 	}
 

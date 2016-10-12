@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import fr.cedricsevestre.entity.engine.translation.Translation;
@@ -45,12 +46,14 @@ public class MapTemplate implements Serializable{
 	
 	@Column(name = "ordered")
 	private Integer ordered;
-	
-	
-	
+
 	@OneToMany(mappedBy = "mapTemplate")
 	private List<NData> datas;
 	
+	@Transient
+	public String getObjectType() {
+		return "MapTemplate";
+	}
 	
 	public MapTemplate() {
 

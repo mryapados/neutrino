@@ -6,32 +6,86 @@
 <my:init test="${!initialized}"/>
 
 <jsp:include page="detail/init.jsp" />
-<div class="list-object">
+<div class="view-object">
 	<h1>
 		<s:message code="bo.list" text="${objectType}" />
 		<s:message code="bo.${objectType}.entity.name" text="${objectType}" />
 	</h1>
-	<div class="panel-group">
-		<div class="panel panel-primary">
-			<div class="panel-heading">	
+	
+	
+			
+			
+			
 
-			</div>
-			<div class="panel-header">
-				
-			</div>
-			<div class="table-responsive">
-				<table class="table table-striped table-bordered table-hover" role="grid">
-					<thead>
+<data-uib-tabset active="active">
 
-					</thead>
-					<tbody>
-					
-					</tbody>
-				</table>
-			</div>
-			<div class="panel-footer">
-				
-			</div>
-		</div>
-	</div>
+	<c:forEach var="tab" items="${data.fields}" varStatus="status">
+		<data-uib-tab index="${status.index}" heading="${not empty tabs.key ? tabs.key : 'data'}">
+		
+		
+		
+
+			<c:forEach var="group" items="${tab.value}">
+			   >>> >>> group = ${group.key}<br/>
+			   >>> >>> ---------------------------<br/>
+	
+				<c:forEach var="field" items="${group.value}">
+				   >>> >>> >>> field = ${field.name} : ${field.type}<br/>
+				   >>> >>> >>> ---------------------------<br/>
+	
+				</c:forEach>
+			</c:forEach>
+		
+		
+		
+			
+		
+		
+		</data-uib-tab>
+	</c:forEach>
+
+</data-uib-tabset>
+			
+	
+			
+			
+			
+			
+			
+
+<%-- 		<c:forEach var="tab" items="${data.fields}"> --%>
+<%-- 		    >>> tab = ${tabs.key}<br/> --%>
+<!-- 			>>> ---------------------------<br/> -->
+<%-- 			<c:forEach var="group" items="${tab.value}"> --%>
+<%-- 			   >>> >>> group = ${group.key}<br/> --%>
+<!-- 			   >>> >>> ---------------------------<br/> -->
+
+<%-- 				<c:forEach var="field" items="${group.value}"> --%>
+<%-- 				   >>> >>> >>> field = ${field.name} : ${field.type}<br/> --%>
+<!-- 				   >>> >>> >>> ---------------------------<br/> -->
+
+<%-- 				</c:forEach> --%>
+<%-- 			</c:forEach> --%>
+<%-- 		</c:forEach> --%>
+	
+	
+	
+
+			
+			
+			
+			
+			
+			
+
+			
+			
+			
+			
+			
+			
+			
+			
+			
+
 </div>

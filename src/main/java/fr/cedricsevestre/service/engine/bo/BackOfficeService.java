@@ -160,7 +160,7 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	}
 	
 	private NField mkNFieldFromBOField(Field field, BOField nType){
-		return new NField(nType.type(), nType.ofType(), field.getName(), field.getType().getSimpleName(), nType.inList(), nType.sortBy(), nType.sortPriority(), nType.defaultField(), nType.displayOrder(), nType.tabName(), nType.groupName());
+		return new NField(nType.type(), nType.ofType(), field.getName(), field.getType().getSimpleName(), nType.inList(), nType.inView(), nType.editable(), nType.sortBy(), nType.sortPriority(), nType.defaultField(), nType.displayOrder(), nType.tabName(), nType.groupName());
 	}
 	
 	private List<NField> getNField(List<Field> fields) throws ServiceException{
