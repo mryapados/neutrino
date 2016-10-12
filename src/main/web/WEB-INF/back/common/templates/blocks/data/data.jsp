@@ -20,20 +20,31 @@
 <data-uib-tabset active="active">
 
 	<c:forEach var="tab" items="${data.fields}" varStatus="status">
-		<data-uib-tab index="${status.index}" heading="${not empty tabs.key ? tabs.key : 'data'}">
+		<data-uib-tab index="${status.index}" heading="${not empty tab.key ? tab.key : 'data'}">
 		
 		
 		
 
 			<c:forEach var="group" items="${tab.value}">
-			   >>> >>> group = ${group.key}<br/>
-			   >>> >>> ---------------------------<br/>
-	
-				<c:forEach var="field" items="${group.value}">
-				   >>> >>> >>> field = ${field.name} : ${field.type}<br/>
-				   >>> >>> >>> ---------------------------<br/>
-	
-				</c:forEach>
+				<table class="table table-striped table-bordered" role="grid">
+					<thead>
+						<tr>
+							<th colspan="2">${not empty group.key ? group.key : 'data'}</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach var="field" items="${group.value}">
+							<tr>
+								<td>
+									${field.name} : ${field.type}
+								</td>
+								<td>
+									${data.objectData}
+								</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
 			</c:forEach>
 		
 		
@@ -49,12 +60,10 @@
 	
 			
 			
-			
-			
-			
+
 
 <%-- 		<c:forEach var="tab" items="${data.fields}"> --%>
-<%-- 		    >>> tab = ${tabs.key}<br/> --%>
+<%-- 		    >>> tab = ${tab.key}<br/> --%>
 <!-- 			>>> ---------------------------<br/> -->
 <%-- 			<c:forEach var="group" items="${tab.value}"> --%>
 <%-- 			   >>> >>> group = ${group.key}<br/> --%>

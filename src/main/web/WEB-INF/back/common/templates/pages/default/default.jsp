@@ -39,55 +39,60 @@
 		<div id="page" class="container-fluid">
 			<div class="row">
 			
-			
-				
-				<my:hasBlock position="@bo_nav" var="hasBlockA"/>
-				
-			
-				<c:set var="showColA" value="X"/>
-				<c:set var="showColB" value="X"/>
-				<c:set var="showColC" value="X"/>
+				<c:choose>
+					<c:when test="${blockPreview}">
+						<c:set var="showColA" value="1"/>
+						<c:set var="showColB" value="1"/>
+						<c:set var="showColC" value="1"/>
+					</c:when>
+					<c:otherwise>
+						<my:hasBlock position="@bo_nav" var="showColA"/>
+						<my:hasBlock position="@bo_article" var="showColB"/>
+						<my:hasBlock position="@bo_aside" var="showColC"/>
+					</c:otherwise>
+				</c:choose>
+
 				<c:set var="showCode" value="${showColA}${showColB}${showColC}"/>
 				<c:choose>
-					<c:when test="${showCode eq 'XXX'}">
+					<c:when test="${showCode eq '111'}">
 						<c:set var="classA" value="col-lg-2 col-md-2 col-sm-3 col-xs-12"/>
 						<c:set var="classB" value="col-lg-8 col-md-8 col-sm-6 col-xs-12"/>
 						<c:set var="classC" value="col-lg-2 col-md-2 col-sm-3 col-xs-12"/>
 					</c:when>
-					<c:when test="${showCode eq 'XXO'}">
+					<c:when test="${showCode eq '110'}">
 						<c:set var="classA" value="col-lg-2 col-md-2 col-sm-3 col-xs-12"/>
 						<c:set var="classB" value="col-lg-10 col-md-10 col-sm-9 col-xs-12"/>
 					</c:when>
-					<c:when test="${showCode eq 'XOO'}">
+					<c:when test="${showCode eq '100'}">
 						<c:set var="classA" value="col-lg-12 col-md-12 col-sm-12 col-xs-12"/>
 					</c:when>
-					<c:when test="${showCode eq 'OXX'}">
+					<c:when test="${showCode eq '011'}">
 						<c:set var="classB" value="col-lg-10 col-md-10 col-sm-9 col-xs-12"/>
 						<c:set var="classC" value="col-lg-2 col-md-2 col-sm-3 col-xs-12"/>
 					</c:when>
-					<c:when test="${showCode eq 'OOX'}">
+					<c:when test="${showCode eq '001'}">
 						<c:set var="classC" value="col-lg-12 col-md-12 col-sm-12 col-xs-12"/>
 					</c:when>
-					<c:when test="${showCode eq 'XOX'}">
+					<c:when test="${showCode eq '101'}">
 						<c:set var="classA" value="col-lg-6 col-md-6 col-sm-6 col-xs-12"/>
 						<c:set var="classC" value="col-lg-6 col-md-6 col-sm-6 col-xs-12"/>
 					</c:when>
-					<c:when test="${showCode eq 'OXO'}">
+					<c:when test="${showCode eq '010'}">
 						<c:set var="classB" value="col-lg-12 col-md-12 col-sm-12 col-xs-12"/>
 					</c:when>
 				</c:choose>
 				
-				<c:if test="${showColA eq 'X'}">
+				<c:if test="${showColA eq '1'}">
 					<nav class="${classA}">
 						<my:block position="@bo_nav" />
 					</nav>
 				</c:if>
-				<c:if test="${showColB eq 'X'}">
+				<c:if test="${showColB eq '1'}">
 					<article class="${classB}">
 						<my:block position="@bo_article" />
 					</article>
 				</c:if>
-				<c:if test="${showColC eq 'X'}">
+				<c:if test="${showColC eq '1'}">
 					<aside class="${classC}">
 						<my:block position="@bo_aside" />
 					</aside>

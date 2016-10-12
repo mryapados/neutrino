@@ -39,7 +39,7 @@
 						<tbody>
 							<c:forEach var="object" items="${datas.objectDatas.content}" varStatus="status">
 								<tr>
-									<th><input type="checkbox" name="${objectType}_${object['id']}"></th>
+									<td><input type="checkbox" name="${objectType}_${object['id']}"></td>
 									<td class="text-center">
 										<c:url var="url" value="./edit/" scope="request">
 											<c:param name="type" value="${objectType}"/>

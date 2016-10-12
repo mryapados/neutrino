@@ -182,6 +182,7 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 			if (nType != null){
 				if (!nfTabsGroupsFields.containsKey(nType.tabName())){
 					nfTabsGroupsFields.put(nType.tabName(), new HashMap<>());
+					System.out.println(nType.tabName());
 				}
 				Map<String, List<NField>> nfGroupsFields = nfTabsGroupsFields.get((nType.tabName()));
 				
