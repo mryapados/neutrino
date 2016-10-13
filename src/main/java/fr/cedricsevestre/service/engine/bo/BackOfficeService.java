@@ -135,8 +135,8 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 			System.out.println("FOUND = " + service.getClass().getName());
 			
 			Class<?> clazz = Class.forName(service.getClass().getName());
-			Method findById = clazz.getMethod("findById", params);
-			return (T) findById.invoke(service, paramsObj);
+			Method findByIdFetched = clazz.getMethod("findByIdFetched", params);
+			return (T) findByIdFetched.invoke(service, paramsObj);
 			
 		} catch (ClassNotFoundException e) {
 			logger.error("getDatas -> ClassNotFoundException", e);

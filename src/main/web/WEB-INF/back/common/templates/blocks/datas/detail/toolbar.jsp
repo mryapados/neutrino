@@ -3,66 +3,66 @@
 <%@ taglib prefix="my" uri="/WEB-INF/taglibs/neutrino.tld" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 
+
+<c:set var="position" value="${param.position}"/>
 <div class="btn-toolbar" role="toolbar">
 	<div class="btn-group" role="group" aria-label="...">
-		<div class="btn-group" role="group">
-			<div class="dropup">
-				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<strong><c:out value="${pSize}"/></strong> by page <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li>
-						<jsp:include page="url.jsp">
-							<jsp:param name="size" value="10" />
-							<jsp:param name="expr" value="10" />
-						</jsp:include>
-					</li>
-					<li>
-						<jsp:include page="url.jsp">
-							<jsp:param name="size" value="25" />
-							<jsp:param name="expr" value="25" />
-						</jsp:include>
-					</li>
-					<li>
-						<jsp:include page="url.jsp">
-							<jsp:param name="size" value="50" />
-							<jsp:param name="expr" value="50" />
-						</jsp:include>
-					</li>
-					<li>
-						<jsp:include page="url.jsp">
-							<jsp:param name="size" value="100" />
-							<jsp:param name="expr" value="100" />
-						</jsp:include>
-					</li>
-				</ul>
-			</div>
-		</div>
-		<div class="btn-group" role="group">
-			<div class="dropup">
-				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<s:message var="defaultMessage" code="bo.field.${pFirstSortName}" text="${pFirstSortName}" />
-					<s:message var="fieldName" code="bo.${objectType}.field.${pFirstSortName}" text="${defaultMessage}" />
-					Sort by <strong><c:out value="${fieldName}"/></strong> <span class="caret"></span>
-				</button>
-				
-				<ul class="dropdown-menu">
-					<c:forEach var="field" items="${datas.fields}" varStatus="status">
-						<c:if test="${field.inList && field.type ne 'COLLECTION'}">
-							<s:message var="defaultMessage" code="bo.field.${field.name}" text="${field.name}" />
-							<s:message var="fieldName" code="bo.${objectType}.field.${field.name}" text="${defaultMessage}" />
-							<li>
-								<jsp:include page="url.jsp">
-									<jsp:param name="sort" value="${field.name},${pFirstSortDirection}" />
-									<jsp:param name="expr" value="${fieldName}" />
-								</jsp:include>
-							</li>
-						</c:if>
-					</c:forEach>
-				</ul>
-			</div>
-		</div>
+	    <div class="btn-group${position eq 'bottom' ? ' dropup' : ''}" role="group" uib-dropdown >
+		    <button id="${position}-page-size-btn" type="button" class="btn btn-default" uib-dropdown-toggle>
+		      	<strong><c:out value="${pSize}"/></strong> by page <span class="caret"></span>
+		    </button>
+			<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="${position}-page-size-btn">
+				<li>
+					<jsp:include page="url.jsp">
+						<jsp:param name="size" value="10" />
+						<jsp:param name="expr" value="10" />
+					</jsp:include>
+				</li>
+				<li>
+					<jsp:include page="url.jsp">
+						<jsp:param name="size" value="25" />
+						<jsp:param name="expr" value="25" />
+					</jsp:include>
+				</li>
+				<li>
+					<jsp:include page="url.jsp">
+						<jsp:param name="size" value="50" />
+						<jsp:param name="expr" value="50" />
+					</jsp:include>
+				</li>
+				<li>
+					<jsp:include page="url.jsp">
+						<jsp:param name="size" value="100" />
+						<jsp:param name="expr" value="100" />
+					</jsp:include>
+				</li>
+			</ul>
+	    </div>
 	
+
+
+		<div class="btn-group${position eq 'bottom' ? ' dropup' : ''}" role="group" uib-dropdown >
+		    <button id="${position}-sort-btn" type="button" class="btn btn-default" uib-dropdown-toggle>
+				<s:message var="defaultMessage" code="bo.field.${pFirstSortName}" text="${pFirstSortName}" />
+				<s:message var="fieldName" code="bo.${objectType}.field.${pFirstSortName}" text="${defaultMessage}" />
+				Sort by <strong><c:out value="${fieldName}"/></strong> <span class="caret"></span>
+		    </button>
+			<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="${position}-sort-btn">
+				<c:forEach var="field" items="${datas.fields}" varStatus="status">
+					<c:if test="${field.inList && field.type ne 'COLLECTION'}">
+						<s:message var="defaultMessage" code="bo.field.${field.name}" text="${field.name}" />
+						<s:message var="fieldName" code="bo.${objectType}.field.${field.name}" text="${defaultMessage}" />
+						<li>
+							<jsp:include page="url.jsp">
+								<jsp:param name="sort" value="${field.name},${pFirstSortDirection}" />
+								<jsp:param name="expr" value="${fieldName}" />
+							</jsp:include>
+						</li>
+					</c:if>
+				</c:forEach>
+			</ul>
+	    </div>
+
 		<jsp:include page="url.jsp">
 			<jsp:param name="sort" value="${pFirstSortName},ASC" />
 			<jsp:param name="expr" value="ASC" />

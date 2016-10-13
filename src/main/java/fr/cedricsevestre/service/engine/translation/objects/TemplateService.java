@@ -56,6 +56,18 @@ public class TemplateService extends TranslationService<Template>{
 		}
 	}
 	
+
+	public Translation findByIdFetched(Integer id) throws ServiceException {
+		try {
+			System.out.println("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF " + id);
+			
+			return templateDao.findByIdFetched(id);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findByIdFetched", e);
+		}
+	}
+	
+	
 	public Template findByNameWithAllExceptData(String name) throws ServiceException {
 		try {
 			return templateDao.findByNameWithAllExceptData(name);

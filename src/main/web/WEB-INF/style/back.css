@@ -105,8 +105,8 @@ ul.linked li:before {
 }
 
 
-.list-object .panel-footer .btn-toolbar, .list-object .btn-group .pagination{
-	margin: 0;
+.list-object .btn-toolbar, .list-object .btn-group .pagination{
+	margin: 0 0 0 -5px;
 }
 
 .list-object .panel>.table-bordered, .list-object .panel>.table-responsive>.table-bordered{

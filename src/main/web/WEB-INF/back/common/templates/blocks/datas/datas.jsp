@@ -13,16 +13,18 @@
 		<s:message code="bo.list" text="${objectType}" />
 		<s:message code="bo.${objectType}.entity.name" text="${objectType}" />
 	</h1>
-	<div class="panel-group">
-		<div class="panel panel-primary">
-			<div class="panel-heading">	
-				Showing <span class="label label-info">${pBegin + 1}</span> to <span class="label label-info">${pEnd}</span> of <span class="label label-info">${pTotalElements}</span> entries
-			</div>
-			<div class="panel-header">
-				<jsp:include page="detail/toolbar.jsp" />
-			</div>
-			<div class="table-responsive">
-				<form:form id="delete" action="" method="post">
+	<form:form id="delete" action="" method="post">
+		<div class="panel-group">
+			<div class="panel panel-primary">
+				<div class="panel-heading">	
+					Showing <span class="label label-info">${pBegin + 1}</span> to <span class="label label-info">${pEnd}</span> of <span class="label label-info">${pTotalElements}</span> entries
+				</div>
+				<div class="panel-header">
+					<jsp:include page="detail/toolbar.jsp">
+						<jsp:param value="top" name="position"/>
+					</jsp:include>
+				</div>
+				<div class="table-responsive">
 					<table class="table table-striped table-bordered table-hover" role="grid">
 						<thead>
 							<tr>
@@ -72,16 +74,23 @@
 							</c:forEach>
 						</tbody>
 					</table>
-				</form:form>
+				</div>
+				
+				
+				
+				
+				<div class="panel-footer">
+					<jsp:include page="detail/toolbar.jsp">
+						<jsp:param value="bottom" name="position"/>
+					</jsp:include>
+				</div>
 			</div>
-			<div class="panel-footer">
-				<jsp:include page="detail/toolbar.jsp" />
-			</div>
+			
+			
+			
 		</div>
 	</div>
-</div>
-
-
+</form:form>
 
 
 
