@@ -24,6 +24,7 @@ import fr.cedricsevestre.entity.engine.translation.TranslationProvider;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateType;
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.service.engine.CacheService;
 import fr.cedricsevestre.service.engine.translation.TranslationService;
 
 @BOService
@@ -38,6 +39,9 @@ public class TemplateService extends TranslationService<Template>{
 	
 	@Autowired
 	private Common common;
+	
+	@Autowired
+	private CacheService cacheService;
 	
 	@Override
 	public List<Translation> findAllFetched() throws ServiceException {
@@ -127,16 +131,25 @@ public class TemplateService extends TranslationService<Template>{
 	}
 	
 	public Boolean checkJSPExist(String webInfFolder, String pathContext, Template template) throws ServiceException{
-		File d = new File(webInfFolder);
-		System.out.println("webInfFolder = " + webInfFolder);
-		String path = d.getParent().replace("\\", "/") + pathJSP(true, pathContext, template, true);
-		//String path = webInfFolder.replace("\\", "/") + pathJSP(pathContext, template);
-		System.out.println("path = " + path);
-		File f = new File(path);
-		if(f.exists() && !f.isDirectory()) { 
-		    return true;
+		String path = pathJSP(true, pathContext, template, true);
+		Boolean jspExist = cacheService.jspPathExist(path);
+		System.out.println("EXIST [" + path + "] = " + jspExist);
+		if (jspExist == null){
+			File d = new File(webInfFolder);
+			System.out.println("webInfFolder = " + webInfFolder);
+			String fullPath = d.getParent().replace("\\", "/") + path;
+			//String path = webInfFolder.replace("\\", "/") + pathJSP(pathContext, template);
+			System.out.println("fullPath = " + fullPath);
+			File f = new File(fullPath);
+			if(f.exists() && !f.isDirectory()) { 
+				jspExist = true;
+			} else {
+				jspExist = false;
+			}
+			cacheService.addJspPath(path, jspExist);
 		}
-		return false;
+		return jspExist;
+		
 	}
 	
 	public String getPathJSP(Boolean webInf, Folder folder, String context, Template template, boolean jsp) throws ServiceException{
