@@ -16,11 +16,23 @@
 	
 		<c:forEach var="tab" items="${data.fields}" varStatus="status">
 			<data-uib-tab index="${status.index}" heading="${not empty tab.key ? tab.key : 'data'}">
-
-				<div class="info">
-					Status : publié | 
-					Traduction : Français | 
-					Test : testage 
+	
+				<div class="container-fluid">
+					<div class="row info">
+						<div class="col-md-6 col-xs-12 text-left">
+							<c:if test="${not empty objectName}">
+								<s:message code="bo.field.name" text="Name" /> : <span>${objectName}</span>
+							</c:if>
+						</div>
+						<ul class="col-md-6 col-xs-12 text-right">
+							<li>Status : to do workflow</li>
+							<li>
+								<c:if test="${not empty objectLang}">
+									<s:message code="bo.field.lang" text="Lang" /> : <span class="lang-sm lang-lbl" lang="${objectLang.code}"></span>
+								</c:if>
+							</li>
+						</ul>
+					</div>
 				</div>
 
 				<c:forEach var="group" items="${tab.value}">

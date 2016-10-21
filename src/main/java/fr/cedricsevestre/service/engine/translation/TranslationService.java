@@ -29,6 +29,7 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 
 	private Logger logger = Logger.getLogger(TranslationService.class);
 
+	public abstract Translation findByIdFetched(Integer id) throws ServiceException;
 	public abstract List<Translation> findAllFetched() throws ServiceException;
 	public abstract Page<Translation> findAllFetched(Pageable pageable) throws ServiceException;
 	

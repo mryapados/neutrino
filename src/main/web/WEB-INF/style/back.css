@@ -160,13 +160,32 @@ ul.linked li:before {
 }
 
 /* Tabs content */
+
+
 .view-object .info{
-	padding: 10px;
+	padding: 10px 0;
 	border-bottom: 1px solid #337ab7;
 	background-color: #337ab7;
 	color:#fff;
-	
 }
+
+.view-object .info ul{
+	list-style-type: none;
+	margin-bottom: 0;
+}
+
+.view-object .info ul li{
+	padding: 0 10px 0 5px;
+	display: inline;
+	border-right: 1px dotted #fff;
+}
+.view-object .info ul li:first-child {
+	padding: 0 10px 0 0;
+}
+.view-object .info ul li:last-child {
+	border-right: 0;
+}
+
 .view-object .panel-heading {
 	padding-top: 15px;
     background-color: #fff;

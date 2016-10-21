@@ -20,8 +20,8 @@ public interface TranslationDao<T extends Translation> extends BaseDao<T> {
 	@Query(value = "SELECT e FROM #{#entityName} e")
 	Page<Translation> findAllFetched(Pageable pageable);
 	
-	@Query(value = "SELECT e FROM #{#entityName} e fetch all properties WHERE e.id =:id")
-	Translation findByIdFetched(Integer id);
+	@Query(value = "SELECT e FROM #{#entityName} e WHERE e.id =:id")
+	Translation findByIdFetched(@Param("id") Integer id);
 	
 	
 	

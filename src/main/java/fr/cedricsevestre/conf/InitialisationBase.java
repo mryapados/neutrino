@@ -1386,8 +1386,10 @@ public class InitialisationBase {
 		
 		
 		// Set MapTemplate
-		Map<Lang, MapTemplate> mtHeader = addMapTemplate(mList, pbHeader, pHeader);
+		Map<Lang, MapTemplate> mtHeaderList = addMapTemplate(mList, pbHeader, pHeader);
 		Map<Lang, MapTemplate> mtArticleList = addMapTemplate(mList, bDatas, pArticle);
+		
+		Map<Lang, MapTemplate> mtHeaderView = addMapTemplate(mView, pbHeader, pHeader);
 		Map<Lang, MapTemplate> mtArticleView = addMapTemplate(mView, bData, pArticle);
 	}
 	

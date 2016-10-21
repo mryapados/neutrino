@@ -40,13 +40,17 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	private Logger logger = Logger.getLogger(BackOfficeService.class);
 
 	public static final String TEMPLATE = "Template";
+	public static final String PAGE = "Page";
+	
 	
 	public static Class<?> getEntity(String entityName) throws ServiceException{
+		System.out.println("getEntity " + entityName);
 		try {
 			switch (entityName) {
 			case TEMPLATE:
 				return Template.class;
-
+			case PAGE:
+				return fr.cedricsevestre.entity.engine.translation.objects.Page.class;
 			default:
 				return Class.forName(Common.CUSTOM_ENTITY_PACKAGE + "." + entityName);
 			}

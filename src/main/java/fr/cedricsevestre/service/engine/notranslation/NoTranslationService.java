@@ -29,6 +29,7 @@ public abstract class NoTranslationService<T extends NoTranslation> extends Base
 	@Autowired
 	private NoTranslationDao<T> noTranslationDao;
 
+	public abstract NoTranslation findByIdFetched(Integer id) throws ServiceException;
 	public abstract List<NoTranslation> findAllFetched() throws ServiceException;
 	public abstract Page<NoTranslation> findAllFetched(Pageable pageable) throws ServiceException;
 	

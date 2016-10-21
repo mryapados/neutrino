@@ -14,6 +14,11 @@ import fr.cedricsevestre.exception.ServiceException;
 @Service
 @Scope(value = "singleton")
 public class NTObjectService extends NoTranslationService<NoTranslation>{
+	
+	@Override
+	public NoTranslation findByIdFetched(Integer id) throws ServiceException {
+		throw new ServiceException("Method unimplemented for TObjectService");
+	}
 	@Override
 	public List<NoTranslation> findAllFetched() throws ServiceException {
 		throw new ServiceException("Method unimplemented for NTObjectService");

@@ -29,6 +29,15 @@ public class LinkService extends TranslationService<Link>{
 	LinkDao dao;
 
 	@Override
+	public Translation findByIdFetched(Integer id) throws ServiceException {
+		try {
+			return dao.findByIdFetched(id);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findByIdFetched", e);
+		}
+	}
+	
+	@Override
 	public List<Translation> findAllFetched() throws ServiceException {
 		try {
 			return dao.findAllFetched();

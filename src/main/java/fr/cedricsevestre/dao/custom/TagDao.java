@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import fr.cedricsevestre.dao.engine.NoTranslationDao;
@@ -21,4 +22,7 @@ public interface TagDao extends NoTranslationDao<Tag> {
 	@Override
 	@Query(value = "SELECT e FROM Tag e LEFT JOIN FETCH e.files a", countQuery = "select count(e) FROM Tag e")
 	Page<NoTranslation> findAllFetched(Pageable pageable);
+	
+	@Query(value = "SELECT e FROM Tag e LEFT JOIN FETCH e.files a WHERE e.id =:id")
+	NoTranslation findByIdFetched(@Param("id") Integer id);
 }

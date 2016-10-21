@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.cedricsevestre.annotation.BOService;
 import fr.cedricsevestre.dao.engine.PageDao;
 import fr.cedricsevestre.dao.engine.TemplateDao;
 import fr.cedricsevestre.entity.engine.translation.Lang;
@@ -22,6 +23,7 @@ import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.translation.TranslationService;
 
+@BOService
 @Service
 @Scope(value = "singleton")
 public class PageService extends TranslationService<Page>{
@@ -39,6 +41,16 @@ public class PageService extends TranslationService<Page>{
 			throw new ServiceException("Error findAllFetched", e);
 		}
 	}
+
+	@Override
+	public Translation findByIdFetched(Integer id) throws ServiceException {
+		try {
+			return pageDao.findByIdFetched(id);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findByIdFetched", e);
+		}
+	}
+	
 	@Override
 	public org.springframework.data.domain.Page<Translation> findAllFetched(Pageable pageable) throws ServiceException {
 		try {

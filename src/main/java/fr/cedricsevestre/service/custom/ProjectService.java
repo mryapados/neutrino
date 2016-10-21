@@ -26,7 +26,16 @@ public class ProjectService extends TranslationService<Project>{
 
 	@Autowired
 	ProjectDao projectDao;
-
+	
+	@Override
+	public Translation findByIdFetched(Integer id) throws ServiceException {
+		try {
+			return projectDao.findByIdFetched(id);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findByIdFetched", e);
+		}
+	}
+	
 	@Override
 	public List<Translation> findAllFetched() throws ServiceException {
 		try {

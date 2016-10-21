@@ -27,6 +27,15 @@ public class AlbumService extends TranslationService<Album>{
 	AlbumDao albumDao;
 
 	@Override
+	public Translation findByIdFetched(Integer id) throws ServiceException {
+		try {
+			return albumDao.findByIdFetched(id);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findByIdFetched", e);
+		}
+	}
+	
+	@Override
 	public List<Translation> findAllFetched() throws ServiceException {
 		try {
 			return albumDao.findAllFetched();

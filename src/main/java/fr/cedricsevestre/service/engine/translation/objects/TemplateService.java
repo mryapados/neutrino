@@ -7,6 +7,7 @@ import javax.persistence.PersistenceException;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -60,11 +61,9 @@ public class TemplateService extends TranslationService<Template>{
 		}
 	}
 	
-
+	@Override
 	public Translation findByIdFetched(Integer id) throws ServiceException {
 		try {
-			System.out.println("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF " + id);
-			
 			return templateDao.findByIdFetched(id);
 		} catch (PersistenceException e) {
 			throw new ServiceException("Error findByIdFetched", e);
@@ -130,6 +129,7 @@ public class TemplateService extends TranslationService<Template>{
 		return path.toString();
 	}
 	
+	@Cacheable
 	public Boolean checkJSPExist(String webInfFolder, String pathContext, Template template) throws ServiceException{
 		String path = pathJSP(true, pathContext, template, true);
 		Boolean jspExist = cacheService.jspPathExist(path);

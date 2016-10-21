@@ -20,6 +20,9 @@ public interface NoTranslationDao<T extends NoTranslation> extends BaseDao<T> {
 	@Query(value = "SELECT e FROM #{#entityName} e")
 	Page<NoTranslation> findAllFetched(Pageable pageable);
 	
+	@Query(value = "SELECT e FROM #{#entityName} e WHERE e.id =:id")
+	NoTranslation findByIdFetched(@Param("id") Integer id);
+	
 	@Query("SELECT t FROM #{#entityName} t WHERE t.name =:name")
 	T findByName(@Param("name") String name);
 	

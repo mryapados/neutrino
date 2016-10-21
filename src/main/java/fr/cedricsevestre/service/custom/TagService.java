@@ -28,6 +28,15 @@ public class TagService extends NoTranslationService<Tag>{
 	TagDao tagDao;
 
 	@Override
+	public NoTranslation findByIdFetched(Integer id) throws ServiceException {
+		try {
+			return tagDao.findByIdFetched(id);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findByIdFetched", e);
+		}
+	}
+	
+	@Override
 	public List<NoTranslation> findAllFetched() throws ServiceException {
 		try {
 			return tagDao.findAllFetched();

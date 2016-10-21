@@ -21,4 +21,7 @@ public interface ProjectDao extends TranslationDao<Project> {
 	@Override
 	@Query(value = "SELECT e FROM Project e LEFT JOIN FETCH e.albums a", countQuery = "select count(e) FROM Project e")
 	Page<Translation> findAllFetched(Pageable pageable);
+	
+	@Query(value = "SELECT e FROM Project e LEFT JOIN FETCH e.albums a WHERE e.id =:id")
+	Translation findByIdFetched(@Param("id") Integer id);
 }

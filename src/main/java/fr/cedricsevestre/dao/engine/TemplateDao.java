@@ -36,7 +36,6 @@ public interface TemplateDao extends TranslationDao<Template> {
 	@Query(value = "SELECT t FROM Template t LEFT JOIN FETCH t.models m LEFT JOIN FETCH t.blocks b", countQuery = "select count(t) FROM Template t")
 	Page<Translation> findAllFetched(Pageable pageable);
 	
-	
 	@Query(value = "SELECT t FROM Template t LEFT JOIN FETCH t.models m LEFT JOIN FETCH t.blocks b WHERE t.id =:id")
 	Translation findByIdFetched(@Param("id") Integer id);
 	

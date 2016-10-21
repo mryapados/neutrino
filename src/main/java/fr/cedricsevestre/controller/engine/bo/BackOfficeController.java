@@ -119,9 +119,13 @@ public class BackOfficeController extends AbtractController {
 			if (object.getSuperclass().equals(Translation.class)){
 				NData<Translation> tData = backOfficeTranslationService.findOne(object, id);
 				modelAndView.addObject("data", tData);
+				modelAndView.addObject("objectLang", tData.getObjectData().getLang());
+				modelAndView.addObject("objectName", tData.getObjectData().getName());
+				
 			} else if (object.getSuperclass().equals(NoTranslation.class)){
 				NData<NoTranslation> tData = backOfficeNoTranslationService.findOne(object, id);
 				modelAndView.addObject("data", tData);
+				modelAndView.addObject("objectName", tData.getObjectData().getName());
 			}
 
 		} catch (ServiceException e) {
