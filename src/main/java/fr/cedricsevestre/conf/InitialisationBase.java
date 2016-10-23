@@ -181,6 +181,10 @@ public class InitialisationBase {
 		logger.debug("init templates");
 				
 		Template loginEN = templateService.translate(new Template(), langEN);
+		
+		Calendar cal = Calendar.getInstance();
+		cal.set(2017, 11, 5);
+		loginEN.setDateAdded(cal.getTime());
 		loginEN.setName("login_" + langEN.getCode().toUpperCase());
 		loginEN.setDescription("login description en");
 		loginEN.setMetaTitle("login");
@@ -1364,11 +1368,13 @@ public class InitialisationBase {
 		Map<Lang, Translation> mHome = mkModel("@bo_home", "home/home");
 		Map<Lang, Translation> mList = mkModel("@bo_list", "default/default");
 		Map<Lang, Translation> mView = mkModel("@bo_view", "default/default");
+		Map<Lang, Translation> mEdit = mkModel("@bo_edit", "default/default");
 		
 		// Pages
 		Map<Lang, Translation> pgHome = mkPage("@bo_home", "home", mHome);
 		Map<Lang, Translation> pgList = mkPage("@bo_list", "default", mList);
 		Map<Lang, Translation> pgView = mkPage("@bo_view", "default", mView);
+		Map<Lang, Translation> pgEdit = mkPage("@bo_edit", "default", mEdit);
 		
 		// PageBlocks
 		Map<Lang, Translation> pbHeader = mkPageBlock("@bo_header", "header/header");
@@ -1376,9 +1382,9 @@ public class InitialisationBase {
 		// Blocks
 		generateMenu(pbHeader, pheaderMenu);
 		
-		Map<Lang, Translation> bDatas = mkBlock("@bo_datas", "datas/datas");
-		Map<Lang, Translation> bData = mkBlock("@bo_data", "data/data");
-		
+		Map<Lang, Translation> bList = mkBlock("@bo_list", "list/list");
+		Map<Lang, Translation> bView = mkBlock("@bo_view", "view/view");
+		Map<Lang, Translation> bEdit = mkBlock("@bo_edit", "edit/edit");
 		
 		
 		
@@ -1387,10 +1393,14 @@ public class InitialisationBase {
 		
 		// Set MapTemplate
 		Map<Lang, MapTemplate> mtHeaderList = addMapTemplate(mList, pbHeader, pHeader);
-		Map<Lang, MapTemplate> mtArticleList = addMapTemplate(mList, bDatas, pArticle);
+		Map<Lang, MapTemplate> mtArticleList = addMapTemplate(mList, bList, pArticle);
 		
 		Map<Lang, MapTemplate> mtHeaderView = addMapTemplate(mView, pbHeader, pHeader);
-		Map<Lang, MapTemplate> mtArticleView = addMapTemplate(mView, bData, pArticle);
+		Map<Lang, MapTemplate> mtArticleView = addMapTemplate(mView, bView, pArticle);
+		
+		Map<Lang, MapTemplate> mtHeaderEdit = addMapTemplate(mEdit, pbHeader, pHeader);
+		Map<Lang, MapTemplate> mtArticleEdit = addMapTemplate(mEdit, bEdit, pArticle);
+		
 	}
 	
 	

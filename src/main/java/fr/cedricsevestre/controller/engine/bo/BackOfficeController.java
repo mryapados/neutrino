@@ -47,6 +47,9 @@ public class BackOfficeController extends AbtractController {
 	public static final String BOVIEWURL = "/view";
 	public static final String BOVIEWPAGE = "@bo_view";
 	
+	public static final String BONEWURL = "/new";
+	public static final String BONEWPAGE = "@bo_new";
+	
 	private Folder getBOFolder() throws JspException{
 		try {
 			return common.getFolder("back");
@@ -99,8 +102,24 @@ public class BackOfficeController extends AbtractController {
 		Folder folder = getBOFolder();
 		ModelAndView modelAndView = null;
 		try {
+			
 			modelAndView = baseView(BOEDITPAGE, folder);
 
+			Class<?> object = BackOfficeService.getEntity(type);
+			modelAndView.addObject("objectType", object.getSimpleName());
+			if (object.getSuperclass().equals(Translation.class)){
+				NData<Translation> tData = backOfficeTranslationService.findOne(object, id);
+				modelAndView.addObject("data", tData);
+				modelAndView.addObject("objectLang", tData.getObjectData().getLang());
+				modelAndView.addObject("objectName", tData.getObjectData().getName());
+				
+			} else if (object.getSuperclass().equals(NoTranslation.class)){
+				NData<NoTranslation> tData = backOfficeNoTranslationService.findOne(object, id);
+				modelAndView.addObject("data", tData);
+				modelAndView.addObject("objectName", tData.getObjectData().getName());
+			}
+
+			
 		} catch (ServiceException e) {
 			throw new JspException(e);
 		}

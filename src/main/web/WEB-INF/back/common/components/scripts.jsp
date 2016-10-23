@@ -14,9 +14,7 @@
 <script src="<c:url value='/js/lib/angular-bootstrap-switch/bootstrap-switch.min.js'/>"></script>
 
 <script src="<c:url value='/js/bo/app.js'/>"></script>
-<script src="<c:url value='/js/bo/controller/switch.js'/>"></script>
-<script src="<c:url value='/js/bo/directives/bsSwitch.js'/>"></script>
-
+<script src="<c:url value='/js/bo/controller/datepickerPopupCtrl.js'/>"></script>
 
 
 

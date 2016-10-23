@@ -25,8 +25,6 @@ public class CacheService{
 
 	public void addJspPath(String path, Boolean exist){
 		jsps.put(path, exist);
-		
-		System.out.println(path);
 	}
 	
 

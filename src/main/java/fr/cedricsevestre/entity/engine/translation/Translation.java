@@ -42,7 +42,7 @@ public abstract class Translation implements ITranslation, Serializable {
 	private Integer id;
 
 	
-	@BOField(type = ValueType.TEXT, defaultField = true, sortBy = SortType.DESC, sortPriority = 200)
+	@BOField(type = ValueType.VARCHAR50, defaultField = true, sortBy = SortType.ASC, sortPriority = 200)
 	@NotNull
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "name")

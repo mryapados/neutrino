@@ -38,7 +38,7 @@ public abstract class NoTranslation implements IdProvider, Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@BOField(type = ValueType.TEXT)
+	@BOField(type = ValueType.VARCHAR50, defaultField = true, sortBy = SortType.ASC, sortPriority = 200)
 	@NotNull
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "name")
