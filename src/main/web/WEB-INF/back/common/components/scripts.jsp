@@ -13,9 +13,13 @@
 
 <script src="<c:url value='/js/lib/angular-bootstrap-switch/bootstrap-switch.min.js'/>"></script>
 
+<script src="<c:url value='/js/lib/text-angular/textAngular-rangy.min.js'/>"></script>
+<script src="<c:url value='/js/lib/text-angular/textAngular-sanitize.min.js'/>"></script>
+<script src="<c:url value='/js/lib/text-angular/textAngular.min.js'/>"></script>
+
 <script src="<c:url value='/js/bo/app.js'/>"></script>
 <script src="<c:url value='/js/bo/controller/datepickerPopupCtrl.js'/>"></script>
-
+<script src="<c:url value='/js/bo/controller/wysiwygEditorCtrl.js'/>"></script>
 
 
 

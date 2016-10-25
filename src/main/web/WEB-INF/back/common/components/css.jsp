@@ -6,5 +6,8 @@
 <link href="<c:url value='/style/font-awesome/css/font-awesome.min.css'/>" rel="stylesheet">
 <link href="<c:url value='/style/bootstrap-languages/languages.min.css'/>" rel="stylesheet"/>
 
-<link href="<c:url value='/style/bootstrap-switch.min.css'/>" rel="stylesheet"/>
+
+<link href="<c:url value='/js/lib/text-angular/textAngular.css'/>" rel="stylesheet"/>
+
+
 <link href="<c:url value='/style/back.css'/>" rel="stylesheet">

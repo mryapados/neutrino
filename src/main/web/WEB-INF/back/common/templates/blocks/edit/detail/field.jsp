@@ -17,6 +17,11 @@
 	<c:when test="${finalFieldType eq 'TEXT'}">	
 		<textarea class="form-control" rows="5" name="frm_${finalField.name}"><c:out value='${finalObject}'/></textarea>
 	</c:when>
+	<c:when test="${finalFieldType eq 'HTML'}">	
+		<jsp:include page="wysiwyg.jsp" />
+	</c:when>
+	
+
 	<c:when test="${finalFieldType eq 'DATETIME'}">
 	
 	
