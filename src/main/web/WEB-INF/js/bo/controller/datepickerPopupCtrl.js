@@ -1,14 +1,12 @@
 var fModule = angular.module('frontApp');
 fModule.controller('DatepickerPopupCtrl', function ($scope) {
 	
-	
-	console.log($scope.dt);
-	
+  $scope.init = function(dateObj) {
+	$scope.dt = new Date(dateObj);
+  }	
 	
   $scope.today = function() {
-	  
     $scope.dt = new Date();
-    console.log($scope.dt);
   };
   $scope.today();
 
