@@ -207,3 +207,25 @@ ul.linked li:before {
 .view-object .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
 	border:0;
 }
+
+
+
+
+
+
+/* WYSIWYG */
+.ta-toolbar {
+    background-color: #F0F0F0;
+    padding: 10px 10px 5px;
+    margin-left: 0px;
+    border: 1px solid #EEE;
+}
+.ta-editor {
+    padding: 10px;
+    background-color: #FFF;
+    border: 1px solid #EEE;
+}
+
+
+
+

@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="my" uri="/WEB-INF/taglibs/neutrino.tld" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <c:set var="finalMaxElement" value="3" />
@@ -20,30 +19,8 @@
 	<c:when test="${finalFieldType eq 'HTML'}">	
 		<jsp:include page="wysiwyg.jsp" />
 	</c:when>
-	
-
 	<c:when test="${finalFieldType eq 'DATETIME'}">
-		<fmt:formatDate var="dateObj" value="${finalObject}" pattern="yyyy-MM-dd HH:mm:ss" />
-		<div ng-controller="DatepickerPopupCtrl" ng-init="init('${dateObj}')">
-			<p class="input-group">
-				<input type="text" 
-					class="form-control"
-					uib-datepicker-popup="{{format}}" 
-					ng-model="dt"
-					is-open="popup1.opened" 
-					datepicker-options="dateOptions"
-					ng-required="true" 
-					close-text="Close"
-					alt-input-formats="altInputFormats" 
-				/>
-				<span class="input-group-btn">
-					<button type="button" class="btn btn-default" ng-click="open1()">
-						<i class="glyphicon glyphicon-calendar"></i>
-					</button>
-				</span>
-			</p>
-
-		</div>
+		<jsp:include page="datetime.jsp" />
 	</c:when>
 	<c:when test="${finalFieldType eq 'TOBJECT' || finalFieldType eq 'NTOBJECT'}">
 		<a class="linked" href="<c:url value='/bo/view?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a>

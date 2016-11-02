@@ -4,6 +4,13 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <div ng-controller="WysiwygEditorCtrl" class="app">
-    <div text-angular="text-angular" name="htmlcontent" ng-model="htmlcontent" ta-disabled='disabled'></div>
+	<text-angular name="frm_${finalField.name}">
+		<c:out value="${finalObject}"/>
+	</text-angular>
 	<div>Editor <span>{{version}}</span></div>
 </div>
+
+
+
+
+
