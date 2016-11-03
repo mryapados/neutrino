@@ -3,18 +3,19 @@
 <%@ taglib prefix="my" uri="/WEB-INF/taglibs/neutrino.tld" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <c:set var="finalMaxElement" value="3" />
 
 <c:choose>
 	<c:when test="${finalFieldType eq 'INTEGER'}">
-		<input type="number" class="form-control" name="frm_${finalField.name}" value="<c:out value='${finalObject}'/>">
+		<form:input type="number" class="form-control" path="${finalField.name}" />
 	</c:when>
 	<c:when test="${finalFieldType eq 'VARCHAR50' || finalFieldType eq 'VARCHAR255'}">
-		<textarea class="form-control" rows="2" name="frm_${finalField.name}"><c:out value='${finalObject}'/></textarea>
+		<form:textarea class="form-control" rows="2" path="${finalField.name}"/>
 	</c:when>
 	<c:when test="${finalFieldType eq 'TEXT'}">	
-		<textarea class="form-control" rows="5" name="frm_${finalField.name}"><c:out value='${finalObject}'/></textarea>
+		<form:textarea class="form-control" rows="5" path="${finalField.name}"/>
 	</c:when>
 	<c:when test="${finalFieldType eq 'HTML'}">	
 		<jsp:include page="wysiwyg.jsp" />

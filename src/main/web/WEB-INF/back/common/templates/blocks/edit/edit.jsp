@@ -9,13 +9,13 @@
 <jsp:include page="detail/init.jsp" />
 <div class="view-object">
 	<h1>
-		<s:message code="bo.list" text="${objectType}" />
+		<s:message code="bo.edit" text="Edit : " />
 		<s:message code="bo.${objectType}.entity.name" text="${objectType}" />
 	</h1>
 	
 	
 	
-	<form:form action="TODO" method="post">
+	<form:form action="" method="post" modelAttribute="data.objectData">
 	
 		<div class="row">
 			<div class="col-xs-12">

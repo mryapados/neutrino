@@ -1,6 +1,7 @@
 package fr.cedricsevestre.controller.engine.bo;
 
 import javax.servlet.jsp.JspException;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -19,6 +20,7 @@ import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
+import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.engine.bo.BackOfficeService;
@@ -123,6 +125,19 @@ public class BackOfficeController extends AbtractController {
 		} catch (ServiceException e) {
 			throw new JspException(e);
 		}
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = BOEDITURL, method = RequestMethod.POST)
+	public ModelAndView save(@Valid @ModelAttribute("data.objectData") Translation data) throws JspException   {
+		
+		System.out.println("Enter in save !!!!!");
+		
+		Folder folder = getBOFolder();
+		ModelAndView modelAndView = null;
+		
+		
+		
 		return modelAndView;
 	}
 	
