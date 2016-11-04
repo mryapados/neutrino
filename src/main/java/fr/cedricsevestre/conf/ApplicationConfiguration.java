@@ -14,6 +14,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -33,6 +34,7 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import fr.cedricsevestre.controller.engine.NoTranslationConverter;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.taglib.Head;
 
@@ -44,6 +46,11 @@ import fr.cedricsevestre.taglib.Head;
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableSpringDataWebSupport
 public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
+	
+	
+	@Autowired
+    private NoTranslationConverter noTranslationConverter;
+	
 	
 	@Bean
 	public UrlBasedViewResolver urlBasedViewResolver() {
@@ -117,7 +124,10 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 	
 	
 	
-	
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(noTranslationConverter);
+    }
 	
 	
 	

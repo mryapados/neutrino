@@ -15,6 +15,11 @@ public class NData<T extends IdProvider> implements Serializable {
 	private Map<String, Map<String, List<NField>>> fields;
 	private T objectData;
 	
+	public NData() {
+
+	}
+	
+	
 	public NData(Map<String, Map<String, List<NField>>> fields, T objectData) {
 		super();
 		this.fields = fields;

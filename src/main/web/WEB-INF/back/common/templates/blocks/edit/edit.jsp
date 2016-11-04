@@ -12,11 +12,10 @@
 		<s:message code="bo.edit" text="Edit : " />
 		<s:message code="bo.${objectType}.entity.name" text="${objectType}" />
 	</h1>
-	
-	
-	
-	<form:form action="" method="post" modelAttribute="data.objectData">
-	
+
+	<form:form action="" method="post" modelAttribute="object">
+		<input type="hidden" value="${objectType}" name="object" />
+
 		<div class="row">
 			<div class="col-xs-12">
 				<jsp:include page="detail/toolbar.jsp">
@@ -27,7 +26,7 @@
 
 		<data-uib-tabset active="active">
 		
-			<c:forEach var="tab" items="${data.fields}" varStatus="status">
+			<c:forEach var="tab" items="${fields}" varStatus="status">
 				<data-uib-tab index="${status.index}" heading="${not empty tab.key ? tab.key : 'data'}">
 		
 					<div class="container-fluid">
@@ -65,7 +64,7 @@
 												<s:message code="bo.${objectType}.field.${field.name}" text="${defaultMessage}" />
 											</td>
 											<td>
-												<c:set var="finalObject" value="${data.objectData[field.name]}" scope="request" />
+												<c:set var="finalObject" value="${object[field.name]}" scope="request" />
 												<c:set var="finalField" value="${field}" scope="request" />
 												<c:set var="finalFieldType" value="${finalField.type}" scope="request" />
 												

@@ -14,7 +14,7 @@
 	
 	<data-uib-tabset active="active">
 	
-		<c:forEach var="tab" items="${data.fields}" varStatus="status">
+		<c:forEach var="tab" items="${fields}" varStatus="status">
 			<data-uib-tab index="${status.index}" heading="${not empty tab.key ? tab.key : 'data'}">
 	
 				<div class="container-fluid">
@@ -52,7 +52,7 @@
 											<s:message code="bo.${objectType}.field.${field.name}" text="${defaultMessage}" />
 										</td>
 										<td>
-											<c:set var="finalObject" value="${data.objectData[field.name]}" scope="request" />
+											<c:set var="finalObject" value="${object[field.name]}" scope="request" />
 											<c:set var="finalField" value="${field}" scope="request" />
 											<c:set var="finalFieldType" value="${finalField.type}" scope="request" />
 											

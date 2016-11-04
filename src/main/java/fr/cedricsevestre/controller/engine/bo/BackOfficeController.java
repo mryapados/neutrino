@@ -1,5 +1,9 @@
 package fr.cedricsevestre.controller.engine.bo;
 
+import java.beans.PropertyEditor;
+import java.beans.PropertyEditorSupport;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.validation.Valid;
 
@@ -8,6 +12,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +24,7 @@ import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.bean.NDatas;
 import fr.cedricsevestre.controller.engine.AbtractController;
 import fr.cedricsevestre.entity.custom.Project;
+import fr.cedricsevestre.entity.custom.Tag;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
@@ -111,13 +119,15 @@ public class BackOfficeController extends AbtractController {
 			modelAndView.addObject("objectType", object.getSimpleName());
 			if (object.getSuperclass().equals(Translation.class)){
 				NData<Translation> tData = backOfficeTranslationService.findOne(object, id);
-				modelAndView.addObject("data", tData);
+				modelAndView.addObject("fields", tData.getFields());
+				modelAndView.addObject("object", tData.getObjectData());
 				modelAndView.addObject("objectLang", tData.getObjectData().getLang());
 				modelAndView.addObject("objectName", tData.getObjectData().getName());
 				
 			} else if (object.getSuperclass().equals(NoTranslation.class)){
 				NData<NoTranslation> tData = backOfficeNoTranslationService.findOne(object, id);
-				modelAndView.addObject("data", tData);
+				modelAndView.addObject("fields", tData.getFields());
+				modelAndView.addObject("object", tData.getObjectData());
 				modelAndView.addObject("objectName", tData.getObjectData().getName());
 			}
 
@@ -129,9 +139,19 @@ public class BackOfficeController extends AbtractController {
 	}
 	
 	@RequestMapping(value = BOEDITURL, method = RequestMethod.POST)
-	public ModelAndView save(@Valid @ModelAttribute("data.objectData") Translation data) throws JspException   {
+	public ModelAndView noTranslationSave(@Valid @ModelAttribute("object") NoTranslation data, BindingResult result) throws JspException   {
+		
+		
+		
+		System.out.println("HasError " + result.hasErrors());
+		if (result.hasErrors()) {
+			System.out.println(result.getAllErrors().toString());
+
+		}
 		
 		System.out.println("Enter in save !!!!!");
+		
+		System.out.println("NoTranslation name = " + data.getName());
 		
 		Folder folder = getBOFolder();
 		ModelAndView modelAndView = null;
@@ -140,6 +160,16 @@ public class BackOfficeController extends AbtractController {
 		
 		return modelAndView;
 	}
+	
+	
+	
+	
+ 
+	
+	
+	
+	
+	
 	
 	@RequestMapping(value = BOVIEWURL, method = RequestMethod.GET)
 	public ModelAndView view(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id) throws JspException   {
@@ -152,13 +182,15 @@ public class BackOfficeController extends AbtractController {
 			modelAndView.addObject("objectType", object.getSimpleName());
 			if (object.getSuperclass().equals(Translation.class)){
 				NData<Translation> tData = backOfficeTranslationService.findOne(object, id);
-				modelAndView.addObject("data", tData);
+				modelAndView.addObject("fields", tData.getFields());
+				modelAndView.addObject("object", tData.getObjectData());
 				modelAndView.addObject("objectLang", tData.getObjectData().getLang());
 				modelAndView.addObject("objectName", tData.getObjectData().getName());
 				
 			} else if (object.getSuperclass().equals(NoTranslation.class)){
 				NData<NoTranslation> tData = backOfficeNoTranslationService.findOne(object, id);
-				modelAndView.addObject("data", tData);
+				modelAndView.addObject("fields", tData.getFields());
+				modelAndView.addObject("object", tData.getObjectData());
 				modelAndView.addObject("objectName", tData.getObjectData().getName());
 			}
 
