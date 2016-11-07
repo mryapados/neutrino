@@ -101,7 +101,7 @@
 			</div>
 		</div>
 		
-		<footer>
+		<footer class="back-footer">
 			<my:block position="@bo_footer" />
 		</footer>
 	</section>

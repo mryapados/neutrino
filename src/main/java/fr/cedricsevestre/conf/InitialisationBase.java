@@ -1379,8 +1379,16 @@ public class InitialisationBase {
 		// PageBlocks
 		Map<Lang, Translation> pbHeader = mkPageBlock("@bo_header", "header/header");
 		
+		// PageBlocks
+		Map<Lang, Translation> pbFooter = mkPageBlock("@bo_footer", "footer/footer");
+				
 		// Blocks
 		generateMenu(pbHeader, pheaderMenu);
+		
+		
+		
+		
+		
 		
 		Map<Lang, Translation> bList = mkBlock("@bo_list", "list/list");
 		Map<Lang, Translation> bView = mkBlock("@bo_view", "view/view");
@@ -1394,12 +1402,16 @@ public class InitialisationBase {
 		// Set MapTemplate
 		Map<Lang, MapTemplate> mtHeaderList = addMapTemplate(mList, pbHeader, pHeader);
 		Map<Lang, MapTemplate> mtArticleList = addMapTemplate(mList, bList, pArticle);
+//		Map<Lang, MapTemplate> mtFooterList = addMapTemplate(mList, pbFooter, pFooter);
 		
 		Map<Lang, MapTemplate> mtHeaderView = addMapTemplate(mView, pbHeader, pHeader);
 		Map<Lang, MapTemplate> mtArticleView = addMapTemplate(mView, bView, pArticle);
+//		Map<Lang, MapTemplate> mtFooterView = addMapTemplate(mView, pbFooter, pFooter);
 		
 		Map<Lang, MapTemplate> mtHeaderEdit = addMapTemplate(mEdit, pbHeader, pHeader);
 		Map<Lang, MapTemplate> mtArticleEdit = addMapTemplate(mEdit, bEdit, pArticle);
+//		Map<Lang, MapTemplate> mtFooterEdit = addMapTemplate(mEdit, pbFooter, pFooter);
+		
 		
 	}
 	
