@@ -229,3 +229,39 @@ ul.linked li:before {
 
 
 
+
+/* Footer */
+.back-footer {
+	padding-top: 50px;
+	padding-bottom: 50px;
+	margin-top: 20px;
+	color: #99979c;
+	text-align: center;
+	background-color: #333333;
+}
+
+.back-footer a {
+	color: #fff;
+}
+
+.back-footer-links {
+	padding-left: 0;
+	margin-bottom: 20px;
+}
+
+.back-footer-links li {
+	display: inline-block;
+}
+
+.back-footer-links li+li {
+	margin-left: 15px;
+}
+
+@media ( min-width : 768px) {
+	.back-footer {
+		text-align: left;
+	}
+	.back-footer p {
+		margin-bottom: 0;
+	}
+}
