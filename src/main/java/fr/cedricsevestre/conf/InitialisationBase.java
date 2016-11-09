@@ -1197,7 +1197,7 @@ public class InitialisationBase {
 	public Link addLink(Link master, Lang lang, String name, String title, String description, String url, String picto) throws ServiceException{
 		try {
 			Link link = linkService.translate(master, lang, Link.class);
-			link.setName(name);
+			link.setName(name + "_" + lang.getCode().toUpperCase());
 			link.setDescription(description);
 			link.setTitle(title);
 			link.setUrl(url);
@@ -1214,7 +1214,7 @@ public class InitialisationBase {
 		Map<String, NType> columns = new HashMap<>();
 		columns.put("title", new NType(NType.ValueType.VARCHAR50));
 		columns.put("links", new NType(NType.ValueType.COLLECTION, NType.ValueType.TOBJECT));
-		Map<Lang, Translation> bMenu = mkBlock("@bo_menu", "header/menu/headerMenu", mkNSchema(columns, ScopeType.ONE));
+		Map<Lang, Translation> bMenu = mkBlock("@bo_block_menu", "header/menu/headerMenu", mkNSchema(columns, ScopeType.ONE));
 		
 		NData nData = null;
 		NData nDataCollection = null;
@@ -1238,7 +1238,7 @@ public class InitialisationBase {
 		nDataCollection.setMapTemplate(mtHeaderMenu1.get(langEN));
 		nDataService.save(nDataCollection);
 		
-		Link lkProjectEN = addLink(new Link(), langEN, "@bo_project", "Projects", null, null, null);
+		Link lkProjectEN = addLink(new Link(), langEN, "@bo_link_1", "Projects", null, null, null);
 		nDataCollectionItem = new NData();
 		nDataCollectionItem.setvTObject(lkProjectEN);
 		nDataCollectionItem.setVarType(ValueType.TOBJECT);
@@ -1246,7 +1246,7 @@ public class InitialisationBase {
 		nDataCollectionItem.setData(nDataCollection);
 		nDataService.save(nDataCollectionItem);
 		
-		Link lkAlbumEN = addLink(new Link(), langEN, "@bo_project", "Albums", null, null, null);
+		Link lkAlbumEN = addLink(new Link(), langEN, "@bo_link_2", "Albums", null, null, null);
 		nDataCollectionItem = new NData();
 		nDataCollectionItem.setvTObject(lkAlbumEN);
 		nDataCollectionItem.setVarType(ValueType.TOBJECT);
@@ -1269,7 +1269,7 @@ public class InitialisationBase {
 		nDataCollection.setMapTemplate(mtHeaderMenu1.get(langFR));
 		nDataService.save(nDataCollection);
 		
-		Link lkProjectFR = addLink(new Link(), langFR, "@bo_project", "Projets", null, null, null);
+		Link lkProjectFR = addLink(new Link(), langFR, "@bo_link_1", "Projets", null, null, null);
 		nDataCollectionItem = new NData();
 		nDataCollectionItem.setvTObject(lkProjectFR);
 		nDataCollectionItem.setVarType(ValueType.TOBJECT);
@@ -1277,7 +1277,7 @@ public class InitialisationBase {
 		nDataCollectionItem.setData(nDataCollection);
 		nDataService.save(nDataCollectionItem);
 		
-		Link lkAlbumFR = addLink(new Link(), langFR, "@bo_project", "Albums", null, null, null);
+		Link lkAlbumFR = addLink(new Link(), langFR, "@bo_link_2", "Albums", null, null, null);
 		nDataCollectionItem = new NData();
 		nDataCollectionItem.setvTObject(lkAlbumFR);
 		nDataCollectionItem.setVarType(ValueType.TOBJECT);
@@ -1365,22 +1365,22 @@ public class InitialisationBase {
 		Position pFooter = addPosition(mapPosition, "@bo_footer");
 		
 		// Models
-		Map<Lang, Translation> mHome = mkModel("@bo_home", "home/home");
-		Map<Lang, Translation> mList = mkModel("@bo_list", "default/default");
-		Map<Lang, Translation> mView = mkModel("@bo_view", "default/default");
-		Map<Lang, Translation> mEdit = mkModel("@bo_edit", "default/default");
+		Map<Lang, Translation> mHome = mkModel("@bo_model_home", "home/home");
+		Map<Lang, Translation> mList = mkModel("@bo_model_list", "default/default");
+		Map<Lang, Translation> mView = mkModel("@bo_model_view", "default/default");
+		Map<Lang, Translation> mEdit = mkModel("@bo_model_edit", "default/default");
 		
 		// Pages
-		Map<Lang, Translation> pgHome = mkPage("@bo_home", "home", mHome);
-		Map<Lang, Translation> pgList = mkPage("@bo_list", "default", mList);
-		Map<Lang, Translation> pgView = mkPage("@bo_view", "default", mView);
-		Map<Lang, Translation> pgEdit = mkPage("@bo_edit", "default", mEdit);
+		Map<Lang, Translation> pgHome = mkPage("@bo_page_home", "home", mHome);
+		Map<Lang, Translation> pgList = mkPage("@bo_page_list", "default", mList);
+		Map<Lang, Translation> pgView = mkPage("@bo_page_view", "default", mView);
+		Map<Lang, Translation> pgEdit = mkPage("@bo_page_edit", "default", mEdit);
 		
 		// PageBlocks
-		Map<Lang, Translation> pbHeader = mkPageBlock("@bo_header", "header/header");
+		Map<Lang, Translation> pbHeader = mkPageBlock("@bo_pageblock_header", "header/header");
 		
 		// PageBlocks
-		Map<Lang, Translation> pbFooter = mkPageBlock("@bo_footer", "footer/footer");
+		Map<Lang, Translation> pbFooter = mkPageBlock("@bo_pageblock_footer", "footer/footer");
 				
 		// Blocks
 		generateMenu(pbHeader, pheaderMenu);
@@ -1390,9 +1390,9 @@ public class InitialisationBase {
 		
 		
 		
-		Map<Lang, Translation> bList = mkBlock("@bo_list", "list/list");
-		Map<Lang, Translation> bView = mkBlock("@bo_view", "view/view");
-		Map<Lang, Translation> bEdit = mkBlock("@bo_edit", "edit/edit");
+		Map<Lang, Translation> bList = mkBlock("@bo_block_list", "list/list");
+		Map<Lang, Translation> bView = mkBlock("@bo_block_view", "view/view");
+		Map<Lang, Translation> bEdit = mkBlock("@bo_block_edit", "edit/edit");
 		
 		
 		
@@ -1402,15 +1402,15 @@ public class InitialisationBase {
 		// Set MapTemplate
 		Map<Lang, MapTemplate> mtHeaderList = addMapTemplate(mList, pbHeader, pHeader);
 		Map<Lang, MapTemplate> mtArticleList = addMapTemplate(mList, bList, pArticle);
-//		Map<Lang, MapTemplate> mtFooterList = addMapTemplate(mList, pbFooter, pFooter);
+		Map<Lang, MapTemplate> mtFooterList = addMapTemplate(mList, pbFooter, pFooter);
 		
 		Map<Lang, MapTemplate> mtHeaderView = addMapTemplate(mView, pbHeader, pHeader);
 		Map<Lang, MapTemplate> mtArticleView = addMapTemplate(mView, bView, pArticle);
-//		Map<Lang, MapTemplate> mtFooterView = addMapTemplate(mView, pbFooter, pFooter);
+		Map<Lang, MapTemplate> mtFooterView = addMapTemplate(mView, pbFooter, pFooter);
 		
 		Map<Lang, MapTemplate> mtHeaderEdit = addMapTemplate(mEdit, pbHeader, pHeader);
 		Map<Lang, MapTemplate> mtArticleEdit = addMapTemplate(mEdit, bEdit, pArticle);
-//		Map<Lang, MapTemplate> mtFooterEdit = addMapTemplate(mEdit, pbFooter, pFooter);
+		Map<Lang, MapTemplate> mtFooterEdit = addMapTemplate(mEdit, pbFooter, pFooter);
 		
 		
 	}

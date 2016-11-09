@@ -46,19 +46,19 @@ public class BackOfficeController extends AbtractController {
 	private BackOfficeService<Translation> backOfficeTranslationService;
 	
 	public static final String BOHOMEURL = "";
-	public static final String BOHOMEPAGE = "@bo_home";
+	public static final String BOHOMEPAGE = "@bo_page_home";
 	
 	public static final String BOLISTURL = "/list";
-	public static final String BOLISTPAGE = "@bo_list";
+	public static final String BOLISTPAGE = "@bo_page_list";
 	
 	public static final String BOEDITURL = "/edit";
-	public static final String BOEDITPAGE = "@bo_edit";
+	public static final String BOEDITPAGE = "@bo_page_edit";
 	
 	public static final String BOVIEWURL = "/view";
-	public static final String BOVIEWPAGE = "@bo_view";
+	public static final String BOVIEWPAGE = "@bo_page_view";
 	
 	public static final String BONEWURL = "/new";
-	public static final String BONEWPAGE = "@bo_new";
+	public static final String BONEWPAGE = "@bo_page_new";
 	
 	private Folder getBOFolder() throws JspException{
 		try {

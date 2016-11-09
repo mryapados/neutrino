@@ -165,7 +165,7 @@ public class TemplateService extends TranslationService<Template>{
 				if (checkJSPExist(common.getWebInfFolder(), pathContext, template)){
 					return pathJSP(webInf,pathContext, template, jsp);
 				} else {
-					throw new ServiceException("JSP not found");
+					throw new ServiceException("JSP not found for template : " + template.getName() + "(" + template.getPath() + "), context : " + context);
 				}
 			}
 		}
