@@ -11,7 +11,20 @@
 	<c:when test="${finalFieldType eq 'INTEGER'}">
 		<form:input type="number" class="form-control" path="${finalField.name}" />
 	</c:when>
-	<c:when test="${finalFieldType eq 'VARCHAR50' || finalFieldType eq 'VARCHAR255'}">
+	<c:when test="${finalFieldType eq 'VARCHAR50'}">
+		<c:choose>
+			<c:when test="${not empty finalField.enumDatas}">
+				<form:select class="form-control" path="${finalField.name}">
+				    <form:option value="0" label="Select One" />
+				    <form:options items="${finalField.enumDatas}" />
+				</form:select>
+			</c:when>
+			<c:otherwise>
+				<form:input class="form-control" type="text" path="${finalField.name}"/>
+			</c:otherwise>
+		</c:choose>
+	</c:when>
+	<c:when test="${finalFieldType eq 'VARCHAR255'}">
 		<form:textarea class="form-control" rows="2" path="${finalField.name}"/>
 	</c:when>
 	<c:when test="${finalFieldType eq 'TEXT'}">	

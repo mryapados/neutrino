@@ -3,6 +3,8 @@ package fr.cedricsevestre.conf;
 import java.util.List;
 import java.util.Locale;
 
+import javax.persistence.Entity;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -11,14 +13,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.data.repository.Repository;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.LocaleResolver;
@@ -35,11 +40,12 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.cedricsevestre.controller.engine.NoTranslationConverter;
+import fr.cedricsevestre.controller.engine.TranslationConverter;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.taglib.Head;
 
 @Configuration
-@ComponentScan(basePackages = "fr.cedricsevestre")
+@ComponentScan(basePackages = "fr.cedricsevestre", includeFilters = @ComponentScan.Filter(value = Entity.class, type = FilterType.ANNOTATION) )
 @Import({ SecurityConfiguration.class })
 @EnableWebMvc
 @EnableTransactionManagement
@@ -51,6 +57,8 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 	@Autowired
     private NoTranslationConverter noTranslationConverter;
 	
+	@Autowired
+    private TranslationConverter translationConverter;
 	
 	@Bean
 	public UrlBasedViewResolver urlBasedViewResolver() {
@@ -127,6 +135,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(noTranslationConverter);
+        registry.addConverter(translationConverter);
     }
 	
 	

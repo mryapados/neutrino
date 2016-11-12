@@ -28,6 +28,7 @@ import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.service.engine.EntityLocator;
 import fr.cedricsevestre.service.engine.ServiceLocator;
 
 @Service
@@ -37,12 +38,16 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	@Autowired
 	ServiceLocator customServiceLocator;
 	
+	@Autowired
+	EntityLocator entityLocator;
+	
 	private Logger logger = Logger.getLogger(BackOfficeService.class);
 
 	public static final String TEMPLATE = "Template";
 	public static final String PAGE = "Page";
 	
 	
+	@Deprecated
 	public static Class<?> getEntity(String entityName) throws ServiceException{
 		System.out.println("getEntity " + entityName);
 		try {
@@ -138,13 +143,11 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 
 			System.out.println("FOUND = " + service.getClass().getName());
 			
-			Class<?> clazz = Class.forName(service.getClass().getName());
+			Class<?> clazz = service.getClass();
 			Method findByIdFetched = clazz.getMethod("findByIdFetched", params);
 			return (T) findByIdFetched.invoke(service, paramsObj);
 			
-		} catch (ClassNotFoundException e) {
-			logger.error("getDatas -> ClassNotFoundException", e);
-			throw new ServiceException("Error getList", e);
+
 		} catch (NoSuchMethodException e) {
 			logger.error("getDatas -> NoSuchMethodException", e);
 			throw new ServiceException("Error getList", e);
@@ -164,7 +167,14 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	}
 	
 	private NField mkNFieldFromBOField(Field field, BOField nType){
-		return new NField(nType.type(), nType.ofType(), field.getName(), field.getType().getSimpleName(), nType.inList(), nType.inView(), nType.editable(), nType.sortBy(), nType.sortPriority(), nType.defaultField(), nType.displayOrder(), nType.tabName(), nType.groupName());
+		List<String> enumDatas = null;
+		if (!nType.ofEnum().equals(BOField.Default.class)){
+			enumDatas = new ArrayList<>();
+			for (Enum<?> e : nType.ofEnum().getEnumConstants()) {
+				enumDatas.add(e.name());
+			}
+		}
+		return new NField(nType.type(), nType.ofType(), field.getName(), field.getType().getSimpleName(), nType.inList(), nType.inView(), nType.editable(), nType.sortBy(), nType.sortPriority(), nType.defaultField(), nType.displayOrder(), nType.tabName(), nType.groupName(), enumDatas);
 	}
 	
 	private List<NField> getNField(List<Field> fields) throws ServiceException{
@@ -241,5 +251,55 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	
 	
 	
+	
+	
+	@SuppressWarnings("unchecked")
+	public T saveData(T data) throws ServiceException{
+		try {
+			Class<?> entity = data.getClass();
+			
+			
+			
+			
+			
+			Class<?> params[] = { Object.class };
+			Object paramsObj[] = { data };
+
+			System.out.println("LOOK FOR = " + entity.getSimpleName());
+
+			Object service = customServiceLocator.getService(entity.getSimpleName());
+
+			System.out.println("FOUND = " + service.getClass().getName());
+
+			Class<?> clazz = service.getClass();
+			
+			
+			Method[] methods = clazz.getMethods();
+			for (Method method : methods) {
+				System.out.println(method.getName());
+				
+				Class<?>[] parameterTypes = method.getParameterTypes();
+				for (Class<?> class1 : parameterTypes) {
+					System.out.println("	" + class1.getName());
+				}
+				
+			}
+			
+			
+			
+			Method save = clazz.getMethod("save", params);
+			return (T) save.invoke(service, paramsObj);
+
+		} catch (NoSuchMethodException e) {
+			logger.error("saveData -> NoSuchMethodException", e);
+			throw new ServiceException("Error saveData", e);
+		} catch (IllegalAccessException e) {
+			logger.error("saveData -> IllegalAccessException", e);
+			throw new ServiceException("Error saveData", e);
+		} catch (InvocationTargetException e) {
+			logger.error("saveData -> InvocationTargetException", e);
+			throw new ServiceException("Error saveData", e);
+		}
+	}
 	
 }

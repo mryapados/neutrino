@@ -68,6 +68,7 @@ public class Common {
 	@Deprecated
 	public static final String BASE_BO_VIEWS_PATH = "bo/";
 	
+	@Deprecated
 	public static final String CUSTOM_ENTITY_PACKAGE = "fr.cedricsevestre.entity.custom";
 	
 	@Deprecated

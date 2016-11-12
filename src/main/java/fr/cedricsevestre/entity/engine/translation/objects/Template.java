@@ -37,6 +37,7 @@ public class Template extends Translation {
 		PAGE, BLOCK, PAGEBLOCK
 	}
 	
+	@BOField(type = ValueType.VARCHAR50, ofEnum = TemplateType.class, inList = false)
 	@NotNull
 	@Column
 	@Enumerated(EnumType.STRING)

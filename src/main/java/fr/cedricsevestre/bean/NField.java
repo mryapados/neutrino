@@ -1,6 +1,7 @@
 package fr.cedricsevestre.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 import fr.cedricsevestre.annotation.BOField.SortType;
 import fr.cedricsevestre.annotation.BOField.ValueType;
@@ -22,8 +23,9 @@ public class NField implements Serializable {
 	private int displayOrder;
 	private String tabName;
 	private String groupName;
+	private List<String> enumDatas;
 	
-	public NField(ValueType type, ValueType ofType, String name, String className, boolean inList, boolean inView, boolean editable, SortType sortBy, int sortPriority, boolean defaultField, int displayOrder, String tabName, String groupName) {
+	public NField(ValueType type, ValueType ofType, String name, String className, boolean inList, boolean inView, boolean editable, SortType sortBy, int sortPriority, boolean defaultField, int displayOrder, String tabName, String groupName, List<String> enumDatas) {
 		super();
 		this.type = type;
 		this.ofType = ofType;
@@ -38,6 +40,7 @@ public class NField implements Serializable {
 		this.displayOrder = displayOrder;
 		this.tabName = tabName;
 		this.groupName = groupName;
+		this.enumDatas = enumDatas;
 	}
 	
 	public ValueType getType() {
@@ -118,5 +121,12 @@ public class NField implements Serializable {
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
 	}
+	public List<String> getEnumDatas() {
+		return enumDatas;
+	}
+	public void setEnumDatas(List<String> enumDatas) {
+		this.enumDatas = enumDatas;
+	}
+
 
 }

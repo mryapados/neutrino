@@ -31,6 +31,7 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.ProjectService;
+import fr.cedricsevestre.service.engine.EntityLocator;
 import fr.cedricsevestre.service.engine.bo.BackOfficeService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 
@@ -45,20 +46,28 @@ public class BackOfficeController extends AbtractController {
 	@Autowired
 	private BackOfficeService<Translation> backOfficeTranslationService;
 	
-	public static final String BOHOMEURL = "";
-	public static final String BOHOMEPAGE = "@bo_page_home";
+	@Autowired
+	EntityLocator entityLocator;
 	
-	public static final String BOLISTURL = "/list";
-	public static final String BOLISTPAGE = "@bo_page_list";
+	public static final String BO_HOME_URL = "";
+	public static final String BO_HOME_PAGE = "@bo_page_home";
 	
-	public static final String BOEDITURL = "/edit";
-	public static final String BOEDITPAGE = "@bo_page_edit";
+	public static final String BO_LIST_URL = "/list";
+	public static final String BO_LIST_PAGE = "@bo_page_list";
 	
-	public static final String BOVIEWURL = "/view";
-	public static final String BOVIEWPAGE = "@bo_page_view";
+	public static final String BO_EDIT_URL = "/edit";
+	public static final String BO_EDIT_PAGE = "@bo_page_edit";
 	
-	public static final String BONEWURL = "/new";
-	public static final String BONEWPAGE = "@bo_page_new";
+	public static final String BO_VIEW_URL = "/view";
+	public static final String BO_VIEW_PAGE = "@bo_page_view";
+	
+	public static final String BO_NEW_URL = "/new";
+	public static final String BO_NEW_PAGE = "@bo_page_new";
+	
+	public static final String NO_TRANSLATION_TYPE = "NoTranslation";
+	public static final String TRANSLATION_TYPE = "Translation";
+	
+	public static final String SAVEURL = "/save";
 	
 	private Folder getBOFolder() throws JspException{
 		try {
@@ -69,12 +78,12 @@ public class BackOfficeController extends AbtractController {
 	}
 	
 	
-	@RequestMapping(value = BOHOMEURL, method = RequestMethod.GET)
+	@RequestMapping(value = BO_HOME_URL, method = RequestMethod.GET)
 	public ModelAndView home() throws JspException   {
 		Folder folder = getBOFolder();
 		ModelAndView modelAndView = null;
 		try {
-			modelAndView = baseView(BOHOMEPAGE, folder);
+			modelAndView = baseView(BO_HOME_PAGE, folder);
 
 		} catch (ServiceException e) {
 			throw new JspException(e);
@@ -84,15 +93,15 @@ public class BackOfficeController extends AbtractController {
 	
 	
 
-	@RequestMapping(value = BOLISTURL, method = RequestMethod.GET)
+	@RequestMapping(value = BO_LIST_URL, method = RequestMethod.GET)
 	public ModelAndView list(@ModelAttribute("type") String type, Pageable pageRequest) throws JspException   {
 		Folder folder = getBOFolder();
 		ModelAndView modelAndView = null;
 		try {
-			modelAndView = baseView(BOLISTPAGE, folder);
-
-			Class<?> object = BackOfficeService.getEntity(type);
+			modelAndView = baseView(BO_LIST_PAGE, folder);
+			Class<?> object = entityLocator.getEntity(type).getClass();
 			modelAndView.addObject("objectType", object.getSimpleName());
+			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
 			if (object.getSuperclass().equals(Translation.class)){
 				NDatas<Translation> tDatas = backOfficeTranslationService.findAll(object, pageRequest);
 				modelAndView.addObject("datas", tDatas);
@@ -107,38 +116,76 @@ public class BackOfficeController extends AbtractController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = BOEDITURL, method = RequestMethod.GET)
+	@RequestMapping(value = BO_EDIT_URL, method = RequestMethod.GET)
 	public ModelAndView edit(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id) throws JspException   {
 		Folder folder = getBOFolder();
 		ModelAndView modelAndView = null;
 		try {
-			
-			modelAndView = baseView(BOEDITPAGE, folder);
-
-			Class<?> object = BackOfficeService.getEntity(type);
+			modelAndView = baseView(BO_EDIT_PAGE, folder);
+			Class<?> object = entityLocator.getEntity(type).getClass();
 			modelAndView.addObject("objectType", object.getSimpleName());
+			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
 			if (object.getSuperclass().equals(Translation.class)){
 				NData<Translation> tData = backOfficeTranslationService.findOne(object, id);
 				modelAndView.addObject("fields", tData.getFields());
 				modelAndView.addObject("object", tData.getObjectData());
 				modelAndView.addObject("objectLang", tData.getObjectData().getLang());
 				modelAndView.addObject("objectName", tData.getObjectData().getName());
-				
 			} else if (object.getSuperclass().equals(NoTranslation.class)){
 				NData<NoTranslation> tData = backOfficeNoTranslationService.findOne(object, id);
 				modelAndView.addObject("fields", tData.getFields());
 				modelAndView.addObject("object", tData.getObjectData());
 				modelAndView.addObject("objectName", tData.getObjectData().getName());
 			}
-
-			
 		} catch (ServiceException e) {
 			throw new JspException(e);
 		}
 		return modelAndView;
 	}
 	
-	@RequestMapping(value = BOEDITURL, method = RequestMethod.POST)
+	@RequestMapping(value = BO_EDIT_URL + "/" + TRANSLATION_TYPE + SAVEURL, method = RequestMethod.POST)
+	public ModelAndView translationSave(@Valid @ModelAttribute("object") Translation data, BindingResult result) throws JspException   {
+		
+		
+		
+		System.out.println("HasError " + result.hasErrors());
+		if (result.hasErrors()) {
+			System.out.println(result.getAllErrors().toString());
+
+		}
+		
+		
+		
+		
+		System.out.println("Enter in save !!!!!");
+		
+		System.out.println("Translation name = " + data.getName());
+		System.out.println("Translation dateAdded = " + data.getDateAdded());
+		System.out.println("Translation dateUpdated = " + data.getDateUpdated());
+		
+		
+		Template template = (Template) data;
+		System.out.println("Template path = " + template.getPath());
+
+		
+		
+		try {
+			backOfficeTranslationService.saveData(data);
+		} catch (ServiceException e) {
+			throw new JspException(e);
+		}
+		
+		
+		
+		Folder folder = getBOFolder();
+		ModelAndView modelAndView = null;
+		
+		
+		
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = BO_EDIT_URL + "/" + NO_TRANSLATION_TYPE + SAVEURL, method = RequestMethod.POST)
 	public ModelAndView noTranslationSave(@Valid @ModelAttribute("object") NoTranslation data, BindingResult result) throws JspException   {
 		
 		
@@ -152,6 +199,8 @@ public class BackOfficeController extends AbtractController {
 		System.out.println("Enter in save !!!!!");
 		
 		System.out.println("NoTranslation name = " + data.getName());
+		System.out.println("NoTranslation dateAdded = " + data.getDateAdded());
+		System.out.println("NoTranslation dateUpdated = " + data.getDateUpdated());
 		
 		Folder folder = getBOFolder();
 		ModelAndView modelAndView = null;
@@ -171,22 +220,22 @@ public class BackOfficeController extends AbtractController {
 	
 	
 	
-	@RequestMapping(value = BOVIEWURL, method = RequestMethod.GET)
+	@RequestMapping(value = BO_VIEW_URL, method = RequestMethod.GET)
 	public ModelAndView view(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id) throws JspException   {
 		Folder folder = getBOFolder();
 		ModelAndView modelAndView = null;
 		try {
-			modelAndView = baseView(BOVIEWPAGE, folder);
+			modelAndView = baseView(BO_VIEW_PAGE, folder);
 
-			Class<?> object = BackOfficeService.getEntity(type);
+			Class<?> object = entityLocator.getEntity(type).getClass();
 			modelAndView.addObject("objectType", object.getSimpleName());
+			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
 			if (object.getSuperclass().equals(Translation.class)){
 				NData<Translation> tData = backOfficeTranslationService.findOne(object, id);
 				modelAndView.addObject("fields", tData.getFields());
 				modelAndView.addObject("object", tData.getObjectData());
 				modelAndView.addObject("objectLang", tData.getObjectData().getLang());
 				modelAndView.addObject("objectName", tData.getObjectData().getName());
-				
 			} else if (object.getSuperclass().equals(NoTranslation.class)){
 				NData<NoTranslation> tData = backOfficeNoTranslationService.findOne(object, id);
 				modelAndView.addObject("fields", tData.getFields());

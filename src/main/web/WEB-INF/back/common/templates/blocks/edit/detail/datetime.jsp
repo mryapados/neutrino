@@ -8,7 +8,7 @@
 <div ng-controller="DatepickerPopupCtrl" ng-init="init('${dateObj}')">
 	<p class="input-group">
 		<input type="text" 
-			name="frm_${finalField.name}"
+			name="${finalField.name}"
 			class="form-control"
 			uib-datepicker-popup="{{format}}" 
 			ng-model="dt"

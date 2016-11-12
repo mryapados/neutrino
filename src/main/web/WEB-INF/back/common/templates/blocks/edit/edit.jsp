@@ -13,7 +13,7 @@
 		<s:message code="bo.${objectType}.entity.name" text="${objectType}" />
 	</h1>
 
-	<form:form action="" method="post" modelAttribute="object">
+	<form:form action="${objectBaseType}/save" method="post" modelAttribute="object">
 		<input type="hidden" value="${objectType}" name="object" />
 
 		<div class="row">

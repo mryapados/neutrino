@@ -16,12 +16,16 @@ public @interface BOField {
 		DATETIME, DATE, TIME, 
 		IMAGE, FILE, URL, 
 		TOBJECT, NTOBJECT, OBJECT, 
-		COLLECTION
+		COLLECTION,
+		ENUM
 	}
 	public enum SortType {
 		NULL, ASC, DESC
 	}
 
+
+
+	
 	ValueType type();
 
 	ValueType ofType() default ValueType.NULL;
@@ -40,4 +44,8 @@ public @interface BOField {
 	String tabName() default "";
 	String groupName() default "";
 	
+	public enum Default {
+		NULL
+	}
+	Class<? extends Enum<?>> ofEnum() default Default.class;
 }
