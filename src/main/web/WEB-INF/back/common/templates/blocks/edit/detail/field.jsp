@@ -4,6 +4,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 
 <c:set var="finalMaxElement" value="3" />
 
@@ -78,6 +79,11 @@
 				</c:if>
 			</ul>
 		</c:if>
+	</c:when>
+	<c:when test="${finalFieldType eq 'ENUM'}">
+		<c:forEach var="item" items="${finalField.enumDatas}">
+			<label class="radio-inline"><form:radiobutton path="${finalField.name}" value="${item}" /><s:message code="bo.field.enum.${item}" text="${item}" /></label>
+		</c:forEach>
 	</c:when>
 	<c:otherwise>
 		<c:out value="${finalObject}"/>

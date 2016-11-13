@@ -4,8 +4,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <div ng-controller="WysiwygEditorCtrl" class="app">
-	<text-angular name="frm_${finalField.name}">
-		<c:out value="${finalObject}"/>
+	<text-angular name="${finalField.name}">
+		<c:out value="${finalObject}" escapeXml="false"/>
 	</text-angular>
 	<div>Editor <span>{{version}}</span></div>
 </div>

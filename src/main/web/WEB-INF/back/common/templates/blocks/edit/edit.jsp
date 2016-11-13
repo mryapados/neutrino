@@ -57,7 +57,7 @@
 						<table class="table table-striped" role="grid">
 							<tbody>
 								<c:forEach var="field" items="${group.value}">
-									<c:if test="${field.inView}">
+									<c:if test="${field.editable}">
 										<tr>
 											<td class="col-md-3">
 												<s:message var="defaultMessage" code="bo.field.${field.name}" text="${field.name}" />
