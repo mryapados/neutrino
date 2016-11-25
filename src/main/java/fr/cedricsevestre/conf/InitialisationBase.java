@@ -104,6 +104,8 @@ public class InitialisationBase {
 	@Autowired
 	private FolderService folderService;
 	
+	Map<String, Folder> folders;
+	
 	public void run() throws ServiceException, InstantiationException, IllegalAccessException {
 		logger.debug("init");
 		initFolders();
@@ -277,6 +279,9 @@ public class InitialisationBase {
 	public void initFolders() throws ServiceException{
 		logger.debug("init initFolders");
 		
+		folders = new HashMap<>();
+		
+		
 		List<String> serverNames = null;
 		Folder folder = null;
 		
@@ -287,6 +292,7 @@ public class InitialisationBase {
 		folder.setServerName(serverNames);
 		folder.setPath("back/");
 		folderService.save(folder);
+		folders.put(folder.getName(), folder);
 		
 		folder = new Folder();
 		folder.setName("front");
@@ -297,6 +303,7 @@ public class InitialisationBase {
 		folder.setServerName(serverNames);
 		folder.setPath("pages/");
 		folderService.save(folder);
+		folders.put(folder.getName(), folder);
 	}
 	
 	
@@ -776,6 +783,7 @@ public class InitialisationBase {
 		projectEN.setDateUpdated(c.getTime());
 		projectEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		projectEN.setDescription(name + " description en");
+		projectEN.setFolder(folders.get("front"));
 		projectService.save(projectEN);
 		
 		Project projectFR = projectService.translate(projectEN, langFR, Project.class);
@@ -783,6 +791,7 @@ public class InitialisationBase {
 		projectFR.setDateAdded(c.getTime());
 		projectFR.setDateUpdated(c.getTime());
 		projectFR.setDescription(name + " description fr");
+		projectFR.setFolder(folders.get("front"));
 		projectService.save(projectFR);
 	
 		Integer max = 100;

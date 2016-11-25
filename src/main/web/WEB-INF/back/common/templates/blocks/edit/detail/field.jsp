@@ -48,6 +48,17 @@
 			<c:when test="${finalObject.objectType eq 'Lang'}">
 				<span class="lang-sm lang-lbl" lang="${finalObject.code}"></span>
 			</c:when>
+			<c:when test="${finalObject.objectType eq 'MapTemplate'}">
+				<c:choose>
+					<c:when test="${finalParentObject.id eq finalObject.model.id}">
+						<c:set var="template" value="${finalObject.block}" />
+					</c:when>
+					<c:otherwise>
+						<c:set var="template" value="${finalObject.model}" />
+					</c:otherwise>
+				</c:choose>
+				<a class="linked" href="<c:url value='/bo/view?type=Template&id=${template.id}' />"><c:out value="${template.name}"/></a> / <a class="linked" href="<c:url value='/bo/view?type=Position&id=${finalObject.position.id}' />"><c:out value="${finalObject.position.name}"/></a>
+			</c:when>
 			<c:otherwise>
 				<a class="linked" href="<c:url value='/bo/view?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="object"/></a>
 			</c:otherwise>
