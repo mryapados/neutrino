@@ -106,14 +106,22 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 			System.out.println("FOUND = " + service.getClass().getName());
 			
 			Class<?> clazz = Class.forName(service.getClass().getName());
-			Method findAllFetched = clazz.getMethod("findAllFetched", params);
-			return (Page<T>) findAllFetched.invoke(service, paramsObj);
+			Method findAll;
+			try {
+				findAll = clazz.getMethod("findAllFetched", params);
+			} catch (NoSuchMethodException e) {
+				try {
+					logger.debug("getDatas -> findAllFetched Not found for " + entity.getSimpleName());
+					findAll = clazz.getMethod("findAll", params);
+				} catch (NoSuchMethodException e1) {
+					logger.error("getDatas -> NoSuchMethodException", e);
+					throw new ServiceException("Error getList", e);
+				}
+			}
+			return (Page<T>) findAll.invoke(service, paramsObj);
 			
 		} catch (ClassNotFoundException e) {
 			logger.error("getDatas -> ClassNotFoundException", e);
-			throw new ServiceException("Error getList", e);
-		} catch (NoSuchMethodException e) {
-			logger.error("getDatas -> NoSuchMethodException", e);
 			throw new ServiceException("Error getList", e);
 		} catch (SecurityException e) {
 			logger.error("getDatas -> SecurityException", e);
@@ -143,14 +151,24 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 
 			System.out.println("FOUND = " + service.getClass().getName());
 			
+
 			Class<?> clazz = service.getClass();
-			Method findByIdFetched = clazz.getMethod("findByIdFetched", params);
-			return (T) findByIdFetched.invoke(service, paramsObj);
+			Method findById;
+			try {
+				findById = clazz.getMethod("findByIdFetched", params);
+			} catch (NoSuchMethodException e) {
+				try {
+					logger.debug("getData -> findByIdFetched Not found for " + entity.getSimpleName());
+					findById = clazz.getMethod("findById", params);
+				} catch (NoSuchMethodException e1) {
+					logger.error("getData -> NoSuchMethodException", e);
+					throw new ServiceException("Error getData", e);
+				}
+			}
+			return (T) findById.invoke(service, paramsObj);
+			
 			
 
-		} catch (NoSuchMethodException e) {
-			logger.error("getDatas -> NoSuchMethodException", e);
-			throw new ServiceException("Error getList", e);
 		} catch (SecurityException e) {
 			logger.error("getDatas -> SecurityException", e);
 			throw new ServiceException("Error getList", e);

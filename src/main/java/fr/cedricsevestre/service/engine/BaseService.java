@@ -8,10 +8,13 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.cedricsevestre.dao.engine.BaseDao;
+import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 
 @Service
@@ -89,6 +92,13 @@ public abstract class BaseService<T> implements IBaseService<T>{
 		}
 	}
 
-
+	@Override
+	public Page<T> findAll(Pageable pageable) throws ServiceException {
+		try {
+			return baseDao.findAll(pageable);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAll", e);
+		}
+	}
 
 }

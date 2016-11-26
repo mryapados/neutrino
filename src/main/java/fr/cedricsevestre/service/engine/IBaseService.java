@@ -3,6 +3,8 @@ package fr.cedricsevestre.service.engine;
 import java.util.List;
 
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import fr.cedricsevestre.exception.ServiceException;
@@ -19,4 +21,6 @@ public interface IBaseService<T> {
 
 	Iterable<T>findAll() throws ServiceException;
 
+	Page<T>findAll(Pageable pageable) throws ServiceException;
+	
 }

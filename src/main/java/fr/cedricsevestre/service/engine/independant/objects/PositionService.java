@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import fr.cedricsevestre.annotation.CustomService;
 import fr.cedricsevestre.dao.engine.PositionDao;
 import fr.cedricsevestre.entity.custom.Tag;
 import fr.cedricsevestre.entity.engine.independant.objects.Position;
@@ -19,6 +20,7 @@ import fr.cedricsevestre.service.engine.BaseService;
 
 @Service
 @Scope(value = "singleton")
+@CustomService
 public class PositionService extends BaseService<Position>{
 
 	private Logger logger = Logger.getLogger(PositionService.class);

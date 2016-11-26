@@ -16,6 +16,9 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
+import fr.cedricsevestre.annotation.BOField;
+import fr.cedricsevestre.annotation.BOField.SortType;
+import fr.cedricsevestre.annotation.BOField.ValueType;
 import fr.cedricsevestre.entity.engine.IdProvider;
 
 @Entity
@@ -24,10 +27,12 @@ public class Position implements IdProvider, Serializable{
 
 	private static final long serialVersionUID = 1L;
 
+	@BOField(type = ValueType.INTEGER, editable = false)
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
+	@BOField(type = ValueType.VARCHAR50, defaultField = true, sortBy = SortType.ASC, sortPriority = 200)
 	@NotNull
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "name")

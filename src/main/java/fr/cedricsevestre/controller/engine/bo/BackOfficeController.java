@@ -26,6 +26,8 @@ import fr.cedricsevestre.controller.engine.AbtractController;
 import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.custom.Tag;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
+import fr.cedricsevestre.entity.engine.independant.objects.Position;
+import fr.cedricsevestre.entity.engine.independant.objects.User;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
@@ -45,6 +47,11 @@ public class BackOfficeController extends AbtractController {
 	
 	@Autowired
 	private BackOfficeService<Translation> backOfficeTranslationService;
+	
+	@Autowired
+	private BackOfficeService<User> backOfficeUserService;
+	@Autowired
+	private BackOfficeService<Position> backOfficePositionService;
 	
 	@Autowired
 	EntityLocator entityLocator;
@@ -100,6 +107,7 @@ public class BackOfficeController extends AbtractController {
 		try {
 			modelAndView = baseView(BO_LIST_PAGE, folder);
 			Class<?> object = entityLocator.getEntity(type).getClass();
+			System.out.println("		Type = " + type + ", Superclass = " + object.getSuperclass() + ", class = " +  object);
 			modelAndView.addObject("objectType", object.getSimpleName());
 			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
 			if (object.getSuperclass().equals(Translation.class)){
@@ -107,6 +115,12 @@ public class BackOfficeController extends AbtractController {
 				modelAndView.addObject("datas", tDatas);
 			} else if (object.getSuperclass().equals(NoTranslation.class)){
 				NDatas<NoTranslation> tDatas = backOfficeNoTranslationService.findAll(object, pageRequest);
+				modelAndView.addObject("datas", tDatas);
+			} else if (object.getSuperclass().equals(User.class)){
+				NDatas<User> tDatas = backOfficeUserService.findAll(object, pageRequest);
+				modelAndView.addObject("datas", tDatas);
+			} else if (object.equals(Position.class)){
+				NDatas<Position> tDatas = backOfficePositionService.findAll(object, pageRequest);
 				modelAndView.addObject("datas", tDatas);
 			}
 
@@ -232,6 +246,9 @@ public class BackOfficeController extends AbtractController {
 			modelAndView = baseView(BO_VIEW_PAGE, folder);
 
 			Class<?> object = entityLocator.getEntity(type).getClass();
+			
+			System.out.println("		Superclass = " + object.getSuperclass());
+			
 			modelAndView.addObject("objectType", object.getSimpleName());
 			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
 			if (object.getSuperclass().equals(Translation.class)){
@@ -245,7 +262,20 @@ public class BackOfficeController extends AbtractController {
 				modelAndView.addObject("fields", tData.getFields());
 				modelAndView.addObject("object", tData.getObjectData());
 				modelAndView.addObject("objectName", tData.getObjectData().getName());
+			} else if (object.getSuperclass().equals(User.class)){
+				NData<User> tData = backOfficeUserService.findOne(object, id);
+				modelAndView.addObject("fields", tData.getFields());
+				modelAndView.addObject("object", tData.getObjectData());
+				modelAndView.addObject("objectName", tData.getObjectData().getName());
+				
+				
+				
 			}
+				
+				
+				
+				
+				
 
 		} catch (ServiceException e) {
 			throw new JspException(e);

@@ -18,6 +18,9 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
+import fr.cedricsevestre.annotation.BOField;
+import fr.cedricsevestre.annotation.BOField.SortType;
+import fr.cedricsevestre.annotation.BOField.ValueType;
 import fr.cedricsevestre.entity.engine.IdProvider;
 
 
@@ -40,10 +43,12 @@ public abstract class User implements IdProvider, Serializable {
 	public static final String ROLE_USER = "ROLE_USER";
 	public static final String ROLE_PUBLIC = "ROLE_PUBLIC";
 	
+	@BOField(type = ValueType.INTEGER, editable = false)
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
+	@BOField(type = ValueType.VARCHAR50, defaultField = true, sortBy = SortType.ASC, sortPriority = 200)
 	@NotNull
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	@Column(name = "username")
