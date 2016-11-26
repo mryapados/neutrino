@@ -52,12 +52,14 @@
 											<s:message code="bo.${objectType}.field.${field.name}" text="${defaultMessage}" />
 										</td>
 										<td>
+											<c:set var="finalParentObject" value="${object}" scope="request" />
 											<c:set var="finalObject" value="${object[field.name]}" scope="request" />
 											<c:set var="finalField" value="${field}" scope="request" />
 											<c:set var="finalFieldType" value="${finalField.type}" scope="request" />
 											
 											<jsp:include page="detail/field.jsp" />
-		
+											
+											<c:remove var="finalParentObject"/>
 											<c:remove var="finalObject"/>
 											<c:remove var="finalField"/>
 											<c:remove var="finalFieldType"/>

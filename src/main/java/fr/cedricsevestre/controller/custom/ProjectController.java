@@ -30,7 +30,7 @@ public class ProjectController extends AbtractController {
 	public ModelAndView view(@ModelAttribute("p") String project, Folder folder) {
 		ModelAndView modelAndView = null;
 		try {
-			modelAndView = baseView(HOMEPROJECTPAGE, getActiveObject(project), folder);
+			modelAndView = baseView(HOMEPROJECTPAGE, getActiveObject(project, folder), folder);
 			modelAndView.addObject("project", project);
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block
@@ -39,8 +39,12 @@ public class ProjectController extends AbtractController {
 		return modelAndView;
 	}
 
-	private Translation getActiveObject(String projectName) throws ServiceException{
+	private Translation getActiveObject(String projectName, Folder folder) throws ServiceException{
 		return projectService.findByName(projectName);
+		
+		//if not found or folder not equal to project folder return 404 exception.
+		
+		
 	}
 
 }
