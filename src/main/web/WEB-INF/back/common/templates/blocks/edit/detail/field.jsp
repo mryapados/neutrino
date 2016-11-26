@@ -6,7 +6,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 
-<c:set var="finalMaxElement" value="3" />
+<c:set var="FINAL_MAX_ELEMENT" value="3" />
 
 <c:choose>
 	<c:when test="${finalFieldType eq 'INTEGER'}">
@@ -40,9 +40,6 @@
 	<c:when test="${finalFieldType eq 'TOBJECT' || finalFieldType eq 'NTOBJECT'}">
 		<a class="linked" href="<c:url value='/bo/view?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a>
 	</c:when>
-	<c:when test="${finalFieldType eq 'TOBJECT' || finalFieldType eq 'NTOBJECT'}">
-		<c:out value="${finalObject.name}"/>
-	</c:when>
 	<c:when test="${finalFieldType eq 'OBJECT'}">
 		<c:choose>
 			<c:when test="${finalObject.objectType eq 'Lang'}">
@@ -60,8 +57,8 @@
 			<ul class="linked">
 				<c:set var="max" value="${size}" />
 				
-				<c:if test="${max > finalMaxElement}">
-					<c:set var="max" value="${finalMaxElement}" />
+				<c:if test="${max > FINAL_MAX_ELEMENT}">
+					<c:set var="max" value="${FINAL_MAX_ELEMENT}" />
 				</c:if>
 				<c:forEach var="i" begin="0" end="${max - 1}">
 					<c:set var="finalObject" value="${collection.toArray()[i]}" scope="request" />
@@ -72,9 +69,9 @@
 					<c:remove var="finalObject"/>
 					<c:remove var="finalFieldType"/>
 				</c:forEach>
-				<c:if test="${size > finalMaxElement}">
+				<c:if test="${size > FINAL_MAX_ELEMENT}">
 					<li>
-						<strong><a href="#"><c:out value="${size - finalMaxElement}"/> autres résultats...</a></strong>
+						<strong><a href="#"><c:out value="${size - FINAL_MAX_ELEMENT}"/> <s:message code="bo.otherresults" text="Others results..." /></a></strong>
 					</li>
 				</c:if>
 			</ul>

@@ -18,13 +18,15 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
+import fr.cedricsevestre.entity.engine.IdProvider;
+
 
 @Entity
 @Table(name = "user")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "status")
 @DiscriminatorValue(value = "user")
-public abstract class User implements Serializable {
+public abstract class User implements IdProvider, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -66,6 +68,11 @@ public abstract class User implements Serializable {
 	
 	@Transient
 	private String name;
+	
+	@Transient
+	public String getObjectType() {
+		return this.getClass().getSimpleName();
+	}
 	
 	public abstract String getName();
 	

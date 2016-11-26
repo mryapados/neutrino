@@ -40,7 +40,6 @@ public abstract class Translation implements ITranslation, Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-
 	
 	@BOField(type = ValueType.VARCHAR50, defaultField = true, sortBy = SortType.ASC, sortPriority = 200)
 	@NotNull
@@ -68,7 +67,6 @@ public abstract class Translation implements ITranslation, Serializable {
 	@JoinColumn(name="id_lang")
 	private Lang lang;
 	
-	@BOField(type = ValueType.OBJECT, inList = false)
 	@ManyToOne
 	@JoinColumn(name="id_translation")
 	private TranslationProvider translation;

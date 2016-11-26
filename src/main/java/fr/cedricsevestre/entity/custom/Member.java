@@ -3,6 +3,7 @@ package fr.cedricsevestre.entity.custom;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.SafeHtml;
@@ -33,11 +34,21 @@ public class Member extends User {
 	@Column(name = "mail")
 	private String mail;
 	
-	@Override
-	public String getName() {
-		return (firstName + " " + lastName).trim();
+	@Transient
+	public String getObjectType() {
+		return this.getClass().getSimpleName();
 	}
 	
+	@Override
+	public String getName() {
+		return getLogin();
+	}
+
+	@Override
+	public void setName(String name) {
+		setLogin(name);
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -69,6 +80,8 @@ public class Member extends User {
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
+
+
 
 	
 	

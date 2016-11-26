@@ -136,7 +136,11 @@ public class BackOfficeController extends AbtractController {
 				modelAndView.addObject("fields", tData.getFields());
 				modelAndView.addObject("object", tData.getObjectData());
 				modelAndView.addObject("objectName", tData.getObjectData().getName());
+			} else {
+				
+				
 			}
+			
 		} catch (ServiceException e) {
 			throw new JspException(e);
 		}

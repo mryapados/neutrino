@@ -13,6 +13,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import fr.cedricsevestre.annotation.BOField;
+import fr.cedricsevestre.annotation.BOField.ValueType;
+
 @Entity
 @Table(name = "translation_provider")
 public class TranslationProvider implements Serializable {
@@ -29,7 +32,7 @@ public class TranslationProvider implements Serializable {
 
 	@Transient
 	public String getObjectType() {
-		return "TranslationProvider";
+		return this.getClass().getSimpleName();
 	}
 	
 	public Integer getId() {
