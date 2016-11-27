@@ -17,21 +17,23 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.cedricsevestre.dao.engine.TranslationDao;
 import fr.cedricsevestre.dao.engine.TranslationProviderDao;
+import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.TranslationProvider;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.BaseService;
+import fr.cedricsevestre.service.engine.IBOService;
 
 @Service
 @Scope(value = "singleton")
-public abstract class TranslationService<T extends Translation> extends BaseService<T>{
+public abstract class TranslationService<T extends Translation> extends BaseService<T> implements IBOService{
 
 	private Logger logger = Logger.getLogger(TranslationService.class);
 
-	public abstract Translation findByIdFetched(Integer id) throws ServiceException;
-	public abstract List<Translation> findAllFetched() throws ServiceException;
-	public abstract Page<Translation> findAllFetched(Pageable pageable) throws ServiceException;
+//	public abstract IdProvider findByIdFetched(Integer id) throws ServiceException;
+//	public abstract List<IdProvider> findAllFetched() throws ServiceException;
+//	public abstract Page<IdProvider> findAllFetched(Pageable pageable) throws ServiceException;
 	
 	@Autowired
 	private TranslationDao<T> translationDao;

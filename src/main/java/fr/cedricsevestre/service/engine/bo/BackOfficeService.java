@@ -43,7 +43,9 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	
 	private Logger logger = Logger.getLogger(BackOfficeService.class);
 
+	@Deprecated
 	public static final String TEMPLATE = "Template";
+	@Deprecated
 	public static final String PAGE = "Page";
 	
 	

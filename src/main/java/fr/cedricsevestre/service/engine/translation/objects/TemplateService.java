@@ -18,6 +18,7 @@ import fr.cedricsevestre.annotation.BOService;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.common.Common.TypeBase;
 import fr.cedricsevestre.dao.engine.TemplateDao;
+import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
@@ -45,7 +46,7 @@ public class TemplateService extends TranslationService<Template>{
 	private CacheService cacheService;
 	
 	@Override
-	public List<Translation> findAllFetched() throws ServiceException {
+	public List<IdProvider> findAllFetched() throws ServiceException {
 		try {
 			return templateDao.findAllFetched();
 		} catch (PersistenceException e) {
@@ -53,7 +54,7 @@ public class TemplateService extends TranslationService<Template>{
 		}
 	}
 	@Override
-	public Page<Translation> findAllFetched(Pageable pageable) throws ServiceException {
+	public Page<IdProvider> findAllFetched(Pageable pageable) throws ServiceException {
 		try {
 			return templateDao.findAllFetched(pageable);
 		} catch (PersistenceException e) {
@@ -62,7 +63,7 @@ public class TemplateService extends TranslationService<Template>{
 	}
 	
 	@Override
-	public Translation findByIdFetched(Integer id) throws ServiceException {
+	public IdProvider findByIdFetched(Integer id) throws ServiceException {
 		try {
 			return templateDao.findByIdFetched(id);
 		} catch (PersistenceException e) {

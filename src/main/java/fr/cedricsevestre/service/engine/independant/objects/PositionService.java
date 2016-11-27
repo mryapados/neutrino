@@ -7,6 +7,8 @@ import javax.persistence.PersistenceException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import fr.cedricsevestre.annotation.CustomService;
@@ -77,4 +79,29 @@ public class PositionService extends BaseService<Position>{
 		}
 	}
 
+	
+	
+	
+	public Translation findByIdFetched(Integer id) throws ServiceException {
+		try {
+			return positionDao.findByIdFetched(id);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findByIdFetched", e);
+		}
+	}
+	public List<Translation> findAllFetched() throws ServiceException {
+		try {
+			return positionDao.findAllFetched();
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAllFetched", e);
+		}
+	}
+	public Page<Translation> findAllFetched(Pageable pageable) throws ServiceException {
+		try {
+			return positionDao.findAllFetched(pageable);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAllFetched", e);
+		}
+	}
+	
 }

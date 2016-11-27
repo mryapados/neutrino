@@ -15,6 +15,7 @@ import fr.cedricsevestre.dao.custom.AlbumDao;
 import fr.cedricsevestre.dao.custom.ProjectDao;
 import fr.cedricsevestre.dao.engine.bo.LinkDao;
 import fr.cedricsevestre.entity.custom.Album;
+import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.bo.Link;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
@@ -29,7 +30,7 @@ public class LinkService extends TranslationService<Link>{
 	LinkDao dao;
 
 	@Override
-	public Translation findByIdFetched(Integer id) throws ServiceException {
+	public IdProvider findByIdFetched(Integer id) throws ServiceException {
 		try {
 			return dao.findByIdFetched(id);
 		} catch (PersistenceException e) {
@@ -38,7 +39,7 @@ public class LinkService extends TranslationService<Link>{
 	}
 	
 	@Override
-	public List<Translation> findAllFetched() throws ServiceException {
+	public List<IdProvider> findAllFetched() throws ServiceException {
 		try {
 			return dao.findAllFetched();
 		} catch (PersistenceException e) {
@@ -46,7 +47,7 @@ public class LinkService extends TranslationService<Link>{
 		}
 	}
 	@Override
-	public Page<Translation> findAllFetched(Pageable pageable) throws ServiceException {
+	public Page<IdProvider> findAllFetched(Pageable pageable) throws ServiceException {
 		try {
 			return dao.findAllFetched(pageable);
 		} catch (PersistenceException e) {

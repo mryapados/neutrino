@@ -14,6 +14,7 @@ import fr.cedricsevestre.annotation.CustomService;
 import fr.cedricsevestre.dao.custom.ProjectDao;
 import fr.cedricsevestre.dao.custom.TagDao;
 import fr.cedricsevestre.entity.custom.Tag;
+import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
@@ -28,7 +29,7 @@ public class TagService extends NoTranslationService<Tag>{
 	TagDao tagDao;
 
 	@Override
-	public NoTranslation findByIdFetched(Integer id) throws ServiceException {
+	public IdProvider findByIdFetched(Integer id) throws ServiceException {
 		try {
 			return tagDao.findByIdFetched(id);
 		} catch (PersistenceException e) {
@@ -37,7 +38,7 @@ public class TagService extends NoTranslationService<Tag>{
 	}
 	
 	@Override
-	public List<NoTranslation> findAllFetched() throws ServiceException {
+	public List<IdProvider> findAllFetched() throws ServiceException {
 		try {
 			return tagDao.findAllFetched();
 		} catch (PersistenceException e) {
@@ -45,7 +46,7 @@ public class TagService extends NoTranslationService<Tag>{
 		}
 	}
 	@Override
-	public Page<NoTranslation> findAllFetched(Pageable pageable) throws ServiceException {
+	public Page<IdProvider> findAllFetched(Pageable pageable) throws ServiceException {
 		try {
 			return tagDao.findAllFetched(pageable);
 		} catch (PersistenceException e) {

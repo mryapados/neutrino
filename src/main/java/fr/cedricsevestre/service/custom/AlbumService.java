@@ -14,6 +14,7 @@ import fr.cedricsevestre.annotation.CustomService;
 import fr.cedricsevestre.dao.custom.AlbumDao;
 import fr.cedricsevestre.dao.custom.ProjectDao;
 import fr.cedricsevestre.entity.custom.Album;
+import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.translation.TranslationService;
@@ -27,7 +28,7 @@ public class AlbumService extends TranslationService<Album>{
 	AlbumDao albumDao;
 
 	@Override
-	public Translation findByIdFetched(Integer id) throws ServiceException {
+	public IdProvider findByIdFetched(Integer id) throws ServiceException {
 		try {
 			return albumDao.findByIdFetched(id);
 		} catch (PersistenceException e) {
@@ -36,7 +37,7 @@ public class AlbumService extends TranslationService<Album>{
 	}
 	
 	@Override
-	public List<Translation> findAllFetched() throws ServiceException {
+	public List<IdProvider> findAllFetched() throws ServiceException {
 		try {
 			return albumDao.findAllFetched();
 		} catch (PersistenceException e) {
@@ -44,7 +45,7 @@ public class AlbumService extends TranslationService<Album>{
 		}
 	}
 	@Override
-	public Page<Translation> findAllFetched(Pageable pageable) throws ServiceException {
+	public Page<IdProvider> findAllFetched(Pageable pageable) throws ServiceException {
 		try {
 			return albumDao.findAllFetched(pageable);
 		} catch (PersistenceException e) {

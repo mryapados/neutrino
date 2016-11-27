@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 
@@ -30,14 +31,14 @@ public interface TemplateDao extends TranslationDao<Template> {
 	
 	@Override
 	@Query("SELECT t FROM Template t LEFT JOIN FETCH t.models m LEFT JOIN FETCH t.blocks b")
-	List<Translation> findAllFetched();
+	List<IdProvider> findAllFetched();
 
 	@Override
 	@Query(value = "SELECT t FROM Template t LEFT JOIN FETCH t.models m LEFT JOIN FETCH t.blocks b", countQuery = "select count(t) FROM Template t")
-	Page<Translation> findAllFetched(Pageable pageable);
+	Page<IdProvider> findAllFetched(Pageable pageable);
 	
 	@Query(value = "SELECT t FROM Template t LEFT JOIN FETCH t.models m LEFT JOIN FETCH t.blocks b WHERE t.id =:id")
-	Translation findByIdFetched(@Param("id") Integer id);
+	IdProvider findByIdFetched(@Param("id") Integer id);
 	
 	
 	

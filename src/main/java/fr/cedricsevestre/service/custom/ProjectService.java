@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import fr.cedricsevestre.annotation.CustomService;
 import fr.cedricsevestre.dao.custom.ProjectDao;
 import fr.cedricsevestre.entity.custom.Project;
+import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.translation.TranslationService;
@@ -28,7 +29,7 @@ public class ProjectService extends TranslationService<Project>{
 	ProjectDao projectDao;
 	
 	@Override
-	public Translation findByIdFetched(Integer id) throws ServiceException {
+	public IdProvider findByIdFetched(Integer id) throws ServiceException {
 		try {
 			return projectDao.findByIdFetched(id);
 		} catch (PersistenceException e) {
@@ -37,7 +38,7 @@ public class ProjectService extends TranslationService<Project>{
 	}
 	
 	@Override
-	public List<Translation> findAllFetched() throws ServiceException {
+	public List<IdProvider> findAllFetched() throws ServiceException {
 		try {
 			return projectDao.findAllFetched();
 		} catch (PersistenceException e) {
@@ -45,7 +46,7 @@ public class ProjectService extends TranslationService<Project>{
 		}
 	}
 	@Override
-	public Page<Translation> findAllFetched(Pageable pageable) throws ServiceException {
+	public Page<IdProvider> findAllFetched(Pageable pageable) throws ServiceException {
 		try {
 			return projectDao.findAllFetched(pageable);
 		} catch (PersistenceException e) {

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 
@@ -15,13 +16,13 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 public interface NoTranslationDao<T extends NoTranslation> extends BaseDao<T> {
 	
 	@Query("SELECT e FROM #{#entityName} e")
-	List<NoTranslation> findAllFetched();
+	List<IdProvider> findAllFetched();
 	
 	@Query(value = "SELECT e FROM #{#entityName} e")
-	Page<NoTranslation> findAllFetched(Pageable pageable);
+	Page<IdProvider> findAllFetched(Pageable pageable);
 	
 	@Query(value = "SELECT e FROM #{#entityName} e WHERE e.id =:id")
-	NoTranslation findByIdFetched(@Param("id") Integer id);
+	IdProvider findByIdFetched(@Param("id") Integer id);
 	
 	@Query("SELECT t FROM #{#entityName} t WHERE t.name =:name")
 	T findByName(@Param("name") String name);

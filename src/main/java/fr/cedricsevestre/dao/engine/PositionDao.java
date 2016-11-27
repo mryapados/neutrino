@@ -2,6 +2,8 @@ package fr.cedricsevestre.dao.engine;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -33,5 +35,12 @@ public interface PositionDao extends BaseDao<Position> {
 	List<Position> findAllEmptyWithMaps(@Param("model") Template model);
 	
 	
+	@Query("SELECT p FROM Position p LEFT JOIN FETCH p.mapTemplates m")
+	List<Translation> findAllFetched();
+
+	@Query(value = "SELECT p FROM Position p LEFT JOIN FETCH p.mapTemplates m", countQuery = "select count(p) FROM Position p")
+	Page<Translation> findAllFetched(Pageable pageable);
 	
+	@Query(value = "SELECT p FROM Position p LEFT JOIN FETCH p.mapTemplates m WHERE p.id =:id")
+	Translation findByIdFetched(@Param("id") Integer id);
 }

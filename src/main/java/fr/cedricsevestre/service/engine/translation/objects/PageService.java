@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.cedricsevestre.annotation.BOService;
 import fr.cedricsevestre.dao.engine.PageDao;
 import fr.cedricsevestre.dao.engine.TemplateDao;
+import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.TranslationProvider;
@@ -34,7 +35,7 @@ public class PageService extends TranslationService<Page>{
 	private PageDao pageDao;
 	
 	@Override
-	public List<Translation> findAllFetched() throws ServiceException {
+	public List<IdProvider> findAllFetched() throws ServiceException {
 		try {
 			return pageDao.findAllFetched();
 		} catch (PersistenceException e) {
@@ -43,7 +44,7 @@ public class PageService extends TranslationService<Page>{
 	}
 
 	@Override
-	public Translation findByIdFetched(Integer id) throws ServiceException {
+	public IdProvider findByIdFetched(Integer id) throws ServiceException {
 		try {
 			return pageDao.findByIdFetched(id);
 		} catch (PersistenceException e) {
@@ -52,7 +53,7 @@ public class PageService extends TranslationService<Page>{
 	}
 	
 	@Override
-	public org.springframework.data.domain.Page<Translation> findAllFetched(Pageable pageable) throws ServiceException {
+	public org.springframework.data.domain.Page<IdProvider> findAllFetched(Pageable pageable) throws ServiceException {
 		try {
 			return pageDao.findAllFetched(pageable);
 		} catch (PersistenceException e) {

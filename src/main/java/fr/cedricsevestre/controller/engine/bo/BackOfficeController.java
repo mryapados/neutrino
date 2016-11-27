@@ -25,6 +25,7 @@ import fr.cedricsevestre.bean.NDatas;
 import fr.cedricsevestre.controller.engine.AbtractController;
 import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.custom.Tag;
+import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.Position;
 import fr.cedricsevestre.entity.engine.independant.objects.User;
@@ -47,6 +48,10 @@ public class BackOfficeController extends AbtractController {
 	
 	@Autowired
 	private BackOfficeService<Translation> backOfficeTranslationService;
+	
+	@Autowired
+	private BackOfficeService<IdProvider> backOfficeService;
+	
 	
 	@Autowired
 	private BackOfficeService<User> backOfficeUserService;
@@ -110,19 +115,23 @@ public class BackOfficeController extends AbtractController {
 			System.out.println("		Type = " + type + ", Superclass = " + object.getSuperclass() + ", class = " +  object);
 			modelAndView.addObject("objectType", object.getSimpleName());
 			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
-			if (object.getSuperclass().equals(Translation.class)){
-				NDatas<Translation> tDatas = backOfficeTranslationService.findAll(object, pageRequest);
-				modelAndView.addObject("datas", tDatas);
-			} else if (object.getSuperclass().equals(NoTranslation.class)){
-				NDatas<NoTranslation> tDatas = backOfficeNoTranslationService.findAll(object, pageRequest);
-				modelAndView.addObject("datas", tDatas);
-			} else if (object.getSuperclass().equals(User.class)){
-				NDatas<User> tDatas = backOfficeUserService.findAll(object, pageRequest);
-				modelAndView.addObject("datas", tDatas);
-			} else if (object.equals(Position.class)){
-				NDatas<Position> tDatas = backOfficePositionService.findAll(object, pageRequest);
-				modelAndView.addObject("datas", tDatas);
-			}
+			
+			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest);
+			modelAndView.addObject("datas", tDatas);
+			
+//			if (object.getSuperclass().equals(Translation.class)){
+//				NDatas<Translation> tDatas = backOfficeTranslationService.findAll(object, pageRequest);
+//				modelAndView.addObject("datas", tDatas);
+//			} else if (object.getSuperclass().equals(NoTranslation.class)){
+//				NDatas<NoTranslation> tDatas = backOfficeNoTranslationService.findAll(object, pageRequest);
+//				modelAndView.addObject("datas", tDatas);
+//			} else if (object.getSuperclass().equals(User.class)){
+//				NDatas<User> tDatas = backOfficeUserService.findAll(object, pageRequest);
+//				modelAndView.addObject("datas", tDatas);
+//			} else if (object.equals(Position.class)){
+//				NDatas<Position> tDatas = backOfficePositionService.findAll(object, pageRequest);
+//				modelAndView.addObject("datas", tDatas);
+//			}
 
 		} catch (ServiceException e) {
 			throw new JspException(e);
@@ -139,22 +148,16 @@ public class BackOfficeController extends AbtractController {
 			Class<?> object = entityLocator.getEntity(type).getClass();
 			modelAndView.addObject("objectType", object.getSimpleName());
 			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
+
+			NData<IdProvider> tData = backOfficeService.findOne(object, id);
+			modelAndView.addObject("fields", tData.getFields());
+			modelAndView.addObject("object", tData.getObjectData());
+			modelAndView.addObject("objectName", tData.getObjectData().getName());
 			if (object.getSuperclass().equals(Translation.class)){
-				NData<Translation> tData = backOfficeTranslationService.findOne(object, id);
-				modelAndView.addObject("fields", tData.getFields());
-				modelAndView.addObject("object", tData.getObjectData());
-				modelAndView.addObject("objectLang", tData.getObjectData().getLang());
-				modelAndView.addObject("objectName", tData.getObjectData().getName());
-			} else if (object.getSuperclass().equals(NoTranslation.class)){
-				NData<NoTranslation> tData = backOfficeNoTranslationService.findOne(object, id);
-				modelAndView.addObject("fields", tData.getFields());
-				modelAndView.addObject("object", tData.getObjectData());
-				modelAndView.addObject("objectName", tData.getObjectData().getName());
-			} else {
-				
-				
+				Translation translation = (Translation) tData.getObjectData();
+				modelAndView.addObject("objectLang", translation.getLang());
 			}
-			
+
 		} catch (ServiceException e) {
 			throw new JspException(e);
 		}
@@ -251,26 +254,39 @@ public class BackOfficeController extends AbtractController {
 			
 			modelAndView.addObject("objectType", object.getSimpleName());
 			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
+			
+			NData<IdProvider> tData = backOfficeService.findOne(object, id);
+			modelAndView.addObject("fields", tData.getFields());
+			modelAndView.addObject("object", tData.getObjectData());
+			modelAndView.addObject("objectName", tData.getObjectData().getName());
 			if (object.getSuperclass().equals(Translation.class)){
-				NData<Translation> tData = backOfficeTranslationService.findOne(object, id);
-				modelAndView.addObject("fields", tData.getFields());
-				modelAndView.addObject("object", tData.getObjectData());
-				modelAndView.addObject("objectLang", tData.getObjectData().getLang());
-				modelAndView.addObject("objectName", tData.getObjectData().getName());
-			} else if (object.getSuperclass().equals(NoTranslation.class)){
-				NData<NoTranslation> tData = backOfficeNoTranslationService.findOne(object, id);
-				modelAndView.addObject("fields", tData.getFields());
-				modelAndView.addObject("object", tData.getObjectData());
-				modelAndView.addObject("objectName", tData.getObjectData().getName());
-			} else if (object.getSuperclass().equals(User.class)){
-				NData<User> tData = backOfficeUserService.findOne(object, id);
-				modelAndView.addObject("fields", tData.getFields());
-				modelAndView.addObject("object", tData.getObjectData());
-				modelAndView.addObject("objectName", tData.getObjectData().getName());
-				
-				
-				
+				Translation translation = (Translation) tData.getObjectData();
+				modelAndView.addObject("objectLang", translation.getLang());
 			}
+			
+			
+			
+			
+//			if (object.getSuperclass().equals(Translation.class)){
+//				NData<Translation> tData = backOfficeTranslationService.findOne(object, id);
+//				modelAndView.addObject("fields", tData.getFields());
+//				modelAndView.addObject("object", tData.getObjectData());
+//				modelAndView.addObject("objectLang", tData.getObjectData().getLang());
+//				modelAndView.addObject("objectName", tData.getObjectData().getName());
+//			} else if (object.getSuperclass().equals(NoTranslation.class)){
+//				NData<NoTranslation> tData = backOfficeNoTranslationService.findOne(object, id);
+//				modelAndView.addObject("fields", tData.getFields());
+//				modelAndView.addObject("object", tData.getObjectData());
+//				modelAndView.addObject("objectName", tData.getObjectData().getName());
+//			} else if (object.getSuperclass().equals(User.class)){
+//				NData<User> tData = backOfficeUserService.findOne(object, id);
+//				modelAndView.addObject("fields", tData.getFields());
+//				modelAndView.addObject("object", tData.getObjectData());
+//				modelAndView.addObject("objectName", tData.getObjectData().getName());
+//				
+//				
+//				
+//			}
 				
 				
 				

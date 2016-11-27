@@ -38,6 +38,7 @@ public class Position implements IdProvider, Serializable{
 	@Column(name = "name")
 	private String name;
 	
+	@BOField(type = ValueType.COLLECTION, ofType = ValueType.OBJECT)
 	@OneToMany(mappedBy = "position")
 	private List<MapTemplate> mapTemplates;
 

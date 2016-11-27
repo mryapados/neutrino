@@ -19,19 +19,20 @@ import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.BaseService;
+import fr.cedricsevestre.service.engine.IBOService;
 
 @Service
 @Scope(value = "singleton")
-public abstract class NoTranslationService<T extends NoTranslation> extends BaseService<T>{
+public abstract class NoTranslationService<T extends NoTranslation> extends BaseService<T> implements IBOService{
 
 	private Logger logger = Logger.getLogger(NoTranslationService.class);
 
 	@Autowired
 	private NoTranslationDao<T> noTranslationDao;
 
-	public abstract NoTranslation findByIdFetched(Integer id) throws ServiceException;
-	public abstract List<NoTranslation> findAllFetched() throws ServiceException;
-	public abstract Page<NoTranslation> findAllFetched(Pageable pageable) throws ServiceException;
+//	public abstract NoTranslation findByIdFetched(Integer id) throws ServiceException;
+//	public abstract List<NoTranslation> findAllFetched() throws ServiceException;
+//	public abstract Page<NoTranslation> findAllFetched(Pageable pageable) throws ServiceException;
 	
 	public T findByName(String name) throws ServiceException {
 		try {

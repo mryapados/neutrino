@@ -16,6 +16,7 @@ import fr.cedricsevestre.dao.custom.MarkerDao;
 import fr.cedricsevestre.dao.custom.TagDao;
 import fr.cedricsevestre.entity.custom.Marker;
 import fr.cedricsevestre.entity.custom.Tag;
+import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
@@ -31,7 +32,7 @@ public class MarkerService extends NoTranslationService<Marker>{
 	MarkerDao markerDao;
 
 	@Override
-	public NoTranslation findByIdFetched(Integer id) throws ServiceException {
+	public IdProvider findByIdFetched(Integer id) throws ServiceException {
 		try {
 			return markerDao.findByIdFetched(id);
 		} catch (PersistenceException e) {
@@ -40,7 +41,7 @@ public class MarkerService extends NoTranslationService<Marker>{
 	}
 	
 	@Override
-	public List<NoTranslation> findAllFetched() throws ServiceException {
+	public List<IdProvider> findAllFetched() throws ServiceException {
 		try {
 			return markerDao.findAllFetched();
 		} catch (PersistenceException e) {
@@ -48,7 +49,7 @@ public class MarkerService extends NoTranslationService<Marker>{
 		}
 	}
 	@Override
-	public Page<NoTranslation> findAllFetched(Pageable pageable) throws ServiceException {
+	public Page<IdProvider> findAllFetched(Pageable pageable) throws ServiceException {
 		try {
 			return markerDao.findAllFetched(pageable);
 		} catch (PersistenceException e) {

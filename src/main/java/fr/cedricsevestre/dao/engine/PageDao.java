@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Page;
 
@@ -15,14 +16,14 @@ public interface PageDao extends TranslationDao<Page> {
 
 	@Override
 	@Query("SELECT p FROM Page p LEFT JOIN FETCH p.model m")
-	List<Translation> findAllFetched();
+	List<IdProvider> findAllFetched();
 
 	@Override
 	@Query(value = "SELECT p FROM Page p LEFT JOIN FETCH p.model m ", countQuery = "select count(p) FROM Page p")
-	org.springframework.data.domain.Page<Translation> findAllFetched(Pageable pageable);
+	org.springframework.data.domain.Page<IdProvider> findAllFetched(Pageable pageable);
 	
 	
 	@Query(value = "SELECT p FROM Page p LEFT JOIN FETCH p.model m WHERE p.id =:id")
-	Translation findByIdFetched(@Param("id") Integer id);
+	IdProvider findByIdFetched(@Param("id") Integer id);
 	
 }

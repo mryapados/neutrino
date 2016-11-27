@@ -10,18 +10,20 @@ import org.springframework.stereotype.Repository;
 
 import fr.cedricsevestre.dao.engine.TranslationDao;
 import fr.cedricsevestre.entity.custom.Project;
+import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Repository
 public interface ProjectDao extends TranslationDao<Project> {
 	@Override
 	@Query("SELECT e FROM Project e LEFT JOIN FETCH e.albums a")
-	List<Translation> findAllFetched();
+	List<IdProvider> findAllFetched();
 
 	@Override
 	@Query(value = "SELECT e FROM Project e LEFT JOIN FETCH e.albums a", countQuery = "select count(e) FROM Project e")
-	Page<Translation> findAllFetched(Pageable pageable);
+	Page<IdProvider> findAllFetched(Pageable pageable);
 	
+	@Override
 	@Query(value = "SELECT e FROM Project e LEFT JOIN FETCH e.albums a WHERE e.id =:id")
-	Translation findByIdFetched(@Param("id") Integer id);
+	IdProvider findByIdFetched(@Param("id") Integer id);
 }
