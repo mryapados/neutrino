@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.independant.objects.Position;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
@@ -36,11 +37,11 @@ public interface PositionDao extends BaseDao<Position> {
 	
 	
 	@Query("SELECT p FROM Position p LEFT JOIN FETCH p.mapTemplates m")
-	List<Translation> findAllFetched();
+	List<IdProvider> findAllFetched();
 
 	@Query(value = "SELECT p FROM Position p LEFT JOIN FETCH p.mapTemplates m", countQuery = "select count(p) FROM Position p")
-	Page<Translation> findAllFetched(Pageable pageable);
+	Page<IdProvider> findAllFetched(Pageable pageable);
 	
 	@Query(value = "SELECT p FROM Position p LEFT JOIN FETCH p.mapTemplates m WHERE p.id =:id")
-	Translation findByIdFetched(@Param("id") Integer id);
+	IdProvider findByIdFetched(@Param("id") Integer id);
 }

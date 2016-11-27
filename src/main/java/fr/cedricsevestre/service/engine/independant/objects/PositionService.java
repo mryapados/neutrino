@@ -14,16 +14,18 @@ import org.springframework.stereotype.Service;
 import fr.cedricsevestre.annotation.CustomService;
 import fr.cedricsevestre.dao.engine.PositionDao;
 import fr.cedricsevestre.entity.custom.Tag;
+import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.independant.objects.Position;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.BaseService;
+import fr.cedricsevestre.service.engine.IBOService;
 
 @Service
 @Scope(value = "singleton")
 @CustomService
-public class PositionService extends BaseService<Position>{
+public class PositionService extends BaseService<Position> implements IBOService{
 
 	private Logger logger = Logger.getLogger(PositionService.class);
 
@@ -82,21 +84,21 @@ public class PositionService extends BaseService<Position>{
 	
 	
 	
-	public Translation findByIdFetched(Integer id) throws ServiceException {
+	public IdProvider findByIdFetched(Integer id) throws ServiceException {
 		try {
 			return positionDao.findByIdFetched(id);
 		} catch (PersistenceException e) {
 			throw new ServiceException("Error findByIdFetched", e);
 		}
 	}
-	public List<Translation> findAllFetched() throws ServiceException {
+	public List<IdProvider> findAllFetched() throws ServiceException {
 		try {
 			return positionDao.findAllFetched();
 		} catch (PersistenceException e) {
 			throw new ServiceException("Error findAllFetched", e);
 		}
 	}
-	public Page<Translation> findAllFetched(Pageable pageable) throws ServiceException {
+	public Page<IdProvider> findAllFetched(Pageable pageable) throws ServiceException {
 		try {
 			return positionDao.findAllFetched(pageable);
 		} catch (PersistenceException e) {
