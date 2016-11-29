@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.bean.NDatas;
@@ -137,44 +138,41 @@ public class BackOfficeController extends AbtractController {
 	}
 	
 	@RequestMapping(value = BO_EDIT_URL + "/" + TRANSLATION_TYPE + SAVEURL, method = RequestMethod.POST)
-	public ModelAndView translationSave(@Valid @ModelAttribute("object") Translation data, BindingResult result) throws JspException   {
-		
-		
-		
+	public ModelAndView translationSave(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id, @Valid @ModelAttribute("object") Translation data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException   {
+		Folder folder = getBOFolder();
+		ModelAndView modelAndView = null;
+
 		System.out.println("HasError " + result.hasErrors());
 		if (result.hasErrors()) {
 			System.out.println(result.getAllErrors().toString());
+			modelAndView = new ModelAndView("redirect:/" + "bo" + BO_EDIT_URL);
+//			modelAndView = new ModelAndView("redirect:/" + folder.getName() + BO_EDIT_URL);
+			redirectAttributes.addAttribute("type", type);
+			redirectAttributes.addAttribute("id", id);
+//			<script></script>
+			
+		} else{
+			
+			try {
+				Template template = (Template) data;
+				backOfficeService.saveData(data);
+				modelAndView = new ModelAndView("redirect:list.html");
 
+				
+				System.out.println("Template path = " + template.getPath());
+				System.out.println("Enter in save !!!!!");
+				System.out.println("Translation name = " + data.getName());
+				System.out.println("Translation dateAdded = " + data.getDateAdded());
+				System.out.println("Translation dateUpdated = " + data.getDateUpdated());
+//				<script></script>
+				
+			} catch (ServiceException e) {
+				throw new JspException(e);
+			}
+			
+			
 		}
-		
-		
-		
-		
-		System.out.println("Enter in save !!!!!");
-		
-		System.out.println("Translation name = " + data.getName());
-		System.out.println("Translation dateAdded = " + data.getDateAdded());
-		System.out.println("Translation dateUpdated = " + data.getDateUpdated());
-		
-		
-		Template template = (Template) data;
-		System.out.println("Template path = " + template.getPath());
 
-		
-		
-		try {
-			backOfficeService.saveData(data);
-		} catch (ServiceException e) {
-			throw new JspException(e);
-		}
-		
-		
-		
-		Folder folder = getBOFolder();
-		ModelAndView modelAndView = null;
-		
-		
-		
 		return modelAndView;
 	}
 	

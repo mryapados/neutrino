@@ -19,9 +19,9 @@
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="#">Home</a></li>
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Support <span class="caret"></span></a>
-					<ul class="dropdown-menu">
+				<li uib-dropdown>
+					<a href="#" uib-dropdown-toggle role="button">Support <span class="caret"></span></a>
+					<ul uib-dropdown-menu class="dropdown-menu">
 						<li><a href="#">eDoc</a></li>
 						<li><a href="#">Javadoc</a></li>
 						<li role="separator" class="divider"></li>
@@ -32,22 +32,22 @@
 			</ul>
 			
 			<ul class="nav navbar-nav navbar-right">
-				<li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+				<li uib-dropdown>
+                    <a href="#" uib-dropdown-toggle>
                         <span class="fa fa-user fa-fw"></span> <span class="fa fa-caret-down"></span>
                     </a>
-                    <ul class="dropdown-menu dropdown-user">
+                    <ul uib-dropdown-menu class="dropdown-menu dropdown-user">
                         <li><a href="#"><span class="fa fa-user fa-fw"></span> <spring:message code="bo.connexion.user-profile" /></a></li>
                         <li><a href="#"><span class="fa fa-gear fa-fw"></span> <spring:message code="bo.connexion.settings" /></a></li>
                         <li class="divider"></li>
                         <li><a href="<c:url value='/logout'/>"><span class="fa fa-sign-out fa-fw"></span> <spring:message code="bo.connexion.logout" /></a></li>
                     </ul>
                 </li>
-				<li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+				<li uib-dropdown>
+                    <a href="#" uib-dropdown-toggle>
                        <span class="lang-sm lang-lbl-full" lang="${language}"></span> <span class="caret"></span>
                     </a>
-					<ul class="dropdown-menu" role="menu">
+					<ul uib-dropdown-menu class="dropdown-menu" role="menu">
 						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="ar"></span></a></li>
 						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="be"></span></a></li>
 						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="bg"></span></a></li>

@@ -8,9 +8,20 @@
 <jsp:include page="detail/init.jsp" />
 <div class="view-object">
 	<h1>
-		<s:message code="bo.list" text="${objectType}" />
+		<s:message code="bo.view" text="${objectType}" />
 		<s:message code="bo.${objectType}.entity.name" text="${objectType}" />
 	</h1>
+	
+	
+	<div class="row">
+		<div class="col-xs-12">
+			<jsp:include page="detail/toolbar.jsp">
+				<jsp:param value="top" name="position"/>
+			</jsp:include>
+		</div>
+	</div>
+	
+	
 	
 	<data-uib-tabset active="active">
 	
@@ -77,5 +88,13 @@
 		</c:forEach>
 	
 	</data-uib-tabset>
-			
+	
+	<div class="row">
+		<div class="col-xs-12">
+			<jsp:include page="detail/toolbar.jsp">
+				<jsp:param value="bottom" name="position"/>
+			</jsp:include>
+		</div>
+	</div>
+	
 </div>
