@@ -65,7 +65,6 @@ public class Common {
 	
 	public static final String BASE_WEBINF = "/WEB-INF/";
 	
-	@Deprecated
 	public static final String BASE_BO_VIEWS_PATH = "bo/";
 	
 	@Deprecated

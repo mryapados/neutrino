@@ -43,13 +43,13 @@
 								<tr>
 									<td><input type="checkbox" name="${objectType}_${object.id}"></td>
 									<td class="text-center">
-										<c:url var="url" value="./edit" scope="request">
+										<c:url var="url" value="/bo/edit/" scope="request">
 											<c:param name="type" value="${objectType}"/>
 											<c:param name="id" value="${object.id}"/>
 										</c:url>
 										<a href="${url}" title="edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
 										&nbsp
-										<c:url var="url" value="./view" scope="request">
+										<c:url var="url" value="/bo/view/" scope="request">
 											<c:param name="type" value="${param.type}"/>
 											<c:param name="id" value="${object.id}"/>
 										</c:url>

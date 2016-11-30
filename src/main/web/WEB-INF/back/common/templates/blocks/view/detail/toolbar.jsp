@@ -9,7 +9,7 @@
 	<div class="btn-group" role="group" aria-label="...">
 		<div class="btn-group" role="group">
 		
-			<a href="<c:url value='/bo/edit?type=${objectType}&id=${object.id}' />" class="btn btn-primary">
+			<a href="<c:url value='/bo/edit/?type=${objectType}&id=${object.id}' />" class="btn btn-primary">
 				<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 				<s:message code="bo.view.button.edit" text="Edit" />
 			</a>
@@ -24,7 +24,7 @@
 	<div class="btn-group pull-right" role="group" aria-label="...">
 		<div class="btn-group" role="group">
 		
-			<a href="<c:url value='/bo/list?type=${objectType}' />" class="btn btn-primary">
+			<a href="<c:url value='/bo/list/?type=${objectType}' />" class="btn btn-primary">
 				<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 				<s:message code="bo.edit.button.goback" text="Come back" />
 			</a>

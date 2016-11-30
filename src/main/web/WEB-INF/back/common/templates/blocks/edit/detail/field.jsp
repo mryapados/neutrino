@@ -26,7 +26,16 @@
 		</c:choose>
 	</c:when>
 	<c:when test="${finalFieldType eq 'VARCHAR255'}">
-		<form:textarea class="form-control" rows="2" path="${finalField.name}"/>
+		<c:set var="fieldError"><form:errors path="${finalField.name}"/></c:set>
+		<div class="form-group${not empty fieldError ? ' has-error has-feedback' : ''}">
+			<form:textarea cssClass="form-control" rows="2" path="${finalField.name}"/>
+			<c:if test="${not empty fieldError}">
+				<span class="glyphicon glyphicon-remove form-control-feedback"></span>
+			</c:if>
+		</div>
+		<c:if test="${not empty fieldError}">
+			<div class="alert alert-danger"><strong>Error !</strong> ${fieldError}</div>
+		</c:if>
 	</c:when>
 	<c:when test="${finalFieldType eq 'TEXT'}">	
 		<form:textarea class="form-control" rows="5" path="${finalField.name}"/>
@@ -38,7 +47,7 @@
 		<jsp:include page="datetime.jsp" />
 	</c:when>
 	<c:when test="${finalFieldType eq 'TOBJECT' || finalFieldType eq 'NTOBJECT'}">
-		<a class="linked" href="<c:url value='/bo/view?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a>
+		<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a>
 	</c:when>
 	<c:when test="${finalFieldType eq 'OBJECT'}">
 		<c:choose>
@@ -54,10 +63,10 @@
 						<c:set var="template" value="${finalObject.model}" />
 					</c:otherwise>
 				</c:choose>
-				<a class="linked" href="<c:url value='/bo/view?type=Template&id=${template.id}' />"><c:out value="${template.name}"/></a> / <a class="linked" href="<c:url value='/bo/view?type=Position&id=${finalObject.position.id}' />"><c:out value="${finalObject.position.name}"/></a>
+				<a class="linked" href="<c:url value='/bo/view/?type=Template&id=${template.id}' />"><c:out value="${template.name}"/></a> / <a class="linked" href="<c:url value='/bo/view/?type=Position&id=${finalObject.position.id}' />"><c:out value="${finalObject.position.name}"/></a>
 			</c:when>
 			<c:otherwise>
-				<a class="linked" href="<c:url value='/bo/view?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="object"/></a>
+				<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="object"/></a>
 			</c:otherwise>
 		</c:choose>
 	</c:when>

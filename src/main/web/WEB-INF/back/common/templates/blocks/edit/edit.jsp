@@ -3,6 +3,7 @@
 <%@ taglib prefix="my" uri="/WEB-INF/taglibs/neutrino.tld" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <my:init test="${!initialized}"/>
 
@@ -13,7 +14,10 @@
 		<s:message code="bo.${objectType}.entity.name" text="${objectType}" />
 	</h1>
 
-	<c:url var="saveUrl" value="/bo/edit/${objectBaseType}/save?type=${objectType}&id=${object.id}"/>
+	<c:url var="saveUrl" value="/bo/edit/${objectBaseType}/save/?type=${objectType}&id=${object.id}"/>
+
+
+
 	<form:form action="${saveUrl}" method="post" modelAttribute="object">
 		<input type="hidden" value="${objectType}" name="object" />
 
@@ -22,6 +26,15 @@
 				<jsp:include page="detail/toolbar.jsp">
 					<jsp:param value="top" name="position"/>
 				</jsp:include>
+				
+				<spring:hasBindErrors name="object">
+					<div class="alert alert-danger">
+						<c:forEach var="error" items="${errors.allErrors}">
+							<p><spring:message message="${error}" /></p>
+						</c:forEach>
+					</div>
+				</spring:hasBindErrors>
+				
 			</div>
 		</div>
 

@@ -13,7 +13,7 @@
 				<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>
 				<s:message code="bo.edit.button.save" text="Save" />
 			</button>
-			<a href="<c:url value='/bo/view?type=${objectType}&id=${object.id}' />" class="btn btn-primary">
+			<a href="<c:url value='/bo/view/?type=${objectType}&id=${object.id}' />" class="btn btn-primary">
 				<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
 				<s:message code="bo.edit.button.cancel" text="Cancel" />
 			</a>
@@ -24,7 +24,7 @@
 	<div class="btn-group pull-right" role="group" aria-label="...">
 		<div class="btn-group" role="group">
 		
-			<a href="<c:url value='/bo/list?type=${objectType}' />" class="btn btn-primary">
+			<a href="<c:url value='/bo/list/?type=${objectType}' />" class="btn btn-primary">
 				<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 				<s:message code="bo.edit.button.goback" text="Come back" />
 			</a>
