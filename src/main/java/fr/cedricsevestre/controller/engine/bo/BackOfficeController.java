@@ -133,6 +133,46 @@ public class BackOfficeController extends AbtractController {
 		return edit(type, id, false);
 	}
 	
+	@RequestMapping(value = BO_EDIT_URL, method = RequestMethod.POST)
+	public ModelAndView save(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id, @Valid @ModelAttribute("object") IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
+		Folder folder = getBOFolder();
+		ModelAndView modelAndView = null;
+
+		System.out.println("HasError " + result.hasErrors());
+		if (result.hasErrors()) {
+			
+			System.out.println(result.getAllErrors().toString());
+			
+			modelAndView = edit(type, id, true);
+		} else{
+			
+			try {
+				Template template = (Template) data;
+				backOfficeService.saveData(data);
+				modelAndView = new ModelAndView("redirect:list.html");
+
+				
+//				modelAndView = new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_EDIT_URL);
+//				redirectAttributes.addAttribute("type", type);
+//				redirectAttributes.addAttribute("id", id);
+//				redirectAttributes.addAttribute("saveError", true);
+				System.out.println("Template path = " + template.getPath());
+				System.out.println("Enter in save !!!!!");
+				System.out.println("Translation name = " + data.getName());
+//				<script></script>
+				
+			} catch (ServiceException e) {
+				throw new JspException(e);
+			}
+			
+			
+		}
+
+		return modelAndView;
+	}
+	
+	
+	
 	@RequestMapping(value = BO_EDIT_URL + TRANSLATION_TYPE + "/" + SAVEURL, method = RequestMethod.POST)
 	public ModelAndView translationSave(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id, @Valid @ModelAttribute("object") Translation data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
 		Folder folder = getBOFolder();

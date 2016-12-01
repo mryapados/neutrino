@@ -10,18 +10,45 @@
 
 <c:choose>
 	<c:when test="${finalFieldType eq 'INTEGER'}">
-		<form:input type="number" class="form-control" path="${finalField.name}" />
+		<c:set var="fieldError"><form:errors path="${finalField.name}"/></c:set>
+		<div class="form-group${not empty fieldError ? ' has-error has-feedback' : ''}">
+			<form:input type="number" cssClass="form-control" path="${finalField.name}" />
+			<c:if test="${not empty fieldError}">
+				<span class="glyphicon glyphicon-remove form-control-feedback"></span>
+			</c:if>
+		</div>
+		<c:if test="${not empty fieldError}">
+			<div class="alert alert-danger"><strong>Error !</strong> ${fieldError}</div>
+		</c:if>
 	</c:when>
 	<c:when test="${finalFieldType eq 'VARCHAR50'}">
 		<c:choose>
 			<c:when test="${not empty finalField.enumDatas}">
-				<form:select class="form-control" path="${finalField.name}">
-				    <form:option value="0" label="Select One" />
-				    <form:options items="${finalField.enumDatas}" />
-				</form:select>
+				<c:set var="fieldError"><form:errors path="${finalField.name}"/></c:set>
+				<div class="form-group${not empty fieldError ? ' has-error has-feedback' : ''}">
+					<form:select class="form-control" path="${finalField.name}">
+					    <form:option value="0" label="Select One" />
+					    <form:options items="${finalField.enumDatas}" />
+					</form:select>
+					<c:if test="${not empty fieldError}">
+						<span class="glyphicon glyphicon-remove form-control-feedback"></span>
+					</c:if>
+				</div>
+				<c:if test="${not empty fieldError}">
+					<div class="alert alert-danger"><strong>Error !</strong> ${fieldError}</div>
+				</c:if>
 			</c:when>
 			<c:otherwise>
-				<form:input class="form-control" type="text" path="${finalField.name}"/>
+				<c:set var="fieldError"><form:errors path="${finalField.name}"/></c:set>
+				<div class="form-group${not empty fieldError ? ' has-error has-feedback' : ''}">
+					<form:input cssClass="form-control" type="text" path="${finalField.name}"/>
+					<c:if test="${not empty fieldError}">
+						<span class="glyphicon glyphicon-remove form-control-feedback"></span>
+					</c:if>
+				</div>
+				<c:if test="${not empty fieldError}">
+					<div class="alert alert-danger"><strong>Error !</strong> ${fieldError}</div>
+				</c:if>
 			</c:otherwise>
 		</c:choose>
 	</c:when>
@@ -38,10 +65,25 @@
 		</c:if>
 	</c:when>
 	<c:when test="${finalFieldType eq 'TEXT'}">	
-		<form:textarea class="form-control" rows="5" path="${finalField.name}"/>
+		<c:set var="fieldError"><form:errors path="${finalField.name}"/></c:set>
+		<div class="form-group${not empty fieldError ? ' has-error has-feedback' : ''}">
+			<form:textarea cssClass="form-control" rows="5" path="${finalField.name}"/>
+			<c:if test="${not empty fieldError}">
+				<span class="glyphicon glyphicon-remove form-control-feedback"></span>
+			</c:if>
+		</div>
+		<c:if test="${not empty fieldError}">
+			<div class="alert alert-danger"><strong>Error !</strong> ${fieldError}</div>
+		</c:if>
 	</c:when>
-	<c:when test="${finalFieldType eq 'HTML'}">	
-		<jsp:include page="wysiwyg.jsp" />
+	<c:when test="${finalFieldType eq 'HTML'}">
+		<c:set var="fieldError"><form:errors path="${finalField.name}"/></c:set>
+		<div class="form-group${not empty fieldError ? ' has-error has-feedback' : ''}">
+			<jsp:include page="wysiwyg.jsp" />
+		</div>
+		<c:if test="${not empty fieldError}">
+			<div class="alert alert-danger"><strong>Error !</strong> ${fieldError}</div>
+		</c:if>
 	</c:when>
 	<c:when test="${finalFieldType eq 'DATETIME'}">
 		<jsp:include page="datetime.jsp" />
@@ -98,9 +140,21 @@
 		</c:if>
 	</c:when>
 	<c:when test="${finalFieldType eq 'ENUM'}">
-		<c:forEach var="item" items="${finalField.enumDatas}">
-			<label class="radio-inline"><form:radiobutton path="${finalField.name}" value="${item}" /><s:message code="bo.field.enum.${item}" text="${item}" /></label>
-		</c:forEach>
+		<c:set var="fieldError"><form:errors path="${finalField.name}"/></c:set>
+<%-- 		<div class="form-group${not empty fieldError ? ' has-error has-feedback' : ''}"> --%>
+<%-- 			<c:forEach var="item" items="${finalField.enumDatas}"> --%>
+<%-- 				<label class="radio-inline"><form:radiobutton path="${finalField.name}" value="${item}" /><s:message code="bo.field.enum.${item}" text="${item}" /></label> --%>
+<%-- 			</c:forEach> --%>
+<!-- 		</div> -->
+		
+		
+		<h1>${finalField.name}</h1>
+		<form:input cssClass="form-control" type="text" path="${finalField.name}"/>
+		
+		
+		<c:if test="${not empty fieldError}">
+			<div class="alert alert-danger"><strong>Error !</strong> ${fieldError}</div>
+		</c:if>
 	</c:when>
 	<c:otherwise>
 		<c:out value="${finalObject}"/>
