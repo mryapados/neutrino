@@ -18,7 +18,7 @@ import fr.cedricsevestre.entity.engine.independant.objects.NData;
 import fr.cedricsevestre.entity.engine.independant.objects.NSchema;
 import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
-import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateType;
+import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateKind;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.independant.objects.NDataService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
@@ -79,11 +79,11 @@ public class Import extends ImportSupport implements IIncludeJSP {
 			Page page = (Page) pageContext.getAttribute(Attributes.PAGE.toString(), PageContext.REQUEST_SCOPE);
 			String path = templateService.getPathJSP(true, folder, page.getContext(), target, true);
 			
-			if (target.getType() == TemplateType.BLOCK){
+			if (target.getKind() == TemplateKind.BLOCK){
 				pageContext.setAttribute(Attributes.ACTIVEBLOCK.toString(), target, PageContext.REQUEST_SCOPE);
 				pageContext.include(path);
 				
-			} else if (target.getType() == TemplateType.PAGEBLOCK){
+			} else if (target.getKind() == TemplateKind.PAGEBLOCK){
 				pageContext.setAttribute(Attributes.ACTIVEBLOCK.toString(), target, PageContext.REQUEST_SCOPE);
 				pageContext.setAttribute(Attributes.PARENTPAGEBLOCK.toString(), target, PageContext.REQUEST_SCOPE);
 				pageContext.include(path);

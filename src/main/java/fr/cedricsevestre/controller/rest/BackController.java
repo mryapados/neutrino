@@ -43,7 +43,7 @@ import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
-import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateType;
+import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateKind;
 import fr.cedricsevestre.exception.FormException;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.independant.objects.FolderService;
@@ -90,7 +90,7 @@ public class BackController extends AbtractController {
 		System.out.println("name = " + name);
 		
 		TemplateDto templateDto = new TemplateDto();
-		templateDto.setType(TemplateType.valueOf(type));
+		templateDto.setKind(TemplateKind.valueOf(type));
 		templateDto.setPath(path);
 		templateDto.setName(name);
 		Template template = TemplateDto.to(templateDto);

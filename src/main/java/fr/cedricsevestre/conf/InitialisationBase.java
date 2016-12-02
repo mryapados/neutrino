@@ -192,7 +192,7 @@ public class InitialisationBase {
 		loginEN.setMetaTitle("login");
 		loginEN.setMetaDescription("MetaDescription");
 		loginEN.setPath("login/login");
-		loginEN.setType(Template.TemplateType.PAGE);
+		loginEN.setKind(Template.TemplateKind.PAGE);
 		templateService.save(loginEN);
 		
 		Template loginFr = templateService.translate(loginEN, langFR);
@@ -208,7 +208,7 @@ public class InitialisationBase {
 		homeEN.setMetaTitle("home");
 		homeEN.setMetaDescription("MetaDescription");
 		homeEN.setPath("home/home");
-		homeEN.setType(Template.TemplateType.PAGE);
+		homeEN.setKind(Template.TemplateKind.PAGE);
 		templateService.save(homeEN);
 		
 		Template homeFr = templateService.translate(homeEN, langFR);
@@ -224,7 +224,7 @@ public class InitialisationBase {
 		homeProjectEN.setMetaTitle("{0}");
 		homeProjectEN.setMetaDescription("MetaDescription");
 		homeProjectEN.setPath("home/homeProject");
-		homeProjectEN.setType(Template.TemplateType.PAGE);
+		homeProjectEN.setKind(Template.TemplateKind.PAGE);
 		templateService.save(homeProjectEN);
 		
 		Template homeProjectFr = templateService.translate(homeProjectEN, langFR);
@@ -240,7 +240,7 @@ public class InitialisationBase {
 		homeArticleEN.setMetaTitle("{0}");
 		homeArticleEN.setMetaDescription("MetaDescription");
 		homeArticleEN.setPath("home/homeArticle");
-		homeArticleEN.setType(Template.TemplateType.PAGE);
+		homeArticleEN.setKind(Template.TemplateKind.PAGE);
 		templateService.save(homeArticleEN);
 		
 		Template homeArticleFr = templateService.translate(homeArticleEN, langFR);
@@ -450,7 +450,7 @@ public class InitialisationBase {
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " description en");
 		templateEN.setPath("header/headerProject");
-		templateEN.setType(Template.TemplateType.BLOCK);
+		templateEN.setKind(Template.TemplateKind.BLOCK);
 		templateService.save(templateEN);
 		
 		Template templateFR = templateService.translate(templateEN, langFR);
@@ -464,7 +464,7 @@ public class InitialisationBase {
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " description en");
 		templateEN.setPath("header/headerProjectH2");
-		templateEN.setType(Template.TemplateType.BLOCK);
+		templateEN.setKind(Template.TemplateKind.BLOCK);
 		templateService.save(templateEN);
 		
 		templateFR = templateService.translate(templateEN, langFR);
@@ -478,7 +478,7 @@ public class InitialisationBase {
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " Twitter, Facebook, Google+, ... en");
 		templateEN.setPath("socialnetwork/socialNetwork");
-		templateEN.setType(Template.TemplateType.BLOCK);
+		templateEN.setKind(Template.TemplateKind.BLOCK);
 		templateService.save(templateEN);
 		
 		templateFR = templateService.translate(templateEN, langFR);
@@ -492,7 +492,7 @@ public class InitialisationBase {
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " advertisement description en");
 		templateEN.setPath("advertisement/advertisement");
-		templateEN.setType(Template.TemplateType.BLOCK);
+		templateEN.setKind(Template.TemplateKind.BLOCK);
 		templateService.save(templateEN);
 		
 		templateFR = templateService.translate(templateEN, langFR);
@@ -506,7 +506,7 @@ public class InitialisationBase {
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " articleTitle description en");
 		templateEN.setPath("article/title/articleTitle");
-		templateEN.setType(Template.TemplateType.BLOCK);
+		templateEN.setKind(Template.TemplateKind.BLOCK);
 		templateService.save(templateEN);
 		
 		templateFR = templateService.translate(templateEN, langFR);
@@ -520,7 +520,7 @@ public class InitialisationBase {
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " advertisement articleContent en");
 		templateEN.setPath("article/content/articleContent");
-		templateEN.setType(Template.TemplateType.BLOCK);
+		templateEN.setKind(Template.TemplateKind.BLOCK);
 		templateService.save(templateEN);
 		
 		templateFR = templateService.translate(templateEN, langFR);
@@ -534,7 +534,7 @@ public class InitialisationBase {
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " album articleContent en");
 		templateEN.setPath("nav/album/album");
-		templateEN.setType(Template.TemplateType.BLOCK);
+		templateEN.setKind(Template.TemplateKind.BLOCK);
 		templateService.save(templateEN);
 		
 		templateFR = templateService.translate(templateEN, langFR);
@@ -548,7 +548,7 @@ public class InitialisationBase {
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " blockTest1 articleContent en");
 		templateEN.setPath("test/blockTest1");
-		templateEN.setType(Template.TemplateType.BLOCK);
+		templateEN.setKind(Template.TemplateKind.BLOCK);
 		templateService.save(templateEN);
 		
 		templateFR = templateService.translate(templateEN, langFR);
@@ -562,7 +562,7 @@ public class InitialisationBase {
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " blockTest2 articleContent en");
 		templateEN.setPath("test/blockTest2");
-		templateEN.setType(Template.TemplateType.BLOCK);
+		templateEN.setKind(Template.TemplateKind.BLOCK);
 		templateService.save(templateEN);
 		
 		templateFR = templateService.translate(templateEN, langFR);
@@ -576,7 +576,7 @@ public class InitialisationBase {
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " blockTest3 articleContent en");
 		templateEN.setPath("test/subtest/blockTest3");
-		templateEN.setType(Template.TemplateType.BLOCK);
+		templateEN.setKind(Template.TemplateKind.BLOCK);
 		templateService.save(templateEN);
 		
 		templateFR = templateService.translate(templateEN, langFR);
@@ -590,7 +590,7 @@ public class InitialisationBase {
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " description en");
 		templateEN.setPath("map/map");
-		templateEN.setType(Template.TemplateType.BLOCK);
+		templateEN.setKind(Template.TemplateKind.BLOCK);
 		templateService.save(templateEN);
 		
 		templateFR = templateService.translate(templateEN, langFR);
@@ -605,7 +605,7 @@ public class InitialisationBase {
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " description en");
 		templateEN.setPath("nav/horizontal/horizontal");
-		templateEN.setType(Template.TemplateType.BLOCK);
+		templateEN.setKind(Template.TemplateKind.BLOCK);
 		templateService.save(templateEN);
 		
 		templateFR = templateService.translate(templateEN, langFR);
@@ -620,7 +620,7 @@ public class InitialisationBase {
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " description en");
 		templateEN.setPath("vectormap/fra/vectorMapFra");
-		templateEN.setType(Template.TemplateType.BLOCK);
+		templateEN.setKind(Template.TemplateKind.BLOCK);
 		templateService.save(templateEN);
 		
 		templateFR = templateService.translate(templateEN, langFR);
@@ -635,7 +635,7 @@ public class InitialisationBase {
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " description en");
 		templateEN.setPath("tests/cache/cache");
-		templateEN.setType(Template.TemplateType.BLOCK);
+		templateEN.setKind(Template.TemplateKind.BLOCK);
 		templateService.save(templateEN);
 		
 		templateFR = templateService.translate(templateEN, langFR);
@@ -660,7 +660,7 @@ public class InitialisationBase {
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " Page Block article description en");
 		templateEN.setPath("article/article");
-		templateEN.setType(Template.TemplateType.PAGEBLOCK);
+		templateEN.setKind(Template.TemplateKind.PAGEBLOCK);
 		templateEN.setSchema(nSchemaService.findById(1));
 		templateService.save(templateEN);
 		
@@ -675,7 +675,7 @@ public class InitialisationBase {
 		templateEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		templateEN.setDescription(name + " Page Block article2 description en");
 		templateEN.setPath("article/article2");
-		templateEN.setType(Template.TemplateType.PAGEBLOCK);
+		templateEN.setKind(Template.TemplateKind.PAGEBLOCK);
 		templateEN.setSchema(nSchemaService.findById(1));
 		templateService.save(templateEN);
 		
@@ -1118,7 +1118,7 @@ public class InitialisationBase {
 				template.setMetaTitle("{0}");
 				template.setMetaDescription("MetaDescription");
 				template.setPath(path);
-				template.setType(Template.TemplateType.PAGE);
+				template.setKind(Template.TemplateKind.PAGE);
 				templateService.save(template);
 				first = template;
 			} else {
@@ -1149,7 +1149,7 @@ public class InitialisationBase {
 				template.setName(name + "_" + lang.getCode().toUpperCase());
 				template.setDescription(name + " PageBlock description " + lang.getCode());
 				template.setPath(path);
-				template.setType(Template.TemplateType.PAGEBLOCK);
+				template.setKind(Template.TemplateKind.PAGEBLOCK);
 				template.setSchema(nSchema);
 				templateService.save(template);
 				first = template;
@@ -1180,7 +1180,7 @@ public class InitialisationBase {
 				template.setName(name + "_" + lang.getCode().toUpperCase());
 				template.setDescription(name + " Block description " + lang.getCode());
 				template.setPath(path);
-				template.setType(Template.TemplateType.BLOCK);
+				template.setKind(Template.TemplateKind.BLOCK);
 				template.setSchema(nSchema);
 				templateService.save(template);
 				first = template;
@@ -1378,12 +1378,14 @@ public class InitialisationBase {
 		Map<Lang, Translation> mList = mkModel("@bo_model_list", "default/default");
 		Map<Lang, Translation> mView = mkModel("@bo_model_view", "default/default");
 		Map<Lang, Translation> mEdit = mkModel("@bo_model_edit", "default/default");
+
 		
 		// Pages
 		Map<Lang, Translation> pgHome = mkPage("@bo_page_home", "home", mHome);
 		Map<Lang, Translation> pgList = mkPage("@bo_page_list", "default", mList);
 		Map<Lang, Translation> pgView = mkPage("@bo_page_view", "default", mView);
 		Map<Lang, Translation> pgEdit = mkPage("@bo_page_edit", "default", mEdit);
+
 		
 		// PageBlocks
 		Map<Lang, Translation> pbHeader = mkPageBlock("@bo_pageblock_header", "header/header");
@@ -1402,7 +1404,7 @@ public class InitialisationBase {
 		Map<Lang, Translation> bList = mkBlock("@bo_block_list", "list/list");
 		Map<Lang, Translation> bView = mkBlock("@bo_block_view", "view/view");
 		Map<Lang, Translation> bEdit = mkBlock("@bo_block_edit", "edit/edit");
-		
+
 		
 		
 		
@@ -1420,8 +1422,7 @@ public class InitialisationBase {
 		Map<Lang, MapTemplate> mtHeaderEdit = addMapTemplate(mEdit, pbHeader, pHeader);
 		Map<Lang, MapTemplate> mtArticleEdit = addMapTemplate(mEdit, bEdit, pArticle);
 		Map<Lang, MapTemplate> mtFooterEdit = addMapTemplate(mEdit, pbFooter, pFooter);
-		
-		
+	
 	}
 	
 	

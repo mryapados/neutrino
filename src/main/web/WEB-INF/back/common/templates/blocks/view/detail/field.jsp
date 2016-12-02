@@ -1,13 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="my" uri="/WEB-INF/taglibs/neutrino.tld" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <c:set var="finalMaxElement" value="3" />
 
 <c:choose>
+	<c:when test="${finalFieldType eq 'HTML'}">
+		<c:out value="${finalObject}" escapeXml="false"/>
+	</c:when>
 	<c:when test="${finalFieldType eq 'DATETIME'}">
 		<fmt:formatDate value="${finalObject}"/>
 	</c:when>
@@ -56,7 +59,7 @@
 				</c:forEach>
 				<c:if test="${size > finalMaxElement}">
 					<li>
-						<strong><a href="#"><c:out value="${size - finalMaxElement}"/> autres résultats...</a></strong>
+						<strong><a href="#"><c:out value="${size - finalMaxElement}"/> <s:message code="bo.otherresults" text="Others results..." /></a></strong>
 					</li>
 				</c:if>
 			</ul>

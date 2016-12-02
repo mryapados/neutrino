@@ -24,7 +24,7 @@ import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.TranslationProvider;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
-import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateType;
+import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateKind;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.CacheService;
 import fr.cedricsevestre.service.engine.translation.TranslationService;
@@ -113,9 +113,9 @@ public class TemplateService extends TranslationService<Template>{
 	}
 	
 	public String pathType(Template template) throws ServiceException{
-		if (template.getType() == TemplateType.BLOCK) return "blocks";
-		else if (template.getType() == TemplateType.PAGE) return "pages";
-		else if (template.getType() == TemplateType.PAGEBLOCK) return "pageblocks";
+		if (template.getKind() == TemplateKind.BLOCK) return "blocks";
+		else if (template.getKind() == TemplateKind.PAGE) return "pages";
+		else if (template.getKind() == TemplateKind.PAGEBLOCK) return "pageblocks";
 		else throw new ServiceException("erreur pathType Template");
 	}
 	
@@ -186,7 +186,7 @@ public class TemplateService extends TranslationService<Template>{
 		translated.setTranslation(translation);
 		translated.setName(template.getName());
 		translated.setPath(template.getPath());
-		translated.setType(template.getType());
+		translated.setKind(template.getKind());
 		translated.setSchema(template.getSchema());
 //		for (MapTemplate models : baseObject.getModels()) {
 //			// TODO

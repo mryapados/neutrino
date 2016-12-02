@@ -33,15 +33,15 @@ public class Template extends Translation {
 	private static final long serialVersionUID = 1L;
 
 	// PAGE = Model ; Block = block ; PAGEBLOCK = Set of elements (idem PAGE)
-	public enum TemplateType{
+	public enum TemplateKind{
 		PAGE, BLOCK, PAGEBLOCK
 	}
 	
-	@BOField(type = ValueType.ENUM, ofEnum = TemplateType.class, inList = false)
+	@BOField(type = ValueType.ENUM, ofEnum = TemplateKind.class, inList = false)
 	@NotNull
 	@Column
 	@Enumerated(EnumType.STRING)
-	private TemplateType type;
+	private TemplateKind kind;
 	
 	@BOField(type = ValueType.VARCHAR255, inList = false)
 	@NotNull
@@ -83,11 +83,11 @@ public class Template extends Translation {
 		super();
 	}
 
-	public Template(Integer id, String name, Date dateAdd, Date dateUpdated, String description, Lang lang, TemplateType type, String path,
+	public Template(Integer id, String name, Date dateAdd, Date dateUpdated, String description, Lang lang, TemplateKind type, String path,
 			Set<MapTemplate> models, Set<MapTemplate> blocks, String metaDescription, String metaTitle,
 			String metaKeyWords) {
 		super(id, name, dateAdd, dateUpdated, description, lang);
-		this.type = type;
+		this.kind = type;
 		this.path = path;
 		this.models = models;
 		this.blocks = blocks;
@@ -98,12 +98,12 @@ public class Template extends Translation {
 	
 	
 
-	public TemplateType getType() {
-		return type;
+	public TemplateKind getKind() {
+		return kind;
 	}
 
-	public void setType(TemplateType type) {
-		this.type = type;
+	public void setKind(TemplateKind kind) {
+		this.kind = kind;
 	}
 
 	public String getPath() {

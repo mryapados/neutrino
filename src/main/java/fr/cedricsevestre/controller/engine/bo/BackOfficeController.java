@@ -68,19 +68,13 @@ public class BackOfficeController extends AbtractController {
 	public static final String BO_NEW_URL = "new/";
 	public static final String BO_NEW_PAGE = "@bo_page_new";
 	
-	public static final String NO_TRANSLATION_TYPE = "NoTranslation";
-	public static final String TRANSLATION_TYPE = "Translation";
-	
-	public static final String SAVEURL = "save/";
-	
 	private Folder getBOFolder() throws JspException{
 		try {
-			return common.getFolder("back");
+			return common.getFolder(Common.BACK);
 		} catch (ServiceException e) {
 			throw new JspException("Can't obtain BO folder", e);
 		}
 	}
-	
 	
 	@RequestMapping(value = BO_HOME_URL, method = RequestMethod.GET)
 	public ModelAndView home() throws JspException   {
@@ -114,19 +108,6 @@ public class BackOfficeController extends AbtractController {
 		}
 		return modelAndView;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	@RequestMapping(value = BO_EDIT_URL, method = RequestMethod.GET)
 	public ModelAndView edit(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id) throws JspException   {
@@ -135,111 +116,61 @@ public class BackOfficeController extends AbtractController {
 	
 	@RequestMapping(value = BO_EDIT_URL, method = RequestMethod.POST)
 	public ModelAndView save(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id, @Valid @ModelAttribute("object") IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
-		Folder folder = getBOFolder();
 		ModelAndView modelAndView = null;
-
-		System.out.println("HasError " + result.hasErrors());
 		if (result.hasErrors()) {
-			
-			System.out.println(result.getAllErrors().toString());
-			
 			modelAndView = edit(type, id, true);
 		} else{
-			
 			try {
-				Template template = (Template) data;
 				backOfficeService.saveData(data);
-				modelAndView = new ModelAndView("redirect:list.html");
-
-				
-//				modelAndView = new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_EDIT_URL);
-//				redirectAttributes.addAttribute("type", type);
-//				redirectAttributes.addAttribute("id", id);
-//				redirectAttributes.addAttribute("saveError", true);
-				System.out.println("Template path = " + template.getPath());
-				System.out.println("Enter in save !!!!!");
-				System.out.println("Translation name = " + data.getName());
-//				<script></script>
+				modelAndView = new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_VIEW_URL);
+				redirectAttributes.addAttribute("type", type);
+				redirectAttributes.addAttribute("id", id);
 				
 			} catch (ServiceException e) {
 				throw new JspException(e);
 			}
-			
-			
 		}
-
 		return modelAndView;
 	}
+
 	
 	
 	
-	@RequestMapping(value = BO_EDIT_URL + TRANSLATION_TYPE + "/" + SAVEURL, method = RequestMethod.POST)
-	public ModelAndView translationSave(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id, @Valid @ModelAttribute("object") Translation data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
-		Folder folder = getBOFolder();
+	
+	
+	@RequestMapping(value = BO_NEW_URL, method = RequestMethod.GET)
+	public ModelAndView add(@RequestParam("type") String type, @RequestParam(value = "id", required = false) Integer id) throws JspException   {
+		if (id == null) id = 0;
+		return add(type, id, false);
+	}
+	
+	@RequestMapping(value = BO_NEW_URL, method = RequestMethod.POST)
+	public ModelAndView add(@RequestParam("type") String type, @RequestParam(value = "id", required = false) Integer id, @Valid @ModelAttribute("object") IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
+		if (id == null) id = 0;
 		ModelAndView modelAndView = null;
-
-		System.out.println("HasError " + result.hasErrors());
 		if (result.hasErrors()) {
-			
-			System.out.println(result.getAllErrors().toString());
-			
-			modelAndView = edit(type, id, true);
+			modelAndView = add(type, id, true);
 		} else{
-			
 			try {
-				Template template = (Template) data;
-				backOfficeService.saveData(data);
-				modelAndView = new ModelAndView("redirect:list.html");
-
-				
-//				modelAndView = new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_EDIT_URL);
-//				redirectAttributes.addAttribute("type", type);
-//				redirectAttributes.addAttribute("id", id);
-//				redirectAttributes.addAttribute("saveError", true);
-				System.out.println("Template path = " + template.getPath());
-				System.out.println("Enter in save !!!!!");
-				System.out.println("Translation name = " + data.getName());
-				System.out.println("Translation dateAdded = " + data.getDateAdded());
-				System.out.println("Translation dateUpdated = " + data.getDateUpdated());
-//				<script></script>
-				
+				data.setId(null);
+				IdProvider res = backOfficeService.saveData(data);				
+				modelAndView = new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_VIEW_URL);
+				redirectAttributes.addAttribute("type", type);
+				redirectAttributes.addAttribute("id", res.getId());
 			} catch (ServiceException e) {
 				throw new JspException(e);
 			}
-			
-			
 		}
-
 		return modelAndView;
 	}
 	
-	@RequestMapping(value = BO_EDIT_URL + NO_TRANSLATION_TYPE + "/" + SAVEURL, method = RequestMethod.POST)
-	public ModelAndView noTranslationSave(@Valid @ModelAttribute("object") NoTranslation data, BindingResult result) throws JspException   {
-		
-		
-		
-		System.out.println("HasError " + result.hasErrors());
-		if (result.hasErrors()) {
-			System.out.println(result.getAllErrors().toString());
-
-		}
-		
-		System.out.println("Enter in save !!!!!");
-		
-		System.out.println("NoTranslation name = " + data.getName());
-		System.out.println("NoTranslation dateAdded = " + data.getDateAdded());
-		System.out.println("NoTranslation dateUpdated = " + data.getDateUpdated());
-		
-		Folder folder = getBOFolder();
-		ModelAndView modelAndView = null;
-		
-		
-		
-		return modelAndView;
+	public ModelAndView add(String type, Integer id, Boolean saveError) throws JspException   {
+		return edit(type, id, true, saveError);
 	}
-	
-
 	public ModelAndView edit(String type, Integer id, Boolean saveError) throws JspException   {
+		return edit(type, id, false, saveError);
+	}
+	public ModelAndView edit(String type, Integer id, Boolean isNew, Boolean saveError) throws JspException   {
 		Folder folder = getBOFolder();
 		ModelAndView modelAndView = null;
 		try {
@@ -248,7 +179,13 @@ public class BackOfficeController extends AbtractController {
 			modelAndView.addObject("objectType", object.getSimpleName());
 			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
 
-			NData<IdProvider> tData = backOfficeService.findOne(object, id);
+			NData<IdProvider> tData = null;
+			if (isNew){
+				tData = backOfficeService.copy(object, id);
+			} else {
+				tData = backOfficeService.findOne(object, id);
+			}
+			
 			modelAndView.addObject("fields", tData.getFields());
 			
 			if (saveError == null || saveError == false){
@@ -266,9 +203,7 @@ public class BackOfficeController extends AbtractController {
 		}
 		return modelAndView;
 	}
-	
-	
-	
+
 	@RequestMapping(value = BO_VIEW_URL, method = RequestMethod.GET)
 	public ModelAndView view(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id) throws JspException   {
 		Folder folder = getBOFolder();
@@ -291,8 +226,6 @@ public class BackOfficeController extends AbtractController {
 				Translation translation = (Translation) tData.getObjectData();
 				modelAndView.addObject("objectLang", translation.getLang());
 			}
-			
-				
 
 		} catch (ServiceException e) {
 			throw new JspException(e);

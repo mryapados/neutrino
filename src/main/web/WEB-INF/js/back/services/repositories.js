@@ -17,10 +17,10 @@
 //	});
 	bModule.factory("TemplateRepository", function($http, PATH) {
 		return {
-			exist: function(context, type, path, name) {
+			exist: function(context, kind, path, name) {
 				return $http.get(
 					PATH.URL_SERVER_REST + '@back/templates/exist/', 
-					{params:{'context': context, 'type': type, 'path': path, 'name': name}}
+					{params:{'context': context, 'kind': kind, 'path': path, 'name': name}}
 				).then(function(response) {
 					return response.data;
 				})

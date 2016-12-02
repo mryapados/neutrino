@@ -208,8 +208,8 @@
 		self.getTemplates = function() {
 			return TemplateResource.getAll().$promise;
 		};
-		self.getExist = function(context, type, path, name) {
-			return TemplateRepository.exist(context, type, path, name);
+		self.getExist = function(context, kind, path, name) {
+			return TemplateRepository.exist(context, kind, path, name);
 		};
 		self.saveTemplate = function(template) {
 

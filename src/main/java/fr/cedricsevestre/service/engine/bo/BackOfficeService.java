@@ -269,7 +269,26 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 		return new NData<T>(nMapFields, getData(entity, id));
 	}
 	
-	
+	@SuppressWarnings("unchecked")
+	@Override
+	public NData<T> copy(Class<?> entity, Integer id) throws ServiceException {
+		List<Field> fields = getFields(entity);
+		Map<String, Map<String, List<NField>>> nMapFields = getMapNField(fields);
+		T data = null;
+		if (id == 0){
+			try {
+				data = (T) entity.newInstance();
+			} catch (InstantiationException e) {
+				throw new ServiceException("copy -> Error", e) ;
+			} catch (IllegalAccessException e) {
+				throw new ServiceException("copy -> Error", e) ;
+			} 
+		} else {
+			data = getData(entity, id);
+			data.setId(null);
+		}
+		return new NData<T>(nMapFields, data);
+	}
 	
 	
 	

@@ -2,7 +2,7 @@ var bModule = angular.module("backApp");
 
 bModule.controller('TemplateModalCtrl', function($scope, $uibModalInstance, PATH, template, page, TemplateService) {	
 	$scope.exist = function() {
-		return TemplateService.getExist(page.context, template.type, template.path, template.name)
+		return TemplateService.getExist(page.context, template.kind, template.path, template.name)
 		.then(function(data) {
 			$scope.scriptExist = {
 				exist: data, 

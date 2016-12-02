@@ -26,7 +26,7 @@ import fr.cedricsevestre.entity.engine.independant.objects.User;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
-import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateType;
+import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateKind;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.independant.objects.NDataService;
 import fr.cedricsevestre.service.engine.independant.objects.PositionService;
@@ -147,7 +147,7 @@ public class Block extends TagSupport implements IIncludeJSP {
 					if (Common.DEBUG) out.print("<p class=\"debug\">" + "path = " + path + "</p>");
 					pageContext.setAttribute(Attributes.ACTIVEBLOCK.toString(), activeBlock, PageContext.REQUEST_SCOPE);
 					
-					if (activeBlock.getType() == TemplateType.PAGEBLOCK){
+					if (activeBlock.getKind() == TemplateKind.PAGEBLOCK){
 						pageContext.setAttribute(Attributes.PARENTPAGEBLOCK.toString(), activeBlock, PageContext.REQUEST_SCOPE);
 						pageContext.include(path.toString());
 						pageContext.removeAttribute(Attributes.PARENTPAGEBLOCK.toString());

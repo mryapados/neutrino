@@ -6,7 +6,7 @@ bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateS
 		var position = $scope.position;
 		var activeObject = $scope.activeobject;
 
-		$scope.modelType = model.type;	
+		$scope.modelKind = model.kind;	
 		
 		BlockService.getBlocksForModelPosition(model.name, activeObject, position).then(function(data) {
 			$scope.blocks = data;

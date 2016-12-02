@@ -11,4 +11,5 @@ public interface IBackOfficeService {
 	NDatas<?> findAll(Class<?> entity, Pageable pageRequest) throws ServiceException;
 	
 	NData<?> findOne(Class<?> entity, Integer id) throws ServiceException;
+	NData<?> copy(Class<?> entity, Integer id) throws ServiceException;
 }
