@@ -15,6 +15,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
@@ -51,10 +53,12 @@ public class Template extends Translation {
 
 	@BOField(type = ValueType.COLLECTION, ofType = ValueType.OBJECT)
 	@OneToMany(mappedBy = "block")
+	@Cascade(CascadeType.DELETE)
 	private Set<MapTemplate> models;
 
 	@BOField(type = ValueType.COLLECTION, ofType = ValueType.OBJECT)
 	@OneToMany(mappedBy = "model")
+	@Cascade(CascadeType.DELETE)
 	private Set<MapTemplate> blocks;
 	
 	@BOField(type = ValueType.TEXT, tabName = "01_seo", groupName = "02_group2")

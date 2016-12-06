@@ -13,7 +13,9 @@
 		<s:message code="bo.list" text="${objectType}" />
 		<s:message code="bo.${objectType}.entity.name" text="${objectType}" />
 	</h1>
-	<form:form id="delete" action="" method="post">
+	
+	<c:url var="deleteUrl" value="/bo/del/?type=${objectType}"/>
+	<form:form id="delete" action="${deleteUrl}" method="post" modelAttribute="datas">
 		<div class="panel-group">
 			<div class="panel panel-primary">
 				<div class="panel-heading">	
@@ -30,7 +32,7 @@
 							<tr>
 								<th><input type="checkbox" id="select_all"></th>
 								<th><s:message code="bo.field.action" text="Action" /></th>
-								<c:forEach var="field" items="${datas.fields}" varStatus="status">
+								<c:forEach var="field" items="${fields}" varStatus="status">
 									<c:if test="${field.inList}">
 										<s:message var="defaultMessage" code="bo.field.${field.name}" text="${field.name}" />
 										<th><s:message code="bo.${objectType}.field.${field.name}" text="${defaultMessage}" /></th>
@@ -39,9 +41,11 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="object" items="${datas.objectDatas.content}" varStatus="status">
+							<c:forEach var="object" items="${datas}" varStatus="status">
 								<tr>
-									<td><input type="checkbox" name="${objectType}_${object.id}"></td>
+									<td>
+										<input type="checkbox" name="id" value="${object.id}"/>
+									</td>
 									<td class="text-center">
 										<c:url var="url" value="/bo/edit/" scope="request">
 											<c:param name="type" value="${objectType}"/>
@@ -55,7 +59,7 @@
 										</c:url>
 										<a href="${url}" title="see"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
 									</td>
-									<c:forEach var="field" items="${datas.fields}" varStatus="status">
+									<c:forEach var="field" items="${fields}" varStatus="status">
 										<c:if test="${field.inList}">
 											<td>
 												<c:set var="finalParentObject" value="${object}" scope="request" />

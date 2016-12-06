@@ -13,8 +13,9 @@ public class IdProviderConverter implements Converter <String, IdProvider> {
 	@Autowired
 	EntityLocator entityLocator;
 	
+	@Override
 	public IdProvider convert (String objectType) {
-		System.out.println("Enter in convert [IdProviderConverter]");
+		System.out.println("Enter in convert [IdProviderConverter] : " + objectType);
 		Class<?> cls = entityLocator.getEntity(objectType).getClass();
 		if (cls == null){
             throw new IllegalArgumentException ("Unknown noTranslation type:" + objectType);

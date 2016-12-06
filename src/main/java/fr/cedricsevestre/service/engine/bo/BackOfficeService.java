@@ -141,7 +141,7 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	}
 	
 	@SuppressWarnings("unchecked")
-	private T getData(Class<?> entity, Integer id) throws ServiceException{
+	public T getData(Class<?> entity, Integer id) throws ServiceException{
 				
 		try {
 			Class<?> params[] = {Integer.class};
@@ -340,5 +340,78 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 			throw new ServiceException("Error saveData", e);
 		}
 	}
+	
+	
+	
+//	@SuppressWarnings("unchecked")
+//	public T removeDatas(List<T> datas) throws ServiceException{
+//		try {
+//			
+//			
+//			
+//			
+//			
+//			
+//			
+//			
+//			
+//			
+//			
+//			
+//			Class<?> entity = datas.get(0).getClass();
+//			
+//			
+//			
+//			
+//			
+//			Class<?> params[] = { Object.class };
+//			Object paramsObj[] = { data };
+//
+//			System.out.println("LOOK FOR = " + entity.getSimpleName());
+//
+//			Object service = customServiceLocator.getService(entity.getSimpleName());
+//
+//			System.out.println("FOUND = " + service.getClass().getName());
+//
+//			Class<?> clazz = service.getClass();
+//			
+//			
+//			Method[] methods = clazz.getMethods();
+//			for (Method method : methods) {
+//				System.out.println(method.getName());
+//				
+//				Class<?>[] parameterTypes = method.getParameterTypes();
+//				for (Class<?> class1 : parameterTypes) {
+//					System.out.println("	" + class1.getName());
+//				}
+//				
+//			}
+//			
+//			
+//			
+//			Method save = clazz.getMethod("save", params);
+//			return (T) save.invoke(service, paramsObj);
+//
+//		} catch (NoSuchMethodException e) {
+//			logger.error("saveData -> NoSuchMethodException", e);
+//			throw new ServiceException("Error saveData", e);
+//		} catch (IllegalAccessException e) {
+//			logger.error("saveData -> IllegalAccessException", e);
+//			throw new ServiceException("Error saveData", e);
+//		} catch (InvocationTargetException e) {
+//			logger.error("saveData -> InvocationTargetException", e);
+//			throw new ServiceException("Error saveData", e);
+//		}
+//	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

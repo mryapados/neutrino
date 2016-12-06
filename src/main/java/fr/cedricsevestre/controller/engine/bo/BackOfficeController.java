@@ -2,6 +2,8 @@ package fr.cedricsevestre.controller.engine.bo;
 
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorSupport;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
@@ -9,7 +11,10 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -50,6 +55,19 @@ public class BackOfficeController extends AbtractController {
 	@Autowired
 	private BackOfficeService<IdProvider> backOfficeService;
 	
+	
+	
+	
+	
+	@Autowired
+	private TemplateService templateService;
+	
+	
+	
+	
+	
+	
+	
 	@Autowired
 	EntityLocator entityLocator;
 	
@@ -67,6 +85,8 @@ public class BackOfficeController extends AbtractController {
 	
 	public static final String BO_NEW_URL = "new/";
 	public static final String BO_NEW_PAGE = "@bo_page_new";
+	
+	public static final String BO_DEL_URL = "del/";
 	
 	private Folder getBOFolder() throws JspException{
 		try {
@@ -100,8 +120,12 @@ public class BackOfficeController extends AbtractController {
 			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
 			
 			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest);
-			modelAndView.addObject("datas", tDatas);
+			//modelAndView.addObject("datas", tDatas);
 			
+			
+			modelAndView.addObject("objectDatas", tDatas.getObjectDatas());
+			modelAndView.addObject("datas", tDatas.getObjectDatas().getContent());
+			modelAndView.addObject("fields", tDatas.getFields());
 
 		} catch (ServiceException e) {
 			throw new JspException(e);
@@ -109,6 +133,111 @@ public class BackOfficeController extends AbtractController {
 		return modelAndView;
 	}
 
+	
+	@RequestMapping(value = BO_DEL_URL, method = RequestMethod.POST)
+	public ModelAndView delete(@RequestParam("type") String type, @RequestParam("id") Integer[] ids) {
+
+		
+		
+		
+		
+		
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+		
+//		Class<?> object = entityLocator.getEntity(type).getClass();
+//		
+//		
+//		List<IdProvider> idProviders = new ArrayList<>();
+//		
+//		for (Integer id : ids) {
+//			IdProvider data = backOfficeService.getData(object, id);
+//			idProviders.add(data);
+//		}
+		
+
+		
+		
+		
+
+		
+		
+		
+		
+		try {
+			
+			
+			Class<?> object = entityLocator.getEntity(type).getClass();
+			
+			
+			List<Template> idProviders = new ArrayList<>();
+			
+			for (Integer id : ids) {
+				IdProvider data = backOfficeService.getData(object, id);
+				idProviders.add((Template) data);
+			}
+			
+			
+			templateService.remove(idProviders);
+			
+			
+			
+			
+			
+			
+			
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		
+		
+		ModelAndView modelAndView = null;
+		
+		
+		
+		
+
+		
+		
+		
+		
+		
+		
+		return modelAndView;
+//		try {
+//
+//			
+//		} catch (ServiceException e) {
+//
+//		}
+		
+
+	}
+	
 	@RequestMapping(value = BO_EDIT_URL, method = RequestMethod.GET)
 	public ModelAndView edit(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id) throws JspException   {
 		return edit(type, id, false);
@@ -233,6 +362,6 @@ public class BackOfficeController extends AbtractController {
 		return modelAndView;
 	}
 	
-	
+
 
 }

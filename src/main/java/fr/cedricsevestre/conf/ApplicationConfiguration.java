@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.persistence.Entity;
+import javax.servlet.jsp.PageContext;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,6 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.cedricsevestre.controller.engine.IdProviderConverter;
-import fr.cedricsevestre.controller.engine.NoTranslationConverter;
-import fr.cedricsevestre.controller.engine.TranslationConverter;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.taglib.Head;
 
@@ -53,14 +52,9 @@ import fr.cedricsevestre.taglib.Head;
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableSpringDataWebSupport
 public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
+	
 	@Autowired
     private IdProviderConverter idProviderConverter;
-	
-	@Autowired
-    private NoTranslationConverter noTranslationConverter;
-	
-	@Autowired
-    private TranslationConverter translationConverter;
 	
 	@Bean
 	public UrlBasedViewResolver urlBasedViewResolver() {
@@ -137,11 +131,6 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addFormatters(FormatterRegistry registry) {
     	registry.addConverter(idProviderConverter);
-    	
-        registry.addConverter(noTranslationConverter);
-        registry.addConverter(translationConverter);
-        
-        
     }
 	
 	

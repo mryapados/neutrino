@@ -15,6 +15,8 @@ public interface IBaseService<T> {
 
 	void remove(T base) throws ServiceException;
 
+	void remove(Iterable<T> base) throws ServiceException;
+	
 	void removeById(Integer id) throws ServiceException;
 
 	T findById(Integer id) throws ServiceException;

@@ -57,6 +57,24 @@ public abstract class BaseService<T> implements IBaseService<T>{
 	}
 
 	@Override
+	@Transactional
+	public void remove(Iterable<T> base) throws ServiceException {
+		logger.debug("appel de la methode remove Base ");
+		try {
+			baseDao.delete(base);
+		} catch (EmptyResultDataAccessException e) {
+			logger.error("erreur remove Base " + e.getMessage());
+			throw new ServiceException("Base id doesn't exist", e);
+		} catch (PersistenceException e) {
+			logger.error("erreur remove Base " + e.getMessage());
+			throw new ServiceException("erreur remove Base", e);
+		} catch (Exception e) {
+			logger.error("erreur remove Base " + e.getMessage());
+			throw new ServiceException("erreur remove Base", e);
+		}
+	}
+	
+	@Override
 	@Transactional(rollbackFor = ServiceException.class)
 	public void removeById(Integer id) throws ServiceException {
 		logger.debug("appel de la methode removeById Base id " + id);

@@ -48,7 +48,7 @@
 				Sort by <strong><c:out value="${fieldName}"/></strong> <span class="caret"></span>
 		    </button>
 			<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="${position}-sort-btn">
-				<c:forEach var="field" items="${datas.fields}" varStatus="status">
+				<c:forEach var="field" items="${fields}" varStatus="status">
 					<c:if test="${field.inList && field.type ne 'COLLECTION'}">
 						<s:message var="defaultMessage" code="bo.field.${field.name}" text="${field.name}" />
 						<s:message var="fieldName" code="bo.${objectType}.field.${field.name}" text="${defaultMessage}" />

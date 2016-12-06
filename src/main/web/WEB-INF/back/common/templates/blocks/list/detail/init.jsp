@@ -2,12 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<c:set var="pNumber" value="${datas.objectDatas.number}" scope="request"/>
-<c:set var="pNumberOfElements" value="${datas.objectDatas.numberOfElements}" scope="request"/>
+<c:set var="pNumber" value="${objectDatas.number}" scope="request"/>
+<c:set var="pNumberOfElements" value="${objectDatas.numberOfElements}" scope="request"/>
 
-<c:set var="pSize" value="${datas.objectDatas.size}" scope="request"/>
+<c:set var="pSize" value="${objectDatas.size}" scope="request"/>
 
-<c:set var="pSort" value="${datas.objectDatas.sort}" scope="request"/>
+<c:set var="pSort" value="${objectDatas.sort}" scope="request"/>
 <c:set var="pSortPart" value="${fn:split(pSort, ',')}" scope="request"/>
 
 <c:set var="pFirstSort" value="${pSortPart[0]}" scope="request"/>
@@ -16,8 +16,8 @@
 <c:set var="pFirstSortName" value="${pFirstSortPart[0]}" scope="request"/>
 <c:set var="pFirstSortDirection" value="${fn:trim(pFirstSortPart[1])}" scope="request"/>
 
-<c:set var="pTotalElements" value="${datas.objectDatas.totalElements}" scope="request"/>
-<c:set var="pTotalPages" value="${datas.objectDatas.totalPages}" scope="request"/>
+<c:set var="pTotalElements" value="${objectDatas.totalElements}" scope="request"/>
+<c:set var="pTotalPages" value="${objectDatas.totalPages}" scope="request"/>
 
 <c:set var="pBegin" value="${pNumber * pSize}" scope="request"/>
 <c:set var="pEnd" value="${pBegin + pNumberOfElements}" scope="request"/>
