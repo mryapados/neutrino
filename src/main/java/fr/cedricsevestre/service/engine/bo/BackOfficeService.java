@@ -24,9 +24,7 @@ import fr.cedricsevestre.annotation.BOField.SortType;
 import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.bean.NDatas;
 import fr.cedricsevestre.bean.NField;
-import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.entity.engine.IdProvider;
-import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.EntityLocator;
 import fr.cedricsevestre.service.engine.ServiceLocator;
@@ -42,31 +40,7 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	EntityLocator entityLocator;
 	
 	private Logger logger = Logger.getLogger(BackOfficeService.class);
-
-	@Deprecated
-	public static final String TEMPLATE = "Template";
-	@Deprecated
-	public static final String PAGE = "Page";
-	
-	
-	@Deprecated
-	public static Class<?> getEntity(String entityName) throws ServiceException{
-		System.out.println("getEntity " + entityName);
-		try {
-			switch (entityName) {
-			case TEMPLATE:
-				return Template.class;
-			case PAGE:
-				return fr.cedricsevestre.entity.engine.translation.objects.Page.class;
-			default:
-				return Class.forName(Common.CUSTOM_ENTITY_PACKAGE + "." + entityName);
-			}
-
-		} catch (ClassNotFoundException e) {
-			throw new ServiceException("erreur getEntity", e);
-		}
-	}
-	
+		
 	private List<Field> getFields(Class<?> classObject) throws ServiceException{
 		List<Field> fields = new ArrayList<>();
 		Class<?> superClass = classObject.getSuperclass();
@@ -83,30 +57,16 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 		return fields;
 	}
 
-	@Deprecated
-	private Object getFieldValue(Object object, Field field) throws ServiceException {
-	    try {
-	        field.setAccessible(true);
-	        return field.get(object);
-	    } catch (IllegalAccessException e) {
-	        logger.error("Failed to get value from field", e);
-	        throw new ServiceException("Erreur getFieldValue", e);
-	    }
-	}
-
 	@SuppressWarnings("unchecked")
 	private Page<T> getDatas(Class<?> entity, Pageable pageable) throws ServiceException{
 		try {
 			Class<?> params[] = {Pageable.class};
 			Object paramsObj[] = {pageable};
 			
-			System.out.println("LOOK FOR = " + entity.getSimpleName());
-			
+			logger.debug("getDatas -> Look for " + entity.getSimpleName());			
 			Object service = customServiceLocator.getService(entity.getSimpleName());
-			
-			
-			System.out.println("FOUND = " + service.getClass().getName());
-			
+			logger.debug("getDatas -> Entity found " + entity.getSimpleName());		
+
 			Class<?> clazz = Class.forName(service.getClass().getName());
 			Method findAll;
 			try {
@@ -147,12 +107,9 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 			Class<?> params[] = {Integer.class};
 			Object paramsObj[] = {id};
 			
-			System.out.println("LOOK FOR = " + entity.getSimpleName());
-			
+			logger.debug("getDatas -> Look for " + entity.getSimpleName());			
 			Object service = customServiceLocator.getService(entity.getSimpleName());
-
-			System.out.println("FOUND = " + service.getClass().getName());
-			
+			logger.debug("getDatas -> Entity found " + entity.getSimpleName());	
 
 			Class<?> clazz = service.getClass();
 			Method findById;
@@ -216,7 +173,6 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 			if (nType != null){
 				if (!nfTabsGroupsFields.containsKey(nType.tabName())){
 					nfTabsGroupsFields.put(nType.tabName(), new HashMap<>());
-					System.out.println(nType.tabName());
 				}
 				Map<String, List<NField>> nfGroupsFields = nfTabsGroupsFields.get((nType.tabName()));
 				
@@ -296,36 +252,16 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	public T saveData(T data) throws ServiceException{
 		try {
 			Class<?> entity = data.getClass();
-			
-			
-			
-			
-			
+
 			Class<?> params[] = { Object.class };
 			Object paramsObj[] = { data };
 
-			System.out.println("LOOK FOR = " + entity.getSimpleName());
-
+			logger.debug("getDatas -> Look for " + entity.getSimpleName());			
 			Object service = customServiceLocator.getService(entity.getSimpleName());
-
-			System.out.println("FOUND = " + service.getClass().getName());
+			logger.debug("getDatas -> Entity found " + entity.getSimpleName());	
 
 			Class<?> clazz = service.getClass();
-			
-			
-			Method[] methods = clazz.getMethods();
-			for (Method method : methods) {
-				System.out.println(method.getName());
-				
-				Class<?>[] parameterTypes = method.getParameterTypes();
-				for (Class<?> class1 : parameterTypes) {
-					System.out.println("	" + class1.getName());
-				}
-				
-			}
-			
-			
-			
+
 			Method save = clazz.getMethod("save", params);
 			return (T) save.invoke(service, paramsObj);
 
@@ -343,66 +279,41 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	
 	
 	
-//	@SuppressWarnings("unchecked")
-//	public T removeDatas(List<T> datas) throws ServiceException{
-//		try {
-//			
-//			
-//			
-//			
-//			
-//			
-//			
-//			
-//			
-//			
-//			
-//			
-//			Class<?> entity = datas.get(0).getClass();
-//			
-//			
-//			
-//			
-//			
-//			Class<?> params[] = { Object.class };
-//			Object paramsObj[] = { data };
-//
-//			System.out.println("LOOK FOR = " + entity.getSimpleName());
-//
-//			Object service = customServiceLocator.getService(entity.getSimpleName());
-//
-//			System.out.println("FOUND = " + service.getClass().getName());
-//
-//			Class<?> clazz = service.getClass();
-//			
-//			
+	@SuppressWarnings("unchecked")
+	public T removeDatas(List<T> datas) throws ServiceException{
+		try {
+			Class<?> entity = datas.get(0).getClass();
+
+			Class<?> params[] = { Iterable.class };
+			Object paramsObj[] = { datas };
+
+			logger.debug("getDatas -> Look for " + entity.getSimpleName());			
+			Object service = customServiceLocator.getService(entity.getSimpleName());
+			logger.debug("getDatas -> Entity found " + entity.getSimpleName());	
+
+			Class<?> clazz = service.getClass();
 //			Method[] methods = clazz.getMethods();
 //			for (Method method : methods) {
 //				System.out.println(method.getName());
-//				
 //				Class<?>[] parameterTypes = method.getParameterTypes();
 //				for (Class<?> class1 : parameterTypes) {
 //					System.out.println("	" + class1.getName());
 //				}
-//				
 //			}
-//			
-//			
-//			
-//			Method save = clazz.getMethod("save", params);
-//			return (T) save.invoke(service, paramsObj);
-//
-//		} catch (NoSuchMethodException e) {
-//			logger.error("saveData -> NoSuchMethodException", e);
-//			throw new ServiceException("Error saveData", e);
-//		} catch (IllegalAccessException e) {
-//			logger.error("saveData -> IllegalAccessException", e);
-//			throw new ServiceException("Error saveData", e);
-//		} catch (InvocationTargetException e) {
-//			logger.error("saveData -> InvocationTargetException", e);
-//			throw new ServiceException("Error saveData", e);
-//		}
-//	}
+			Method remove = clazz.getMethod("remove", params);
+			return (T) remove.invoke(service, paramsObj);
+			
+		} catch (NoSuchMethodException e) {
+			logger.error("saveData -> NoSuchMethodException", e);
+			throw new ServiceException("Error saveData", e);
+		} catch (IllegalAccessException e) {
+			logger.error("saveData -> IllegalAccessException", e);
+			throw new ServiceException("Error saveData", e);
+		} catch (InvocationTargetException e) {
+			logger.error("saveData -> InvocationTargetException", e);
+			throw new ServiceException("Error saveData", e);
+		}
+	}
 	
 	
 	

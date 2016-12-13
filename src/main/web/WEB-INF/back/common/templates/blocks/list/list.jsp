@@ -14,8 +14,8 @@
 		<s:message code="bo.${objectType}.entity.name" text="${objectType}" />
 	</h1>
 	
-	<c:url var="deleteUrl" value="/bo/del/?type=${objectType}"/>
-	<form:form id="delete" action="${deleteUrl}" method="post" modelAttribute="datas">
+	<c:url var="deleteUrl" value="/bo/removes/?type=${objectType}"/>
+	<form:form id="delete" action="${deleteUrl}" method="post">
 		<div class="panel-group">
 			<div class="panel panel-primary">
 				<div class="panel-heading">	

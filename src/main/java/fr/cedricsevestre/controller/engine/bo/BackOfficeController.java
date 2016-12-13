@@ -58,9 +58,7 @@ public class BackOfficeController extends AbtractController {
 	
 	
 	
-	
-	@Autowired
-	private TemplateService templateService;
+
 	
 	
 	
@@ -86,7 +84,8 @@ public class BackOfficeController extends AbtractController {
 	public static final String BO_NEW_URL = "new/";
 	public static final String BO_NEW_PAGE = "@bo_page_new";
 	
-	public static final String BO_DEL_URL = "del/";
+	public static final String BO_REMOVES_URL = "removes/";
+	public static final String BO_REMOVE_URL = "remove/";
 	
 	private Folder getBOFolder() throws JspException{
 		try {
@@ -110,7 +109,7 @@ public class BackOfficeController extends AbtractController {
 	}
 
 	@RequestMapping(value = BO_LIST_URL, method = RequestMethod.GET)
-	public ModelAndView list(@ModelAttribute("type") String type, Pageable pageRequest) throws JspException   {
+	public ModelAndView list(@ModelAttribute("type") String type, Pageable pageRequest) throws JspException {
 		Folder folder = getBOFolder();
 		ModelAndView modelAndView = null;
 		try {
@@ -120,9 +119,7 @@ public class BackOfficeController extends AbtractController {
 			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
 			
 			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest);
-			//modelAndView.addObject("datas", tDatas);
-			
-			
+
 			modelAndView.addObject("objectDatas", tDatas.getObjectDatas());
 			modelAndView.addObject("datas", tDatas.getObjectDatas().getContent());
 			modelAndView.addObject("fields", tDatas.getFields());
@@ -134,108 +131,41 @@ public class BackOfficeController extends AbtractController {
 	}
 
 	
-	@RequestMapping(value = BO_DEL_URL, method = RequestMethod.POST)
-	public ModelAndView delete(@RequestParam("type") String type, @RequestParam("id") Integer[] ids) {
-
-		
-		
-		
-		
-		
-	
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
-		
-//		Class<?> object = entityLocator.getEntity(type).getClass();
-//		
-//		
-//		List<IdProvider> idProviders = new ArrayList<>();
-//		
-//		for (Integer id : ids) {
-//			IdProvider data = backOfficeService.getData(object, id);
-//			idProviders.add(data);
-//		}
-		
-
-		
-		
-		
-
-		
-		
-		
-		
+	@RequestMapping(value = BO_REMOVE_URL, method = RequestMethod.POST) 
+	public ModelAndView delete(@ModelAttribute("type") String type, @RequestParam("id") Integer id, RedirectAttributes redirectAttributes) throws JspException {
 		try {
-			
-			
 			Class<?> object = entityLocator.getEntity(type).getClass();
+			List<IdProvider> idProviders = new ArrayList<>();
 			
+			idProviders.add(backOfficeService.getData(object, id));
+
+			backOfficeService.removeDatas(idProviders);
+			redirectAttributes.addAttribute("type", type);
+			return new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_LIST_URL);
 			
-			List<Template> idProviders = new ArrayList<>();
+		} catch (ServiceException e) {
+			throw new JspException(e);
+		}
+	}
+	
+	@RequestMapping(value = BO_REMOVES_URL, method = RequestMethod.POST) 
+	public ModelAndView delete(@RequestParam("type") String type, @RequestParam("id") Integer[] ids, RedirectAttributes redirectAttributes) throws JspException {
+		try {
+			Class<?> object = entityLocator.getEntity(type).getClass();
+			List<IdProvider> idProviders = new ArrayList<>();
 			
 			for (Integer id : ids) {
 				IdProvider data = backOfficeService.getData(object, id);
-				idProviders.add((Template) data);
+				idProviders.add(data);
 			}
-			
-			
-			templateService.remove(idProviders);
-			
-			
-			
-			
-			
-			
+
+			backOfficeService.removeDatas(idProviders);
+			redirectAttributes.addAttribute("type", type);
+			return new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_LIST_URL);
 			
 		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new JspException(e);
 		}
-		
-		
-		
-		
-		
-		
-		ModelAndView modelAndView = null;
-		
-		
-		
-		
-
-		
-		
-		
-		
-		
-		
-		return modelAndView;
-//		try {
-//
-//			
-//		} catch (ServiceException e) {
-//
-//		}
-		
-
 	}
 	
 	@RequestMapping(value = BO_EDIT_URL, method = RequestMethod.GET)
