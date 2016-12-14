@@ -305,13 +305,13 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 			
 		} catch (NoSuchMethodException e) {
 			logger.error("saveData -> NoSuchMethodException", e);
-			throw new ServiceException("Error saveData", e);
+			throw new ServiceException("Error removeDatas", e);
 		} catch (IllegalAccessException e) {
 			logger.error("saveData -> IllegalAccessException", e);
-			throw new ServiceException("Error saveData", e);
+			throw new ServiceException("Error removeDatas", e);
 		} catch (InvocationTargetException e) {
 			logger.error("saveData -> InvocationTargetException", e);
-			throw new ServiceException("Error saveData", e);
+			throw new ServiceException("Error removeDatas", e);
 		}
 	}
 	

@@ -133,40 +133,45 @@ public class BackOfficeController extends AbtractController {
 	
 	@RequestMapping(value = BO_REMOVE_URL, method = RequestMethod.POST) 
 	public ModelAndView delete(@ModelAttribute("type") String type, @RequestParam("id") Integer id, RedirectAttributes redirectAttributes) throws JspException {
+		ModelAndView modelAndView = new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_LIST_URL);
+		redirectAttributes.addAttribute("type", type);
 		try {
-			Class<?> object = entityLocator.getEntity(type).getClass();
-			List<IdProvider> idProviders = new ArrayList<>();
-			
-			idProviders.add(backOfficeService.getData(object, id));
-
-			backOfficeService.removeDatas(idProviders);
-			redirectAttributes.addAttribute("type", type);
-			return new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_LIST_URL);
-			
+			delete(type,  new Integer[]{id});
+			redirectAttributes.addFlashAttribute("success", true);
 		} catch (ServiceException e) {
-			throw new JspException(e);
+			modelAndView = new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_VIEW_URL);
+			redirectAttributes.addAttribute("id", id);
+			redirectAttributes.addFlashAttribute("error", e);
+			redirectAttributes.addFlashAttribute("success", false);
 		}
+		return modelAndView;
 	}
 	
 	@RequestMapping(value = BO_REMOVES_URL, method = RequestMethod.POST) 
 	public ModelAndView delete(@RequestParam("type") String type, @RequestParam("id") Integer[] ids, RedirectAttributes redirectAttributes) throws JspException {
+		ModelAndView modelAndView = new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_LIST_URL);
 		try {
-			Class<?> object = entityLocator.getEntity(type).getClass();
-			List<IdProvider> idProviders = new ArrayList<>();
-			
-			for (Integer id : ids) {
-				IdProvider data = backOfficeService.getData(object, id);
-				idProviders.add(data);
-			}
-
-			backOfficeService.removeDatas(idProviders);
-			redirectAttributes.addAttribute("type", type);
-			return new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_LIST_URL);
-			
+			delete(type, ids);
+			redirectAttributes.addFlashAttribute("success", true);
 		} catch (ServiceException e) {
-			throw new JspException(e);
+			redirectAttributes.addFlashAttribute("error", e);
+			redirectAttributes.addFlashAttribute("success", false);
 		}
+		redirectAttributes.addAttribute("type", type);
+		return modelAndView;
 	}
+	
+	public void delete(String type, Integer[] ids) throws ServiceException {
+		Class<?> object = entityLocator.getEntity(type).getClass();
+		List<IdProvider> idProviders = new ArrayList<>();
+		
+		for (Integer id : ids) {
+			IdProvider data = backOfficeService.getData(object, id);
+			idProviders.add(data);
+		}
+		backOfficeService.removeDatas(idProviders);
+	}
+
 	
 	@RequestMapping(value = BO_EDIT_URL, method = RequestMethod.GET)
 	public ModelAndView edit(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id) throws JspException   {

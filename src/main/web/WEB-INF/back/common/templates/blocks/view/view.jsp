@@ -12,6 +12,12 @@
 		<s:message code="bo.${objectType}.entity.name" text="${objectType}" />
 	</h1>
 	
+	<c:if test="${not empty error}">
+		<div class="alert alert-danger alert-dismissable">
+			<strong><s:message code="bo.error.remove" text="Remove error : " /></strong><br />
+			${error.message}
+		</div>
+	</c:if>
 	
 	<div class="row">
 		<div class="col-xs-12">
@@ -20,9 +26,7 @@
 			</jsp:include>
 		</div>
 	</div>
-	
-	
-	
+
 	<data-uib-tabset active="active">
 	
 		<c:forEach var="tab" items="${fields}" varStatus="status">

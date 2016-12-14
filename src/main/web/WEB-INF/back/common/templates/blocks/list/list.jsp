@@ -11,9 +11,22 @@
 <div class="list-object">
 	<h1>
 		<s:message code="bo.list" text="${objectType}" />
-		<s:message code="bo.${objectType}.entity.name" text="${objectType}" />
+		<s:message code="bo.${objectType}.entity.name" text="${objectType}" />		
 	</h1>
 	
+	<c:if test="${not empty error}">
+		<div class="alert alert-danger alert-dismissable">
+			<strong><s:message code="bo.error.remove" text="Remove error : " /></strong><br />
+			${error.message}
+		</div>
+	</c:if>
+	<c:if test="${not empty success && success}">
+		<div class="alert alert-success alert-dismissable">
+			<strong><s:message code="bo.success.remove" text="The item has been removed." /></strong><br />
+			${error.message}
+		</div>
+	</c:if>
+		
 	<c:url var="deleteUrl" value="/bo/removes/?type=${objectType}"/>
 	<form:form id="delete" action="${deleteUrl}" method="post">
 		<div class="panel-group">
