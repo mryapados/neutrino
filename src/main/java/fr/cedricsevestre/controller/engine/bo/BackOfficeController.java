@@ -298,5 +298,60 @@ public class BackOfficeController extends AbtractController {
 	}
 	
 
+	
+	@InitBinder("object")
+	protected void initBinderIdProvider(WebDataBinder binder) {
+		System.out.println("1 - initBinderIdProvider " + binder.getFieldDefaultPrefix() + " " + binder.getFieldMarkerPrefix() + " " + binder.getFieldDefaultPrefix() + " " + binder.getObjectName() + " - " + binder.getTarget());
 
+		binder.registerCustomEditor(IdProvider.class, new PropertyEditorSupport() {
+		    @Override 
+		    public void setAsText(final String objectTypeId) throws IllegalArgumentException
+		    {
+		    	if(objectTypeId == null || objectTypeId == "") setValue(null);
+		    	else {
+			    	String[] identifier = objectTypeId.split("_");
+			    	
+			    	String objectType = identifier[0];
+			    	Class<?> cls = entityLocator.getEntity(objectType).getClass();
+		    		if (cls == null){
+		                throw new IllegalArgumentException ("Unknown idProvider type:" + objectType);
+		    		}
+
+			    	Integer id = null;
+			    	if (identifier.length > 1){
+			    		try {
+				    		id = Integer.parseInt(identifier[1]);
+						} catch (NumberFormatException e) {
+							throw new IllegalArgumentException("Can't parse " + identifier[1] + " !", e);
+						}
+			    	}
+
+			    	if (id == null){
+			    		try {
+			    			setValue((IdProvider) cls.newInstance());
+			    		} catch (InstantiationException e) {
+			    			throw new IllegalArgumentException (e.getMessage(),  e);
+			    		} catch (IllegalAccessException e) {
+			    			throw new IllegalArgumentException (e.getMessage(),  e);
+			    		} 
+			    	} else {
+			    		try {
+							setValue(backOfficeService.getData(cls, id));
+						} catch (NumberFormatException e) {
+							throw new IllegalArgumentException("Can't parse " + identifier[1] + " !", e);
+						} catch (ServiceException e) {
+							throw new IllegalArgumentException("Can't get " + cls.getName() + ", id = " + id + " !", e);
+						}
+			    	}
+		    	}
+		    }
+		    @Override
+		    public String getAsText() {
+		    	System.out.println("getAsText = " + getValue());
+			    if(getValue() == null) return "";
+			    IdProvider object = (IdProvider) getValue();
+			    return object.getObjectType() + "_" + object.getId().toString();
+		    }
+		});
+	}
 }

@@ -89,6 +89,9 @@
 	</c:when>
 	<c:when test="${finalFieldType eq 'TOBJECT' || finalFieldType eq 'NTOBJECT'}">
 		<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a>
+	
+		<form:input cssClass="form-control" type="text" path="${finalField.name}"/>
+	
 	</c:when>
 	<c:when test="${finalFieldType eq 'OBJECT'}">
 		<c:choose>
