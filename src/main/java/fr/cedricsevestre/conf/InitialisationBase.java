@@ -825,14 +825,14 @@ public class InitialisationBase {
 		albumEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		albumEN.setDescription(name + " description en");
 		albumEN.setProject(ProjectEN);
-		albumEN.setType(AlbumType.DEFAULT);
+		albumEN.setAlbumType(AlbumType.DEFAULT);
 		albumService.save(albumEN);
 		
 		Album albumFR = albumService.translate(albumEN, langFR, Album.class);
 		albumFR.setName(name + "_" + langFR.getCode().toUpperCase());
 		albumFR.setDescription(name + " description fr");
 		albumFR.setProject(ProjectFR);
-		albumFR.setType(AlbumType.DEFAULT);
+		albumFR.setAlbumType(AlbumType.DEFAULT);
 		albumService.save(albumFR);
 		
 		Integer max = 20;
@@ -842,14 +842,14 @@ public class InitialisationBase {
 			albumEN.setName(name + "_" + langEN.getCode().toUpperCase());
 			albumEN.setDescription(name + " description en");
 			albumEN.setProject(ProjectEN);
-			albumEN.setType(AlbumType.DEFAULT);
+			albumEN.setAlbumType(AlbumType.DEFAULT);
 			albumService.save(albumEN);
 			
 			albumFR = albumService.translate(albumEN, langFR, Album.class);
 			albumFR.setName(name + "_" + langFR.getCode().toUpperCase());
 			albumFR.setDescription(name + " description fr");
 			albumFR.setProject(ProjectFR);
-			albumFR.setType(AlbumType.DEFAULT);
+			albumFR.setAlbumType(AlbumType.DEFAULT);
 			albumService.save(albumFR);
 		}
 		

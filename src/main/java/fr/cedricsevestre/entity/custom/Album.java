@@ -30,7 +30,7 @@ public class Album extends Translation {
 	@NotNull
 	@Column
 	@Enumerated(EnumType.STRING)
-	private AlbumType type;
+	private AlbumType albumType;
 	
 	@BOField(type = ValueType.TOBJECT)
 	@NotNull
@@ -42,12 +42,12 @@ public class Album extends Translation {
 	@OneToMany(mappedBy = "album")
 	private List<File> files;
 
-	public AlbumType getType() {
-		return type;
+	public AlbumType getAlbumType() {
+		return albumType;
 	}
 
-	public void setType(AlbumType type) {
-		this.type = type;
+	public void setAlbumType(AlbumType type) {
+		this.albumType = type;
 	}
 
 	public Project getProject() {

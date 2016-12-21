@@ -238,8 +238,14 @@ public class BackOfficeController extends AbtractController {
 		Folder folder = getBOFolder();
 		ModelAndView modelAndView = null;
 		try {
+			System.out.println("zzzzzzzzzzzzzzzzzzzzzz type = " + type);
+			
 			modelAndView = baseView(BO_EDIT_PAGE, folder);
 			Class<?> object = entityLocator.getEntity(type).getClass();
+			
+			
+			
+			
 			modelAndView.addObject("objectType", object.getSimpleName());
 			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
 
