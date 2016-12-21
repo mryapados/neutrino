@@ -359,5 +359,43 @@ public class BackOfficeController extends AbtractController {
 			    return object.getObjectType() + "_" + object.getId().toString();
 		    }
 		});
+
+		binder.registerCustomEditor(Iterable.class, new PropertyEditorSupport() {
+		    @Override 
+		    public void setAsText(final String objectTypeId) throws IllegalArgumentException
+		    {
+		    		    	
+		    	
+		    	
+		    }
+
+		    @SuppressWarnings("unchecked")
+			@Override
+		    public String getAsText() {
+			    if(getValue() == null) return "";
+			    Iterable<Object> list = (Iterable<Object>) getValue();
+			    List<String> listString = new ArrayList<>();
+			    StringBuilder result = new StringBuilder(IdProvider.class.getName() + "=");
+			    
+			    //Convert list to Idproviders String if possible
+			    for (Object object : list) {
+			    	if (object instanceof IdProvider){
+			    		IdProvider idProvider = (IdProvider) object;		    		
+			    		result.append(idProvider.getObjectType() + "_" + idProvider.getId().toString() + ",");
+			    	} else {
+			    		//Return original list
+			    		return list.toString();
+			    	}
+				}
+			    return result.toString();
+		    }
+		});
+		
+		
+		
+		
+		
+		
+		
 	}
 }
