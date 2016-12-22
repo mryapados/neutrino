@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.validation.Valid;
 
+import org.hibernate.collection.internal.PersistentBag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
@@ -305,6 +306,46 @@ public class BackOfficeController extends AbtractController {
 	
 
 	
+	private IdProvider mkIdProvider(String objectTypeId) throws IllegalArgumentException {
+		String[] identifier = objectTypeId.split("_");
+    	
+    	String objectType = identifier[0];
+    	Class<?> cls = entityLocator.getEntity(objectType).getClass();
+		if (cls == null){
+            throw new IllegalArgumentException ("Unknown idProvider type:" + objectType);
+		}
+
+    	Integer id = null;
+    	if (identifier.length > 1){
+    		try {
+	    		id = Integer.parseInt(identifier[1]);
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException("Can't parse " + identifier[1] + " !", e);
+			}
+    	}
+
+    	if (id == null){
+    		try {
+    			return ((IdProvider) cls.newInstance());
+    		} catch (InstantiationException e) {
+    			throw new IllegalArgumentException (e.getMessage(),  e);
+    		} catch (IllegalAccessException e) {
+    			throw new IllegalArgumentException (e.getMessage(),  e);
+    		} 
+    	} else {
+    		try {
+    			return (backOfficeService.getData(cls, id));
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException("Can't parse " + identifier[1] + " !", e);
+			} catch (ServiceException e) {
+				throw new IllegalArgumentException("Can't get " + cls.getName() + ", id = " + id + " !", e);
+			}
+    	}
+	}
+	
+	
+	
+	
 	@InitBinder("object")
 	protected void initBinderIdProvider(WebDataBinder binder) {
 		System.out.println("1 - initBinderIdProvider " + binder.getFieldDefaultPrefix() + " " + binder.getFieldMarkerPrefix() + " " + binder.getFieldDefaultPrefix() + " " + binder.getObjectName() + " - " + binder.getTarget());
@@ -315,40 +356,7 @@ public class BackOfficeController extends AbtractController {
 		    {
 		    	if(objectTypeId == null || objectTypeId == "") setValue(null);
 		    	else {
-			    	String[] identifier = objectTypeId.split("_");
-			    	
-			    	String objectType = identifier[0];
-			    	Class<?> cls = entityLocator.getEntity(objectType).getClass();
-		    		if (cls == null){
-		                throw new IllegalArgumentException ("Unknown idProvider type:" + objectType);
-		    		}
-
-			    	Integer id = null;
-			    	if (identifier.length > 1){
-			    		try {
-				    		id = Integer.parseInt(identifier[1]);
-						} catch (NumberFormatException e) {
-							throw new IllegalArgumentException("Can't parse " + identifier[1] + " !", e);
-						}
-			    	}
-
-			    	if (id == null){
-			    		try {
-			    			setValue((IdProvider) cls.newInstance());
-			    		} catch (InstantiationException e) {
-			    			throw new IllegalArgumentException (e.getMessage(),  e);
-			    		} catch (IllegalAccessException e) {
-			    			throw new IllegalArgumentException (e.getMessage(),  e);
-			    		} 
-			    	} else {
-			    		try {
-							setValue(backOfficeService.getData(cls, id));
-						} catch (NumberFormatException e) {
-							throw new IllegalArgumentException("Can't parse " + identifier[1] + " !", e);
-						} catch (ServiceException e) {
-							throw new IllegalArgumentException("Can't get " + cls.getName() + ", id = " + id + " !", e);
-						}
-			    	}
+		    		setValue(mkIdProvider(objectTypeId));
 		    	}
 		    }
 		    @Override
@@ -362,9 +370,54 @@ public class BackOfficeController extends AbtractController {
 
 		binder.registerCustomEditor(Iterable.class, new PropertyEditorSupport() {
 		    @Override 
-		    public void setAsText(final String objectTypeId) throws IllegalArgumentException
+		    public void setAsText(final String listString) throws IllegalArgumentException
 		    {
-		    		    	
+		    	System.out.println("listString = " + listString);
+		    	if(listString == null || listString == "") setValue(null);
+		    	String[] objects = listString.split("=");
+		    	
+		    	String[] types = objects[0].split(";");
+		    	if (types.length == 2 && types[1].equals(IdProvider.class.getName())){
+		    		//Convert string to List of Idprovider if possible
+		    		try {
+
+						Class<?> clazz = Class.forName(types[0]);
+						System.out.println("try new " + clazz.getName());
+						
+						clazz.newInstance();
+						
+						
+						org.hibernate.collection.internal.PersistentBag bag = new PersistentBag();
+						
+						
+						String[] idProviders = objects[1].split(",");
+						for (String string : idProviders) {
+							bag.add(mkIdProvider(string));
+						}
+						
+						setValue(bag);
+						
+						
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InstantiationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		    		
+		    		
+		    		
+		    		
+		    	} else {
+		    		System.out.println("Set original value");
+		    		//Set original value
+		    		setValue(listString);
+		    		return;
+		    	}
 		    	
 		    	
 		    }
@@ -374,9 +427,7 @@ public class BackOfficeController extends AbtractController {
 		    public String getAsText() {
 			    if(getValue() == null) return "";
 			    Iterable<Object> list = (Iterable<Object>) getValue();
-			    List<String> listString = new ArrayList<>();
-			    StringBuilder result = new StringBuilder(IdProvider.class.getName() + "=");
-			    
+			    StringBuilder result = new StringBuilder(list.getClass().getName() + ";" + IdProvider.class.getName() + "=");
 			    //Convert list to Idproviders String if possible
 			    for (Object object : list) {
 			    	if (object instanceof IdProvider){
