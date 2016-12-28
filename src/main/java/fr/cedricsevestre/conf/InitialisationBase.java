@@ -18,6 +18,8 @@ import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.custom.Album.AlbumType;
+import fr.cedricsevestre.entity.custom.File;
+import fr.cedricsevestre.entity.custom.File.FileType;
 import fr.cedricsevestre.entity.custom.Marker;
 import fr.cedricsevestre.entity.custom.Member;
 import fr.cedricsevestre.entity.custom.Project;
@@ -37,6 +39,7 @@ import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.AlbumService;
+import fr.cedricsevestre.service.custom.FileService;
 import fr.cedricsevestre.service.custom.MarkerService;
 import fr.cedricsevestre.service.custom.MemberService;
 import fr.cedricsevestre.service.custom.ProjectService;
@@ -70,12 +73,15 @@ public class InitialisationBase {
 	
 	@Autowired
 	private TagService tagService;
-
+	
+	@Autowired
+	private FileService fileService;
+	
 	@Autowired
 	private LinkService linkService;
 	
-//	@Autowired
-//	private MarkerService markerService;
+	@Autowired
+	private MarkerService markerService;
 	
 	@Autowired
 	private LangService langService;
@@ -126,6 +132,8 @@ public class InitialisationBase {
 
 		initAlbums();
 		initTags();
+		initFiles();
+		
 		initMarkers();
 		
 		initNDatas();
@@ -877,6 +885,24 @@ public class InitialisationBase {
 		}
 		
 			
+	}
+	
+	public void initFiles() throws ServiceException, InstantiationException, IllegalAccessException{
+		logger.debug("init tags");
+		
+		Album AlbumEN = albumService.findByName("testalbum_EN");
+		Album AlbumFR = albumService.findByName("testalbum_FR");
+		
+		File file = new File();
+		file.setName("testfile");
+		file.setDescription("description file");
+		file.setFileType(FileType.IMAGE);
+		file.setAlbum(AlbumEN);
+		file.setFileZize(1024);
+		fileService.save(file);
+		
+		
+						
 	}
 	
 	public void initMarkers() throws ServiceException, InstantiationException, IllegalAccessException{

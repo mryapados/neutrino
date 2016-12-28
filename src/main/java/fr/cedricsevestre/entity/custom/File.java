@@ -49,14 +49,14 @@ public class File extends Translation {
 	@NotNull
 	@Column
 	@Enumerated(EnumType.STRING)
-	private FileType type;
+	private FileType fileType;
 	
 	@BOField(type = ValueType.INTEGER)
 	@NotNull
 	@Column
 	private Integer fileZize;
 	
-	@BOField(type = ValueType.NTOBJECT)
+	@BOField(type = ValueType.COLLECTION, ofType = ValueType.NTOBJECT)
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
 		name = "mark", 
@@ -106,12 +106,12 @@ public class File extends Translation {
 		this.dateShooting = dateShooting;
 	}
 
-	public FileType getType() {
-		return type;
+	public FileType getFileType() {
+		return fileType;
 	}
 
-	public void setType(FileType type) {
-		this.type = type;
+	public void setFileType(FileType fileType) {
+		this.fileType = fileType;
 	}
 
 	public Integer getFileZize() {

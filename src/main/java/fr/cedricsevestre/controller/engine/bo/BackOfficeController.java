@@ -33,6 +33,7 @@ import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.bean.NDatas;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.controller.engine.AbtractController;
+import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.custom.Tag;
 import fr.cedricsevestre.entity.engine.IdProvider;
@@ -183,9 +184,28 @@ public class BackOfficeController extends AbtractController {
 	public ModelAndView save(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id, @Valid @ModelAttribute("object") IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
 		ModelAndView modelAndView = null;
 		if (result.hasErrors()) {
+			
+			System.out.println("errrrrrrrrrrrrrrrrrrrrrrr" + result.getAllErrors().toString());
+			
+			
+			
+			
 			modelAndView = edit(type, id, true);
 		} else{
 			try {
+				
+				
+				
+//				List<Album> idProviders = ((Project) data).getAlbums();
+//				for (Album album : idProviders) {
+//					System.out.println(">>>					 album = " + album.getName() + " - " + album.getId());
+//				}
+				
+				
+				
+				
+				
+				
 				backOfficeService.saveData(data);
 				modelAndView = new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_VIEW_URL);
 				redirectAttributes.addAttribute("type", type);
@@ -306,7 +326,8 @@ public class BackOfficeController extends AbtractController {
 	
 
 	
-	private IdProvider mkIdProvider(String objectTypeId) throws IllegalArgumentException {
+	private IdProvider mkIdProvider(String objectTypeId) throws IllegalArgumentException{
+		System.out.println("<<<<<<<<<<<< mkIdProvider " + objectTypeId);
 		String[] identifier = objectTypeId.split("_");
     	
     	String objectType = identifier[0];
@@ -320,12 +341,15 @@ public class BackOfficeController extends AbtractController {
     		try {
 	    		id = Integer.parseInt(identifier[1]);
 			} catch (NumberFormatException e) {
+				System.out.println("/////////////////////////// " + "Can't parse " + identifier[1] + " !");
+				
 				throw new IllegalArgumentException("Can't parse " + identifier[1] + " !", e);
 			}
     	}
 
     	if (id == null){
     		try {
+    			System.out.println("<<<<<<<<<<<< new id ");
     			return ((IdProvider) cls.newInstance());
     		} catch (InstantiationException e) {
     			throw new IllegalArgumentException (e.getMessage(),  e);
@@ -334,6 +358,7 @@ public class BackOfficeController extends AbtractController {
     		} 
     	} else {
     		try {
+    			System.out.println("<<<<<<<<<<<< mkIdProvider id " + id);
     			return (backOfficeService.getData(cls, id));
 			} catch (NumberFormatException e) {
 				throw new IllegalArgumentException("Can't parse " + identifier[1] + " !", e);
@@ -370,7 +395,7 @@ public class BackOfficeController extends AbtractController {
 
 		binder.registerCustomEditor(Iterable.class, new PropertyEditorSupport() {
 		    @Override 
-		    public void setAsText(final String listString) throws IllegalArgumentException
+		    public void setAsText(final String listString)
 		    {
 		    	System.out.println("listString = " + listString);
 		    	if(listString == null || listString == "") setValue(null);
@@ -387,17 +412,31 @@ public class BackOfficeController extends AbtractController {
 						clazz.newInstance();
 						
 						
-						org.hibernate.collection.internal.PersistentBag bag = new PersistentBag();
-						
+						//org.hibernate.collection.internal.PersistentBag bag = new PersistentBag();
+						List<IdProvider> bag = new ArrayList<>();
 						
 						String[] idProviders = objects[1].split(",");
+						
+						System.out.println(">>>>>>>>>> setAsText >>>>>>>>> idProviders > " + objects[1]);
 						for (String string : idProviders) {
-							bag.add(mkIdProvider(string));
+							System.out.println(">>>>>>>>>> setAsText >>>>>>>>> string > " + string);
+							
+							IdProvider item = mkIdProvider(string);
+							
+							System.out.println(">>>>>>>>>> setAsText >>>>>>>>> IdProvider > " + item.getName());
+							
+							bag.add(item);
+							System.out.println("################################# bag added");
 						}
 						
+						
+						System.out.println("################################# " + bag.size());
 						setValue(bag);
+						System.out.println("################################# " + bag + " set");
 						
-						
+		    		} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					} catch (ClassNotFoundException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -405,6 +444,9 @@ public class BackOfficeController extends AbtractController {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
