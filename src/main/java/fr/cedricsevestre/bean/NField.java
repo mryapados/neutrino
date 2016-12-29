@@ -1,6 +1,7 @@
 package fr.cedricsevestre.bean;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.List;
 
 import fr.cedricsevestre.annotation.BOField.SortType;
@@ -24,9 +25,15 @@ public class NField implements Serializable {
 	private String tabName;
 	private String groupName;
 	private List<String> enumDatas;
+	private Field field;
 	
-	public NField(ValueType type, ValueType ofType, String name, String className, boolean inList, boolean inView, boolean editable, SortType sortBy, int sortPriority, boolean defaultField, int displayOrder, String tabName, String groupName, List<String> enumDatas) {
+	private String revesibleJoin;
+	
+	
+	public NField(Field field, ValueType type, ValueType ofType, String name, String className, boolean inList, boolean inView, boolean editable, SortType sortBy, int sortPriority, boolean defaultField, int displayOrder, String tabName, String groupName, List<String> enumDatas) {
 		super();
+		
+		this.field = field;
 		this.type = type;
 		this.ofType = ofType;
 		this.name = name;
@@ -41,6 +48,8 @@ public class NField implements Serializable {
 		this.tabName = tabName;
 		this.groupName = groupName;
 		this.enumDatas = enumDatas;
+
+		this.revesibleJoin = null;
 	}
 	
 	public ValueType getType() {
@@ -127,6 +136,16 @@ public class NField implements Serializable {
 	public void setEnumDatas(List<String> enumDatas) {
 		this.enumDatas = enumDatas;
 	}
-
-
+	public String getRevesibleJoin() {
+		return revesibleJoin;
+	}
+	public void setRevesibleJoin(String revesibleJoin) {
+		this.revesibleJoin = revesibleJoin;
+	}
+	public Field getField() {
+		return field;
+	}
+	public void setField(Field field) {
+		this.field = field;
+	}
 }

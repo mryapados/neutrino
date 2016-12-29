@@ -54,7 +54,7 @@ public class File extends Translation {
 	@BOField(type = ValueType.INTEGER)
 	@NotNull
 	@Column
-	private Integer fileZize;
+	private Integer fileSize;
 	
 	@BOField(type = ValueType.COLLECTION, ofType = ValueType.NTOBJECT)
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -114,12 +114,12 @@ public class File extends Translation {
 		this.fileType = fileType;
 	}
 
-	public Integer getFileZize() {
-		return fileZize;
+	public Integer getFileSize() {
+		return fileSize;
 	}
 
-	public void setFileZize(Integer fileZize) {
-		this.fileZize = fileZize;
+	public void setFileSize(Integer fileSize) {
+		this.fileSize = fileSize;
 	}
 
 	public List<Tag> getTags() {

@@ -133,6 +133,7 @@ public class InitialisationBase {
 		initAlbums();
 		initTags();
 		initFiles();
+		initTags2();
 		
 		initMarkers();
 		
@@ -888,7 +889,7 @@ public class InitialisationBase {
 	}
 	
 	public void initFiles() throws ServiceException, InstantiationException, IllegalAccessException{
-		logger.debug("init tags");
+		logger.debug("init files");
 		
 		Album AlbumEN = albumService.findByName("testalbum_EN");
 		Album AlbumFR = albumService.findByName("testalbum_FR");
@@ -898,12 +899,65 @@ public class InitialisationBase {
 		file.setDescription("description file");
 		file.setFileType(FileType.IMAGE);
 		file.setAlbum(AlbumEN);
-		file.setFileZize(1024);
+		file.setFileSize(1024);
 		fileService.save(file);
+		
+		
+		Tag tag = tagService.findByName("testtag");
+		Tag tag2 = tagService.findByName("testtag2");
+		File file2 = new File();
+		file2.setName("testfile2");
+		file2.setDescription("description file2");
+		file2.setFileType(FileType.VIDEO);
+		file2.setAlbum(AlbumEN);
+		file2.setFileSize(1024);
+		
+		List<Tag> tags = new ArrayList<>();
+		tags.add(tag);
+		tags.add(tag2);
+		
+		file2.setTags(tags);
+		fileService.save(file2);
+		
+		
 		
 		
 						
 	}
+	
+	
+	
+	
+	public void initTags2() throws ServiceException, InstantiationException, IllegalAccessException{
+		logger.debug("init tags2");
+		
+		File file = fileService.findByName("testfile");
+		
+		Tag tag = new Tag();
+		tag.setName("testtagWithFile");
+		tag.setDescription("description tag");
+		
+		List<File> files = new ArrayList<>();
+		files.add(file);
+		
+		tag.setFiles(files);
+		tagService.save(tag);
+			
+
+		
+			
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public void initMarkers() throws ServiceException, InstantiationException, IllegalAccessException{
 		logger.debug("init markers");

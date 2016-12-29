@@ -405,45 +405,16 @@ public class BackOfficeController extends AbtractController {
 		    	if (types.length == 2 && types[1].equals(IdProvider.class.getName())){
 		    		//Convert string to List of Idprovider if possible
 		    		try {
-
-						Class<?> clazz = Class.forName(types[0]);
-						System.out.println("try new " + clazz.getName());
-						
-						clazz.newInstance();
-						
-						
-						//org.hibernate.collection.internal.PersistentBag bag = new PersistentBag();
 						List<IdProvider> bag = new ArrayList<>();
 						
 						String[] idProviders = objects[1].split(",");
-						
-						System.out.println(">>>>>>>>>> setAsText >>>>>>>>> idProviders > " + objects[1]);
-						for (String string : idProviders) {
-							System.out.println(">>>>>>>>>> setAsText >>>>>>>>> string > " + string);
-							
+						for (String string : idProviders) {						
 							IdProvider item = mkIdProvider(string);
-							
-							System.out.println(">>>>>>>>>> setAsText >>>>>>>>> IdProvider > " + item.getName());
-							
 							bag.add(item);
-							System.out.println("################################# bag added");
 						}
-						
-						
-						System.out.println("################################# " + bag.size());
 						setValue(bag);
-						System.out.println("################################# " + bag + " set");
-						
+
 		    		} catch (IllegalArgumentException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ClassNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (InstantiationException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (Exception e) {

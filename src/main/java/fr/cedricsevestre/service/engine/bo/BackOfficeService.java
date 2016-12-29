@@ -1,5 +1,6 @@
 package fr.cedricsevestre.service.engine.bo;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -8,6 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,17 +45,17 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	
 	private Logger logger = Logger.getLogger(BackOfficeService.class);
 		
-	private List<Field> getFields(Class<?> classObject) throws ServiceException{
-		List<Field> fields = new ArrayList<>();
+	private Map<String, Field> getFields(Class<?> classObject) throws ServiceException{
+		Map<String, Field> fields = new HashMap<>();
 		Class<?> superClass = classObject.getSuperclass();
 		if (superClass != null){
-			fields.addAll(getFields(classObject.getSuperclass()));
+			fields.putAll(getFields(classObject.getSuperclass()));
 		}
 		Field[] classObjectFields = classObject.getDeclaredFields();
 		for (Field classObjectField : classObjectFields) {
 			BOField annotation = classObjectField.getAnnotation(BOField.class);
 			if (annotation != null){
-				fields.add(classObjectField);
+				fields.put(classObjectField.getName(), classObjectField);
 			}
 		}
 		return fields;
@@ -151,12 +155,26 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 				enumDatas.add(e.name());
 			}
 		}
-		return new NField(nType.type(), nType.ofType(), field.getName(), field.getType().getSimpleName(), nType.inList(), nType.inView(), nType.editable(), nType.sortBy(), nType.sortPriority(), nType.defaultField(), nType.displayOrder(), nType.tabName(), nType.groupName(), enumDatas);
+		NField nField = new NField(field, nType.type(), nType.ofType(), field.getName(), field.getType().getSimpleName(), nType.inList(), nType.inView(), nType.editable(), nType.sortBy(), nType.sortPriority(), nType.defaultField(), nType.displayOrder(), nType.tabName(), nType.groupName(), enumDatas);
+	
+		String revesibleJoin = null;
+		if (revesibleJoin == null){
+			OneToMany oneToAnyAnnotation = field.getAnnotation(OneToMany.class);
+			if (oneToAnyAnnotation != null) revesibleJoin = oneToAnyAnnotation.mappedBy();
+		}
+		if (revesibleJoin == null){
+			ManyToMany manyToAnyAnnotation = field.getAnnotation(ManyToMany.class);
+			if (manyToAnyAnnotation != null) revesibleJoin = manyToAnyAnnotation.mappedBy();
+		}
+		nField.setRevesibleJoin(revesibleJoin);
+
+		return nField;
 	}
 	
-	private List<NField> getNField(List<Field> fields) throws ServiceException{
+	private List<NField> getNField(Map<String, Field> fields) throws ServiceException{
 		List<NField> nfFields = new ArrayList<>();
-		for (Field field : fields) {
+		for (Map.Entry<String, Field> e : fields.entrySet()) {
+			Field field = e.getValue();
 			BOField nType = field.getAnnotation(BOField.class);
 			if (nType != null){
 				nfFields.add(mkNFieldFromBOField(field, nType));
@@ -166,9 +184,10 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	}
 	
 	//Retourne une liste de NField par GroupName par TabName
-	private Map<String, Map<String, List<NField>>> getMapNField(List<Field> fields) throws ServiceException{
+	private Map<String, Map<String, List<NField>>> getMapNField(Map<String, Field> fields) throws ServiceException{
 		Map<String, Map<String, List<NField>>> nfTabsGroupsFields = new HashMap<>();
-		for (Field field : fields) {
+		for (Map.Entry<String, Field> e : fields.entrySet()) {
+			Field field = e.getValue();
 			BOField nType = field.getAnnotation(BOField.class);
 			if (nType != null){
 				if (!nfTabsGroupsFields.containsKey(nType.tabName())){
@@ -192,7 +211,7 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	}
 	@Override
 	public NDatas<T> findAll(Class<?> entity, Pageable pageRequest) throws ServiceException{		
-		List<Field> fields = getFields(entity);
+		Map<String, Field> fields = getFields(entity);
 		List<NField> nFields = getNField(fields);
 		pageRequest = transformPageRequest(nFields, pageRequest);
 		return new NDatas<T>(nFields, getDatas(entity, pageRequest));
@@ -220,7 +239,7 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 
 	@Override
 	public NData<T> findOne(Class<?> entity, Integer id) throws ServiceException {
-		List<Field> fields = getFields(entity);
+		Map<String, Field> fields = getFields(entity);
 		Map<String, Map<String, List<NField>>> nMapFields = getMapNField(fields);
 		return new NData<T>(nMapFields, getData(entity, id));
 	}
@@ -241,7 +260,7 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	
 	@Override
 	public NData<T> copy(Class<?> entity, Integer id) throws ServiceException {
-		List<Field> fields = getFields(entity);
+		Map<String, Field> fields = getFields(entity);
 		Map<String, Map<String, List<NField>>> nMapFields = getMapNField(fields);
 		T data = null;
 		if (id == 0){
@@ -282,8 +301,13 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 			Class<?> clazz = service.getClass();
 
 			Method save = clazz.getMethod("save", params);
-			return (T) save.invoke(service, paramsObj);
+			T saved = (T) save.invoke(service, paramsObj);
 
+			persistReverse(data, entity);
+			
+			return saved;
+			
+			
 		} catch (NoSuchMethodException e) {
 			logger.error("saveData -> NoSuchMethodException", e);
 			throw new ServiceException("Error saveData", e);
@@ -295,6 +319,92 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 			throw new ServiceException("Error saveData", e);
 		}
 	}
+	
+	//TODO persist reverse mapped field
+	public void persistReverse(T data, Class<?> classObject) throws ServiceException{
+		Map<String, Field> fields = getFields(classObject);
+		List<NField> nFields = getNField(fields);
+		
+		for (NField nField : nFields) {
+			if (nField.getRevesibleJoin() != null){
+				
+				Object object = getFieldValue(data, nField.getField());
+				
+				if (object instanceof Iterable){
+					Iterable list = (Iterable) object;
+					for (Object object2 : list) {
+						
+						IdProvider mapped = (IdProvider) object2;
+						
+						
+						
+						Map<String, Field> mappedFields = getFields(mapped.getClass());
+						Field mappedField = mappedFields.get(nField.getRevesibleJoin());
+						
+						setFieldValue(mapped, mappedField, data);
+						
+//						saveData(mapped);
+						
+						
+						
+						
+						
+						
+						System.out.println("             HELLLLLLLLLLLLLLLLLLLLLLLOOOOOOOOOOO " + mapped.getName() + " - " + mapped.getClass());
+						
+						
+						
+						
+					}
+					
+					
+				}
+				
+				
+				
+				
+				
+				
+				//Object mapped = getData(object.getClass(), id)
+				
+				
+			}
+		}
+		
+		return;
+	}
+	
+	
+	
+	
+	private Object getFieldValue(Object object, Field field) throws ServiceException {
+		try {
+			field.setAccessible(true);
+			return field.get(object);
+		} catch (IllegalAccessException e) {
+			logger.error("Failed to get value from field", e);
+			throw new ServiceException("Erreur getFieldValue", e);
+		}
+	}
+	
+	private void setFieldValue(Object object, Field field, Object value) throws ServiceException {
+		try {
+			field.setAccessible(true);
+			field.set(object, value);
+		} catch (IllegalAccessException e) {
+			logger.error("Failed to get value from field", e);
+			throw new ServiceException("Erreur setFieldValue", e);
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
