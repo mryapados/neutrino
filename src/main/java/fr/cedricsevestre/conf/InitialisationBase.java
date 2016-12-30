@@ -914,7 +914,7 @@ public class InitialisationBase {
 		
 		List<Tag> tags = new ArrayList<>();
 		tags.add(tag);
-		tags.add(tag2);
+		//tags.add(tag2);
 		
 		file2.setTags(tags);
 		fileService.save(file2);

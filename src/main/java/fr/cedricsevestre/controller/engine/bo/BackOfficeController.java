@@ -55,7 +55,7 @@ import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 @Secured({ "ROLE_WEBMASTER", "ROLE_ADMIN", "ROLE_BO" })
 public class BackOfficeController extends AbtractController {
 	@Autowired
-	private BackOfficeService<IdProvider> backOfficeService;
+	private BackOfficeService backOfficeService;
 	
 	
 	

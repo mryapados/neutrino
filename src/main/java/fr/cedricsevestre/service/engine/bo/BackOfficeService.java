@@ -1,9 +1,13 @@
 package fr.cedricsevestre.service.engine.bo;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +39,7 @@ import fr.cedricsevestre.service.engine.ServiceLocator;
 
 @Service
 @Scope(value = "singleton")
-public class BackOfficeService<T extends IdProvider> implements IBackOfficeService{
+public class BackOfficeService implements IBackOfficeService{
 
 	@Autowired
 	ServiceLocator customServiceLocator;
@@ -62,7 +66,7 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	}
 
 	@SuppressWarnings("unchecked")
-	private Page<T> getDatas(Class<?> entity, Pageable pageable) throws ServiceException{
+	private Page<IdProvider> getDatas(Class<?> entity, Pageable pageable) throws ServiceException{
 		try {
 			Class<?> params[] = {Pageable.class};
 			Object paramsObj[] = {pageable};
@@ -84,7 +88,7 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 					throw new ServiceException("Error getList", e);
 				}
 			}
-			return (Page<T>) findAll.invoke(service, paramsObj);
+			return (Page<IdProvider>) findAll.invoke(service, paramsObj);
 			
 		} catch (ClassNotFoundException e) {
 			logger.error("getDatas -> ClassNotFoundException", e);
@@ -105,7 +109,7 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	}
 	
 	@SuppressWarnings("unchecked")
-	public T getData(Class<?> entity, Integer id) throws ServiceException{
+	public IdProvider getData(Class<?> entity, Integer id) throws ServiceException{
 				
 		try {
 			Class<?> params[] = {Integer.class};
@@ -128,7 +132,7 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 					throw new ServiceException("Error getData", e);
 				}
 			}
-			return (T) findById.invoke(service, paramsObj);
+			return (IdProvider) findById.invoke(service, paramsObj);
 			
 			
 
@@ -166,6 +170,7 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 			ManyToMany manyToAnyAnnotation = field.getAnnotation(ManyToMany.class);
 			if (manyToAnyAnnotation != null) revesibleJoin = manyToAnyAnnotation.mappedBy();
 		}
+		if (revesibleJoin != null && revesibleJoin.equals("")) revesibleJoin = null;
 		nField.setRevesibleJoin(revesibleJoin);
 
 		return nField;
@@ -206,15 +211,15 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	}
 
 	@Override
-	public NDatas<T> findAll(Class<?> entity) throws ServiceException{
+	public NDatas<IdProvider> findAll(Class<?> entity) throws ServiceException{
 		return findAll(entity, null);
 	}
 	@Override
-	public NDatas<T> findAll(Class<?> entity, Pageable pageRequest) throws ServiceException{		
+	public NDatas<IdProvider> findAll(Class<?> entity, Pageable pageRequest) throws ServiceException{		
 		Map<String, Field> fields = getFields(entity);
 		List<NField> nFields = getNField(fields);
 		pageRequest = transformPageRequest(nFields, pageRequest);
-		return new NDatas<T>(nFields, getDatas(entity, pageRequest));
+		return new NDatas<IdProvider>(nFields, getDatas(entity, pageRequest));
 	}
 	
 	private Pageable transformPageRequest(List<NField> nfFields, Pageable pageRequest){
@@ -238,19 +243,19 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	}
 
 	@Override
-	public NData<T> findOne(Class<?> entity, Integer id) throws ServiceException {
+	public NData<IdProvider> findOne(Class<?> entity, Integer id) throws ServiceException {
 		Map<String, Field> fields = getFields(entity);
 		Map<String, Map<String, List<NField>>> nMapFields = getMapNField(fields);
-		return new NData<T>(nMapFields, getData(entity, id));
+		return new NData<IdProvider>(nMapFields, getData(entity, id));
 	}
 	
 	
 	
 	
 	@SuppressWarnings("unchecked")
-	public T add(Class<?> entity) throws ServiceException {
+	public IdProvider add(Class<?> entity) throws ServiceException {
 		try {
-			return (T) entity.newInstance();
+			return (IdProvider) entity.newInstance();
 		} catch (InstantiationException e) {
 			throw new ServiceException("add -> Error", e) ;
 		} catch (IllegalAccessException e) {
@@ -259,10 +264,10 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	}
 	
 	@Override
-	public NData<T> copy(Class<?> entity, Integer id) throws ServiceException {
+	public NData<IdProvider> copy(Class<?> entity, Integer id) throws ServiceException {
 		Map<String, Field> fields = getFields(entity);
 		Map<String, Map<String, List<NField>>> nMapFields = getMapNField(fields);
-		T data = null;
+		IdProvider data = null;
 		if (id == 0){
 			data = add(entity);
 		} else {
@@ -281,13 +286,13 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 			
 			
 		}
-		return new NData<T>(nMapFields, data);
+		return new NData<IdProvider>(nMapFields, data);
 	}
 	
 	
 	
 	@SuppressWarnings("unchecked")
-	public T saveData(T data) throws ServiceException{
+	public IdProvider saveData(IdProvider data) throws ServiceException{
 		try {
 			Class<?> entity = data.getClass();
 
@@ -301,7 +306,7 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 			Class<?> clazz = service.getClass();
 
 			Method save = clazz.getMethod("save", params);
-			T saved = (T) save.invoke(service, paramsObj);
+			IdProvider saved = (IdProvider) save.invoke(service, paramsObj);
 
 			persistReverse(data, entity);
 			
@@ -320,8 +325,20 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 		}
 	}
 	
+	
+	
+        
+
+	public static Type[] findGenericTypeOfField(Field field) throws IllegalArgumentException{
+		Type genericFieldType = field.getGenericType();
+		if(genericFieldType instanceof ParameterizedType){
+		    ParameterizedType aType = (ParameterizedType) genericFieldType;
+		    return  aType.getActualTypeArguments();
+		} else throw new IllegalArgumentException();
+	}
+	
 	//TODO persist reverse mapped field
-	public void persistReverse(T data, Class<?> classObject) throws ServiceException{
+	public void persistReverse(IdProvider data, Class<?> classObject) throws ServiceException{
 		Map<String, Field> fields = getFields(classObject);
 		List<NField> nFields = getNField(fields);
 		
@@ -329,28 +346,63 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 			if (nField.getRevesibleJoin() != null){
 				
 				Object object = getFieldValue(data, nField.getField());
-				
+
 				if (object instanceof Iterable){
-					Iterable list = (Iterable) object;
+					System.out.println("         INSTANCE OF Iterable");
+					Class<?> clazz = (Class<?>) findGenericTypeOfField(nField.getField())[0];
+					Map<String, Field> clazzFields = getFields(clazz);
+					System.out.println("             clazz " + clazz);
+					System.out.println("             Field : " + nField.getRevesibleJoin());
+					for (Map.Entry<String, Field> e : clazzFields.entrySet()) {
+						Field field = e.getValue();
+						System.out.println("             	 Field : " + field.getName());
+					}
+					Field clazzField = clazzFields.get(nField.getRevesibleJoin());
+					System.out.println("             Field found : " + (clazzField != null));
+
+					Iterable<?> list = (Iterable<?>) object;
+
 					for (Object object2 : list) {
 						
 						IdProvider mapped = (IdProvider) object2;
+						System.out.println("             MAPPED " + mapped.getName() + " - " + mapped.getClass());
+
+						
+						List<IdProvider> mappedList = (List<IdProvider>) getFieldValue(mapped, clazzField);
+						//TODO verif pas dans la liste
+
+						System.out.println("             DEJA DANS LA LISTE : " + mappedList.contains(data));
+
+						if (!mappedList.contains(data)){
+							
+							
+							
+							mappedList.add(data);
+						}
+						
+						
+					
 						
 						
 						
-						Map<String, Field> mappedFields = getFields(mapped.getClass());
-						Field mappedField = mappedFields.get(nField.getRevesibleJoin());
 						
-						setFieldValue(mapped, mappedField, data);
 						
-//						saveData(mapped);
+						
+						setFieldValue(mapped, clazzField, mappedList);
 						
 						
 						
 						
 						
 						
-						System.out.println("             HELLLLLLLLLLLLLLLLLLLLLLLOOOOOOOOOOO " + mapped.getName() + " - " + mapped.getClass());
+						
+						saveData(mapped);
+						
+						
+						
+						
+						
+						
 						
 						
 						
@@ -409,7 +461,7 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 	
 	
 	@SuppressWarnings("unchecked")
-	public T removeDatas(List<T> datas) throws ServiceException{
+	public IdProvider removeDatas(List<IdProvider> datas) throws ServiceException{
 		try {
 			Class<?> entity = datas.get(0).getClass();
 
@@ -430,7 +482,7 @@ public class BackOfficeService<T extends IdProvider> implements IBackOfficeServi
 //				}
 //			}
 			Method remove = clazz.getMethod("remove", params);
-			return (T) remove.invoke(service, paramsObj);
+			return (IdProvider) remove.invoke(service, paramsObj);
 			
 		} catch (NoSuchMethodException e) {
 			logger.error("saveData -> NoSuchMethodException", e);
