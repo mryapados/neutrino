@@ -68,27 +68,35 @@
 						<table class="table table-striped" role="grid">
 							<tbody>
 								<c:forEach var="field" items="${group.value}">
-									<c:if test="${field.editable}">
-										<tr>
-											<td class="col-md-3">
-												<s:message var="defaultMessage" code="bo.field.${field.name}" text="${field.name}" />
-												<s:message code="bo.${objectType}.field.${field.name}" text="${defaultMessage}" />
-											</td>
-											<td>
-												<c:set var="finalParentObject" value="${object}" scope="request" />
-												<c:set var="finalObject" value="${object[field.name]}" scope="request" />
-												<c:set var="finalField" value="${field}" scope="request" />
-												<c:set var="finalFieldType" value="${finalField.type}" scope="request" />
-												
-												<jsp:include page="detail/field.jsp" />
-												
-												<c:remove var="finalParentObject"/>
-												<c:remove var="finalObject"/>
-												<c:remove var="finalField"/>
-												<c:remove var="finalFieldType"/>
-											</td>
-										</tr>
-									</c:if>
+									
+										<c:if test="${field.inView || field.editable}">
+											<tr>
+												<td class="col-md-3">
+													<s:message var="defaultMessage" code="bo.field.${field.name}" text="${field.name}" />
+													<s:message code="bo.${objectType}.field.${field.name}" text="${defaultMessage}" />
+												</td>
+												<td>
+													<c:set var="finalParentObject" value="${object}" scope="request" />
+													<c:set var="finalObject" value="${object[field.name]}" scope="request" />
+													<c:set var="finalField" value="${field}" scope="request" />
+													<c:set var="finalFieldType" value="${finalField.type}" scope="request" />
+													<c:choose>
+														<c:when test="${field.editable}">
+															<jsp:include page="detail/field.jsp" />
+														</c:when>
+														<c:when test="${field.inView}">
+															<jsp:include page="/WEB-INF/back/common/templates/blocks/view/detail/field.jsp" />
+														</c:when>
+													</c:choose>
+													<c:remove var="finalParentObject"/>
+													<c:remove var="finalObject"/>
+													<c:remove var="finalField"/>
+													<c:remove var="finalFieldType"/>
+												</td>
+											</tr>
+										</c:if>
+
+
 									
 								</c:forEach>
 							</tbody>

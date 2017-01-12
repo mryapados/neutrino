@@ -193,17 +193,7 @@ public class BackOfficeController extends AbtractController {
 			modelAndView = edit(type, id, true);
 		} else{
 			try {
-				
-				
-				
-//				List<Album> idProviders = ((Project) data).getAlbums();
-//				for (Album album : idProviders) {
-//					System.out.println(">>>					 album = " + album.getName() + " - " + album.getId());
-//				}
-				
-				
-				
-				
+
 				
 				
 				backOfficeService.saveData(data);
@@ -398,22 +388,30 @@ public class BackOfficeController extends AbtractController {
 		    public void setAsText(final String listString)
 		    {
 		    	System.out.println("listString = " + listString);
-		    	if(listString == null || listString == "") setValue(null);
-		    	String[] objects = listString.split("=");
+		    	if(listString == null || listString.trim().length() == 0) {
+		    		setValue(null);
+		    		return;
+		    	}
+//		    	String[] objects = listString.split("=");
+//		    	
+//		    	String[] types = objects[0].split(";");
 		    	
-		    	String[] types = objects[0].split(";");
-		    	if (types.length == 2 && types[1].equals(IdProvider.class.getName())){
+		    	
+
+		    	//if (types.length == 2 && types[1].equals(IdProvider.class.getName())){
 		    		//Convert string to List of Idprovider if possible
 		    		try {
 						List<IdProvider> bag = new ArrayList<>();
-						
-						String[] idProviders = objects[1].split(",");
-						for (String string : idProviders) {						
-							IdProvider item = mkIdProvider(string);
-							bag.add(item);
-						}
+						//if (objects.length > 1){
+							//String[] idProviders = objects[1].split(",");
+							String[] idProviders = listString.split(",");
+							for (String string : idProviders) {						
+								IdProvider item = mkIdProvider(string);
+								bag.add(item);
+							}
+						//}
 						setValue(bag);
-
+						return;
 		    		} catch (IllegalArgumentException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -425,12 +423,12 @@ public class BackOfficeController extends AbtractController {
 		    		
 		    		
 		    		
-		    	} else {
-		    		System.out.println("Set original value");
-		    		//Set original value
-		    		setValue(listString);
-		    		return;
-		    	}
+//		    	} else {
+//		    		System.out.println("Set original value");
+//		    		//Set original value
+//		    		setValue(listString);
+//		    		return;
+//		    	}
 		    	
 		    	
 		    }
@@ -440,7 +438,9 @@ public class BackOfficeController extends AbtractController {
 		    public String getAsText() {
 			    if(getValue() == null) return "";
 			    Iterable<Object> list = (Iterable<Object>) getValue();
-			    StringBuilder result = new StringBuilder(list.getClass().getName() + ";" + IdProvider.class.getName() + "=");
+			    //StringBuilder result = new StringBuilder(list.getClass().getName() + ";" + IdProvider.class.getName() + "=");
+			    
+			    StringBuilder result = new StringBuilder();
 			    //Convert list to Idproviders String if possible
 			    for (Object object : list) {
 			    	if (object instanceof IdProvider){

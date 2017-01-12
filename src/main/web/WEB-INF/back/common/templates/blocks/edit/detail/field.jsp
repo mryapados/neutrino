@@ -99,6 +99,7 @@
 		<c:choose>
 			<c:when test="${finalObject.objectType eq 'Lang'}">
 				<span class="lang-sm lang-lbl" lang="${finalObject.code}"></span>
+				<form:input cssClass="form-control" type="text" path="${finalField.name}"/>
 			</c:when>
 			<c:when test="${finalObject.objectType eq 'MapTemplate'}">
 				<c:choose>
@@ -110,6 +111,10 @@
 					</c:otherwise>
 				</c:choose>
 				<a class="linked" href="<c:url value='/bo/view/?type=Template&id=${template.id}' />"><c:out value="${template.name}"/></a> / <a class="linked" href="<c:url value='/bo/view/?type=Position&id=${finalObject.position.id}' />"><c:out value="${finalObject.position.name}"/></a>
+			</c:when>
+			<c:when test="${finalObject.objectType eq 'Folder'}">
+				<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a>
+				<form:input cssClass="form-control" type="text" path="${finalField.name}"/>
 			</c:when>
 			<c:otherwise>
 				<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="object"/></a>

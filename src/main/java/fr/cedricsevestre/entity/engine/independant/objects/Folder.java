@@ -49,7 +49,7 @@ public class Folder implements IdProvider, Serializable{
 	@Transient
 	@Override
 	public String getObjectType() {
-		return "folder";
+		return "Folder";
 	}
 	
 	public Folder(){

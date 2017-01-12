@@ -21,9 +21,14 @@ public class ServiceLocator{
     private ApplicationContext context;
     private Map<String, Object> services;
 
-    public Object getService(String entityName) {
+    public Object getService(String entityName) throws ClassNotFoundException {
         checkServices();
-        return services.get(entityName.toUpperCase() + "SERVICE");
+        String lookingFor = entityName.toUpperCase() + "SERVICE";
+        Object result = services.get(lookingFor);
+        if (result == null) {
+        	throw new ClassNotFoundException(lookingFor + " class not found ! Is there a BOService or CustomService annotation on it ?");
+        }
+        return result;
     }
 
     private void checkServices() {

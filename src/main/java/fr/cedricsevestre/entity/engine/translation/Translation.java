@@ -62,7 +62,7 @@ public abstract class Translation implements ITranslation, Serializable {
 	@Column(name = "description")
 	private String description;
 
-	@BOField(type = ValueType.OBJECT)
+	@BOField(type = ValueType.OBJECT, editable = false)
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="id_lang")
 	private Lang lang;

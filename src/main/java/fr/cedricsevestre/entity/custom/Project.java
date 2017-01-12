@@ -22,7 +22,7 @@ public class Project extends Translation {
 
 	private static final long serialVersionUID = 1L;
 	
-	@BOField(type = ValueType.HTML)
+	@BOField(type = ValueType.HTML, editable = false)
 	@SafeHtml(whitelistType = WhiteListType.BASIC)
 	@Column(name = "testage")
 	private String testage;

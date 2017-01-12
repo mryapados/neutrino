@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import fr.cedricsevestre.annotation.BOService;
 import fr.cedricsevestre.dao.engine.FolderDao;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.Position;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.BaseService;
 
+@BOService
 @Service
 @Scope(value = "singleton")
 public class FolderService extends BaseService<Folder>{

@@ -16,6 +16,7 @@ import java.util.TreeMap;
 
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +50,27 @@ public class BackOfficeService implements IBackOfficeService{
 	
 	private Logger logger = Logger.getLogger(BackOfficeService.class);
 		
-	private Map<String, Field> getFields(Class<?> classObject) throws ServiceException{
+	private List<Field> getFields(Class<?> classObject) throws ServiceException{
+		List<Field> fields = new ArrayList<>();
+		Class<?> superClass = classObject.getSuperclass();
+		if (superClass != null){
+			fields.addAll(getFields(classObject.getSuperclass()));
+		}
+		Field[] classObjectFields = classObject.getDeclaredFields();
+		for (Field classObjectField : classObjectFields) {
+			BOField annotation = classObjectField.getAnnotation(BOField.class);
+			if (annotation != null){
+				fields.add(classObjectField);
+			}
+		}
+		return fields;
+	}
+
+	private Map<String, Field> getMapFields(Class<?> classObject) throws ServiceException{
 		Map<String, Field> fields = new HashMap<>();
 		Class<?> superClass = classObject.getSuperclass();
 		if (superClass != null){
-			fields.putAll(getFields(classObject.getSuperclass()));
+			fields.putAll(getMapFields(classObject.getSuperclass()));
 		}
 		Field[] classObjectFields = classObject.getDeclaredFields();
 		for (Field classObjectField : classObjectFields) {
@@ -64,7 +81,7 @@ public class BackOfficeService implements IBackOfficeService{
 		}
 		return fields;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	private Page<IdProvider> getDatas(Class<?> entity, Pageable pageable) throws ServiceException{
 		try {
@@ -136,17 +153,20 @@ public class BackOfficeService implements IBackOfficeService{
 			
 			
 
+		} catch (ClassNotFoundException e) {
+			logger.error("getData -> ClassNotFoundException", e);
+			throw new ServiceException("Error getList", e);
 		} catch (SecurityException e) {
-			logger.error("getDatas -> SecurityException", e);
+			logger.error("getData -> SecurityException", e);
 			throw new ServiceException("Error getList", e);
 		} catch (IllegalAccessException e) {
-			logger.error("getDatas -> IllegalAccessException", e);
+			logger.error("getData -> IllegalAccessException", e);
 			throw new ServiceException("Error getList", e);
 		} catch (IllegalArgumentException e) {
-			logger.error("getDatas -> IllegalArgumentException", e);
+			logger.error("getData -> IllegalArgumentException", e);
 			throw new ServiceException("Error getList", e);
 		} catch (InvocationTargetException e) {
-			logger.error("getDatas -> InvocationTargetException", e);
+			logger.error("getData -> InvocationTargetException", e);
 			throw new ServiceException("Error getList", e);
 		}
 	}
@@ -176,10 +196,9 @@ public class BackOfficeService implements IBackOfficeService{
 		return nField;
 	}
 	
-	private List<NField> getNField(Map<String, Field> fields) throws ServiceException{
+	private List<NField> getNField(List<Field> fields) throws ServiceException{
 		List<NField> nfFields = new ArrayList<>();
-		for (Map.Entry<String, Field> e : fields.entrySet()) {
-			Field field = e.getValue();
+		for (Field field : fields) {
 			BOField nType = field.getAnnotation(BOField.class);
 			if (nType != null){
 				nfFields.add(mkNFieldFromBOField(field, nType));
@@ -189,10 +208,9 @@ public class BackOfficeService implements IBackOfficeService{
 	}
 	
 	//Retourne une liste de NField par GroupName par TabName
-	private Map<String, Map<String, List<NField>>> getMapNField(Map<String, Field> fields) throws ServiceException{
+	private Map<String, Map<String, List<NField>>> getMapNField(List<Field> fields) throws ServiceException{
 		Map<String, Map<String, List<NField>>> nfTabsGroupsFields = new HashMap<>();
-		for (Map.Entry<String, Field> e : fields.entrySet()) {
-			Field field = e.getValue();
+		for (Field field : fields) {
 			BOField nType = field.getAnnotation(BOField.class);
 			if (nType != null){
 				if (!nfTabsGroupsFields.containsKey(nType.tabName())){
@@ -216,7 +234,7 @@ public class BackOfficeService implements IBackOfficeService{
 	}
 	@Override
 	public NDatas<IdProvider> findAll(Class<?> entity, Pageable pageRequest) throws ServiceException{		
-		Map<String, Field> fields = getFields(entity);
+		List<Field> fields = getFields(entity);
 		List<NField> nFields = getNField(fields);
 		pageRequest = transformPageRequest(nFields, pageRequest);
 		return new NDatas<IdProvider>(nFields, getDatas(entity, pageRequest));
@@ -224,7 +242,7 @@ public class BackOfficeService implements IBackOfficeService{
 	
 	private Pageable transformPageRequest(List<NField> nfFields, Pageable pageRequest){
 		Sort sort = pageRequest.getSort();
-		TreeMap<Integer, Sort> treeMap = new TreeMap<>();
+		Map<Integer, Sort> treeMap = new TreeMap<>();
 		for (NField nField : nfFields) {
 			if (nField.getSortBy() != SortType.NULL){
 				Direction direction = null;
@@ -244,7 +262,7 @@ public class BackOfficeService implements IBackOfficeService{
 
 	@Override
 	public NData<IdProvider> findOne(Class<?> entity, Integer id) throws ServiceException {
-		Map<String, Field> fields = getFields(entity);
+		List<Field> fields = getFields(entity);
 		Map<String, Map<String, List<NField>>> nMapFields = getMapNField(fields);
 		return new NData<IdProvider>(nMapFields, getData(entity, id));
 	}
@@ -265,7 +283,7 @@ public class BackOfficeService implements IBackOfficeService{
 	
 	@Override
 	public NData<IdProvider> copy(Class<?> entity, Integer id) throws ServiceException {
-		Map<String, Field> fields = getFields(entity);
+		List<Field> fields = getFields(entity);
 		Map<String, Map<String, List<NField>>> nMapFields = getMapNField(fields);
 		IdProvider data = null;
 		if (id == 0){
@@ -273,56 +291,71 @@ public class BackOfficeService implements IBackOfficeService{
 		} else {
 			data = getData(entity, id);
 			data.setId(null);
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+			saveData(data);
+
 		}
 		return new NData<IdProvider>(nMapFields, data);
 	}
 	
+	private IdProvider completeData(Class<?> entity, IdProvider data, List<NField> nFields) throws ServiceException{
+		// get data original if id != null
+		IdProvider result = data;
+		if (data.getId() != null){
+			IdProvider original = getData(entity, data.getId());
+			// for each field not editable, set original value to data field
+			for (NField nField : nFields) {
+				if (!nField.isEditable()){
+					Field field = nField.getField();
+					setFieldValue(result, field, getFieldValue(original, field));
+				}
+			}
+		}
+		return result;
+	}
 	
-	
-	@SuppressWarnings("unchecked")
-	public IdProvider saveData(IdProvider data) throws ServiceException{
+	private IdProvider persistData(Class<?> entity, IdProvider data) throws ServiceException{
 		try {
-			Class<?> entity = data.getClass();
-
 			Class<?> params[] = { Object.class };
 			Object paramsObj[] = { data };
-
-			logger.debug("getDatas -> Look for " + entity.getSimpleName());			
+	
+			logger.debug("persistData -> Look for " + entity.getSimpleName());			
 			Object service = customServiceLocator.getService(entity.getSimpleName());
-			logger.debug("getDatas -> Entity found " + entity.getSimpleName());	
-
+			logger.debug("persistData -> Entity found " + entity.getSimpleName());	
+	
 			Class<?> clazz = service.getClass();
-
+	
 			Method save = clazz.getMethod("save", params);
 			IdProvider saved = (IdProvider) save.invoke(service, paramsObj);
-
-			persistReverse(data, entity);
 			
 			return saved;
-			
-			
+		} catch (ClassNotFoundException e) {
+			logger.error("persistData -> ClassNotFoundException", e);
+			throw new ServiceException("Error getList", e);
 		} catch (NoSuchMethodException e) {
-			logger.error("saveData -> NoSuchMethodException", e);
+			logger.error("persistData -> NoSuchMethodException", e);
 			throw new ServiceException("Error saveData", e);
 		} catch (IllegalAccessException e) {
-			logger.error("saveData -> IllegalAccessException", e);
+			logger.error("persistData -> IllegalAccessException", e);
 			throw new ServiceException("Error saveData", e);
 		} catch (InvocationTargetException e) {
-			logger.error("saveData -> InvocationTargetException", e);
+			logger.error("persistData -> InvocationTargetException", e);
 			throw new ServiceException("Error saveData", e);
 		}
+	}
+
+	public IdProvider saveData(IdProvider data) throws ServiceException{
+		IdProvider result = data;
+
+		Class<?> entity = data.getClass();
+
+		List<Field> fields = getFields(entity);
+		List<NField> nFields = getNField(fields);
+		result = completeData(entity, result, nFields);
+		result = persistData(entity, result);
+
+		persistReverse(data, entity, nFields);
+		
+		return result;
 	}
 	
 	
@@ -337,20 +370,15 @@ public class BackOfficeService implements IBackOfficeService{
 		} else throw new IllegalArgumentException();
 	}
 	
-	//TODO persist reverse mapped field
-	public void persistReverse(IdProvider data, Class<?> classObject) throws ServiceException{
-		Map<String, Field> fields = getFields(classObject);
-		List<NField> nFields = getNField(fields);
-		
+	public void persistReverse(IdProvider data, Class<?> classObject, List<NField> nFields) throws ServiceException{
 		for (NField nField : nFields) {
 			if (nField.getRevesibleJoin() != null){
-				
 				Object object = getFieldValue(data, nField.getField());
 
 				if (object instanceof Iterable){
 					System.out.println("         INSTANCE OF Iterable");
 					Class<?> clazz = (Class<?>) findGenericTypeOfField(nField.getField())[0];
-					Map<String, Field> clazzFields = getFields(clazz);
+					Map<String, Field> clazzFields = getMapFields(clazz);
 					System.out.println("             clazz " + clazz);
 					System.out.println("             Field : " + nField.getRevesibleJoin());
 					for (Map.Entry<String, Field> e : clazzFields.entrySet()) {
@@ -359,66 +387,36 @@ public class BackOfficeService implements IBackOfficeService{
 					}
 					Field clazzField = clazzFields.get(nField.getRevesibleJoin());
 					System.out.println("             Field found : " + (clazzField != null));
-
 					Iterable<?> list = (Iterable<?>) object;
-
 					for (Object object2 : list) {
-						
 						IdProvider mapped = (IdProvider) object2;
 						System.out.println("             MAPPED " + mapped.getName() + " - " + mapped.getClass());
 
-						
-						List<IdProvider> mappedList = (List<IdProvider>) getFieldValue(mapped, clazzField);
-						//TODO verif pas dans la liste
-
-						System.out.println("             DEJA DANS LA LISTE : " + mappedList.contains(data));
-
-						if (!mappedList.contains(data)){
-							
-							
-							
-							mappedList.add(data);
+						Object mappedFieldValue = getFieldValue(mapped, clazzField);
+						if (mappedFieldValue instanceof Iterable){
+							// ManyToMany
+							List<Object> mappedList = (List<Object>) getFieldValue(mapped, clazzField);
+							System.out.println("             DEJA DANS LA LISTE : " + mappedList.contains(data));
+							if (!mappedList.contains(data)){
+								mappedList.add(data);
+							}
+							setFieldValue(mapped, clazzField, mappedList);
+							saveData(mapped);
+						} else {
+							// ManyToOne
+							boolean different = !mappedFieldValue.equals(data);
+							if (mappedFieldValue != null && different){
+								throw new ServiceException("Can't override field value on " + nField.getRevesibleJoin());
+							}
+							if (mappedFieldValue != null && different){
+								setFieldValue(mapped, clazzField, data);
+								saveData(mapped);
+							}
 						}
-						
-						
-					
-						
-						
-						
-						
-						
-						
-						setFieldValue(mapped, clazzField, mappedList);
-						
-						
-						
-						
-						
-						
-						
-						saveData(mapped);
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
 					}
-					
-					
-				}
-				
-				
-				
-				
-				
-				
-				//Object mapped = getData(object.getClass(), id)
-				
+				} else {
+					if (object != null) System.out.println("		object is : " + object.getClass().toString());
+				}				
 				
 			}
 		}
@@ -484,14 +482,17 @@ public class BackOfficeService implements IBackOfficeService{
 			Method remove = clazz.getMethod("remove", params);
 			return (IdProvider) remove.invoke(service, paramsObj);
 			
+		} catch (ClassNotFoundException e) {
+			logger.error("removeDatas -> ClassNotFoundException", e);
+			throw new ServiceException("Error getList", e);
 		} catch (NoSuchMethodException e) {
-			logger.error("saveData -> NoSuchMethodException", e);
+			logger.error("removeDatas -> NoSuchMethodException", e);
 			throw new ServiceException("Error removeDatas", e);
 		} catch (IllegalAccessException e) {
-			logger.error("saveData -> IllegalAccessException", e);
+			logger.error("removeDatas -> IllegalAccessException", e);
 			throw new ServiceException("Error removeDatas", e);
 		} catch (InvocationTargetException e) {
-			logger.error("saveData -> InvocationTargetException", e);
+			logger.error("removeDatas -> InvocationTargetException", e);
 			throw new ServiceException("Error removeDatas", e);
 		}
 	}
