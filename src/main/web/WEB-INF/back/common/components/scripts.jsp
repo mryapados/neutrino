@@ -20,9 +20,8 @@
 <script src="<c:url value='/js/bo/app.js'/>"></script>
 <script src="<c:url value='/js/bo/controller/datepickerPopupCtrl.js'/>"></script>
 <script src="<c:url value='/js/bo/controller/wysiwygEditorCtrl.js'/>"></script>
-
-
-
-
-
-
+<script src="<c:url value='/js/bo/controller/uiAssignmentCtrl.js'/>"></script>
+<script src="<c:url value='/js/bo/service.js'/>"></script>
+<script src="<c:url value='/js/bo/services/constants.js'/>"></script>
+<script src="<c:url value='/js/bo/directives/uiAssignment.js'/>"></script>
+<script src="<c:url value='/js/bo/filters/idProvidersFilter.js'/>"></script>

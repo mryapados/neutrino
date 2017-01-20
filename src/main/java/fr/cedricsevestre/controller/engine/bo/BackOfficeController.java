@@ -227,7 +227,7 @@ public class BackOfficeController extends AbtractController {
 			modelAndView = add(type, id, true);
 		} else{
 			try {
-				data.setId(null);
+				//data.setId(null);
 				IdProvider res = backOfficeService.saveData(data);				
 				modelAndView = new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_VIEW_URL);
 				redirectAttributes.addAttribute("type", type);

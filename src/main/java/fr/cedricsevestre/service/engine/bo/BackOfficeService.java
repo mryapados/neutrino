@@ -297,17 +297,14 @@ public class BackOfficeService implements IBackOfficeService{
 		return new NData<IdProvider>(nMapFields, data);
 	}
 	
-	private IdProvider completeData(Class<?> entity, IdProvider data, List<NField> nFields) throws ServiceException{
+	private IdProvider completeData(Class<?> entity, IdProvider data, List<NField> nFields, IdProvider origin) throws ServiceException{
 		// get data original if id != null
 		IdProvider result = data;
-		if (data.getId() != null){
-			IdProvider original = getData(entity, data.getId());
-			// for each field not editable, set original value to data field
-			for (NField nField : nFields) {
-				if (!nField.isEditable()){
-					Field field = nField.getField();
-					setFieldValue(result, field, getFieldValue(original, field));
-				}
+		// for each field not editable, set original value to data field
+		for (NField nField : nFields) {
+			if (!nField.isEditable()){
+				Field field = nField.getField();
+				setFieldValue(result, field, getFieldValue(origin, field));
 			}
 		}
 		return result;
@@ -350,10 +347,17 @@ public class BackOfficeService implements IBackOfficeService{
 
 		List<Field> fields = getFields(entity);
 		List<NField> nFields = getNField(fields);
-		result = completeData(entity, result, nFields);
+		
+		IdProvider origin = null; 
+		if (data != null) {
+			origin = getData(entity, data.getId());
+		}
+		
+		
+		result = completeData(entity, result, nFields, origin);
 		result = persistData(entity, result);
 
-		persistReverse(data, entity, nFields);
+		persistReverse(data, entity, nFields, origin);
 		
 		return result;
 	}
@@ -370,12 +374,14 @@ public class BackOfficeService implements IBackOfficeService{
 		} else throw new IllegalArgumentException();
 	}
 	
-	public void persistReverse(IdProvider data, Class<?> classObject, List<NField> nFields) throws ServiceException{
+	public void persistReverse(IdProvider data, Class<?> classObject, List<NField> nFields, IdProvider origin) throws ServiceException{
 		for (NField nField : nFields) {
 			if (nField.getRevesibleJoin() != null){
 				Object object = getFieldValue(data, nField.getField());
-
 				if (object instanceof Iterable){
+					Object originObject = null;
+					if (origin != null) originObject = getFieldValue(origin, nField.getField());	
+					
 					System.out.println("         INSTANCE OF Iterable");
 					Class<?> clazz = (Class<?>) findGenericTypeOfField(nField.getField())[0];
 					Map<String, Field> clazzFields = getMapFields(clazz);
@@ -387,7 +393,82 @@ public class BackOfficeService implements IBackOfficeService{
 					}
 					Field clazzField = clazzFields.get(nField.getRevesibleJoin());
 					System.out.println("             Field found : " + (clazzField != null));
-					Iterable<?> list = (Iterable<?>) object;
+					
+					List<?> list = (List<?>) object;
+//					List<?> originList = null;
+//					if (originObject != null) {
+//						originList = (List<?>) originObject;
+//						for (Object object2 : originList) {
+//							IdProvider mapped = (IdProvider) object2;
+//							System.out.println("             MAPPED " + mapped.getName() + " - " + mapped.getClass() + " - " + clazzField);
+//	
+//							Object mappedFieldValue = getFieldValue(mapped, clazzField);
+//							
+//							
+//							
+//							
+//							if (mappedFieldValue instanceof Iterable){
+//								// ManyToMany
+//								List<Object> mappedList = (List<Object>) getFieldValue(mapped, clazzField);
+//								System.out.println("             DEJA DANS LA LISTE : " + mappedList.contains(data));
+//								if (!mappedList.contains(data) && !list.contains(data)){
+//									System.out.println("             REMOVE : " + data.getId());
+//									
+////									mappedList.remove(data);
+////									setFieldValue(mapped, clazzField, mappedList);
+////									saveData(mapped);
+//								}
+//							} else {
+//								// ManyToOne
+//	
+//							}
+//						}
+//					}
+					
+					
+					
+					
+					
+					List<?> originList = (List<?>) originObject;
+					for (Object object2 : originList) {
+						IdProvider mapped = (IdProvider) object2;
+						System.out.println("             MAPPED " + mapped.getName() + " - " + mapped.getClass());
+
+						Object mappedFieldValue = getFieldValue(mapped, clazzField);
+						if (mappedFieldValue instanceof Iterable){
+							// ManyToMany
+							List<Object> mappedList = (List<Object>) getFieldValue(mapped, clazzField);
+							System.out.println("             mappedList : " + mappedList.toString());
+							for (Object object3 : mappedList) {
+								System.out.println("             object3 : ");
+							}
+							
+							
+							
+							
+							
+							
+							
+							//System.out.println("             DEJA DANS LA LISTE : " + mappedList.contains(data));
+
+							
+							
+							
+							
+							
+							
+							
+							
+						} else {
+							// ManyToOne
+		
+						}
+					}
+					
+					
+					
+
+					
 					for (Object object2 : list) {
 						IdProvider mapped = (IdProvider) object2;
 						System.out.println("             MAPPED " + mapped.getName() + " - " + mapped.getClass());

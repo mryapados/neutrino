@@ -2,7 +2,7 @@
 	
 
 	
-	var fModule = angular.module('frontApp', ['ui.bootstrap', 'textAngular']);
+	var fModule = angular.module('frontApp', ['frontServices', 'ui.bootstrap', 'textAngular']);
 
 	
 	

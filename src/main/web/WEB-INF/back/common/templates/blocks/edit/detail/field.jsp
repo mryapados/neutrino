@@ -92,6 +92,7 @@
 
 		<c:if test="${empty isInCollection || not isInCollection}">
 			<form:input cssClass="form-control" type="text" path="${finalField.name}"/>
+			<data-ui-assignment field="${finalField.name}"/>
 		</c:if>
 		
 	</c:when>
@@ -115,6 +116,8 @@
 			<c:when test="${finalObject.objectType eq 'Folder'}">
 				<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a>
 				<form:input cssClass="form-control" type="text" path="${finalField.name}"/>
+				<data-ui-assignment field="${finalField.name}"/>
+				
 			</c:when>
 			<c:otherwise>
 				<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="object"/></a>
@@ -122,7 +125,12 @@
 		</c:choose>
 	</c:when>
 	<c:when test="${finalFieldType eq 'COLLECTION'}">
-		<form:input cssClass="form-control" type="text" path="${finalField.name}"/>
+		
+		<data-ui-assignment field="${finalField.name}">
+			<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="zoubida" />
+			zoubida = {{zoubida}}
+
+		</data-ui-assignment>
 		<c:set var="collection" value="${finalObject}" />
 		<c:set var="size" value="${fn:length(collection)}" />
 		<c:if test="${size > 0}">

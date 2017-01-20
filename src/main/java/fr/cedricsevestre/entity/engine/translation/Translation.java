@@ -3,6 +3,8 @@ package fr.cedricsevestre.entity.engine.translation;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
@@ -39,6 +41,7 @@ public abstract class Translation implements ITranslation, Serializable {
 	@BOField(type = ValueType.INTEGER, editable = false)
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Access(AccessType.PROPERTY)
 	private Integer id;
 	
 	@BOField(type = ValueType.VARCHAR50, defaultField = true, sortBy = SortType.ASC, sortPriority = 200)
