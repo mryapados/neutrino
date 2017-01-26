@@ -1,7 +1,7 @@
 (function() {
 	var bModule = angular.module('backServices');
 
-	bModule.service('BlockManagementService', function($rootScope, $q, $uibModal, FolderService, LangService, PageService, TemplateService, BlockService, MapTemplateService, TObjectService, PATH) {
+	bModule.service('BlockManagementService', function($rootScope, $q, $uibModal, FolderService, LangService, PageService, TemplateService, BlockService, MapTemplateService, TObjectService, $backPath) {
 		var folder;
 		var page;
 		var activeObject = null;
@@ -144,7 +144,7 @@
 			return deferred.promise;
 		};
 		self.getParsedBlock = function(blockName) {
-			return PATH.URL_SERVER_REST + '@back/parsedblock/' + page.name + '/' + blockName + '?servername=' + folder.serverName[0];
+			return $backPath.URL_SERVER_REST + '@back/parsedblock/' + page.name + '/' + blockName + '?servername=' + folder.serverName[0];
 		}
 
 		self.setMapBlock = function(modelName, blockName, positionName, ordered) {
@@ -162,12 +162,12 @@
 		}
 		
         self.getPathTemplateForm = function() {
-        	return PATH.URL_TEMPLATE_MODAL;
+        	return $backPath.URL_TEMPLATE_MODAL;
         }
         
         self.openModal = function(templateId) {
 			var instance = $uibModal.open({
-				templateUrl: PATH.URL_TEMPLATE_MODAL_EDIT,
+				templateUrl: $backPath.URL_TEMPLATE_MODAL_EDIT,
 				controller: 'TemplateModalCtrl',
 				resolve: {
 					template: function(){
@@ -200,7 +200,7 @@
 	
 
 	
-	bModule.service('TemplateService', function(TemplateResource, TemplateRepository, PATH) {
+	bModule.service('TemplateService', function(TemplateResource, TemplateRepository, $backPath) {
 		self = this;
 		self.getTemplate = function(templateName) {
 			return TemplateResource.get({name : templateName}).$promise;
@@ -236,7 +236,7 @@
 
 		};
 	});
-	bModule.service('LangService', function(LangResource, PATH) {
+	bModule.service('LangService', function(LangResource, $backPath) {
 		self = this;
 		self.getLang = function(langName) {
 			return LangResource.get({name : langName}).$promise;
@@ -245,7 +245,7 @@
 			return LangResource.getAll().$promise;
 		};
 	});
-	bModule.service('FolderService', function(FolderResource, PATH) {
+	bModule.service('FolderService', function(FolderResource, $backPath) {
 		self = this;
 		self.getFolder = function(folderName) {
 			return FolderResource.get({name : folderName}).$promise;
@@ -254,7 +254,7 @@
 			return FolderResource.getAll().$promise;
 		};
 	});
-	bModule.service('PageService', function(PageResource, PATH) {
+	bModule.service('PageService', function(PageResource, $backPath) {
 		self = this;
 		self.getPage = function(pageName) {
 			return PageResource.get({name : pageName}).$promise;
@@ -263,7 +263,7 @@
 			return PageResource.getAll().$promise;
 		};
 	});
-	bModule.service('TObjectService', function(TObjectResource, PATH) {
+	bModule.service('TObjectService', function(TObjectResource, $backPath) {
 		self = this;
 		self.getTObject = function(id) {
 			return TObjectResource.get({id : id}).$promise;
@@ -272,13 +272,13 @@
 	
 	
 	
-	bModule.service('BlockService', function(BlockResource, PATH) {
+	bModule.service('BlockService', function(BlockResource, $backPath) {
 		self = this;
 		self.getBlocksForModelPosition = function(modelName, activeObject, positionName) {
 			return BlockResource.getAll({model : modelName, activeobject:activeObject, position : positionName}).$promise;
 		};
 	});
-	bModule.service('PositionService', function(PositionRepository, PATH) {
+	bModule.service('PositionService', function(PositionRepository, $backPath) {
 		self = this;
 		self.getPosition = function(positionName) {
 			return PositionRepository.get(positionName);
@@ -287,7 +287,7 @@
 			return PositionRepository.getAll();
 		};		
 	});
-	bModule.service('MapTemplateService', function(MapTemplateResource, PATH) {
+	bModule.service('MapTemplateService', function(MapTemplateResource, $backPath) {
 		self = this;
 		self.save = function(mapTemplate) {
 			var fn = (mapTemplate.id) ? MapTemplateResource.update : MapTemplateResource.save;

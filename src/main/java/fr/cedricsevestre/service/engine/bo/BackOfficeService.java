@@ -14,8 +14,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.persistence.EntityManager;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
@@ -41,7 +43,9 @@ import fr.cedricsevestre.service.engine.ServiceLocator;
 @Service
 @Scope(value = "singleton")
 public class BackOfficeService implements IBackOfficeService{
-
+	@PersistenceContext
+	private EntityManager em;
+	  
 	@Autowired
 	ServiceLocator customServiceLocator;
 	

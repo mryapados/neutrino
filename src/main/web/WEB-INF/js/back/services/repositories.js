@@ -1,10 +1,10 @@
 (function() {
 	var bModule = angular.module('backServices');
 
-//	module.factory("BlockRepository", function($http, PATH) {
+//	module.factory("BlockRepository", function($http, $backPath) {
 //		return {
 //			getAllForModel: function(modelName) {
-//				return $http.get(PATH.URL_SERVER_REST + '@back/blocks/' + modelName)
+//				return $http.get($backPath.URL_SERVER_REST + '@back/blocks/' + modelName)
 //				.then(function(response) {
 //		            return response.data;
 //				})
@@ -15,11 +15,11 @@
 //			}
 //		};
 //	});
-	bModule.factory("TemplateRepository", function($http, PATH) {
+	bModule.factory("TemplateRepository", function($http, $backPath) {
 		return {
 			exist: function(context, kind, path, name) {
 				return $http.get(
-					PATH.URL_SERVER_REST + '@back/templates/exist/', 
+						$backPath.URL_SERVER_REST + '@back/templates/exist/', 
 					{params:{'context': context, 'kind': kind, 'path': path, 'name': name}}
 				).then(function(response) {
 					return response.data;
@@ -32,9 +32,9 @@
 		};
 	});
 	
-	bModule.factory("TemplateResource", function($resource, PATH) {
+	bModule.factory("TemplateResource", function($resource, $backPath) {
 	  	var API_URI = '@back/templates/:name';  				
-	  	return $resource(PATH.URL_SERVER_REST + API_URI, {name: '@name'}, {
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {name: '@name'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -43,9 +43,9 @@
 	  	});
 	});
 	
-	bModule.factory("LangResource", function($resource, PATH) {
+	bModule.factory("LangResource", function($resource, $backPath) {
 	  	var API_URI = '@back/langs/:name';  				
-	  	return $resource(PATH.URL_SERVER_REST + API_URI, {name: '@name'}, {
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {name: '@name'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -55,9 +55,9 @@
 	});
 	
 	
-	bModule.factory("FolderResource", function($resource, PATH) {
+	bModule.factory("FolderResource", function($resource, $backPath) {
 	  	var API_URI = '@back/folders/:name';  				
-	  	return $resource(PATH.URL_SERVER_REST + API_URI, {name: '@name'}, {
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {name: '@name'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -66,9 +66,9 @@
 	  	});
 	});
 	
-	bModule.factory("PageResource", function($resource, PATH) {
+	bModule.factory("PageResource", function($resource, $backPath) {
 	  	var API_URI = '@back/pages/:name';  				
-	  	return $resource(PATH.URL_SERVER_REST + API_URI, {name: '@name'}, {
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {name: '@name'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -77,9 +77,9 @@
 	  	});
 	});
 	
-	bModule.factory("BlockResource", function($resource, PATH) {
+	bModule.factory("BlockResource", function($resource, $backPath) {
 	  	var API_URI = '@back/models/:model/activeobjects/:activeobject/positions/:position/blocks';  				
-	  	return $resource(PATH.URL_SERVER_REST + API_URI, {model: '@model', activeobject: '@activeobject', positions: '@position'}, {
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {model: '@model', activeobject: '@activeobject', positions: '@position'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -88,10 +88,10 @@
 	  	});
 	});
 	
-	bModule.factory("PositionRepository", function($http, PATH) {
+	bModule.factory("PositionRepository", function($http, $backPath) {
 		return {
 			get: function(positionName) {
-				return $http.get(PATH.URL_SERVER_REST + '@back/positions/'+ positionName)
+				return $http.get($backPath.URL_SERVER_REST + '@back/positions/'+ positionName)
 				.then(function(response) {
 					return response.data;
 				})
@@ -101,7 +101,7 @@
 				});
 			},
 			getAll: function() {
-				return $http.get(PATH.URL_SERVER_REST + '@back/positions/')
+				return $http.get($backPath.URL_SERVER_REST + '@back/positions/')
 				.then(function(response) {
 		            return response.data;
 				})
@@ -115,10 +115,10 @@
 		};
 	});
 
-	bModule.factory("MapTemplateRepository", function($http, PATH) {
+	bModule.factory("MapTemplateRepository", function($http, $backPath) {
 		return {
 			remove: function(idTemplateBlock) {
-				return $http.delete(PATH.URL_SERVER_REST + '@back/removemapblock/' + idTemplateBlock)
+				return $http.delete($backPath.URL_SERVER_REST + '@back/removemapblock/' + idTemplateBlock)
 				.then(function(response) {
 
 				})
@@ -128,7 +128,7 @@
 				});
 			},
 			add: function(dataObj) {
-	    		return $http.post(PATH.URL_SERVER_REST + '@back/addmapblock', dataObj).then(function(response) {
+	    		return $http.post($backPath.URL_SERVER_REST + '@back/addmapblock', dataObj).then(function(response) {
 	    			return response.data;
 				}).catch(function(error){
 					console.log(error.status);
@@ -140,9 +140,9 @@
 	});
 	
 	
-	bModule.factory("MapTemplateResource", function($resource, PATH) {
+	bModule.factory("MapTemplateResource", function($resource, $backPath) {
 	  	var API_URI = '@back/maptemplates/:id';			
-	  	return $resource(PATH.URL_SERVER_REST + API_URI, {id: '@id'}, {
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id'}, {
 	  		save:   {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -151,9 +151,9 @@
 	  	});
 	});
 	
-	bModule.factory("TObjectResource", function($resource, PATH) {
+	bModule.factory("TObjectResource", function($resource, $backPath) {
 	  	var API_URI = '@back/tobjects/:id';			
-	  	return $resource(PATH.URL_SERVER_REST + API_URI, {id: '@id'}, {
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id'}, {
 	  		save:   {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},

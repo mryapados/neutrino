@@ -2,6 +2,8 @@ package fr.cedricsevestre.service.engine;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 
 import org.apache.log4j.Logger;
@@ -20,7 +22,7 @@ import fr.cedricsevestre.exception.ServiceException;
 @Service
 @Scope(value = "singleton")
 public abstract class BaseService<T> implements IBaseService<T>{
-
+	
 	private Logger logger = Logger.getLogger(BaseService.class);
 
 	@Autowired
@@ -118,5 +120,27 @@ public abstract class BaseService<T> implements IBaseService<T>{
 			throw new ServiceException("Error findAll", e);
 		}
 	}
+	
+	
+	
+	
+
+//	public List<T> test() throws ServiceException {
+//		try {
+//			return baseDao.test();
+//		} catch (PersistenceException e) {
+//			throw new ServiceException("Error test", e);
+//		}
+//	}
+//	
+//	public List<T> test2(String field, Integer value) throws ServiceException {
+//		try {
+//			return baseDao.test2(field, value);
+//		} catch (PersistenceException e) {
+//			throw new ServiceException("Error test2", e);
+//		}
+//	}
+	
+
 
 }

@@ -4,14 +4,17 @@ import java.beans.PropertyEditor;
 import java.beans.PropertyEditorSupport;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
 import javax.validation.Valid;
 
 import org.hibernate.collection.internal.PersistentBag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +25,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,6 +51,7 @@ import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.engine.EntityLocator;
 import fr.cedricsevestre.service.engine.bo.BackOfficeService;
+import fr.cedricsevestre.service.engine.translation.objects.PageService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 
 @Controller
@@ -58,9 +63,11 @@ public class BackOfficeController extends AbtractController {
 	private BackOfficeService backOfficeService;
 	
 	
+	@Autowired
+	private PageService pageService;
 	
-	
-
+	@Autowired
+	private TemplateService templateService;
 	
 	
 	
@@ -88,6 +95,10 @@ public class BackOfficeController extends AbtractController {
 	
 	public static final String BO_REMOVES_URL = "removes/";
 	public static final String BO_REMOVE_URL = "remove/";
+	
+	public static final String BO_BLOCK_LIST_URL = "blocklist/";
+	public static final String BO_BLOCK_LIST = "@bo_block_list";
+	
 	
 	private Folder getBOFolder() throws JspException{
 		try {
@@ -462,4 +473,82 @@ public class BackOfficeController extends AbtractController {
 		
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	@RequestMapping(value = BO_BLOCK_LIST_URL, method = RequestMethod.GET)
+	public ModelAndView blockList(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("type") String type, Pageable pageRequest) throws JspException {
+		
+		
+		
+//		
+//		try {
+////			List<Template> tps = templateService.test();
+////			System.out.println(tps.size());
+////			
+////			Integer value = 1;
+////			List<Template> tps2 = templateService.test2("id", value);
+////			System.out.println(tps2.size());
+//			
+//			
+//			
+//			
+//		} catch (ServiceException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		Folder folder = getBOFolder();
+		ModelAndView modelAndView = null;
+		try {
+			String langCode = LocaleContextHolder.getLocale().getLanguage();
+			fr.cedricsevestre.entity.engine.translation.objects.Page page = common.getPage(BO_LIST_PAGE, langCode);
+			Template block = templateService.findByName(BO_BLOCK_LIST + "_" + langCode.toUpperCase());
+			modelAndView = baseView(page, block, folder);
+			modelAndView.addObject("page", page);
+			modelAndView.addObject("activeBlock", block);
+			response.addHeader("Object-Type", "parsedBlock");  
+
+			Class<?> object = entityLocator.getEntity(type).getClass();
+			modelAndView.addObject("objectType", object.getSimpleName());
+			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
+			
+			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest);
+
+			modelAndView.addObject("objectDatas", tDatas.getObjectDatas());
+			modelAndView.addObject("datas", tDatas.getObjectDatas().getContent());
+			modelAndView.addObject("fields", tDatas.getFields());
+
+		} catch (ServiceException e) {
+			throw new JspException(e);
+		}
+		return modelAndView;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

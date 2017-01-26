@@ -21,14 +21,14 @@
 		}
 	});
 
-	fModule.directive('uiAssignment', function(PATH){
+	fModule.directive('uiAssignment', function($frontPath){
 		return {
 			scope: {
 				field: '@',
 			},
 			restrict: 'E',
 			transclude: true,
-			templateUrl: PATH.URL_TEMPLATE_JS + 'ui-assignement.html', 
+			templateUrl: $frontPath.URL_TEMPLATE_JS + 'ui-assignement.html', 
 			controller: 'UiAssignmentCtrl', 
 			link: function(scope, element, attrs){
 				
