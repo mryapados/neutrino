@@ -18,6 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
@@ -366,10 +367,29 @@ public class BackOfficeService implements IBackOfficeService{
 		return result;
 	}
 	
-	
-	
-        
 
+	
+	
+
+	
+	public List<?> getAllNotAffected(String entityName, String fieldName, Integer ownerId, Integer startPosition, Integer maxResult) throws ServiceException{
+		String query = "SELECT e FROM " + entityName + " e WHERE e." + fieldName + " IS NULL OR e." + fieldName + ".id = :ownerId";
+		System.out.println(query);
+		return em.createQuery(query)
+				.setParameter("ownerId", ownerId)
+				.setFirstResult(startPosition)
+				.setMaxResults(maxResult)
+				.getResultList();
+	}
+	public List<?> getAll(String entityName, Integer startPosition, Integer maxResult) throws ServiceException{
+		String query = "SELECT e FROM " + entityName + " e";
+		System.out.println(query);
+		return em.createQuery(query)
+				.setFirstResult(startPosition)
+				.setMaxResults(maxResult)
+				.getResultList();
+	}
+	
 	public static Type[] findGenericTypeOfField(Field field) throws IllegalArgumentException{
 		Type genericFieldType = field.getGenericType();
 		if(genericFieldType instanceof ParameterizedType){

@@ -22,13 +22,16 @@ import org.springframework.data.domain.Slice;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -37,6 +40,10 @@ import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.bean.NDatas;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.controller.engine.AbtractController;
+import fr.cedricsevestre.dto.engine.IdProviderDto;
+import fr.cedricsevestre.dto.engine.NoTranslationDto;
+import fr.cedricsevestre.dto.engine.TemplateDto;
+import fr.cedricsevestre.dto.engine.TranslationDto;
 import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.custom.Tag;
@@ -47,6 +54,7 @@ import fr.cedricsevestre.entity.engine.independant.objects.User;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
+import fr.cedricsevestre.exception.FormException;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.engine.EntityLocator;
@@ -96,9 +104,12 @@ public class BackOfficeController extends AbtractController {
 	public static final String BO_REMOVES_URL = "removes/";
 	public static final String BO_REMOVE_URL = "remove/";
 	
+	@Deprecated
 	public static final String BO_BLOCK_LIST_URL = "blocklist/";
+	@Deprecated
 	public static final String BO_BLOCK_LIST = "@bo_block_list";
 	
+	public static final String BO_ASSIGN_LIST_URL = "assignlist/";
 	
 	private Folder getBOFolder() throws JspException{
 		try {
@@ -480,11 +491,54 @@ public class BackOfficeController extends AbtractController {
 	
 	
 	
-	
-	
+
+	@RequestMapping(value = BO_ASSIGN_LIST_URL + "{type}/{field}/{id}", method = RequestMethod.GET)
+	public @ResponseBody List<IdProviderDto> getAssignableList(@PathVariable(value = "type") String assignType, @PathVariable(value = "field") String ownerField, @PathVariable(value = "id") Integer ownerId) throws ServiceException {
+		Class<?> object = entityLocator.getEntity(assignType).getClass();
+		List<IdProviderDto> results = new ArrayList<>();
+		List<?> list = backOfficeService.getAllNotAffected(object.getSimpleName(), ownerField, ownerId, 0, 100);
+		for (Object item : list) {
+			if (item instanceof NoTranslation){
+				results.add(NoTranslationDto.from((NoTranslation) item));
+				
+			} else if (item instanceof Translation){
+				results.add(TranslationDto.from((Translation) item));
+
+			} else if (item instanceof IdProvider){
+				results.add(IdProviderDto.from((IdProvider) item));
+
+			} else {
+				throw new ServiceException("Assign object type must implement IdProvider !");
+			}
+		}
+		System.out.println(results.size());
+		return results;
+	}
+	@RequestMapping(value = BO_ASSIGN_LIST_URL + "{type}", method = RequestMethod.GET)
+	public @ResponseBody List<IdProviderDto> getAssignableList(@PathVariable(value = "type") String assignType) throws ServiceException {
+		Class<?> object = entityLocator.getEntity(assignType).getClass();
+		List<IdProviderDto> results = new ArrayList<>();
+		List<?> list = backOfficeService.getAll(object.getSimpleName(), 5, 10);
+		for (Object item : list) {
+			if (item instanceof NoTranslation){
+				results.add(NoTranslationDto.from((NoTranslation) item));
+				
+			} else if (item instanceof Translation){
+				results.add(TranslationDto.from((Translation) item));
+
+			} else if (item instanceof IdProvider){
+				results.add(IdProviderDto.from((IdProvider) item));
+
+			} else {
+				throw new ServiceException("Assign object type must implement IdProvider !");
+			}
+		}
+		System.out.println(results.size());
+		return results;
+	}
 
 	
-	
+	@Deprecated
 	@RequestMapping(value = BO_BLOCK_LIST_URL, method = RequestMethod.GET)
 	public ModelAndView blockList(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("type") String type, Pageable pageRequest) throws JspException {
 		
@@ -499,7 +553,7 @@ public class BackOfficeController extends AbtractController {
 ////			List<Template> tps2 = templateService.test2("id", value);
 ////			System.out.println(tps2.size());
 //			
-//			
+//
 //			
 //			
 //		} catch (ServiceException e1) {
