@@ -5,21 +5,28 @@ import java.util.Map;
 
 import javax.persistence.Entity;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import fr.cedricsevestre.service.engine.bo.BackOfficeService;
+
 
 @Component
 public class EntityLocator{
-
+	private Logger logger = Logger.getLogger(EntityLocator.class);
+	
     @Autowired
     private ApplicationContext context;
     private Map<String, Object> entities;
 
     public Object getEntity(String entityName) {
     	checkEntities();
-        return entities.get(entityName.toUpperCase());
+    	Object result = entities.get(entityName.toUpperCase());
+    	logger.debug("getEntity -> Entity (" + entityName.toUpperCase() + ") is null ? = " + (result == null));
+        return result;
+        
     }
 
     private void checkEntities() {
@@ -27,6 +34,7 @@ public class EntityLocator{
         	entities = new HashMap<String, Object>();
             Map<String, Object> beans = context.getBeansWithAnnotation(Entity.class);
             for (Map.Entry<String, Object> bean : beans.entrySet()) {
+            	logger.debug("checkEntities -> " + bean.getKey().toUpperCase() + " added to entities locator");
             	entities.put(bean.getKey().toUpperCase(),  bean.getValue());
             }
         }

@@ -103,7 +103,7 @@ public class Common {
 	}
 	
 	public Page getPage(String pageNameWithoutLangCode, String langCode) throws ServiceException {
-		String pageName = pageNameWithoutLangCode + "_" + langCode;
+		String pageName = pageNameWithoutLangCode + "_" + langCode.toUpperCase();
 		if (pages == null){
 			pages = new HashMap<>();
 		}

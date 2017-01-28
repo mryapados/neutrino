@@ -18,6 +18,8 @@ import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.custom.Album.AlbumType;
+import fr.cedricsevestre.entity.custom.File;
+import fr.cedricsevestre.entity.custom.File.FileType;
 import fr.cedricsevestre.entity.custom.Marker;
 import fr.cedricsevestre.entity.custom.Member;
 import fr.cedricsevestre.entity.custom.Project;
@@ -37,6 +39,7 @@ import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.AlbumService;
+import fr.cedricsevestre.service.custom.FileService;
 import fr.cedricsevestre.service.custom.MarkerService;
 import fr.cedricsevestre.service.custom.MemberService;
 import fr.cedricsevestre.service.custom.ProjectService;
@@ -70,12 +73,15 @@ public class InitialisationBase {
 	
 	@Autowired
 	private TagService tagService;
-
+	
+	@Autowired
+	private FileService fileService;
+	
 	@Autowired
 	private LinkService linkService;
 	
-//	@Autowired
-//	private MarkerService markerService;
+	@Autowired
+	private MarkerService markerService;
 	
 	@Autowired
 	private LangService langService;
@@ -126,6 +132,9 @@ public class InitialisationBase {
 
 		initAlbums();
 		initTags();
+		initFiles();
+		initTags2();
+		
 		initMarkers();
 		
 		initNDatas();
@@ -825,14 +834,14 @@ public class InitialisationBase {
 		albumEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		albumEN.setDescription(name + " description en");
 		albumEN.setProject(ProjectEN);
-		albumEN.setType(AlbumType.DEFAULT);
+		albumEN.setAlbumType(AlbumType.DEFAULT);
 		albumService.save(albumEN);
 		
 		Album albumFR = albumService.translate(albumEN, langFR, Album.class);
 		albumFR.setName(name + "_" + langFR.getCode().toUpperCase());
 		albumFR.setDescription(name + " description fr");
 		albumFR.setProject(ProjectFR);
-		albumFR.setType(AlbumType.DEFAULT);
+		albumFR.setAlbumType(AlbumType.DEFAULT);
 		albumService.save(albumFR);
 		
 		Integer max = 20;
@@ -842,14 +851,14 @@ public class InitialisationBase {
 			albumEN.setName(name + "_" + langEN.getCode().toUpperCase());
 			albumEN.setDescription(name + " description en");
 			albumEN.setProject(ProjectEN);
-			albumEN.setType(AlbumType.DEFAULT);
+			albumEN.setAlbumType(AlbumType.DEFAULT);
 			albumService.save(albumEN);
 			
 			albumFR = albumService.translate(albumEN, langFR, Album.class);
 			albumFR.setName(name + "_" + langFR.getCode().toUpperCase());
 			albumFR.setDescription(name + " description fr");
 			albumFR.setProject(ProjectFR);
-			albumFR.setType(AlbumType.DEFAULT);
+			albumFR.setAlbumType(AlbumType.DEFAULT);
 			albumService.save(albumFR);
 		}
 		
@@ -878,6 +887,77 @@ public class InitialisationBase {
 		
 			
 	}
+	
+	public void initFiles() throws ServiceException, InstantiationException, IllegalAccessException{
+		logger.debug("init files");
+		
+		Album AlbumEN = albumService.findByName("testalbum_EN");
+		Album AlbumFR = albumService.findByName("testalbum_FR");
+		
+		File file = new File();
+		file.setName("testfile");
+		file.setDescription("description file");
+		file.setFileType(FileType.IMAGE);
+		file.setAlbum(AlbumEN);
+		file.setFileSize(1024);
+		fileService.save(file);
+		
+		
+		Tag tag = tagService.findByName("testtag");
+		Tag tag2 = tagService.findByName("testtag2");
+		File file2 = new File();
+		file2.setName("testfile2");
+		file2.setDescription("description file2");
+		file2.setFileType(FileType.VIDEO);
+		file2.setAlbum(AlbumEN);
+		file2.setFileSize(1024);
+		
+		List<Tag> tags = new ArrayList<>();
+		tags.add(tag);
+		//tags.add(tag2);
+		
+		file2.setTags(tags);
+		fileService.save(file2);
+		
+		
+		
+		
+						
+	}
+	
+	
+	
+	
+	public void initTags2() throws ServiceException, InstantiationException, IllegalAccessException{
+		logger.debug("init tags2");
+		
+		File file = fileService.findByName("testfile");
+		
+		Tag tag = new Tag();
+		tag.setName("testtagWithFile");
+		tag.setDescription("description tag");
+		
+		List<File> files = new ArrayList<>();
+		files.add(file);
+		
+		tag.setFiles(files);
+		tagService.save(tag);
+			
+
+		
+			
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public void initMarkers() throws ServiceException, InstantiationException, IllegalAccessException{
 		logger.debug("init markers");

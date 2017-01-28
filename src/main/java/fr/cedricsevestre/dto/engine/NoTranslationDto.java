@@ -8,10 +8,12 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
+import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 
-public class TranslationDto extends IdProviderDto implements Serializable {
-	private static final long serialVersionUID = 1L;	
+public class NoTranslationDto  extends IdProviderDto implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	@NotNull
 	private Date dateAdded;
 	
@@ -21,23 +23,20 @@ public class TranslationDto extends IdProviderDto implements Serializable {
 	@NotNull
 	@SafeHtml(whitelistType = WhiteListType.BASIC)
 	private String description;
-
-	private LangDto lang;
 	
-	public TranslationDto() {
+	public NoTranslationDto() {
 
 	}
 
-	public TranslationDto(String objectType, Integer id, String name, Date dateAdded, Date dateUpdated, String description, LangDto lang) {
+	public NoTranslationDto(String objectType, Integer id, String name, Date dateAdded, Date dateUpdated, String description) {
 		super(objectType, id, name);
 		this.dateAdded = dateAdded;
 		this.dateUpdated = dateUpdated;
 		this.description = description;
-		this.lang = lang;
 	}
 
-	public static TranslationDto from(Translation translation) {
-		return new TranslationDto(translation.getObjectType(), translation.getId(), translation.getName(), translation.getDateAdded(), translation.getDateUpdated(), translation.getDescription(), LangDto.from(translation.getLang()));
+	public static NoTranslationDto from(NoTranslation noTranslation) {
+		return new NoTranslationDto(noTranslation.getObjectType(), noTranslation.getId(), noTranslation.getName(), noTranslation.getDateAdded(), noTranslation.getDateUpdated(), noTranslation.getDescription());
 	}
 
 	public Date getDateAdded() {
@@ -63,15 +62,6 @@ public class TranslationDto extends IdProviderDto implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	public LangDto getLang() {
-		return lang;
-	}
-
-	public void setLang(LangDto lang) {
-		this.lang = lang;
-	}
-
 
 	
 }
