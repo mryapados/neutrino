@@ -85,7 +85,7 @@
 	
 	
 
-	bModule.directive('uiPosition', function(PATH, BlockManagementService){
+	bModule.directive('uiPosition', function($backPath, BlockManagementService){
 		return {
 			scope: {
 				position: '@',
@@ -93,7 +93,7 @@
 				activeobject: '@',
 			},
 			restrict: 'E',
-			templateUrl: PATH.URL_TEMPLATE_JS + 'ui-position.html', 
+			templateUrl: $backPath.URL_TEMPLATE_JS + 'ui-position.html', 
 			controller: 'UiPositionCtrl', 
 			link: function(scope, element, attrs){
 				scope.facade = BlockManagementService;

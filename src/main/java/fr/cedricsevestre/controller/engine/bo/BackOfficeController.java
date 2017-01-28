@@ -4,13 +4,17 @@ import java.beans.PropertyEditor;
 import java.beans.PropertyEditorSupport;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
 import javax.validation.Valid;
 
+import org.hibernate.collection.internal.PersistentBag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -18,12 +22,16 @@ import org.springframework.data.domain.Slice;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -32,6 +40,11 @@ import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.bean.NDatas;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.controller.engine.AbtractController;
+import fr.cedricsevestre.dto.engine.IdProviderDto;
+import fr.cedricsevestre.dto.engine.NoTranslationDto;
+import fr.cedricsevestre.dto.engine.TemplateDto;
+import fr.cedricsevestre.dto.engine.TranslationDto;
+import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.custom.Tag;
 import fr.cedricsevestre.entity.engine.IdProvider;
@@ -41,10 +54,12 @@ import fr.cedricsevestre.entity.engine.independant.objects.User;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
+import fr.cedricsevestre.exception.FormException;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.engine.EntityLocator;
 import fr.cedricsevestre.service.engine.bo.BackOfficeService;
+import fr.cedricsevestre.service.engine.translation.objects.PageService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 
 @Controller
@@ -53,12 +68,14 @@ import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 @Secured({ "ROLE_WEBMASTER", "ROLE_ADMIN", "ROLE_BO" })
 public class BackOfficeController extends AbtractController {
 	@Autowired
-	private BackOfficeService<IdProvider> backOfficeService;
+	private BackOfficeService backOfficeService;
 	
 	
+	@Autowired
+	private PageService pageService;
 	
-	
-
+	@Autowired
+	private TemplateService templateService;
 	
 	
 	
@@ -86,6 +103,13 @@ public class BackOfficeController extends AbtractController {
 	
 	public static final String BO_REMOVES_URL = "removes/";
 	public static final String BO_REMOVE_URL = "remove/";
+	
+	@Deprecated
+	public static final String BO_BLOCK_LIST_URL = "blocklist/";
+	@Deprecated
+	public static final String BO_BLOCK_LIST = "@bo_block_list";
+	
+	public static final String BO_ASSIGN_LIST_URL = "assignlist/";
 	
 	private Folder getBOFolder() throws JspException{
 		try {
@@ -182,9 +206,18 @@ public class BackOfficeController extends AbtractController {
 	public ModelAndView save(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id, @Valid @ModelAttribute("object") IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
 		ModelAndView modelAndView = null;
 		if (result.hasErrors()) {
+			
+			System.out.println("errrrrrrrrrrrrrrrrrrrrrrr" + result.getAllErrors().toString());
+			
+			
+			
+			
 			modelAndView = edit(type, id, true);
 		} else{
 			try {
+
+				
+				
 				backOfficeService.saveData(data);
 				modelAndView = new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_VIEW_URL);
 				redirectAttributes.addAttribute("type", type);
@@ -216,7 +249,7 @@ public class BackOfficeController extends AbtractController {
 			modelAndView = add(type, id, true);
 		} else{
 			try {
-				data.setId(null);
+				//data.setId(null);
 				IdProvider res = backOfficeService.saveData(data);				
 				modelAndView = new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_VIEW_URL);
 				redirectAttributes.addAttribute("type", type);
@@ -238,8 +271,14 @@ public class BackOfficeController extends AbtractController {
 		Folder folder = getBOFolder();
 		ModelAndView modelAndView = null;
 		try {
+			System.out.println("zzzzzzzzzzzzzzzzzzzzzz type = " + type);
+			
 			modelAndView = baseView(BO_EDIT_PAGE, folder);
 			Class<?> object = entityLocator.getEntity(type).getClass();
+			
+			
+			
+			
 			modelAndView.addObject("objectType", object.getSimpleName());
 			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
 
@@ -299,6 +338,51 @@ public class BackOfficeController extends AbtractController {
 	
 
 	
+	private IdProvider mkIdProvider(String objectTypeId) throws IllegalArgumentException{
+		System.out.println("<<<<<<<<<<<< mkIdProvider " + objectTypeId);
+		String[] identifier = objectTypeId.split("_");
+    	
+    	String objectType = identifier[0];
+    	Class<?> cls = entityLocator.getEntity(objectType).getClass();
+		if (cls == null){
+            throw new IllegalArgumentException ("Unknown idProvider type:" + objectType);
+		}
+
+    	Integer id = null;
+    	if (identifier.length > 1){
+    		try {
+	    		id = Integer.parseInt(identifier[1]);
+			} catch (NumberFormatException e) {
+				System.out.println("/////////////////////////// " + "Can't parse " + identifier[1] + " !");
+				
+				throw new IllegalArgumentException("Can't parse " + identifier[1] + " !", e);
+			}
+    	}
+
+    	if (id == null){
+    		try {
+    			System.out.println("<<<<<<<<<<<< new id ");
+    			return ((IdProvider) cls.newInstance());
+    		} catch (InstantiationException e) {
+    			throw new IllegalArgumentException (e.getMessage(),  e);
+    		} catch (IllegalAccessException e) {
+    			throw new IllegalArgumentException (e.getMessage(),  e);
+    		} 
+    	} else {
+    		try {
+    			System.out.println("<<<<<<<<<<<< mkIdProvider id " + id);
+    			return (backOfficeService.getData(cls, id));
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException("Can't parse " + identifier[1] + " !", e);
+			} catch (ServiceException e) {
+				throw new IllegalArgumentException("Can't get " + cls.getName() + ", id = " + id + " !", e);
+			}
+    	}
+	}
+	
+	
+	
+	
 	@InitBinder("object")
 	protected void initBinderIdProvider(WebDataBinder binder) {
 		System.out.println("1 - initBinderIdProvider " + binder.getFieldDefaultPrefix() + " " + binder.getFieldMarkerPrefix() + " " + binder.getFieldDefaultPrefix() + " " + binder.getObjectName() + " - " + binder.getTarget());
@@ -309,40 +393,7 @@ public class BackOfficeController extends AbtractController {
 		    {
 		    	if(objectTypeId == null || objectTypeId == "") setValue(null);
 		    	else {
-			    	String[] identifier = objectTypeId.split("_");
-			    	
-			    	String objectType = identifier[0];
-			    	Class<?> cls = entityLocator.getEntity(objectType).getClass();
-		    		if (cls == null){
-		                throw new IllegalArgumentException ("Unknown idProvider type:" + objectType);
-		    		}
-
-			    	Integer id = null;
-			    	if (identifier.length > 1){
-			    		try {
-				    		id = Integer.parseInt(identifier[1]);
-						} catch (NumberFormatException e) {
-							throw new IllegalArgumentException("Can't parse " + identifier[1] + " !", e);
-						}
-			    	}
-
-			    	if (id == null){
-			    		try {
-			    			setValue((IdProvider) cls.newInstance());
-			    		} catch (InstantiationException e) {
-			    			throw new IllegalArgumentException (e.getMessage(),  e);
-			    		} catch (IllegalAccessException e) {
-			    			throw new IllegalArgumentException (e.getMessage(),  e);
-			    		} 
-			    	} else {
-			    		try {
-							setValue(backOfficeService.getData(cls, id));
-						} catch (NumberFormatException e) {
-							throw new IllegalArgumentException("Can't parse " + identifier[1] + " !", e);
-						} catch (ServiceException e) {
-							throw new IllegalArgumentException("Can't get " + cls.getName() + ", id = " + id + " !", e);
-						}
-			    	}
+		    		setValue(mkIdProvider(objectTypeId));
 		    	}
 		    }
 		    @Override
@@ -353,5 +404,205 @@ public class BackOfficeController extends AbtractController {
 			    return object.getObjectType() + "_" + object.getId().toString();
 		    }
 		});
+
+		binder.registerCustomEditor(Iterable.class, new PropertyEditorSupport() {
+		    @Override 
+		    public void setAsText(final String listString)
+		    {
+		    	System.out.println("listString = " + listString);
+		    	if(listString == null || listString.trim().length() == 0) {
+		    		setValue(null);
+		    		return;
+		    	}
+//		    	String[] objects = listString.split("=");
+//		    	
+//		    	String[] types = objects[0].split(";");
+		    	
+		    	
+
+		    	//if (types.length == 2 && types[1].equals(IdProvider.class.getName())){
+		    		//Convert string to List of Idprovider if possible
+		    		try {
+						List<IdProvider> bag = new ArrayList<>();
+						//if (objects.length > 1){
+							//String[] idProviders = objects[1].split(",");
+							String[] idProviders = listString.split(",");
+							for (String string : idProviders) {						
+								IdProvider item = mkIdProvider(string);
+								bag.add(item);
+							}
+						//}
+						setValue(bag);
+						return;
+		    		} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		    		
+		    		
+		    		
+		    		
+//		    	} else {
+//		    		System.out.println("Set original value");
+//		    		//Set original value
+//		    		setValue(listString);
+//		    		return;
+//		    	}
+		    	
+		    	
+		    }
+
+		    @SuppressWarnings("unchecked")
+			@Override
+		    public String getAsText() {
+			    if(getValue() == null) return "";
+			    Iterable<Object> list = (Iterable<Object>) getValue();
+			    //StringBuilder result = new StringBuilder(list.getClass().getName() + ";" + IdProvider.class.getName() + "=");
+			    
+			    StringBuilder result = new StringBuilder();
+			    //Convert list to Idproviders String if possible
+			    for (Object object : list) {
+			    	if (object instanceof IdProvider){
+			    		IdProvider idProvider = (IdProvider) object;		    		
+			    		result.append(idProvider.getObjectType() + "_" + idProvider.getId().toString() + ",");
+			    	} else {
+			    		//Return original list
+			    		return list.toString();
+			    	}
+				}
+			    return result.toString();
+		    }
+		});
+		
+		
+		
+		
+		
+		
+		
 	}
+	
+	
+	
+	
+	
+	
+	
+
+	@RequestMapping(value = BO_ASSIGN_LIST_URL + "{type}/{field}/{id}", method = RequestMethod.GET)
+	public @ResponseBody List<IdProviderDto> getAssignableList(@PathVariable(value = "type") String assignType, @PathVariable(value = "field") String ownerField, @PathVariable(value = "id") Integer ownerId) throws ServiceException {
+		Class<?> object = entityLocator.getEntity(assignType).getClass();
+		List<IdProviderDto> results = new ArrayList<>();
+		List<?> list = backOfficeService.getAllNotAffected(object.getSimpleName(), ownerField, ownerId, 0, 100);
+		for (Object item : list) {
+			if (item instanceof NoTranslation){
+				results.add(NoTranslationDto.from((NoTranslation) item));
+				
+			} else if (item instanceof Translation){
+				results.add(TranslationDto.from((Translation) item));
+
+			} else if (item instanceof IdProvider){
+				results.add(IdProviderDto.from((IdProvider) item));
+
+			} else {
+				throw new ServiceException("Assign object type must implement IdProvider !");
+			}
+		}
+		System.out.println(results.size());
+		return results;
+	}
+	@RequestMapping(value = BO_ASSIGN_LIST_URL + "{type}", method = RequestMethod.GET)
+	public @ResponseBody List<IdProviderDto> getAssignableList(@PathVariable(value = "type") String assignType) throws ServiceException {
+		Class<?> object = entityLocator.getEntity(assignType).getClass();
+		List<IdProviderDto> results = new ArrayList<>();
+		List<?> list = backOfficeService.getAll(object.getSimpleName(), 5, 10);
+		for (Object item : list) {
+			if (item instanceof NoTranslation){
+				results.add(NoTranslationDto.from((NoTranslation) item));
+				
+			} else if (item instanceof Translation){
+				results.add(TranslationDto.from((Translation) item));
+
+			} else if (item instanceof IdProvider){
+				results.add(IdProviderDto.from((IdProvider) item));
+
+			} else {
+				throw new ServiceException("Assign object type must implement IdProvider !");
+			}
+		}
+		System.out.println(results.size());
+		return results;
+	}
+
+	
+	@Deprecated
+	@RequestMapping(value = BO_BLOCK_LIST_URL, method = RequestMethod.GET)
+	public ModelAndView blockList(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("type") String type, Pageable pageRequest) throws JspException {
+		
+		
+		
+//		
+//		try {
+////			List<Template> tps = templateService.test();
+////			System.out.println(tps.size());
+////			
+////			Integer value = 1;
+////			List<Template> tps2 = templateService.test2("id", value);
+////			System.out.println(tps2.size());
+//			
+//
+//			
+//			
+//		} catch (ServiceException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		Folder folder = getBOFolder();
+		ModelAndView modelAndView = null;
+		try {
+			String langCode = LocaleContextHolder.getLocale().getLanguage();
+			fr.cedricsevestre.entity.engine.translation.objects.Page page = common.getPage(BO_LIST_PAGE, langCode);
+			Template block = templateService.findByName(BO_BLOCK_LIST + "_" + langCode.toUpperCase());
+			modelAndView = baseView(page, block, folder);
+			modelAndView.addObject("page", page);
+			modelAndView.addObject("activeBlock", block);
+			response.addHeader("Object-Type", "parsedBlock");  
+
+			Class<?> object = entityLocator.getEntity(type).getClass();
+			modelAndView.addObject("objectType", object.getSimpleName());
+			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
+			
+			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest);
+
+			modelAndView.addObject("objectDatas", tDatas.getObjectDatas());
+			modelAndView.addObject("datas", tDatas.getObjectDatas().getContent());
+			modelAndView.addObject("fields", tDatas.getFields());
+
+		} catch (ServiceException e) {
+			throw new JspException(e);
+		}
+		return modelAndView;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }
