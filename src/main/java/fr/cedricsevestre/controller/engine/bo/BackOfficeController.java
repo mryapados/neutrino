@@ -104,10 +104,9 @@ public class BackOfficeController extends AbtractController {
 	public static final String BO_REMOVES_URL = "removes/";
 	public static final String BO_REMOVE_URL = "remove/";
 	
-	@Deprecated
+
 	public static final String BO_BLOCK_LIST_URL = "blocklist/";
-	@Deprecated
-	public static final String BO_BLOCK_LIST = "@bo_block_list";
+	public static final String BO_BLOCK_LIST = "@bo_ng_block_list";
 	
 	public static final String BO_ASSIGN_LIST_URL = "assignlist/";
 	
@@ -486,12 +485,82 @@ public class BackOfficeController extends AbtractController {
 	}
 	
 	
-	
-	
-	
-	
-	
+	@RequestMapping(value = BO_BLOCK_LIST_URL + "{type}/{field}/{id}", method = RequestMethod.GET)
+	public ModelAndView getAssignableblocklist(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "type") String assignType, @PathVariable(value = "field") String ownerField, @PathVariable(value = "id") Integer ownerId, Pageable pageRequest) throws JspException {
+		Folder folder = getBOFolder();
+		ModelAndView modelAndView = null;
+		try {
+			String langCode = LocaleContextHolder.getLocale().getLanguage();
+			fr.cedricsevestre.entity.engine.translation.objects.Page page = common.getPage(BO_LIST_PAGE, langCode);
+			Template block = templateService.findByName(BO_BLOCK_LIST + "_" + langCode.toUpperCase());
+			modelAndView = baseView(page, block, folder);
+			modelAndView.addObject("page", page);
+			modelAndView.addObject("activeBlock", block);
+			response.addHeader("Object-Type", "parsedBlock");  
 
+			Class<?> object = entityLocator.getEntity(assignType).getClass();
+			modelAndView.addObject("objectType", object.getSimpleName());
+			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
+			
+			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest);
+
+			modelAndView.addObject("objectDatas", tDatas.getObjectDatas());
+			modelAndView.addObject("datas", tDatas.getObjectDatas().getContent());
+			modelAndView.addObject("fields", tDatas.getFields());
+
+		} catch (ServiceException e) {
+			throw new JspException(e);
+		}
+		return modelAndView;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@Deprecated
 	@RequestMapping(value = BO_ASSIGN_LIST_URL + "{type}/{field}/{id}", method = RequestMethod.GET)
 	public @ResponseBody List<IdProviderDto> getAssignableList(@PathVariable(value = "type") String assignType, @PathVariable(value = "field") String ownerField, @PathVariable(value = "id") Integer ownerId) throws ServiceException {
 		Class<?> object = entityLocator.getEntity(assignType).getClass();
@@ -514,6 +583,8 @@ public class BackOfficeController extends AbtractController {
 		System.out.println(results.size());
 		return results;
 	}
+	
+	@Deprecated
 	@RequestMapping(value = BO_ASSIGN_LIST_URL + "{type}", method = RequestMethod.GET)
 	public @ResponseBody List<IdProviderDto> getAssignableList(@PathVariable(value = "type") String assignType) throws ServiceException {
 		Class<?> object = entityLocator.getEntity(assignType).getClass();

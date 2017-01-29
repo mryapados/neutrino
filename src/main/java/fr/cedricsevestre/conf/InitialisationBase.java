@@ -1486,7 +1486,7 @@ public class InitialisationBase {
 		Map<Lang, Translation> bEdit = mkBlock("@bo_block_edit", "edit/edit");
 
 		
-		
+		Map<Lang, Translation> bNgList = mkBlock("@bo_ng_block_list", "list/nglist");
 		
 		
 		
