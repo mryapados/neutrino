@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -121,25 +122,26 @@ public abstract class BaseService<T> implements IBaseService<T>{
 		}
 	}
 	
+	@Override
+	public List<T> findAll(Specification<T> spec) throws ServiceException {
+		try {
+			return baseDao.findAll(spec);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAll", e);
+		}
+	}
 	
-	
+	@Override
+	public Page<T> findAll(Specification<T> spec, Pageable pageable) throws ServiceException {
+		try {
+			return baseDao.findAll(pageable);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAll", e);
+		}
+	}
 	
 
-//	public List<T> test() throws ServiceException {
-//		try {
-//			return baseDao.test();
-//		} catch (PersistenceException e) {
-//			throw new ServiceException("Error test", e);
-//		}
-//	}
-//	
-//	public List<T> test2(String field, Integer value) throws ServiceException {
-//		try {
-//			return baseDao.test2(field, value);
-//		} catch (PersistenceException e) {
-//			throw new ServiceException("Error test2", e);
-//		}
-//	}
+
 	
 
 

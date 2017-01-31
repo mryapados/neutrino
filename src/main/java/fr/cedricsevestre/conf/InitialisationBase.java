@@ -826,6 +826,24 @@ public class InitialisationBase {
 		String name = "";
 
 
+		
+		
+		Album albumNoProjectEN = albumService.translate(new Album(), langEN, Album.class);
+		name = "testAlbumNoProject";
+		albumNoProjectEN.setName(name + "_" + langEN.getCode().toUpperCase());
+		albumNoProjectEN.setDescription(name + " description en");
+		albumNoProjectEN.setAlbumType(AlbumType.DEFAULT);
+		albumService.save(albumNoProjectEN);
+		
+		Album albumNoProjectFR = albumService.translate(albumNoProjectEN, langFR, Album.class);
+		albumNoProjectFR.setName(name + "_" + langFR.getCode().toUpperCase());
+		albumNoProjectFR.setDescription(name + " description fr");
+		albumNoProjectFR.setAlbumType(AlbumType.DEFAULT);
+		albumService.save(albumNoProjectFR);
+		
+		
+		
+		
 		Project ProjectEN = projectService.findByName("testproject_EN");
 		Project ProjectFR = projectService.findByName("testproject_FR");
 		

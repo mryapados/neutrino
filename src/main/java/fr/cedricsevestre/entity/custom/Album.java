@@ -33,7 +33,7 @@ public class Album extends Translation {
 	private AlbumType albumType;
 	
 	@BOField(type = ValueType.TOBJECT)
-	@NotNull
+	//@NotNull
 	@ManyToOne
 	@JoinColumn(name="idproject")
 	private Project project;

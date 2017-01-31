@@ -9,7 +9,12 @@ fModule.controller('UiAssignmentCtrl', function ($scope, $uibModal, $frontPath) 
 			controller: 'UiAssignmentModalCtrl',
 			size: size,
 			resolve: {
-
+				pageable: {
+					size: 10,
+					sort: 'dateAdded,DESC',
+					page: 0,
+				},
+		
 			}
 		});
 		instance.result.then(function(todo) {
@@ -23,9 +28,19 @@ fModule.controller('UiAssignmentCtrl', function ($scope, $uibModal, $frontPath) 
 
 });
 
-fModule.controller('UiAssignmentModalCtrl', function ($scope, $uibModalInstance) {
+fModule.controller('UiAssignmentModalCtrl', function ($scope, $uibModalInstance, pageable) {
+	
+	console.log(pageable);
+	
+
+	
+
 	
 	console.log('in UiAssignmentModalCtrl');
+	
+	
+	
+	
 	
 	$scope.cancel = function() {
 		$uibModalInstance.dismiss('cancel');

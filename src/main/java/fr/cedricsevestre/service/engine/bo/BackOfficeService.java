@@ -372,23 +372,9 @@ public class BackOfficeService implements IBackOfficeService{
 	
 
 	
-	public List<?> getAllNotAffected(String entityName, String fieldName, Integer ownerId, Integer startPosition, Integer maxResult) throws ServiceException{
-		String query = "SELECT e FROM " + entityName + " e WHERE e." + fieldName + " IS NULL OR e." + fieldName + ".id = :ownerId";
-		System.out.println(query);
-		return em.createQuery(query)
-				.setParameter("ownerId", ownerId)
-				.setFirstResult(startPosition)
-				.setMaxResults(maxResult)
-				.getResultList();
-	}
-	public List<?> getAll(String entityName, Integer startPosition, Integer maxResult) throws ServiceException{
-		String query = "SELECT e FROM " + entityName + " e";
-		System.out.println(query);
-		return em.createQuery(query)
-				.setFirstResult(startPosition)
-				.setMaxResults(maxResult)
-				.getResultList();
-	}
+	
+	
+
 	
 	public static Type[] findGenericTypeOfField(Field field) throws IllegalArgumentException{
 		Type genericFieldType = field.getGenericType();
@@ -606,7 +592,25 @@ public class BackOfficeService implements IBackOfficeService{
 	
 	
 	
-	
+	@Deprecated
+	public List<?> getAllNotAffected(String entityName, String fieldName, Integer ownerId, Integer startPosition, Integer maxResult) throws ServiceException{
+		String query = "SELECT e FROM " + entityName + " e WHERE e." + fieldName + " IS NULL OR e." + fieldName + ".id = :ownerId";
+		System.out.println(query);
+		return em.createQuery(query)
+				.setParameter("ownerId", ownerId)
+				.setFirstResult(startPosition)
+				.setMaxResults(maxResult)
+				.getResultList();
+	}
+	@Deprecated
+	public List<?> getAll(String entityName, Integer startPosition, Integer maxResult) throws ServiceException{
+		String query = "SELECT e FROM " + entityName + " e";
+		System.out.println(query);
+		return em.createQuery(query)
+				.setFirstResult(startPosition)
+				.setMaxResults(maxResult)
+				.getResultList();
+	}
 	
 	
 	

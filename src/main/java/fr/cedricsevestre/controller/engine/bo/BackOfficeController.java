@@ -19,6 +19,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -56,11 +58,14 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.FormException;
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.service.custom.AlbumService;
 import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.engine.EntityLocator;
 import fr.cedricsevestre.service.engine.bo.BackOfficeService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
+import fr.cedricsevestre.specification.engine.IdProviderSpecification;
+import fr.cedricsevestre.specification.engine.TranslationSpecification;
 
 @Controller
 @Scope("prototype")
@@ -78,6 +83,8 @@ public class BackOfficeController extends AbtractController {
 	private TemplateService templateService;
 	
 	
+	@Autowired
+	private AlbumService albumService;
 	
 	
 	
@@ -615,22 +622,65 @@ public class BackOfficeController extends AbtractController {
 		
 		
 		
-//		
-//		try {
-////			List<Template> tps = templateService.test();
-////			System.out.println(tps.size());
-////			
-////			Integer value = 1;
-////			List<Template> tps2 = templateService.test2("id", value);
-////			System.out.println(tps2.size());
+		
+		try {
+			
+			List<Album> idPs = albumService.findAll(IdProviderSpecification.itsFieldIsAffectedTo("project", 49));
+			System.out.println(idPs.size());
+			
+			idPs = albumService.findAll(IdProviderSpecification.isNotAffected("project"));
+			System.out.println(idPs.size());
+			
+			
+			
+			Specification<Object> specification = Specifications.where(IdProviderSpecification.isNotAffected("project")).or(IdProviderSpecification.itsFieldIsAffectedTo("project", 49));
+			
+			idPs = albumService.findAll((Specification) specification);
+			System.out.println(idPs.size());
+			
+			
+			
+//			TranslationSpecification<Template> translationSpecification = new TranslationSpecification<>();
+//			List<Template> tps = templateService.findAll(translationSpecification.itsNameContains("roj"));
+//			System.out.println(tps.size());
+			
+			
+			
+			
+//			IdProviderSpecification<Album> idProviderSpecification = new IdProviderSpecification<>();
+//			List<Album> idPs = albumService.findAll(idProviderSpecification.isNotAffected("project"));
+//			System.out.println(idPs.size());
+
+			
+			
+			
+//			IdProviderSpecification<Album> idProviderSpecification = new IdProviderSpecification<>();
+//			List<Album> idPs = albumService.findAll(idProviderSpecification.itsFieldIsAffectedTo("project", 49));
+//			System.out.println(idPs.size());
+			
+
+//			IdProviderSpecification<Album> idProviderSpecification = new IdProviderSpecification<>();
 //			
-//
 //			
+//			Specifications<Album> tttt = new Specifications<>();
+//			tttt.where(idProviderSpecification.itsFieldIsAffectedTo("project", 49))
 //			
-//		} catch (ServiceException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
+//			List<Album> idPs = albumService.findAll( );
+//			System.out.println(idPs.size());
+			
+			
+			
+//			Integer value = 1;
+//			List<Template> tps2 = templateService.test2("id", value);
+//			System.out.println(tps2.size());
+			
+
+			
+			
+		} catch (ServiceException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		
 		
