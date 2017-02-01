@@ -7,6 +7,7 @@ import javax.persistence.NamedNativeQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -19,8 +20,11 @@ import fr.cedricsevestre.entity.engine.IdProvider;
 @NoRepositoryBean
 public interface BaseDao<T> extends PagingAndSortingRepository<T, Integer>, JpaSpecificationExecutor<T> {
 	
-
-	
+//	List<T> findAllFetched();
+//	Page<T> findAllFetched(Pageable pageable);
+//	List<T> findAllFetched(Specification<T> spec);
+//	Page<T> findAllFetched(Specification<T> spec, Pageable pageable);
+//	T findByIdFetched(@Param("id") Integer id);
 	
 //	  T findOne(Long id);
 //	  Iterable<T> findAll();

@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,18 +34,9 @@ public class PageService extends TranslationService<Page>{
 
 	@Autowired
 	private PageDao pageDao;
-	
-	@Override
-	public List<IdProvider> findAllFetched() throws ServiceException {
-		try {
-			return pageDao.findAllFetched();
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findAllFetched", e);
-		}
-	}
 
 	@Override
-	public IdProvider findByIdFetched(Integer id) throws ServiceException {
+	public Page findByIdFetched(Integer id) throws ServiceException {
 		try {
 			return pageDao.findByIdFetched(id);
 		} catch (PersistenceException e) {
@@ -53,9 +45,36 @@ public class PageService extends TranslationService<Page>{
 	}
 	
 	@Override
-	public org.springframework.data.domain.Page<IdProvider> findAllFetched(Pageable pageable) throws ServiceException {
+	public List<Page> findAllFetched() throws ServiceException {
+		try {
+			return pageDao.findAllFetched();
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAllFetched", e);
+		}
+	}
+	
+	@Override
+	public org.springframework.data.domain.Page<Page> findAllFetched(Pageable pageable) throws ServiceException {
 		try {
 			return pageDao.findAllFetched(pageable);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAllFetched", e);
+		}
+	}
+	
+	@Override
+	public List<Page> findAllFetched(Specification<Page> spec) throws ServiceException {
+		try {
+			return pageDao.findAllFetched(spec);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAllFetched", e);
+		}
+	}
+	
+	@Override
+	public org.springframework.data.domain.Page<Page> findAllFetched(Specification<Page> spec, Pageable pageable) throws ServiceException {
+		try {
+			return pageDao.findAllFetched(spec, pageable);
 		} catch (PersistenceException e) {
 			throw new ServiceException("Error findAllFetched", e);
 		}

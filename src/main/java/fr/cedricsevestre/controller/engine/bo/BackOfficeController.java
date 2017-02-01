@@ -509,8 +509,9 @@ public class BackOfficeController extends AbtractController {
 			modelAndView.addObject("objectType", object.getSimpleName());
 			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
 			
-			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest);
-
+			Specification<Object> specification = Specifications.where(IdProviderSpecification.isNotAffected(ownerField)).or(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId));
+			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, (Specification) specification, pageRequest);
+			
 			modelAndView.addObject("objectDatas", tDatas.getObjectDatas());
 			modelAndView.addObject("datas", tDatas.getObjectDatas().getContent());
 			modelAndView.addObject("fields", tDatas.getFields());

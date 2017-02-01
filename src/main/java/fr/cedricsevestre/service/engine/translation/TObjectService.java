@@ -7,6 +7,7 @@ import javax.persistence.PersistenceException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import fr.cedricsevestre.entity.engine.IdProvider;
@@ -18,15 +19,23 @@ import fr.cedricsevestre.exception.ServiceException;
 public class TObjectService extends TranslationService<Translation>{
 	
 	@Override
-	public IdProvider findByIdFetched(Integer id) throws ServiceException {
+	public Translation findByIdFetched(Integer id) throws ServiceException {
 		throw new ServiceException("Method unimplemented for TObjectService");
 	}
 	@Override
-	public List<IdProvider> findAllFetched() throws ServiceException {
+	public List<Translation> findAllFetched() throws ServiceException {
 		throw new ServiceException("Method unimplemented for TObjectService");
 	}
 	@Override
-	public Page<IdProvider> findAllFetched(Pageable pageable) throws ServiceException {
+	public Page<Translation> findAllFetched(Pageable pageable) throws ServiceException {
+		throw new ServiceException("Method unimplemented for TObjectService");
+	}
+	@Override
+	public List<Translation> findAllFetched(Specification<Translation> spec) throws ServiceException {
+		throw new ServiceException("Method unimplemented for TObjectService");
+	}
+	@Override
+	public Page<Translation> findAllFetched(Specification<Translation> spec, Pageable pageable) throws ServiceException {
 		throw new ServiceException("Method unimplemented for TObjectService");
 	}
 	

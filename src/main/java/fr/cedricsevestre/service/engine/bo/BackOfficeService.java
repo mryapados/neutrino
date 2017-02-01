@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import fr.cedricsevestre.annotation.BOField;
@@ -37,9 +39,11 @@ import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.bean.NDatas;
 import fr.cedricsevestre.bean.NField;
 import fr.cedricsevestre.entity.engine.IdProvider;
+import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.EntityLocator;
 import fr.cedricsevestre.service.engine.ServiceLocator;
+import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 
 @Service
 @Scope(value = "singleton")
@@ -47,6 +51,14 @@ public class BackOfficeService implements IBackOfficeService{
 	@PersistenceContext
 	private EntityManager em;
 	  
+	
+	
+	
+	@Autowired
+	TemplateService templateService;
+	
+	
+	
 	@Autowired
 	ServiceLocator customServiceLocator;
 	
@@ -87,11 +99,37 @@ public class BackOfficeService implements IBackOfficeService{
 		return fields;
 	}
 	
-	@SuppressWarnings("unchecked")
 	private Page<IdProvider> getDatas(Class<?> entity, Pageable pageable) throws ServiceException{
+		return getDatas(entity, null, pageable);
+	}
+
+	@SuppressWarnings("unchecked")
+	private Page<IdProvider> getDatas(Class<?> entity, Specification<IdProvider> spec, Pageable pageable) throws ServiceException{
+
 		try {
-			Class<?> params[] = {Pageable.class};
-			Object paramsObj[] = {pageable};
+			
+			
+			
+			
+			
+//			Class<?> params[] = {Pageable.class};
+//			Object paramsObj[] = {pageable};
+				
+			List<Class<?>> classes = new ArrayList<>();
+			if (spec != null) classes.add(Specification.class);
+			classes.add(Pageable.class);
+			
+			Class<?> params[] = new Class<?>[classes.size()];
+			classes.toArray(params);
+			
+			List<Object> objects = new ArrayList<>();
+			if (spec != null) objects.add((spec);
+			objects.add(pageable);
+			
+			Object paramsObj[] = new Object[objects.size()];
+			objects.toArray(paramsObj);
+			
+			
 			
 			logger.debug("getDatas -> Look for " + entity.getSimpleName());			
 			Object service = customServiceLocator.getService(entity.getSimpleName());
@@ -101,32 +139,42 @@ public class BackOfficeService implements IBackOfficeService{
 			Method findAll;
 			try {
 				findAll = clazz.getMethod("findAllFetched", params);
+				
+				Parameter parameters[] = findAll.getParameters();
+				String parameterString = "";
+				for (Parameter parameter : parameters) {
+					parameterString += parameter.getName() + " = " + parameter.getType().getName() + "; ";
+				}
+				
+				logger.debug("getDatas -> findAll parameters : " + parameterString);			
+				
+				
 			} catch (NoSuchMethodException e) {
 				try {
 					logger.debug("getDatas -> findAllFetched Not found for " + entity.getSimpleName());
 					findAll = clazz.getMethod("findAll", params);
 				} catch (NoSuchMethodException e1) {
 					logger.error("getDatas -> NoSuchMethodException", e);
-					throw new ServiceException("Error getList", e);
+					throw new ServiceException("Error getDatas", e);
 				}
 			}
 			return (Page<IdProvider>) findAll.invoke(service, paramsObj);
 			
 		} catch (ClassNotFoundException e) {
 			logger.error("getDatas -> ClassNotFoundException", e);
-			throw new ServiceException("Error getList", e);
+			throw new ServiceException("Error getDatas", e);
 		} catch (SecurityException e) {
 			logger.error("getDatas -> SecurityException", e);
-			throw new ServiceException("Error getList", e);
+			throw new ServiceException("Error getDatas", e);
 		} catch (IllegalAccessException e) {
 			logger.error("getDatas -> IllegalAccessException", e);
-			throw new ServiceException("Error getList", e);
+			throw new ServiceException("Error getDatas", e);
 		} catch (IllegalArgumentException e) {
 			logger.error("getDatas -> IllegalArgumentException", e);
-			throw new ServiceException("Error getList", e);
+			throw new ServiceException("Error getDatas", e);
 		} catch (InvocationTargetException e) {
 			logger.error("getDatas -> InvocationTargetException", e);
-			throw new ServiceException("Error getList", e);
+			throw new ServiceException("Error getDatas", e);
 		}
 	}
 	
@@ -235,15 +283,32 @@ public class BackOfficeService implements IBackOfficeService{
 
 	@Override
 	public NDatas<IdProvider> findAll(Class<?> entity) throws ServiceException{
-		return findAll(entity, null);
+		return findAll(entity, null, null);
 	}
 	@Override
 	public NDatas<IdProvider> findAll(Class<?> entity, Pageable pageRequest) throws ServiceException{		
+		return findAll(entity, null, pageRequest);
+	}
+
+	@Override
+	public NDatas<IdProvider> findAll(Class<?> entity, Specification<IdProvider> spec) throws ServiceException{
+		return findAll(entity, spec, null);
+	}
+	@Override
+	public NDatas<IdProvider> findAll(Class<?> entity, Specification<IdProvider> spec, Pageable pageRequest) throws ServiceException{		
 		List<Field> fields = getFields(entity);
 		List<NField> nFields = getNField(fields);
 		pageRequest = transformPageRequest(nFields, pageRequest);
-		return new NDatas<IdProvider>(nFields, getDatas(entity, pageRequest));
+		return new NDatas<IdProvider>(nFields, getDatas(entity, spec, pageRequest));
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	private Pageable transformPageRequest(List<NField> nfFields, Pageable pageRequest){
 		Sort sort = pageRequest.getSort();

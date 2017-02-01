@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -37,11 +38,17 @@ public interface PositionDao extends BaseDao<Position> {
 	
 	
 	@Query("SELECT p FROM Position p LEFT JOIN FETCH p.mapTemplates m")
-	List<IdProvider> findAllFetched();
+	List<Position> findAllFetched();
 
 	@Query(value = "SELECT p FROM Position p LEFT JOIN FETCH p.mapTemplates m", countQuery = "select count(p) FROM Position p")
-	Page<IdProvider> findAllFetched(Pageable pageable);
+	Page<Position> findAllFetched(Pageable pageable);
+	
+	@Query("SELECT p FROM Position p LEFT JOIN FETCH p.mapTemplates m")
+	List<Position> findAllFetched(Specification<Position> spec);
+
+	@Query(value = "SELECT p FROM Position p LEFT JOIN FETCH p.mapTemplates m", countQuery = "select count(p) FROM Position p")
+	Page<Position> findAllFetched(Specification<Position> spec, Pageable pageable);
 	
 	@Query(value = "SELECT p FROM Position p LEFT JOIN FETCH p.mapTemplates m WHERE p.id =:id")
-	IdProvider findByIdFetched(@Param("id") Integer id);
+	Position findByIdFetched(@Param("id") Integer id);
 }

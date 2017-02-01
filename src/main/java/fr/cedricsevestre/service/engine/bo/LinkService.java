@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import fr.cedricsevestre.annotation.CustomService;
@@ -15,6 +16,7 @@ import fr.cedricsevestre.dao.custom.AlbumDao;
 import fr.cedricsevestre.dao.custom.ProjectDao;
 import fr.cedricsevestre.dao.engine.bo.LinkDao;
 import fr.cedricsevestre.entity.custom.Album;
+import fr.cedricsevestre.entity.custom.Marker;
 import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.bo.Link;
 import fr.cedricsevestre.entity.engine.translation.Translation;
@@ -30,7 +32,7 @@ public class LinkService extends TranslationService<Link>{
 	LinkDao dao;
 
 	@Override
-	public IdProvider findByIdFetched(Integer id) throws ServiceException {
+	public Link findByIdFetched(Integer id) throws ServiceException {
 		try {
 			return dao.findByIdFetched(id);
 		} catch (PersistenceException e) {
@@ -39,17 +41,36 @@ public class LinkService extends TranslationService<Link>{
 	}
 	
 	@Override
-	public List<IdProvider> findAllFetched() throws ServiceException {
+	public List<Link> findAllFetched() throws ServiceException {
 		try {
 			return dao.findAllFetched();
 		} catch (PersistenceException e) {
 			throw new ServiceException("Error findAllFetched", e);
 		}
 	}
+	
 	@Override
-	public Page<IdProvider> findAllFetched(Pageable pageable) throws ServiceException {
+	public Page<Link> findAllFetched(Pageable pageable) throws ServiceException {
 		try {
 			return dao.findAllFetched(pageable);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAllFetched", e);
+		}
+	}
+	
+	@Override
+	public List<Link> findAllFetched(Specification<Link> spec) throws ServiceException {
+		try {
+			return dao.findAllFetched(spec);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAllFetched", e);
+		}
+	}
+	
+	@Override
+	public Page<Link> findAllFetched(Specification<Link> spec, Pageable pageable) throws ServiceException {
+		try {
+			return dao.findAllFetched(spec, pageable);
 		} catch (PersistenceException e) {
 			throw new ServiceException("Error findAllFetched", e);
 		}

@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,25 +22,67 @@ import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.TranslationProvider;
+import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.BaseService;
 import fr.cedricsevestre.service.engine.IBOService;
 
 @Service
 @Scope(value = "singleton")
-public abstract class TranslationService<T extends Translation> extends BaseService<T> implements IBOService{
+public abstract class TranslationService<T extends Translation> extends BaseService<T> implements IBOService<T>{
 
 	private Logger logger = Logger.getLogger(TranslationService.class);
-
-//	public abstract IdProvider findByIdFetched(Integer id) throws ServiceException;
-//	public abstract List<IdProvider> findAllFetched() throws ServiceException;
-//	public abstract Page<IdProvider> findAllFetched(Pageable pageable) throws ServiceException;
 	
 	@Autowired
 	private TranslationDao<T> translationDao;
 
 	@Autowired
 	protected TranslationProviderDao translationProviderDao;
+	
+	@Override
+	public List<T> findAllFetched() throws ServiceException {
+		try {
+			return translationDao.findAllFetched();
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAllFetched", e);
+		}
+	}
+
+	@Override
+	public Page<T> findAllFetched(Pageable pageable) throws ServiceException {
+		try {
+			return translationDao.findAllFetched(pageable);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAllFetched", e);
+		}
+	}
+	
+	@Override
+	public List<T> findAllFetched(Specification<T> spec) throws ServiceException {
+		try {
+			return translationDao.findAllFetched(spec);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAllFetched", e);
+		}
+	}
+
+	@Override
+	public Page<T> findAllFetched(Specification<T> spec, Pageable pageable) throws ServiceException {
+		try {
+			return translationDao.findAllFetched(spec, pageable);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAllFetched", e);
+		}
+	}
+	
+	@Override
+	public T findByIdFetched(Integer id) throws ServiceException {
+		try {
+			return translationDao.findByIdFetched(id);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findByIdFetched", e);
+		}
+	}
 	
 	public T findByName(String name) throws ServiceException {
 		try {

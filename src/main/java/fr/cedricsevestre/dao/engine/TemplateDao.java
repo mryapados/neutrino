@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -27,18 +28,21 @@ public interface TemplateDao extends TranslationDao<Template> {
 	@Query("SELECT t FROM Template t LEFT JOIN FETCH t.models m")
 	List<Template> findAllWithModels();
 	
-	
-	
-	@Override
 	@Query("SELECT t FROM Template t LEFT JOIN FETCH t.models m LEFT JOIN FETCH t.blocks b")
-	List<IdProvider> findAllFetched();
+	List<Template> findAllFetched();
+
+	@Query(value = "SELECT t FROM Template t LEFT JOIN FETCH t.models m LEFT JOIN FETCH t.blocks b", countQuery = "select count(t) FROM Template t")
+	Page<Template> findAllFetched(Pageable pageable);
+	
+	@Query("SELECT t FROM Template t LEFT JOIN FETCH t.models m LEFT JOIN FETCH t.blocks b")
+	List<Template> findAllFetched(Specification<Template> spec);
+
+	@Query(value = "SELECT t FROM Template t LEFT JOIN FETCH t.models m LEFT JOIN FETCH t.blocks b", countQuery = "select count(t) FROM Template t")
+	Page<Template> findAllFetched(Specification<Template> spec, Pageable pageable);
 
 	@Override
-	@Query(value = "SELECT t FROM Template t LEFT JOIN FETCH t.models m LEFT JOIN FETCH t.blocks b", countQuery = "select count(t) FROM Template t")
-	Page<IdProvider> findAllFetched(Pageable pageable);
-	
 	@Query(value = "SELECT t FROM Template t LEFT JOIN FETCH t.models m LEFT JOIN FETCH t.blocks b WHERE t.id =:id")
-	IdProvider findByIdFetched(@Param("id") Integer id);
+	Template findByIdFetched(@Param("id") Integer id);
 	
 	
 	

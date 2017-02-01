@@ -24,7 +24,7 @@ public interface IBaseService<T> {
 
 	Iterable<T>findAll() throws ServiceException;
 
-	Page<T>findAll(Pageable pageable) throws ServiceException;
+	Page<T> findAll(Pageable pageable) throws ServiceException;
 	
 	List<T> findAll(Specification<T> spec) throws ServiceException;
 	

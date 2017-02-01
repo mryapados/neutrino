@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import fr.cedricsevestre.annotation.CustomService;
@@ -16,6 +17,7 @@ import fr.cedricsevestre.dao.engine.PositionDao;
 import fr.cedricsevestre.entity.custom.Tag;
 import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.independant.objects.Position;
+import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
@@ -25,7 +27,7 @@ import fr.cedricsevestre.service.engine.IBOService;
 @Service
 @Scope(value = "singleton")
 @CustomService
-public class PositionService extends BaseService<Position> implements IBOService{
+public class PositionService extends BaseService<Position> implements IBOService<Position>{
 
 	private Logger logger = Logger.getLogger(PositionService.class);
 
@@ -83,24 +85,46 @@ public class PositionService extends BaseService<Position> implements IBOService
 
 	
 	
-	
-	public IdProvider findByIdFetched(Integer id) throws ServiceException {
+	@Override
+	public Position findByIdFetched(Integer id) throws ServiceException {
 		try {
 			return positionDao.findByIdFetched(id);
 		} catch (PersistenceException e) {
 			throw new ServiceException("Error findByIdFetched", e);
 		}
 	}
-	public List<IdProvider> findAllFetched() throws ServiceException {
+	
+	@Override
+	public List<Position> findAllFetched() throws ServiceException {
 		try {
 			return positionDao.findAllFetched();
 		} catch (PersistenceException e) {
 			throw new ServiceException("Error findAllFetched", e);
 		}
 	}
-	public Page<IdProvider> findAllFetched(Pageable pageable) throws ServiceException {
+	
+	@Override
+	public Page<Position> findAllFetched(Pageable pageable) throws ServiceException {
 		try {
 			return positionDao.findAllFetched(pageable);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAllFetched", e);
+		}
+	}
+	
+	@Override
+	public List<Position> findAllFetched(Specification<Position> spec) throws ServiceException {
+		try {
+			return positionDao.findAllFetched(spec);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAllFetched", e);
+		}
+	}
+	
+	@Override
+	public Page<Position> findAllFetched(Specification<Position> spec, Pageable pageable) throws ServiceException {
+		try {
+			return positionDao.findAllFetched(spec, pageable);
 		} catch (PersistenceException e) {
 			throw new ServiceException("Error findAllFetched", e);
 		}

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.query.Param;
@@ -13,16 +14,21 @@ import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Repository
-public interface TranslationDao<T extends Translation> extends BaseDao<T> {
-	
+public interface TranslationDao<T extends Translation> extends BaseDao<T> {	
 	@Query("SELECT e FROM #{#entityName} e")
-	List<IdProvider> findAllFetched();
+	List<T> findAllFetched();
 	
 	@Query(value = "SELECT e FROM #{#entityName} e")
-	Page<IdProvider> findAllFetched(Pageable pageable);
+	Page<T> findAllFetched(Pageable pageable);
+	
+	@Query("SELECT e FROM #{#entityName} e")
+	List<T> findAllFetched(Specification<T> spec);
+	
+	@Query(value = "SELECT e FROM #{#entityName} e")
+	Page<T> findAllFetched(Specification<T> spec, Pageable pageable);
 	
 	@Query(value = "SELECT e FROM #{#entityName} e WHERE e.id =:id")
-	IdProvider findByIdFetched(@Param("id") Integer id);
+	T findByIdFetched(@Param("id") Integer id);
 	
 	
 	

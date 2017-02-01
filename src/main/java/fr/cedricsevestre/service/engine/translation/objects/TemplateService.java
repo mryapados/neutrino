@@ -11,6 +11,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import fr.cedricsevestre.annotation.BOService;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.common.Common.TypeBase;
 import fr.cedricsevestre.dao.engine.TemplateDao;
+import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.Lang;
@@ -45,31 +47,7 @@ public class TemplateService extends TranslationService<Template>{
 	@Autowired
 	private CacheService cacheService;
 	
-	@Override
-	public List<IdProvider> findAllFetched() throws ServiceException {
-		try {
-			return templateDao.findAllFetched();
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findAllFetched", e);
-		}
-	}
-	@Override
-	public Page<IdProvider> findAllFetched(Pageable pageable) throws ServiceException {
-		try {
-			return templateDao.findAllFetched(pageable);
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findAllFetched", e);
-		}
-	}
 	
-	@Override
-	public IdProvider findByIdFetched(Integer id) throws ServiceException {
-		try {
-			return templateDao.findByIdFetched(id);
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findByIdFetched", e);
-		}
-	}
 	
 	
 	public Template findByNameWithAllExceptData(String name) throws ServiceException {
