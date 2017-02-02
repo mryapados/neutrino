@@ -15,20 +15,6 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Repository
 public interface NoTranslationDao<T extends NoTranslation> extends BaseDao<T> {
-	@Query("SELECT e FROM #{#entityName} e")
-	List<T> findAllFetched();
-	
-	@Query("SELECT e FROM #{#entityName} e")
-	Page<T> findAllFetched(Pageable pageable);
-	
-	@Query("SELECT e FROM #{#entityName} e")
-	List<T> findAllFetched(Specification<T> spec);
-	
-	@Query("SELECT e FROM #{#entityName} e")
-	Page<T> findAllFetched(Specification<T> spec, Pageable pageable);
-	
-	@Query(value = "SELECT e FROM #{#entityName} e WHERE e.id =:id")
-	T findByIdFetched(@Param("id") Integer id);
 	
 	@Query("SELECT t FROM #{#entityName} t WHERE t.name =:name")
 	T findByName(@Param("name") String name);

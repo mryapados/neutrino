@@ -28,52 +28,5 @@ import fr.cedricsevestre.service.engine.translation.TranslationService;
 @CustomService
 public class LinkService extends TranslationService<Link>{
 
-	@Autowired
-	LinkDao dao;
-
-	@Override
-	public Link findByIdFetched(Integer id) throws ServiceException {
-		try {
-			return dao.findByIdFetched(id);
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findByIdFetched", e);
-		}
-	}
-	
-	@Override
-	public List<Link> findAllFetched() throws ServiceException {
-		try {
-			return dao.findAllFetched();
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findAllFetched", e);
-		}
-	}
-	
-	@Override
-	public Page<Link> findAllFetched(Pageable pageable) throws ServiceException {
-		try {
-			return dao.findAllFetched(pageable);
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findAllFetched", e);
-		}
-	}
-	
-	@Override
-	public List<Link> findAllFetched(Specification<Link> spec) throws ServiceException {
-		try {
-			return dao.findAllFetched(spec);
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findAllFetched", e);
-		}
-	}
-	
-	@Override
-	public Page<Link> findAllFetched(Specification<Link> spec, Pageable pageable) throws ServiceException {
-		try {
-			return dao.findAllFetched(spec, pageable);
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findAllFetched", e);
-		}
-	}
 
 }

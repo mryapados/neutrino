@@ -17,24 +17,24 @@ import fr.cedricsevestre.exception.ServiceException;
 @Scope(value = "singleton")
 public class NTObjectService extends NoTranslationService<NoTranslation>{
 	
-	@Override
-	public NoTranslation findByIdFetched(Integer id) throws ServiceException {
-		throw new ServiceException("Method unimplemented for NTObjectService");
-	}
-	@Override
-	public List<NoTranslation> findAllFetched() throws ServiceException {
-		throw new ServiceException("Method unimplemented for NTObjectService");
-	}
-	@Override
-	public Page<NoTranslation> findAllFetched(Pageable pageable) throws ServiceException {
-		throw new ServiceException("Method unimplemented for NTObjectService");
-	}
-	@Override
-	public List<NoTranslation> findAllFetched(Specification<NoTranslation> spec) throws ServiceException {
-		throw new ServiceException("Method unimplemented for NTObjectService");
-	}
-	@Override
-	public Page<NoTranslation> findAllFetched(Specification<NoTranslation> spec, Pageable pageable) throws ServiceException {
-		throw new ServiceException("Method unimplemented for NTObjectService");
-	}
+//	@Override
+//	public NoTranslation findByIdFetched(Integer id) throws ServiceException {
+//		throw new ServiceException("Method unimplemented for NTObjectService");
+//	}
+//	@Override
+//	public List<NoTranslation> findAllFetched() throws ServiceException {
+//		throw new ServiceException("Method unimplemented for NTObjectService");
+//	}
+//	@Override
+//	public Page<NoTranslation> findAllFetched(Pageable pageable) throws ServiceException {
+//		throw new ServiceException("Method unimplemented for NTObjectService");
+//	}
+//	@Override
+//	public List<NoTranslation> findAllFetched(Specification<NoTranslation> spec) throws ServiceException {
+//		throw new ServiceException("Method unimplemented for NTObjectService");
+//	}
+//	@Override
+//	public Page<NoTranslation> findAllFetched(Specification<NoTranslation> spec, Pageable pageable) throws ServiceException {
+//		throw new ServiceException("Method unimplemented for NTObjectService");
+//	}
 }

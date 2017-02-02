@@ -44,6 +44,7 @@ import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.EntityLocator;
 import fr.cedricsevestre.service.engine.ServiceLocator;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
+import fr.cedricsevestre.specification.engine.IdProviderSpecification;
 
 @Service
 @Scope(value = "singleton")
@@ -112,6 +113,7 @@ public class BackOfficeService implements IBackOfficeService{
 			
 			
 			
+			
 //			Class<?> params[] = {Pageable.class};
 //			Object paramsObj[] = {pageable};
 				
@@ -123,18 +125,30 @@ public class BackOfficeService implements IBackOfficeService{
 			classes.toArray(params);
 			
 			List<Object> objects = new ArrayList<>();
-			if (spec != null) objects.add((spec);
+//			if (spec != null) objects.add(spec);
+			
+			if (spec != null) objects.add(IdProviderSpecification.itsFieldIsAffectedTo("project", 49));
+			
 			objects.add(pageable);
 			
 			Object paramsObj[] = new Object[objects.size()];
 			objects.toArray(paramsObj);
-			
-			
+			String StringParamsObj = "";
+			for (Object object : paramsObj) {
+				StringParamsObj += object.getClass().getName() + " = " + object.toString() + "; ";
+			}
+			logger.debug("getDatas -> paramsObj " + StringParamsObj);	
 			
 			logger.debug("getDatas -> Look for " + entity.getSimpleName());			
 			Object service = customServiceLocator.getService(entity.getSimpleName());
 			logger.debug("getDatas -> Entity found " + entity.getSimpleName());		
+			logger.debug("getDatas -> Service found " + service.getClass().getSimpleName());		
+			
+			
 
+			
+			
+			
 			Class<?> clazz = Class.forName(service.getClass().getName());
 			Method findAll;
 			try {
@@ -158,6 +172,9 @@ public class BackOfficeService implements IBackOfficeService{
 					throw new ServiceException("Error getDatas", e);
 				}
 			}
+			
+			Page rrr = (Page) findAll.invoke(service, paramsObj);
+			
 			return (Page<IdProvider>) findAll.invoke(service, paramsObj);
 			
 		} catch (ClassNotFoundException e) {

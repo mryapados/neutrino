@@ -20,13 +20,13 @@ public interface AlbumDao extends TranslationDao<Album> {
 	@Query("SELECT e FROM Album e LEFT JOIN FETCH e.files")
 	List<Album> findAllFetched();
 
-	@Query(value = "SELECT e FROM Album e LEFT JOIN FETCH e.files a", countQuery = "select count(e) FROM Album e")
+	@Query(value = "SELECT e FROM Album e LEFT JOIN FETCH e.files a", countQuery = "select count(e) FROM Album e INNER JOIN e.files a INNER JOIN e.project p")
 	Page<Album> findAllFetched(Pageable pageable);
 	
 	@Query("SELECT e FROM Album e LEFT JOIN FETCH e.files")
 	List<Album> findAllFetched(Specification<Album> spec);
 
-	@Query(value = "SELECT e FROM Album e LEFT JOIN FETCH e.files a", countQuery = "select count(e) FROM Album e")
+	@Query(value = "SELECT e FROM Album e LEFT JOIN FETCH e.files a", countQuery = "select count(e) FROM Album e INNER JOIN e.files a INNER JOIN e.project p")
 	Page<Album> findAllFetched(Specification<Album> spec, Pageable pageable);
 	
 	@Override

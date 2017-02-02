@@ -34,51 +34,6 @@ public class PageService extends TranslationService<Page>{
 
 	@Autowired
 	private PageDao pageDao;
-
-	@Override
-	public Page findByIdFetched(Integer id) throws ServiceException {
-		try {
-			return pageDao.findByIdFetched(id);
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findByIdFetched", e);
-		}
-	}
-	
-	@Override
-	public List<Page> findAllFetched() throws ServiceException {
-		try {
-			return pageDao.findAllFetched();
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findAllFetched", e);
-		}
-	}
-	
-	@Override
-	public org.springframework.data.domain.Page<Page> findAllFetched(Pageable pageable) throws ServiceException {
-		try {
-			return pageDao.findAllFetched(pageable);
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findAllFetched", e);
-		}
-	}
-	
-	@Override
-	public List<Page> findAllFetched(Specification<Page> spec) throws ServiceException {
-		try {
-			return pageDao.findAllFetched(spec);
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findAllFetched", e);
-		}
-	}
-	
-	@Override
-	public org.springframework.data.domain.Page<Page> findAllFetched(Specification<Page> spec, Pageable pageable) throws ServiceException {
-		try {
-			return pageDao.findAllFetched(spec, pageable);
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findAllFetched", e);
-		}
-	}
 	
 	@Transactional
 	public Page translate(Page page, Lang lang) throws ServiceException {

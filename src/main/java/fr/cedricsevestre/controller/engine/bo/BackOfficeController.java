@@ -60,6 +60,7 @@ import fr.cedricsevestre.exception.FormException;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.AlbumService;
 import fr.cedricsevestre.service.custom.ProjectService;
+import fr.cedricsevestre.service.engine.BaseService;
 import fr.cedricsevestre.service.engine.EntityLocator;
 import fr.cedricsevestre.service.engine.bo.BackOfficeService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
@@ -85,10 +86,7 @@ public class BackOfficeController extends AbtractController {
 	
 	@Autowired
 	private AlbumService albumService;
-	
-	
-	
-	
+
 	
 	@Autowired
 	EntityLocator entityLocator;
@@ -509,8 +507,29 @@ public class BackOfficeController extends AbtractController {
 			modelAndView.addObject("objectType", object.getSimpleName());
 			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
 			
-			Specification<Object> specification = Specifications.where(IdProviderSpecification.isNotAffected(ownerField)).or(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId));
-			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, (Specification) specification, pageRequest);
+			
+			List albs = albumService.findAllFetched(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId));
+			System.out.println("albs = " + albs.size());
+			
+			
+			Page idPs = albumService.findAllFetched(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId), pageRequest);
+			System.out.println("idPs = " + idPs.getSize());
+			
+//			Specification<Object> specification = Specifications.where(IdProviderSpecification.isNotAffected(ownerField)).or(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId));
+//			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, (Specification) specification, pageRequest);
+
+			
+			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId), pageRequest);
+			
+			
+			
+
+			
+			
+			
+			
+			
+			
 			
 			modelAndView.addObject("objectDatas", tDatas.getObjectDatas());
 			modelAndView.addObject("datas", tDatas.getObjectDatas().getContent());

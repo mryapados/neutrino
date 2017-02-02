@@ -24,58 +24,13 @@ import fr.cedricsevestre.service.engine.IBOService;
 
 @Service
 @Scope(value = "singleton")
-public abstract class NoTranslationService<T extends NoTranslation> extends BaseService<T> implements IBOService<T>{
+public abstract class NoTranslationService<T extends NoTranslation> extends BaseService<T>{
 
 	private Logger logger = Logger.getLogger(NoTranslationService.class);
 
 	@Autowired
 	private NoTranslationDao<T> noTranslationDao;
 
-	@Override
-	public List<T> findAllFetched() throws ServiceException {
-		try {
-			return noTranslationDao.findAllFetched();
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findAllFetched", e);
-		}
-	}
-
-	@Override
-	public Page<T> findAllFetched(Pageable pageable) throws ServiceException {
-		try {
-			return noTranslationDao.findAllFetched(pageable);
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findAllFetched", e);
-		}
-	}
-	
-	@Override
-	public List<T> findAllFetched(Specification<T> spec) throws ServiceException {
-		try {
-			return noTranslationDao.findAllFetched(spec);
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findAllFetched", e);
-		}
-	}
-
-	@Override
-	public Page<T> findAllFetched(Specification<T> spec, Pageable pageable) throws ServiceException {
-		try {
-			return noTranslationDao.findAllFetched(spec, pageable);
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findAllFetched", e);
-		}
-	}
-	
-	@Override
-	public T findByIdFetched(Integer id) throws ServiceException {
-		try {
-			return noTranslationDao.findByIdFetched(id);
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findByIdFetched", e);
-		}
-	}
-	
 	public T findByName(String name) throws ServiceException {
 		try {
 			System.out.println("findbyname " + name + " " + noTranslationDao);
