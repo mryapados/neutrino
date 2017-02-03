@@ -3,6 +3,7 @@ package fr.cedricsevestre.service.engine.translation.objects;
 import java.io.File;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 
 import org.apache.log4j.Logger;
@@ -58,13 +59,13 @@ public class TemplateService extends TranslationService<Template>{
 		}
 	}	
 	
-	public List<Template> findAll() throws ServiceException {
-		try {
-			return (List<Template>) templateDao.findAll();
-		} catch (PersistenceException e) {
-			throw new ServiceException("erreur findAll Template", e);
-		}
-	}
+//	public List<Template> findAll() throws ServiceException {
+//		try {
+//			return (List<Template>) templateDao.findAll();
+//		} catch (PersistenceException e) {
+//			throw new ServiceException("erreur findAll Template", e);
+//		}
+//	}
 	
 	public List<Template> findAllBlockNotAffected() throws ServiceException {
 		try {

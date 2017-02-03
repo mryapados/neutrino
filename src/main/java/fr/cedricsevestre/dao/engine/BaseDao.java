@@ -15,6 +15,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
+import fr.cedricsevestre.conf.AccountRepositoryCustom;
 import fr.cedricsevestre.entity.engine.IdProvider;
 
 @NoRepositoryBean
@@ -46,11 +47,11 @@ public interface BaseDao<T> extends PagingAndSortingRepository<T, Integer>, JpaS
 	@Query(value = "SELECT e FROM #{#entityName} e")
 	Page<T> findAllFetched(Pageable pageable);
 	
-	@Query("SELECT e FROM #{#entityName} e")
-	List<T> findAllFetched(Specification<T> spec);
-	
-	@Query(value = "SELECT e FROM #{#entityName} e")
-	Page<T> findAllFetched(Specification<T> spec, Pageable pageable);
+//	@Query("SELECT e FROM #{#entityName} e")
+//	List<T> findAllFetched(Specification<T> spec);
+//	
+//	@Query(value = "SELECT e FROM #{#entityName} e")
+//	Page<T> findAllFetched(Specification<T> spec, Pageable pageable);
 	
 	@Query(value = "SELECT e FROM #{#entityName} e WHERE e.id =:id")
 	T findByIdFetched(@Param("id") Integer id);

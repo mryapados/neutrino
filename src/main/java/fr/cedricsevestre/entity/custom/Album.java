@@ -8,6 +8,9 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -18,6 +21,16 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Entity
 @Table(name = "album")
+
+//http://stackoverflow.com/questions/26291143/spring-data-jpa-jpaspecificationexecutor-entitygraph
+@NamedEntityGraphs({
+	@NamedEntityGraph(
+		name = "allJoins", 
+		attributeNodes = { 
+			@NamedAttributeNode("files")
+		})
+})
+
 public class Album extends Translation {
 
 	private static final long serialVersionUID = 1L;

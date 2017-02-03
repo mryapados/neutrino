@@ -507,13 +507,13 @@ public class BackOfficeController extends AbtractController {
 			modelAndView.addObject("objectType", object.getSimpleName());
 			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
 			
-			
-			List albs = albumService.findAllFetched(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId));
+			System.out.println("kiki");
+			List albs = albumService.findAll(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId));
 			System.out.println("albs = " + albs.size());
+			System.out.println("koko");
 			
-			
-			Page idPs = albumService.findAllFetched(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId), pageRequest);
-			System.out.println("idPs = " + idPs.getSize());
+//			Page idPs = albumService.findAllFetched(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId), pageRequest);
+//			System.out.println("idPs = " + idPs.getSize());
 			
 //			Specification<Object> specification = Specifications.where(IdProviderSpecification.isNotAffected(ownerField)).or(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId));
 //			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, (Specification) specification, pageRequest);

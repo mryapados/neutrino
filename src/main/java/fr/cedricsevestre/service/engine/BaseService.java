@@ -159,23 +159,23 @@ public abstract class BaseService<T> implements IBaseService<T>, IBOService<T>{
 		}
 	}
 	
-	@Override
-	public List<T> findAllFetched(Specification<T> spec) throws ServiceException {
-		try {
-			return baseDao.findAllFetched(spec);
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findAllFetched", e);
-		}
-	}
-
-	@Override
-	public Page<T> findAllFetched(Specification<T> spec, Pageable pageable) throws ServiceException {
-		try {
-			return baseDao.findAllFetched(spec, pageable);
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findAllFetched", e);
-		}
-	}
+//	@Override
+//	public List<T> findAllFetched(Specification<T> spec) throws ServiceException {
+//		try {
+//			return baseDao.findAllFetched(spec);
+//		} catch (PersistenceException e) {
+//			throw new ServiceException("Error findAllFetched", e);
+//		}
+//	}
+//
+//	@Override
+//	public Page<T> findAllFetched(Specification<T> spec, Pageable pageable) throws ServiceException {
+//		try {
+//			return baseDao.findAllFetched(spec, pageable);
+//		} catch (PersistenceException e) {
+//			throw new ServiceException("Error findAllFetched", e);
+//		}
+//	}
 	
 	@Override
 	public T findByIdFetched(Integer id) throws ServiceException {
@@ -187,5 +187,9 @@ public abstract class BaseService<T> implements IBaseService<T>, IBOService<T>{
 	}
 	
 
+	
+
+	
+	
 
 }

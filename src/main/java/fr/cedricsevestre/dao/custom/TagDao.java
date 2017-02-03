@@ -26,13 +26,13 @@ public interface TagDao extends NoTranslationDao<Tag> {
 	@Query(value = "SELECT e FROM Tag e LEFT JOIN FETCH e.files a", countQuery = "select count(e) FROM Tag e")
 	Page<Tag> findAllFetched(Pageable pageable);
 	
-	@Override
-	@Query("SELECT e FROM Tag e LEFT JOIN FETCH e.files")
-	List<Tag> findAllFetched(Specification<Tag> spec);
-	
-	@Override
-	@Query(value = "SELECT e FROM Tag e LEFT JOIN FETCH e.files a", countQuery = "select count(e) FROM Tag e")
-	Page<Tag> findAllFetched(Specification<Tag> spec, Pageable pageable);
+//	@Override
+//	@Query("SELECT e FROM Tag e LEFT JOIN FETCH e.files")
+//	List<Tag> findAllFetched(Specification<Tag> spec);
+//	
+//	@Override
+//	@Query(value = "SELECT e FROM Tag e LEFT JOIN FETCH e.files a", countQuery = "select count(e) FROM Tag e")
+//	Page<Tag> findAllFetched(Specification<Tag> spec, Pageable pageable);
 	
 	@Query(value = "SELECT e FROM Tag e LEFT JOIN FETCH e.files a WHERE e.id =:id")
 	Tag findByIdFetched(@Param("id") Integer id);

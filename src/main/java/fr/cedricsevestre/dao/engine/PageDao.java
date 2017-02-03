@@ -22,13 +22,13 @@ public interface PageDao extends TranslationDao<Page> {
 	@Query(value = "SELECT p FROM Page p LEFT JOIN FETCH p.model m ", countQuery = "select count(p) FROM Page p")
 	org.springframework.data.domain.Page<Page> findAllFetched(Pageable pageable);
 	
-	@Override
-	@Query("SELECT p FROM Page p LEFT JOIN FETCH p.model m")
-	List<Page> findAllFetched(Specification<Page> spec);
-
-	@Override
-	@Query(value = "SELECT p FROM Page p LEFT JOIN FETCH p.model m ", countQuery = "select count(p) FROM Page p")
-	org.springframework.data.domain.Page<Page> findAllFetched(Specification<Page> spec, Pageable pageable);
+//	@Override
+//	@Query("SELECT p FROM Page p LEFT JOIN FETCH p.model m")
+//	List<Page> findAllFetched(Specification<Page> spec);
+//
+//	@Override
+//	@Query(value = "SELECT p FROM Page p LEFT JOIN FETCH p.model m ", countQuery = "select count(p) FROM Page p")
+//	org.springframework.data.domain.Page<Page> findAllFetched(Specification<Page> spec, Pageable pageable);
 
 	@Override
 	@Query(value = "SELECT p FROM Page p LEFT JOIN FETCH p.model m WHERE p.id =:id")

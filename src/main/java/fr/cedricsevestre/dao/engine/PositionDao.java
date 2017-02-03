@@ -36,19 +36,23 @@ public interface PositionDao extends BaseDao<Position> {
 	@Query("SELECT p FROM Position p LEFT JOIN FETCH p.mapTemplates m WHERE m.model !=:model")
 	List<Position> findAllEmptyWithMaps(@Param("model") Template model);
 	
-	
+	@Override
 	@Query("SELECT p FROM Position p LEFT JOIN FETCH p.mapTemplates m")
 	List<Position> findAllFetched();
 
+	@Override
 	@Query(value = "SELECT p FROM Position p LEFT JOIN FETCH p.mapTemplates m", countQuery = "select count(p) FROM Position p")
 	Page<Position> findAllFetched(Pageable pageable);
 	
-	@Query("SELECT p FROM Position p LEFT JOIN FETCH p.mapTemplates m")
-	List<Position> findAllFetched(Specification<Position> spec);
-
-	@Query(value = "SELECT p FROM Position p LEFT JOIN FETCH p.mapTemplates m", countQuery = "select count(p) FROM Position p")
-	Page<Position> findAllFetched(Specification<Position> spec, Pageable pageable);
+//	@Override
+//	@Query("SELECT p FROM Position p LEFT JOIN FETCH p.mapTemplates m")
+//	List<Position> findAllFetched(Specification<Position> spec);
+//
+//	@Override
+//	@Query(value = "SELECT p FROM Position p LEFT JOIN FETCH p.mapTemplates m", countQuery = "select count(p) FROM Position p")
+//	Page<Position> findAllFetched(Specification<Position> spec, Pageable pageable);
 	
+	@Override
 	@Query(value = "SELECT p FROM Position p LEFT JOIN FETCH p.mapTemplates m WHERE p.id =:id")
 	Position findByIdFetched(@Param("id") Integer id);
 }

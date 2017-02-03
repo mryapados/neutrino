@@ -17,7 +17,7 @@ public interface IBOService<T>{
 	public T findByIdFetched(Integer id) throws ServiceException;
 	public List<T> findAllFetched() throws ServiceException;
 	public Page<T> findAllFetched(Pageable pageable) throws ServiceException;
-	public List<T> findAllFetched(Specification<T> spec) throws ServiceException;
-	public Page<T> findAllFetched(Specification<T> spec, Pageable pageable) throws ServiceException;
+//	public List<T> findAllFetched(Specification<T> spec) throws ServiceException;
+//	public Page<T> findAllFetched(Specification<T> spec, Pageable pageable) throws ServiceException;
 	
 }

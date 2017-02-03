@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import fr.cedricsevestre.annotation.CustomService;
 import fr.cedricsevestre.dao.custom.AlbumDao;
 import fr.cedricsevestre.dao.custom.ProjectDao;
+import fr.cedricsevestre.dao.engine.BaseDao;
 import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.custom.Tag;
 import fr.cedricsevestre.entity.engine.IdProvider;
@@ -25,6 +26,6 @@ import fr.cedricsevestre.service.engine.translation.TranslationService;
 @Scope(value = "singleton")
 @CustomService
 public class AlbumService extends TranslationService<Album>{
-
-
+	
+	
 }

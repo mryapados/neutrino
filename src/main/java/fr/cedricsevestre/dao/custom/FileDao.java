@@ -25,13 +25,13 @@ public interface FileDao extends TranslationDao<File> {
 	@Query(value = "SELECT e FROM File e LEFT JOIN FETCH e.tags a", countQuery = "select count(e) FROM File e")
 	Page<File> findAllFetched(Pageable pageable);
 	
-	@Override
-	@Query("SELECT e FROM File e LEFT JOIN FETCH e.tags")
-	List<File> findAllFetched(Specification<File> spec);
-	
-	@Override
-	@Query(value = "SELECT e FROM File e LEFT JOIN FETCH e.tags a", countQuery = "select count(e) FROM File e")
-	Page<File> findAllFetched(Specification<File> spec, Pageable pageable);
+//	@Override
+//	@Query("SELECT e FROM File e LEFT JOIN FETCH e.tags")
+//	List<File> findAllFetched(Specification<File> spec);
+//	
+//	@Override
+//	@Query(value = "SELECT e FROM File e LEFT JOIN FETCH e.tags a", countQuery = "select count(e) FROM File e")
+//	Page<File> findAllFetched(Specification<File> spec, Pageable pageable);
 	
 	@Override
 	@Query(value = "SELECT e FROM File e LEFT JOIN FETCH e.tags a WHERE e.id =:id")
