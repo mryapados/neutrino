@@ -25,7 +25,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 @EnableWebMvc
 @PropertySource(value = "classpath:config.properties", name = "config")
-@EnableJpaRepositories(basePackages="fr.cedricsevestre.dao")
+@EnableJpaRepositories(basePackages="fr.cedricsevestre.dao", repositoryFactoryBeanClass = CustomRepositoryFactoryBean.class)
 public class DBConfiguration extends WebMvcConfigurerAdapter{
 	@Autowired
 	private Environment environment;

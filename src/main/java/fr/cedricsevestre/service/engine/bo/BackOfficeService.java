@@ -31,6 +31,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 import org.springframework.stereotype.Service;
 
 import fr.cedricsevestre.annotation.BOField;
@@ -99,28 +100,25 @@ public class BackOfficeService implements IBackOfficeService{
 		}
 		return fields;
 	}
-	
-	private Page<IdProvider> getDatas(Class<?> entity, Pageable pageable) throws ServiceException{
-		return getDatas(entity, null, pageable);
-	}
+
 
 	@SuppressWarnings("unchecked")
-	private Page<IdProvider> getDatas(Class<?> entity, Specification<IdProvider> spec, Pageable pageable) throws ServiceException{
+	private Page<IdProvider> getDatas(Class<?> entity, Pageable pageable, Specification<IdProvider> spec, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException{
 
 		try {
 			
 			
 			
 			
-			
-			
+
 //			Class<?> params[] = {Pageable.class};
 //			Object paramsObj[] = {pageable};
 				
 			List<Class<?>> classes = new ArrayList<>();
 			if (spec != null) classes.add(Specification.class);
 			classes.add(Pageable.class);
-			
+			if (entityGraphType != null) classes.add(EntityGraphType.class);
+			if (entityGraphName != null) classes.add(String.class);
 			Class<?> params[] = new Class<?>[classes.size()];
 			classes.toArray(params);
 			
@@ -128,11 +126,12 @@ public class BackOfficeService implements IBackOfficeService{
 //			if (spec != null) objects.add(spec);
 			
 			if (spec != null) objects.add(IdProviderSpecification.itsFieldIsAffectedTo("project", 49));
-			
 			objects.add(pageable);
-			
+			if (entityGraphType != null) objects.add(entityGraphType);
+			if (entityGraphName != null) objects.add(entityGraphName);
 			Object paramsObj[] = new Object[objects.size()];
 			objects.toArray(paramsObj);
+			
 			String StringParamsObj = "";
 			for (Object object : paramsObj) {
 				StringParamsObj += object.getClass().getName() + " = " + object.toString() + "; ";
@@ -298,25 +297,18 @@ public class BackOfficeService implements IBackOfficeService{
 		return nfTabsGroupsFields;
 	}
 
-	@Override
-	public NDatas<IdProvider> findAll(Class<?> entity) throws ServiceException{
-		return findAll(entity, null, null);
-	}
-	@Override
-	public NDatas<IdProvider> findAll(Class<?> entity, Pageable pageRequest) throws ServiceException{		
-		return findAll(entity, null, pageRequest);
-	}
+
 
 	@Override
-	public NDatas<IdProvider> findAll(Class<?> entity, Specification<IdProvider> spec) throws ServiceException{
-		return findAll(entity, spec, null);
+	public NDatas<IdProvider> findAll(Class<?> entity, Pageable pageRequest) throws ServiceException{		
+		return findAll(entity, pageRequest, null, null, null);
 	}
 	@Override
-	public NDatas<IdProvider> findAll(Class<?> entity, Specification<IdProvider> spec, Pageable pageRequest) throws ServiceException{		
+	public NDatas<IdProvider> findAll(Class<?> entity, Pageable pageable, Specification<IdProvider> spec, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException{		
 		List<Field> fields = getFields(entity);
 		List<NField> nFields = getNField(fields);
-		pageRequest = transformPageRequest(nFields, pageRequest);
-		return new NDatas<IdProvider>(nFields, getDatas(entity, spec, pageRequest));
+		pageable = transformPageRequest(nFields, pageable);
+		return new NDatas<IdProvider>(nFields, getDatas(entity, pageable, spec, entityGraphType, entityGraphName));
 	}
 	
 	

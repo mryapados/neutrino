@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -511,6 +512,7 @@ public class BackOfficeController extends AbtractController {
 			List albs = albumService.findAll(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId));
 			System.out.println("albs = " + albs.size());
 			System.out.println("koko");
+			Page palbs = albumService.findAll(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId), pageRequest, EntityGraphType.FETCH, "allJoins");
 			
 //			Page idPs = albumService.findAllFetched(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId), pageRequest);
 //			System.out.println("idPs = " + idPs.getSize());
@@ -519,7 +521,9 @@ public class BackOfficeController extends AbtractController {
 //			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, (Specification) specification, pageRequest);
 
 			
-			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId), pageRequest);
+			
+			
+			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest, IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId), EntityGraphType.FETCH, "allJoins");
 			
 			
 			

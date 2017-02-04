@@ -23,9 +23,9 @@ public interface AlbumDao extends TranslationDao<Album> {
 	
 	
 	
-	@Override
-	@EntityGraph("allJoins")
-    List<Album> findAll(Specification<Album> spec);
+//	@Override
+//	@EntityGraph("allJoins")
+//    List<Album> findAll(Specification<Album> spec);
 	
 	
 	

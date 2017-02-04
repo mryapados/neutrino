@@ -15,11 +15,12 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
-import fr.cedricsevestre.conf.AccountRepositoryCustom;
+import fr.cedricsevestre.conf.CustomRepository;
+import fr.cedricsevestre.conf.CustomRepositoryFactoryBean;
 import fr.cedricsevestre.entity.engine.IdProvider;
 
 @NoRepositoryBean
-public interface BaseDao<T> extends PagingAndSortingRepository<T, Integer>, JpaSpecificationExecutor<T> {
+public interface BaseDao<T> extends CustomRepository<T, Integer>, JpaSpecificationExecutor<T> {
 	
 //	List<T> findAllFetched();
 //	Page<T> findAllFetched(Pageable pageable);

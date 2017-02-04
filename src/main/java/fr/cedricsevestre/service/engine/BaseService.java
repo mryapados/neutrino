@@ -12,11 +12,14 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.cedricsevestre.dao.engine.BaseDao;
+import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 
@@ -141,6 +144,47 @@ public abstract class BaseService<T> implements IBaseService<T>, IBOService<T>{
 	}
 	
 
+	
+	
+	
+	@Override
+	public List<T> findAll(Specification<T> spec, EntityGraphType entityGraphType, String entityGraphName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Page<T> findAll(Specification<T> spec, Pageable pageable, EntityGraphType entityGraphType, String entityGraphName) {
+		return baseDao.findAll(spec, pageable, entityGraphType, entityGraphName);
+	}
+
+	@Override
+	public List<T> findAll(Specification<T> spec, Sort sort, EntityGraphType entityGraphType, String entityGraphName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public T findOne(Specification<T> spec, EntityGraphType entityGraphType, String entityGraphName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@Override
 	public List<T> findAllFetched() throws ServiceException {
 		try {
