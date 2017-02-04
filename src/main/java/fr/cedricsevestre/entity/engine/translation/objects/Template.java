@@ -10,6 +10,9 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -30,6 +33,14 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Entity
 @Table(name = "template")
+@NamedEntityGraphs({
+	@NamedEntityGraph(
+		name = "Template.allJoins", 
+		attributeNodes = { 
+			@NamedAttributeNode("models"),
+			@NamedAttributeNode("blocks")
+		})
+})
 public class Template extends Translation {
 
 	private static final long serialVersionUID = 1L;

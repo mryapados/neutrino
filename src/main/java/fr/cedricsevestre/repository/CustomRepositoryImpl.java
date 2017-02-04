@@ -1,4 +1,4 @@
-package fr.cedricsevestre.conf;
+package fr.cedricsevestre.repository;
 
 import java.io.Serializable;
 import java.util.List;
@@ -48,6 +48,34 @@ public class CustomRepositoryImpl<T, ID extends Serializable> extends SimpleJpaR
     @Override
     public T findOne(Specification<T> spec, EntityGraph.EntityGraphType entityGraphType, String entityGraphName) {
         TypedQuery<T> query = getQuery(spec, (Sort) null);
+        query.setHint(entityGraphType.getKey(), em.getEntityGraph(entityGraphName));
+        return query.getSingleResult();
+    }
+    
+    @Override
+    public List<T> findAll(EntityGraph.EntityGraphType entityGraphType, String entityGraphName) {
+        TypedQuery<T> query = getQuery((Specification<T>) null, (Sort) null);
+        query.setHint(entityGraphType.getKey(), em.getEntityGraph(entityGraphName));
+        return query.getResultList();
+    }
+
+    @Override
+    public Page<T> findAll(Pageable pageable, EntityGraph.EntityGraphType entityGraphType, String entityGraphName) {
+        TypedQuery<T> query = getQuery((Specification<T>) null, pageable.getSort());
+        query.setHint(entityGraphType.getKey(), em.getEntityGraph(entityGraphName));
+        return readPage(query, pageable, (Specification<T>) null);
+    }
+
+    @Override
+    public List<T> findAll(Sort sort, EntityGraph.EntityGraphType entityGraphType, String entityGraphName) {
+        TypedQuery<T> query = getQuery((Specification<T>) null, sort);
+        query.setHint(entityGraphType.getKey(), em.getEntityGraph(entityGraphName));
+        return query.getResultList();
+    }
+    
+    @Override
+    public T findOne(EntityGraph.EntityGraphType entityGraphType, String entityGraphName) {
+        TypedQuery<T> query = getQuery((Specification<T>) null, (Sort) null);
         query.setHint(entityGraphType.getKey(), em.getEntityGraph(entityGraphName));
         return query.getSingleResult();
     }

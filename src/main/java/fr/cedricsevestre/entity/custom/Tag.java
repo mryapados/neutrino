@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
 import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
@@ -18,6 +21,13 @@ import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 
 @Entity
 @Table(name = "tag")
+@NamedEntityGraphs({
+	@NamedEntityGraph(
+		name = "Tag.allJoins", 
+		attributeNodes = { 
+			@NamedAttributeNode("files")
+		})
+})
 public class Tag extends NoTranslation implements Serializable{
 
 	private static final long serialVersionUID = 1L;

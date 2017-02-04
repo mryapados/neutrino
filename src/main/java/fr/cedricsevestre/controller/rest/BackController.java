@@ -120,7 +120,7 @@ public class BackController extends AbtractController {
 
 		Translation activeObject = null;
 		if (activeObjectId > 0){
-			activeObject = tObjectService.findById(activeObjectId);
+			activeObject = tObjectService.findOne(activeObjectId);
 		}
 		if (activeObject != null){
 			models.add(activeObject);
@@ -195,7 +195,7 @@ public class BackController extends AbtractController {
 	
 	@RequestMapping(value = "maptemplates/{id}", method = RequestMethod.DELETE)
 	public BlockDto delete(@PathVariable("id") Integer mapBlockId) throws ServiceException {
-		MapTemplate mapTemplate = mapTemplateService.findById(mapBlockId);
+		MapTemplate mapTemplate = mapTemplateService.findOne(mapBlockId);
 		mapTemplateService.removeById(mapBlockId);
 		return BlockDto.from(mapTemplate);
 	}
@@ -213,7 +213,7 @@ public class BackController extends AbtractController {
 	
 	@RequestMapping(value = "/tobjects/{id}", method = RequestMethod.GET)
 	public @ResponseBody TranslationDto getTObject(@PathVariable(value = "id") Integer id) throws ServiceException {
-		Translation translation = tObjectService.findById(id);
+		Translation translation = tObjectService.findOne(id);
 		return TranslationDto.from(translation);
 	}
 	

@@ -8,6 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -23,6 +26,13 @@ import fr.cedricsevestre.entity.engine.IdProvider;
 
 @Entity
 @Table(name = "position")
+@NamedEntityGraphs({
+	@NamedEntityGraph(
+		name = "Position.allJoins", 
+		attributeNodes = { 
+			@NamedAttributeNode("mapTemplates")
+		})
+})
 public class Position implements IdProvider, Serializable{
 
 	private static final long serialVersionUID = 1L;

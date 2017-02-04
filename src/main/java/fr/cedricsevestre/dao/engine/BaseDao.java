@@ -15,9 +15,9 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
-import fr.cedricsevestre.conf.CustomRepository;
-import fr.cedricsevestre.conf.CustomRepositoryFactoryBean;
 import fr.cedricsevestre.entity.engine.IdProvider;
+import fr.cedricsevestre.repository.CustomRepository;
+import fr.cedricsevestre.repository.CustomRepositoryFactoryBean;
 
 @NoRepositoryBean
 public interface BaseDao<T> extends CustomRepository<T, Integer>, JpaSpecificationExecutor<T> {

@@ -49,7 +49,11 @@ import fr.cedricsevestre.specification.engine.IdProviderSpecification;
 
 @Service
 @Scope(value = "singleton")
-public class BackOfficeService implements IBackOfficeService{
+public class BackOfficeService { //implements IBackOfficeService{
+	
+	final private String ALLJOINS = ".allJoins";
+	
+	
 	@PersistenceContext
 	private EntityManager em;
 	  
@@ -100,20 +104,18 @@ public class BackOfficeService implements IBackOfficeService{
 		}
 		return fields;
 	}
-
-
+	
+	public Page<IdProvider> getDatas(Class<?> entity, Pageable pageable) throws ServiceException{
+		return getDatas(entity, pageable, null);
+	}
+	public Page<IdProvider> getDatas(Class<?> entity, Pageable pageable, Specification<IdProvider> spec) throws ServiceException{
+		return getDatas(entity, pageable, spec, EntityGraphType.FETCH, entity.getSimpleName() + ALLJOINS);
+	}
 	@SuppressWarnings("unchecked")
 	private Page<IdProvider> getDatas(Class<?> entity, Pageable pageable, Specification<IdProvider> spec, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException{
 
 		try {
-			
-			
-			
-			
 
-//			Class<?> params[] = {Pageable.class};
-//			Object paramsObj[] = {pageable};
-				
 			List<Class<?>> classes = new ArrayList<>();
 			if (spec != null) classes.add(Specification.class);
 			classes.add(Pageable.class);
@@ -123,9 +125,7 @@ public class BackOfficeService implements IBackOfficeService{
 			classes.toArray(params);
 			
 			List<Object> objects = new ArrayList<>();
-//			if (spec != null) objects.add(spec);
-			
-			if (spec != null) objects.add(IdProviderSpecification.itsFieldIsAffectedTo("project", 49));
+			if (spec != null) objects.add(spec);
 			objects.add(pageable);
 			if (entityGraphType != null) objects.add(entityGraphType);
 			if (entityGraphName != null) objects.add(entityGraphName);
@@ -172,8 +172,6 @@ public class BackOfficeService implements IBackOfficeService{
 				}
 			}
 			
-			Page rrr = (Page) findAll.invoke(service, paramsObj);
-			
 			return (Page<IdProvider>) findAll.invoke(service, paramsObj);
 			
 		} catch (ClassNotFoundException e) {
@@ -194,31 +192,55 @@ public class BackOfficeService implements IBackOfficeService{
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public IdProvider getData(Class<?> entity, Integer id) throws ServiceException{
+		return getData(entity, id, null);
+	}
+	public IdProvider getData(Class<?> entity, Integer id, Specification<IdProvider> spec) throws ServiceException{
+		return getData(entity, id, spec, EntityGraphType.FETCH, entity.getSimpleName() + ALLJOINS);
+	}
+	@SuppressWarnings("unchecked")
+	private IdProvider getData(Class<?> entity, Integer id, Specification<IdProvider> spec, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException{
 				
 		try {
-			Class<?> params[] = {Integer.class};
-			Object paramsObj[] = {id};
+			List<Class<?>> classes = new ArrayList<>();
+			if (spec != null) classes.add(Specification.class);
+			if (entityGraphType != null) classes.add(EntityGraphType.class);
+			if (entityGraphName != null) classes.add(String.class);
+			Class<?> params[] = new Class<?>[classes.size()];
+			classes.toArray(params);
+			
+			List<Object> objects = new ArrayList<>();
+			if (spec != null) objects.add(spec);
+			if (entityGraphType != null) objects.add(entityGraphType);
+			if (entityGraphName != null) objects.add(entityGraphName);
+			Object paramsObj[] = new Object[objects.size()];
+			objects.toArray(paramsObj);
+						
+			String StringParamsObj = "";
+			for (Object object : paramsObj) {
+				StringParamsObj += object.getClass().getName() + " = " + object.toString() + "; ";
+			}
+			logger.debug("getDatas -> paramsObj " + StringParamsObj);	
 			
 			logger.debug("getDatas -> Look for " + entity.getSimpleName());			
 			Object service = customServiceLocator.getService(entity.getSimpleName());
-			logger.debug("getDatas -> Entity found " + entity.getSimpleName());	
-
+			logger.debug("getDatas -> Entity found " + entity.getSimpleName());		
+			logger.debug("getDatas -> Service found " + service.getClass().getSimpleName());
+			
 			Class<?> clazz = service.getClass();
-			Method findById;
+			Method findOne;
 			try {
-				findById = clazz.getMethod("findByIdFetched", params);
+				findOne = clazz.getMethod("findByIdFetched", params);
 			} catch (NoSuchMethodException e) {
 				try {
 					logger.debug("getData -> findByIdFetched Not found for " + entity.getSimpleName());
-					findById = clazz.getMethod("findById", params);
+					findOne = clazz.getMethod("findOne", params);
 				} catch (NoSuchMethodException e1) {
 					logger.error("getData -> NoSuchMethodException", e);
 					throw new ServiceException("Error getData", e);
 				}
 			}
-			return (IdProvider) findById.invoke(service, paramsObj);
+			return (IdProvider) findOne.invoke(service, paramsObj);
 			
 			
 
@@ -299,16 +321,15 @@ public class BackOfficeService implements IBackOfficeService{
 
 
 
-	@Override
-	public NDatas<IdProvider> findAll(Class<?> entity, Pageable pageRequest) throws ServiceException{		
-		return findAll(entity, pageRequest, null, null, null);
+	public NDatas<IdProvider> findAll(Class<?> entity, Pageable pageable) throws ServiceException{		
+		return findAll(entity, pageable, null);
 	}
-	@Override
-	public NDatas<IdProvider> findAll(Class<?> entity, Pageable pageable, Specification<IdProvider> spec, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException{		
+
+	public NDatas<IdProvider> findAll(Class<?> entity, Pageable pageable, Specification<IdProvider> spec) throws ServiceException{		
 		List<Field> fields = getFields(entity);
 		List<NField> nFields = getNField(fields);
 		pageable = transformPageRequest(nFields, pageable);
-		return new NDatas<IdProvider>(nFields, getDatas(entity, pageable, spec, entityGraphType, entityGraphName));
+		return new NDatas<IdProvider>(nFields, getDatas(entity, pageable, spec, EntityGraphType.FETCH, entity.getSimpleName() + ALLJOINS));
 	}
 	
 	
@@ -339,14 +360,14 @@ public class BackOfficeService implements IBackOfficeService{
 		return new PageRequest(pageRequest.getPageNumber(), pageRequest.getPageSize(), sort);
 	}
 
-	@Override
 	public NData<IdProvider> findOne(Class<?> entity, Integer id) throws ServiceException {
+		return findOne(entity, id, null);
+	}
+	public NData<IdProvider> findOne(Class<?> entity, Integer id, Specification<IdProvider> spec) throws ServiceException {
 		List<Field> fields = getFields(entity);
 		Map<String, Map<String, List<NField>>> nMapFields = getMapNField(fields);
-		return new NData<IdProvider>(nMapFields, getData(entity, id));
+		return new NData<IdProvider>(nMapFields, getData(entity, id, spec));
 	}
-	
-	
 	
 	
 	@SuppressWarnings("unchecked")
@@ -360,7 +381,6 @@ public class BackOfficeService implements IBackOfficeService{
 		} 
 	}
 	
-	@Override
 	public NData<IdProvider> copy(Class<?> entity, Integer id) throws ServiceException {
 		List<Field> fields = getFields(entity);
 		Map<String, Map<String, List<NField>>> nMapFields = getMapNField(fields);
@@ -368,7 +388,7 @@ public class BackOfficeService implements IBackOfficeService{
 		if (id == 0){
 			data = add(entity);
 		} else {
-			data = getData(entity, id);
+			data = getData(entity, id, null, null, null);
 			data.setId(null);
 			saveData(data);
 
@@ -429,7 +449,7 @@ public class BackOfficeService implements IBackOfficeService{
 		
 		IdProvider origin = null; 
 		if (data != null) {
-			origin = getData(entity, data.getId());
+			origin = getData(entity, data.getId(), null, null, null);
 		}
 		
 		

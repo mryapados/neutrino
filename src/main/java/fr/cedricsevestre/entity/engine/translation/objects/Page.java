@@ -5,6 +5,9 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -17,6 +20,13 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Entity
 @Table(name = "page")
+@NamedEntityGraphs({
+	@NamedEntityGraph(
+		name = "Page.allJoins", 
+		attributeNodes = { 
+			@NamedAttributeNode("model")
+		})
+})
 public class Page extends Translation {
 
 	private static final long serialVersionUID = 1L;

@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -18,6 +21,13 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Entity
 @Table(name = "project")
+@NamedEntityGraphs({
+	@NamedEntityGraph(
+		name = "Project.allJoins", 
+		attributeNodes = { 
+			@NamedAttributeNode("albums")
+		})
+})
 public class Project extends Translation {
 
 	private static final long serialVersionUID = 1L;

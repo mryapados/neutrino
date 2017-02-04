@@ -22,6 +22,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import fr.cedricsevestre.repository.CustomRepositoryFactoryBean;
+
 @Configuration
 @EnableWebMvc
 @PropertySource(value = "classpath:config.properties", name = "config")

@@ -1,4 +1,4 @@
-package fr.cedricsevestre.conf;
+package fr.cedricsevestre.repository;
 
 import java.io.Serializable;
 import java.util.List;
@@ -19,5 +19,10 @@ public interface CustomRepository<T, ID extends Serializable> extends JpaReposit
     Page<T> findAll(Specification<T> spec, Pageable pageable, EntityGraphType entityGraphType, String entityGraphName);
     List<T> findAll(Specification<T> spec, Sort sort, EntityGraphType entityGraphType, String entityGraphName);
     T findOne(Specification<T> spec, EntityGraphType entityGraphType, String entityGraphName);
+
+    List<T> findAll(EntityGraphType entityGraphType, String entityGraphName);
+    Page<T> findAll(Pageable pageable, EntityGraphType entityGraphType, String entityGraphName);
+    List<T> findAll(Sort sort, EntityGraphType entityGraphType, String entityGraphName);
+    T findOne(EntityGraphType entityGraphType, String entityGraphName);
 
 }

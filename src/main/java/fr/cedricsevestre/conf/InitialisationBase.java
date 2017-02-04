@@ -670,7 +670,7 @@ public class InitialisationBase {
 		templateEN.setDescription(name + " Page Block article description en");
 		templateEN.setPath("article/article");
 		templateEN.setKind(Template.TemplateKind.PAGEBLOCK);
-		templateEN.setSchema(nSchemaService.findById(1));
+		templateEN.setSchema(nSchemaService.findOne(1));
 		templateService.save(templateEN);
 		
 		templateFR = templateService.translate(templateEN, langFR);
@@ -685,7 +685,7 @@ public class InitialisationBase {
 		templateEN.setDescription(name + " Page Block article2 description en");
 		templateEN.setPath("article/article2");
 		templateEN.setKind(Template.TemplateKind.PAGEBLOCK);
-		templateEN.setSchema(nSchemaService.findById(1));
+		templateEN.setSchema(nSchemaService.findOne(1));
 		templateService.save(templateEN);
 		
 		templateFR = templateService.translate(templateEN, langFR);

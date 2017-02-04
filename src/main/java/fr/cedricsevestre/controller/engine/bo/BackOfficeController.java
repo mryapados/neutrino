@@ -147,8 +147,15 @@ public class BackOfficeController extends AbtractController {
 			modelAndView.addObject("objectType", object.getSimpleName());
 			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
 			
-			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest);
+			//NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest);
 
+
+			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest);
+			
+			
+			
+			
+			
 			modelAndView.addObject("objectDatas", tDatas.getObjectDatas());
 			modelAndView.addObject("datas", tDatas.getObjectDatas().getContent());
 			modelAndView.addObject("fields", tDatas.getFields());
@@ -512,7 +519,7 @@ public class BackOfficeController extends AbtractController {
 			List albs = albumService.findAll(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId));
 			System.out.println("albs = " + albs.size());
 			System.out.println("koko");
-			Page palbs = albumService.findAll(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId), pageRequest, EntityGraphType.FETCH, "allJoins");
+			Page palbs = albumService.findAll(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId), pageRequest, EntityGraphType.FETCH, "Album.allJoins");
 			
 //			Page idPs = albumService.findAllFetched(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId), pageRequest);
 //			System.out.println("idPs = " + idPs.getSize());
@@ -523,7 +530,7 @@ public class BackOfficeController extends AbtractController {
 			
 			
 			
-			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest, IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId), EntityGraphType.FETCH, "allJoins");
+			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest, IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId));
 			
 			
 			

@@ -99,7 +99,7 @@ public abstract class BaseService<T> implements IBaseService<T>, IBOService<T>{
 	}
 	
 	@Override
-	public T findById(Integer id) throws ServiceException {
+	public T findOne(Integer id) throws ServiceException {
 		try {
 			return baseDao.findOne(id);
 		} catch (PersistenceException e) {
@@ -142,36 +142,79 @@ public abstract class BaseService<T> implements IBaseService<T>, IBOService<T>{
 			throw new ServiceException("Error findAll", e);
 		}
 	}
-	
 
-	
-	
-	
 	@Override
-	public List<T> findAll(Specification<T> spec, EntityGraphType entityGraphType, String entityGraphName) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<T> findAll(Specification<T> spec, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException {
+		try {
+			return baseDao.findAll(spec, entityGraphType, entityGraphName);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAll", e);
+		}
 	}
 
 	@Override
-	public Page<T> findAll(Specification<T> spec, Pageable pageable, EntityGraphType entityGraphType, String entityGraphName) {
-		return baseDao.findAll(spec, pageable, entityGraphType, entityGraphName);
+	public Page<T> findAll(Specification<T> spec, Pageable pageable, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException {
+		try {
+			return baseDao.findAll(spec, pageable, entityGraphType, entityGraphName);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAll", e);
+		}
 	}
 
 	@Override
-	public List<T> findAll(Specification<T> spec, Sort sort, EntityGraphType entityGraphType, String entityGraphName) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<T> findAll(Specification<T> spec, Sort sort, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException {
+		try {
+			return baseDao.findAll(spec, sort, entityGraphType, entityGraphName);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAll", e);
+		}
 	}
 
 	@Override
-	public T findOne(Specification<T> spec, EntityGraphType entityGraphType, String entityGraphName) {
-		// TODO Auto-generated method stub
-		return null;
+	public T findOne(Specification<T> spec, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException {
+		try {
+			return baseDao.findOne(spec, entityGraphType, entityGraphName);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAll", e);
+		}
 	}
 	
 	
-	
+
+	public List<T> findAll(EntityGraphType entityGraphType, String entityGraphName) throws ServiceException {
+		try {
+			return baseDao.findAll(entityGraphType, entityGraphName);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAll", e);
+		}
+	}
+
+	@Override
+	public Page<T> findAll(Pageable pageable, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException {
+		try {
+			return baseDao.findAll(pageable, entityGraphType, entityGraphName);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAll", e);
+		}
+	}
+
+	@Override
+	public List<T> findAll(Sort sort, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException {
+		try {
+			return baseDao.findAll(sort, entityGraphType, entityGraphName);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAll", e);
+		}
+	}
+
+	@Override
+	public T findOne(EntityGraphType entityGraphType, String entityGraphName) throws ServiceException {
+		try {
+			return baseDao.findOne(entityGraphType, entityGraphName);
+		} catch (PersistenceException e) {
+			throw new ServiceException("Error findAll", e);
+		}
+	}
 	
 	
 	

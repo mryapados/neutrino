@@ -1,4 +1,4 @@
-package fr.cedricsevestre.conf;
+package fr.cedricsevestre.repository;
 
 import java.io.Serializable;
 

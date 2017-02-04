@@ -12,6 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -21,6 +24,13 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Entity
 @Table(name = "file")
+@NamedEntityGraphs({
+	@NamedEntityGraph(
+		name = "File.allJoins", 
+		attributeNodes = { 
+			@NamedAttributeNode("tags")
+		})
+})
 public class File extends Translation {
 
 	private static final long serialVersionUID = 1L;

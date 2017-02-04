@@ -18,15 +18,20 @@ public interface IBaseService<T> {
 	void remove(T base) throws ServiceException;
 	void remove(Iterable<T> base) throws ServiceException;
 	void removeById(Integer id) throws ServiceException;
-	T findById(Integer id) throws ServiceException;
+	T findOne(Integer id) throws ServiceException;
+	
 	Iterable<T>findAll() throws ServiceException;
 	Page<T> findAll(Pageable pageable) throws ServiceException;
 	List<T> findAll(Specification<T> spec) throws ServiceException;
 	Page<T> findAll(Specification<T> spec, Pageable pageable) throws ServiceException;
-	
-    List<T> findAll(Specification<T> spec, EntityGraphType entityGraphType, String entityGraphName);
-    Page<T> findAll(Specification<T> spec, Pageable pageable, EntityGraphType entityGraphType, String entityGraphName);
-    List<T> findAll(Specification<T> spec, Sort sort, EntityGraphType entityGraphType, String entityGraphName);
-    T findOne(Specification<T> spec, EntityGraphType entityGraphType, String entityGraphName);
+    List<T> findAll(Specification<T> spec, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException;
+    Page<T> findAll(Specification<T> spec, Pageable pageable, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException;
+    List<T> findAll(Specification<T> spec, Sort sort, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException;
+    T findOne(Specification<T> spec, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException;
+    
+    List<T> findAll(EntityGraphType entityGraphType, String entityGraphName) throws ServiceException;
+    Page<T> findAll(Pageable pageable, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException;
+    List<T> findAll(Sort sort, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException;
+    T findOne(EntityGraphType entityGraphType, String entityGraphName) throws ServiceException;
 	
 }
