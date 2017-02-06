@@ -19,6 +19,11 @@ public interface IBaseService<T> {
 	void remove(Iterable<T> base) throws ServiceException;
 	void removeById(Integer id) throws ServiceException;
 	T findOne(Integer id) throws ServiceException;
+	long count() throws ServiceException;
+	
+	T findOne(Specification<T> spec) throws ServiceException;
+	long count(Specification<T> spec) throws ServiceException;
+	
 	
 	Iterable<T>findAll() throws ServiceException;
 	Page<T> findAll(Pageable pageable) throws ServiceException;

@@ -21,6 +21,7 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Entity
 @Table(name = "album")
+
 @NamedEntityGraphs({
 	@NamedEntityGraph(
 		name = "Album.allJoins", 
@@ -28,6 +29,7 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 			@NamedAttributeNode("files")
 		})
 })
+
 public class Album extends Translation {
 
 	private static final long serialVersionUID = 1L;

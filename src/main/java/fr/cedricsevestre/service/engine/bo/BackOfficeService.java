@@ -54,17 +54,11 @@ public class BackOfficeService { //implements IBackOfficeService{
 	
 	final private String ALLJOINS = ".allJoins";
 	
-	
 	@PersistenceContext
 	private EntityManager em;
-	  
-	
-	
-	
+
 	@Autowired
 	TemplateService templateService;
-	
-	
 	
 	@Autowired
 	ServiceLocator customServiceLocator;
@@ -391,7 +385,7 @@ public class BackOfficeService { //implements IBackOfficeService{
 		if (id == 0){
 			data = add(entity);
 		} else {
-			data = getData(entity, id, null, null, null);
+			data = getData(entity, id, null);
 			data.setId(null);
 			saveData(data);
 
@@ -451,12 +445,13 @@ public class BackOfficeService { //implements IBackOfficeService{
 		List<NField> nFields = getNField(fields);
 		
 		IdProvider origin = null; 
-		if (data != null) {
-			origin = getData(entity, data.getId(), null, null, null);
+		if (data != null && data.getId() != null) {
+			origin = getData(entity, data.getId(), null);
+			result = completeData(entity, result, nFields, origin);
 		}
 		
 		
-		result = completeData(entity, result, nFields, origin);
+		
 		result = persistData(entity, result);
 
 		persistReverse(data, entity, nFields, origin);
@@ -501,81 +496,32 @@ public class BackOfficeService { //implements IBackOfficeService{
 					Field clazzField = clazzFields.get(nField.getRevesibleJoin());
 					System.out.println("             Field found : " + (clazzField != null));
 					
-					List<?> list = (List<?>) object;
-//					List<?> originList = null;
-//					if (originObject != null) {
-//						originList = (List<?>) originObject;
-//						for (Object object2 : originList) {
-//							IdProvider mapped = (IdProvider) object2;
-//							System.out.println("             MAPPED " + mapped.getName() + " - " + mapped.getClass() + " - " + clazzField);
-//	
-//							Object mappedFieldValue = getFieldValue(mapped, clazzField);
-//							
-//							
-//							
-//							
-//							if (mappedFieldValue instanceof Iterable){
-//								// ManyToMany
-//								List<Object> mappedList = (List<Object>) getFieldValue(mapped, clazzField);
-//								System.out.println("             DEJA DANS LA LISTE : " + mappedList.contains(data));
-//								if (!mappedList.contains(data) && !list.contains(data)){
-//									System.out.println("             REMOVE : " + data.getId());
-//									
-////									mappedList.remove(data);
-////									setFieldValue(mapped, clazzField, mappedList);
-////									saveData(mapped);
-//								}
-//							} else {
-//								// ManyToOne
-//	
-//							}
-//						}
-//					}
-					
-					
-					
-					
-					
-					List<?> originList = (List<?>) originObject;
-					for (Object object2 : originList) {
-						IdProvider mapped = (IdProvider) object2;
-						System.out.println("             MAPPED " + mapped.getName() + " - " + mapped.getClass());
+					if (originObject != null){
+						List<?> originList = (List<?>) originObject;
+						for (Object object2 : originList) {
+							IdProvider mapped = (IdProvider) object2;
+							System.out.println("             MAPPED " + mapped.getName() + " - " + mapped.getClass());
 
-						Object mappedFieldValue = getFieldValue(mapped, clazzField);
-						if (mappedFieldValue instanceof Iterable){
-							// ManyToMany
-							List<Object> mappedList = (List<Object>) getFieldValue(mapped, clazzField);
-							System.out.println("             mappedList : " + mappedList.toString());
-							for (Object object3 : mappedList) {
-								System.out.println("             object3 : ");
+							Object mappedFieldValue = getFieldValue(mapped, clazzField);
+							if (mappedFieldValue instanceof Iterable){
+								// ManyToMany
+								List<Object> mappedList = (List<Object>) getFieldValue(mapped, clazzField);
+								System.out.println("             mappedList : " + mappedList.toString());
+								for (Object object3 : mappedList) {
+									System.out.println("             object3 : ");
+								}
+
+								//System.out.println("             DEJA DANS LA LISTE : " + mappedList.contains(data));
+
+
+							} else {
+								// ManyToOne
+			
 							}
-							
-							
-							
-							
-							
-							
-							
-							//System.out.println("             DEJA DANS LA LISTE : " + mappedList.contains(data));
-
-							
-							
-							
-							
-							
-							
-							
-							
-						} else {
-							// ManyToOne
-		
 						}
 					}
-					
-					
-					
 
-					
+					List<?> list = (List<?>) object;
 					for (Object object2 : list) {
 						IdProvider mapped = (IdProvider) object2;
 						System.out.println("             MAPPED " + mapped.getName() + " - " + mapped.getClass());

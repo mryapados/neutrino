@@ -114,6 +114,7 @@ public class BackOfficeController extends AbtractController {
 	public static final String BO_BLOCK_LIST_URL = "blocklist/";
 	public static final String BO_BLOCK_LIST = "@bo_ng_block_list";
 	
+	@Deprecated
 	public static final String BO_ASSIGN_LIST_URL = "assignlist/";
 	
 	private Folder getBOFolder() throws JspException{
@@ -514,28 +515,11 @@ public class BackOfficeController extends AbtractController {
 			Class<?> object = entityLocator.getEntity(assignType).getClass();
 			modelAndView.addObject("objectType", object.getSimpleName());
 			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
-			
-			System.out.println("kiki");
-			List albs = albumService.findAll(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId));
-			System.out.println("albs = " + albs.size());
-			System.out.println("koko");
-			Page palbs = albumService.findAll(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId), pageRequest, EntityGraphType.FETCH, "Album.allJoins");
-			
-			
+						
 			Specification<IdProvider> spec = IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId);
 			spec = Specifications.where(spec).or(IdProviderSpecification.isNotAffected(ownerField));
 			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest, spec);
-			
-			
-			
 
-			
-			
-			
-			
-			
-			
-			
 			modelAndView.addObject("objectDatas", tDatas.getObjectDatas());
 			modelAndView.addObject("datas", tDatas.getObjectDatas().getContent());
 			modelAndView.addObject("fields", tDatas.getFields());
@@ -664,43 +648,7 @@ public class BackOfficeController extends AbtractController {
 			System.out.println(idPs.size());
 			
 			
-			
-//			TranslationSpecification<Template> translationSpecification = new TranslationSpecification<>();
-//			List<Template> tps = templateService.findAll(translationSpecification.itsNameContains("roj"));
-//			System.out.println(tps.size());
-			
-			
-			
-			
-//			IdProviderSpecification<Album> idProviderSpecification = new IdProviderSpecification<>();
-//			List<Album> idPs = albumService.findAll(idProviderSpecification.isNotAffected("project"));
-//			System.out.println(idPs.size());
-
-			
-			
-			
-//			IdProviderSpecification<Album> idProviderSpecification = new IdProviderSpecification<>();
-//			List<Album> idPs = albumService.findAll(idProviderSpecification.itsFieldIsAffectedTo("project", 49));
-//			System.out.println(idPs.size());
-			
-
-//			IdProviderSpecification<Album> idProviderSpecification = new IdProviderSpecification<>();
-//			
-//			
-//			Specifications<Album> tttt = new Specifications<>();
-//			tttt.where(idProviderSpecification.itsFieldIsAffectedTo("project", 49))
-//			
-//			List<Album> idPs = albumService.findAll( );
-//			System.out.println(idPs.size());
-			
-			
-			
-//			Integer value = 1;
-//			List<Template> tps2 = templateService.test2("id", value);
-//			System.out.println(tps2.size());
-			
-
-			
+		
 			
 		} catch (ServiceException e1) {
 			// TODO Auto-generated catch block

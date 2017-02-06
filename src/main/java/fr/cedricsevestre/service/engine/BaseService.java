@@ -99,11 +99,38 @@ public abstract class BaseService<T> implements IBaseService<T>, IBOService<T>{
 	}
 	
 	@Override
+	public long count() throws ServiceException {
+		try {
+			return baseDao.count();
+		} catch (PersistenceException e) {
+			throw new ServiceException("erreur count Base", e);
+		}
+	}
+	
+	@Override
+	public long count(Specification<T> spec) throws ServiceException {
+		try {
+			return baseDao.count(spec);
+		} catch (PersistenceException e) {
+			throw new ServiceException("erreur count Base", e);
+		}
+	}
+	
+	@Override
+	public T findOne(Specification<T> spec) throws ServiceException {
+		try {
+			return baseDao.findOne(spec);
+		} catch (PersistenceException e) {
+			throw new ServiceException("erreur findOne Base", e);
+		}
+	}
+	
+	@Override
 	public T findOne(Integer id) throws ServiceException {
 		try {
 			return baseDao.findOne(id);
 		} catch (PersistenceException e) {
-			throw new ServiceException("erreur findById Base", e);
+			throw new ServiceException("erreur findOne Base", e);
 		}
 	}
 	
@@ -212,7 +239,7 @@ public abstract class BaseService<T> implements IBaseService<T>, IBOService<T>{
 		try {
 			return baseDao.findOne(entityGraphType, entityGraphName);
 		} catch (PersistenceException e) {
-			throw new ServiceException("Error findAll", e);
+			throw new ServiceException("Error findOne", e);
 		}
 	}
 	

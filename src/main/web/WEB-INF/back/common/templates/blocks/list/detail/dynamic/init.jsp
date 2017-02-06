@@ -2,6 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<c:set var="displayActionBtn" value="${false}" scope="request" />
+<c:set var="displayPagination" value="${true}" scope="request" />
+<c:set var="displayPageTools" value="${true}" scope="request" />
+<c:set var="linkTarget" value="_blank" scope="request" />
+
 <c:set var="pNumber" value="${objectDatas.number}" scope="request"/>
 <c:set var="pNumberOfElements" value="${objectDatas.numberOfElements}" scope="request"/>
 

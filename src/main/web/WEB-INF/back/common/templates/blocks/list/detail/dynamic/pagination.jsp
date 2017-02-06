@@ -42,7 +42,7 @@
 	%>
 	
 	<li class="paginate_button previous${active eq 1 ? ' disabled' : ''}">
-		<jsp:include page="url.jsp">
+		<jsp:include page="../url.jsp">
 			<jsp:param name="page" value="${active - 2}" />
 			<jsp:param name="expr" value="Previous" />
 		</jsp:include>
@@ -53,7 +53,7 @@
 			<li class="disabled"><a href="">...</a></li>
 		</c:if>
 		<li${page eq active ? ' class=\"active\"' : ''}>
-			<jsp:include page="url.jsp">
+			<jsp:include page="../url.jsp">
 				<jsp:param name="page" value="${page - 1}" />
 				<jsp:param name="expr" value="${page}" />
 			</jsp:include>
@@ -61,7 +61,7 @@
 		<c:set var="previous" value="${page}" />
 	</c:forEach>
 	<li class="paginate_button next${active eq last ? ' disabled' : ''}">
-		<jsp:include page="url.jsp">
+		<jsp:include page="../url.jsp">
 			<jsp:param name="page" value="${active}" />
 			<jsp:param name="expr" value="Next" />
 		</jsp:include>

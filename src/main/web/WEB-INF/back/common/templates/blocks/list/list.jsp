@@ -7,7 +7,8 @@
 
 <my:init test="${!initialized}"/>
 
-<jsp:include page="detail/init.jsp" />
+<c:set var="displayType" value="normal" scope="request" />
+<jsp:include page="detail/${displayType}/init.jsp" />
 <div class="list-object">
 	<h1>
 		<s:message code="bo.list" text="${objectType}" />
@@ -35,7 +36,7 @@
 					Showing <span class="label label-info">${pBegin + 1}</span> to <span class="label label-info">${pEnd}</span> of <span class="label label-info">${pTotalElements}</span> entries
 				</div>
 				<div class="panel-header">
-					<jsp:include page="detail/toolbar.jsp">
+					<jsp:include page="detail/${displayType}/toolbar.jsp">
 						<jsp:param value="top" name="position"/>
 					</jsp:include>
 				</div>
@@ -99,7 +100,7 @@
 				
 				
 				<div class="panel-footer">
-					<jsp:include page="detail/toolbar.jsp">
+					<jsp:include page="detail/${displayType}/toolbar.jsp">
 						<jsp:param value="bottom" name="position"/>
 					</jsp:include>
 				</div>
