@@ -17,23 +17,5 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Repository
 public interface ProjectDao extends TranslationDao<Project> {
-	@Override
-	@Query("SELECT e FROM Project e LEFT JOIN FETCH e.albums a")
-	List<Project> findAllFetched();
 
-	@Override
-	@Query(value = "SELECT e FROM Project e LEFT JOIN FETCH e.albums a", countQuery = "select count(e) FROM Project e")
-	Page<Project> findAllFetched(Pageable pageable);
-	
-//	@Override
-//	@Query("SELECT e FROM Project e LEFT JOIN FETCH e.albums a")
-//	List<Project> findAllFetched(Specification<Project> spec);
-//
-//	@Override
-//	@Query(value = "SELECT e FROM Project e LEFT JOIN FETCH e.albums a", countQuery = "select count(e) FROM Project e")
-//	Page<Project> findAllFetched(Specification<Project> spec, Pageable pageable);
-	
-	@Override
-	@Query(value = "SELECT e FROM Project e LEFT JOIN FETCH e.albums a WHERE e.id =:id")
-	Project findByIdFetched(@Param("id") Integer id);
 }

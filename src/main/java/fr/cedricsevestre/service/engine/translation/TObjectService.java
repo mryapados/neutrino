@@ -18,25 +18,5 @@ import fr.cedricsevestre.exception.ServiceException;
 @Scope(value = "singleton")
 public class TObjectService extends TranslationService<Translation>{
 	
-//	@Override
-//	public Translation findByIdFetched(Integer id) throws ServiceException {
-//		throw new ServiceException("Method unimplemented for TObjectService");
-//	}
-//	@Override
-//	public List<Translation> findAllFetched() throws ServiceException {
-//		throw new ServiceException("Method unimplemented for TObjectService");
-//	}
-//	@Override
-//	public Page<Translation> findAllFetched(Pageable pageable) throws ServiceException {
-//		throw new ServiceException("Method unimplemented for TObjectService");
-//	}
-//	@Override
-//	public List<Translation> findAllFetched(Specification<Translation> spec) throws ServiceException {
-//		throw new ServiceException("Method unimplemented for TObjectService");
-//	}
-//	@Override
-//	public Page<Translation> findAllFetched(Specification<Translation> spec, Pageable pageable) throws ServiceException {
-//		throw new ServiceException("Method unimplemented for TObjectService");
-//	}
 	
 }

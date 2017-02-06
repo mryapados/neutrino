@@ -9,11 +9,12 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
+import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.independant.objects.User;
 
 @Entity
 @DiscriminatorValue(value = "member")
-public class Member extends User {
+public class Member extends User implements IdProvider {
 
 	private static final long serialVersionUID = 1L;
 	

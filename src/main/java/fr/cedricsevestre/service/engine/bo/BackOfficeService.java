@@ -31,6 +31,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 import org.springframework.stereotype.Service;
 
@@ -111,7 +112,7 @@ public class BackOfficeService { //implements IBackOfficeService{
 	public Page<IdProvider> getDatas(Class<?> entity, Pageable pageable, Specification<IdProvider> spec) throws ServiceException{
 		return getDatas(entity, pageable, spec, EntityGraphType.FETCH, entity.getSimpleName() + ALLJOINS);
 	}
-	@SuppressWarnings("unchecked")
+
 	private Page<IdProvider> getDatas(Class<?> entity, Pageable pageable, Specification<IdProvider> spec, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException{
 
 		try {
@@ -151,7 +152,7 @@ public class BackOfficeService { //implements IBackOfficeService{
 			Class<?> clazz = Class.forName(service.getClass().getName());
 			Method findAll;
 			try {
-				findAll = clazz.getMethod("findAllFetched", params);
+				findAll = clazz.getMethod("findAll", params);
 				
 				Parameter parameters[] = findAll.getParameters();
 				String parameterString = "";
@@ -163,16 +164,17 @@ public class BackOfficeService { //implements IBackOfficeService{
 				
 				
 			} catch (NoSuchMethodException e) {
-				try {
-					logger.debug("getDatas -> findAllFetched Not found for " + entity.getSimpleName());
-					findAll = clazz.getMethod("findAll", params);
-				} catch (NoSuchMethodException e1) {
-					logger.error("getDatas -> NoSuchMethodException", e);
-					throw new ServiceException("Error getDatas", e);
-				}
+				logger.error("getDatas -> NoSuchMethodException", e);
+				throw new ServiceException("Error getDatas", e);
 			}
 			
-			return (Page<IdProvider>) findAll.invoke(service, paramsObj);
+			try {
+				return (Page<IdProvider>) findAll.invoke(service, paramsObj);
+			} catch (InvocationTargetException e) {
+				if (entityGraphName == null) throw e;
+				return getDatas(entity, pageable, spec, null, null);
+			}
+			
 			
 		} catch (ClassNotFoundException e) {
 			logger.error("getDatas -> ClassNotFoundException", e);
@@ -198,19 +200,21 @@ public class BackOfficeService { //implements IBackOfficeService{
 	public IdProvider getData(Class<?> entity, Integer id, Specification<IdProvider> spec) throws ServiceException{
 		return getData(entity, id, spec, EntityGraphType.FETCH, entity.getSimpleName() + ALLJOINS);
 	}
-	@SuppressWarnings("unchecked")
+
 	private IdProvider getData(Class<?> entity, Integer id, Specification<IdProvider> spec, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException{
 				
 		try {
 			List<Class<?>> classes = new ArrayList<>();
-			if (spec != null) classes.add(Specification.class);
+			classes.add(Specification.class);
 			if (entityGraphType != null) classes.add(EntityGraphType.class);
 			if (entityGraphName != null) classes.add(String.class);
 			Class<?> params[] = new Class<?>[classes.size()];
 			classes.toArray(params);
 			
 			List<Object> objects = new ArrayList<>();
-			if (spec != null) objects.add(spec);
+			Specification<IdProvider> specId = Specifications.where(spec).and(IdProviderSpecification.idEqualsTo(id));
+			
+			objects.add(specId);
 			if (entityGraphType != null) objects.add(entityGraphType);
 			if (entityGraphName != null) objects.add(entityGraphName);
 			Object paramsObj[] = new Object[objects.size()];
@@ -230,20 +234,19 @@ public class BackOfficeService { //implements IBackOfficeService{
 			Class<?> clazz = service.getClass();
 			Method findOne;
 			try {
-				findOne = clazz.getMethod("findByIdFetched", params);
+				findOne = clazz.getMethod("findOne", params);
 			} catch (NoSuchMethodException e) {
-				try {
-					logger.debug("getData -> findByIdFetched Not found for " + entity.getSimpleName());
-					findOne = clazz.getMethod("findOne", params);
-				} catch (NoSuchMethodException e1) {
-					logger.error("getData -> NoSuchMethodException", e);
-					throw new ServiceException("Error getData", e);
-				}
+				logger.error("getData -> NoSuchMethodException", e);
+				throw new ServiceException("Error getData", e);
 			}
-			return (IdProvider) findOne.invoke(service, paramsObj);
 			
+			try {
+				return (IdProvider) findOne.invoke(service, paramsObj);
+			} catch (InvocationTargetException e) {
+				if (entityGraphName == null) throw e;
+				return getData(entity, id, spec, null, null);
+			}
 			
-
 		} catch (ClassNotFoundException e) {
 			logger.error("getData -> ClassNotFoundException", e);
 			throw new ServiceException("Error getList", e);

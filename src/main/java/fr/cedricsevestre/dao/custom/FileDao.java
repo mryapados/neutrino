@@ -17,23 +17,5 @@ import fr.cedricsevestre.entity.engine.IdProvider;
 @Repository
 public interface FileDao extends TranslationDao<File> {
 	
-	@Override
-	@Query("SELECT e FROM File e LEFT JOIN FETCH e.tags")
-	List<File> findAllFetched();
-	
-	@Override
-	@Query(value = "SELECT e FROM File e LEFT JOIN FETCH e.tags a", countQuery = "select count(e) FROM File e")
-	Page<File> findAllFetched(Pageable pageable);
-	
-//	@Override
-//	@Query("SELECT e FROM File e LEFT JOIN FETCH e.tags")
-//	List<File> findAllFetched(Specification<File> spec);
-//	
-//	@Override
-//	@Query(value = "SELECT e FROM File e LEFT JOIN FETCH e.tags a", countQuery = "select count(e) FROM File e")
-//	Page<File> findAllFetched(Specification<File> spec, Pageable pageable);
-	
-	@Override
-	@Query(value = "SELECT e FROM File e LEFT JOIN FETCH e.tags a WHERE e.id =:id")
-	File findByIdFetched(@Param("id") Integer id);
+
 }

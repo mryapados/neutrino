@@ -521,16 +521,10 @@ public class BackOfficeController extends AbtractController {
 			System.out.println("koko");
 			Page palbs = albumService.findAll(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId), pageRequest, EntityGraphType.FETCH, "Album.allJoins");
 			
-//			Page idPs = albumService.findAllFetched(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId), pageRequest);
-//			System.out.println("idPs = " + idPs.getSize());
 			
-//			Specification<Object> specification = Specifications.where(IdProviderSpecification.isNotAffected(ownerField)).or(IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId));
-//			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, (Specification) specification, pageRequest);
-
-			
-			
-			
-			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest, IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId));
+			Specification<IdProvider> spec = IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId);
+			spec = Specifications.where(spec).or(IdProviderSpecification.isNotAffected(ownerField));
+			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest, spec);
 			
 			
 			

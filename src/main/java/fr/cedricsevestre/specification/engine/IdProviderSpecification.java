@@ -12,6 +12,15 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 
 public class IdProviderSpecification<T extends IdProvider>{
 
+	public static <T> Specification<T> idEqualsTo(Integer id) {
+		return new Specification<T>() {
+			public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
+				return builder.equal(root.get("id"), id);
+			}
+		};
+	}
+	
+	
 	public static <T> Specification<T> itsNameContains(String searchValue) {
 		return new Specification<T>() {
 			public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {

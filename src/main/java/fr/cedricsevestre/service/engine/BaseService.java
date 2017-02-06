@@ -180,7 +180,7 @@ public abstract class BaseService<T> implements IBaseService<T>, IBOService<T>{
 	}
 	
 	
-
+	@Override
 	public List<T> findAll(EntityGraphType entityGraphType, String entityGraphName) throws ServiceException {
 		try {
 			return baseDao.findAll(entityGraphType, entityGraphName);
@@ -217,66 +217,6 @@ public abstract class BaseService<T> implements IBaseService<T>, IBOService<T>{
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	@Override
-	public List<T> findAllFetched() throws ServiceException {
-		try {
-			return baseDao.findAllFetched();
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findAllFetched", e);
-		}
-	}
 
-	@Override
-	public Page<T> findAllFetched(Pageable pageable) throws ServiceException {
-		try {
-			return baseDao.findAllFetched(pageable);
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findAllFetched", e);
-		}
-	}
-	
-//	@Override
-//	public List<T> findAllFetched(Specification<T> spec) throws ServiceException {
-//		try {
-//			return baseDao.findAllFetched(spec);
-//		} catch (PersistenceException e) {
-//			throw new ServiceException("Error findAllFetched", e);
-//		}
-//	}
-//
-//	@Override
-//	public Page<T> findAllFetched(Specification<T> spec, Pageable pageable) throws ServiceException {
-//		try {
-//			return baseDao.findAllFetched(spec, pageable);
-//		} catch (PersistenceException e) {
-//			throw new ServiceException("Error findAllFetched", e);
-//		}
-//	}
-	
-	@Override
-	public T findByIdFetched(Integer id) throws ServiceException {
-		try {
-			return baseDao.findByIdFetched(id);
-		} catch (PersistenceException e) {
-			throw new ServiceException("Error findByIdFetched", e);
-		}
-	}
-	
-
-	
-
-	
-	
 
 }

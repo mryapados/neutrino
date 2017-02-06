@@ -22,39 +22,5 @@ import fr.cedricsevestre.repository.CustomRepositoryFactoryBean;
 @NoRepositoryBean
 public interface BaseDao<T> extends CustomRepository<T, Integer>, JpaSpecificationExecutor<T> {
 	
-//	List<T> findAllFetched();
-//	Page<T> findAllFetched(Pageable pageable);
-//	List<T> findAllFetched(Specification<T> spec);
-//	Page<T> findAllFetched(Specification<T> spec, Pageable pageable);
-//	T findByIdFetched(@Param("id") Integer id);
-	
-//	  T findOne(Long id);
-//	  Iterable<T> findAll();
-//	  Iterable<T> findAll(Sort sort);
-//	  Page<T> findAll(Pageable pageable);
-	
-	
-//	@Query(nativeQuery = true, value = "SELECT * FROM template INNER JOIN translation ON template.id = translation.id")
-//	List<T> test();
-//
-//	@Query(nativeQuery = true, value = "SELECT * FROM template INNER JOIN translation ON template.id = translation.id WHERE template.:field = :value")
-//	List<T> test2(@Param("field") String field, @Param("value") Integer value);
-//	
-//	
-	
-	@Query("SELECT e FROM #{#entityName} e")
-	List<T> findAllFetched();
-	
-	@Query(value = "SELECT e FROM #{#entityName} e")
-	Page<T> findAllFetched(Pageable pageable);
-	
-//	@Query("SELECT e FROM #{#entityName} e")
-//	List<T> findAllFetched(Specification<T> spec);
-//	
-//	@Query(value = "SELECT e FROM #{#entityName} e")
-//	Page<T> findAllFetched(Specification<T> spec, Pageable pageable);
-	
-	@Query(value = "SELECT e FROM #{#entityName} e WHERE e.id =:id")
-	T findByIdFetched(@Param("id") Integer id);
 	
 }
