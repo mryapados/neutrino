@@ -10,21 +10,7 @@
 <c:set var="displayType" value="dynamic" scope="request" />
 <jsp:include page="detail/${displayType}/init.jsp" />
 <div class="list-object">
-	<c:if test="${not empty error}">
-		<div class="alert alert-danger alert-dismissable">
-			<strong><s:message code="bo.error.remove" text="Remove error : " /></strong><br />
-			${error.message}
-		</div>
-	</c:if>
-	<c:if test="${not empty success && success}">
-		<div class="alert alert-success alert-dismissable">
-			<strong><s:message code="bo.success.remove" text="The item has been removed." /></strong><br />
-			${error.message}
-		</div>
-	</c:if>
-		
-
-
+	<p>values = {{values}}</p>
 	Showing <span class="label label-info">${pBegin + 1}</span> to <span class="label label-info">${pEnd}</span> of <span class="label label-info">${pTotalElements}</span> entries
 
 	<div>
@@ -51,7 +37,7 @@
 				<c:forEach var="object" items="${datas}" varStatus="status">
 					<tr>
 						<td>
-							<input type="checkbox" name="id" value="${object.id}"/>
+							<input type="checkbox" name="id" value="${object.id}" ng-checked="true"/>
 						</td>
 						<td class="text-center">
 							<c:url var="url" value="/bo/edit/" scope="request">

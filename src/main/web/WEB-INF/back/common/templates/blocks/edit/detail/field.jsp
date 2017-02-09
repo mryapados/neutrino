@@ -126,11 +126,28 @@
 	</c:when>
 	<c:when test="${finalFieldType eq 'COLLECTION'}">
 		
-		<data-ui-assignment field="${finalField.name}">
-			<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="zoubida" />
-			zoubida = {{zoubida}}
+		<div ng-controller="Testage">
+		
+			<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="abc" />
+			<p>abc = {{abc}}</p>
+			<data-ui-assignment type="Album" values="abc">
+				<p>BONJOUR</p>
+				<p>abc = {{abc}}</p>
+			</data-ui-assignment>
 
-		</data-ui-assignment>
+		</div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		<c:set var="collection" value="${finalObject}" />
 		<c:set var="size" value="${fn:length(collection)}" />
 		<c:if test="${size > 0}">

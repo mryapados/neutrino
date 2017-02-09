@@ -42,10 +42,7 @@
 	%>
 	
 	<li class="paginate_button previous${active eq 1 ? ' disabled' : ''}">
-		<jsp:include page="../url.jsp">
-			<jsp:param name="page" value="${active - 2}" />
-			<jsp:param name="expr" value="Previous" />
-		</jsp:include>
+		<a href="#" data-ng-click="updateUrlPageablePage(${active - 2})">Previous</a>
 	</li>
 	<c:forEach var="page" items="${resultSet}" varStatus="status">
 		<c:set var="classActive" value="" />
@@ -53,17 +50,11 @@
 			<li class="disabled"><a href="">...</a></li>
 		</c:if>
 		<li${page eq active ? ' class=\"active\"' : ''}>
-			<jsp:include page="../url.jsp">
-				<jsp:param name="page" value="${page - 1}" />
-				<jsp:param name="expr" value="${page}" />
-			</jsp:include>
+			<a href="#" data-ng-click="updateUrlPageablePage(${page - 1})">${page}</a>
 		</li>
 		<c:set var="previous" value="${page}" />
 	</c:forEach>
 	<li class="paginate_button next${active eq last ? ' disabled' : ''}">
-		<jsp:include page="../url.jsp">
-			<jsp:param name="page" value="${active}" />
-			<jsp:param name="expr" value="Next" />
-		</jsp:include>
+		<a href="#" data-ng-click="updateUrlPageablePage(${active})">Next</a>
 	</li>
 </ul>

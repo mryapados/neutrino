@@ -3,7 +3,6 @@
 <%@ taglib prefix="my" uri="/WEB-INF/taglibs/neutrino.tld" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 
-
 <c:set var="position" value="${param.position}"/>
 <div class="btn-toolbar" role="toolbar">
 
@@ -14,30 +13,11 @@
 			      	<strong><c:out value="${pSize}"/></strong> by page <span class="caret"></span>
 			    </button>
 				<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="${position}-page-size-btn">
-					<li>
-						<jsp:include page="../url.jsp">
-							<jsp:param name="size" value="10" />
-							<jsp:param name="expr" value="10" />
-						</jsp:include>
-					</li>
-					<li>
-						<jsp:include page="../url.jsp">
-							<jsp:param name="size" value="25" />
-							<jsp:param name="expr" value="25" />
-						</jsp:include>
-					</li>
-					<li>
-						<jsp:include page="../url.jsp">
-							<jsp:param name="size" value="50" />
-							<jsp:param name="expr" value="50" />
-						</jsp:include>
-					</li>
-					<li>
-						<jsp:include page="../url.jsp">
-							<jsp:param name="size" value="100" />
-							<jsp:param name="expr" value="100" />
-						</jsp:include>
-					</li>
+					<li><a href="#" data-ng-click="updateUrlPageableSize(5)">5</a></li>
+					<li><a href="#" data-ng-click="updateUrlPageableSize(10)">10</a></li>
+					<li><a href="#" data-ng-click="updateUrlPageableSize(25)">25</a></li>
+					<li><a href="#" data-ng-click="updateUrlPageableSize(50)">50</a></li>
+					<li><a href="#" data-ng-click="updateUrlPageableSize(100)">100</a></li>
 				</ul>
 		    </div>
 		    
@@ -53,29 +33,16 @@
 							<s:message var="defaultMessage" code="bo.field.${field.name}" text="${field.name}" />
 							<s:message var="fieldName" code="bo.${objectType}.field.${field.name}" text="${defaultMessage}" />
 							<li>
-								<jsp:include page="../url.jsp">
-									<jsp:param name="sort" value="${field.name},${pFirstSortDirection}" />
-									<jsp:param name="expr" value="${fieldName}" />
-								</jsp:include>
+								<a href="#" data-ng-click="updateUrlPageableSort('${field.name},${pFirstSortDirection}')">${fieldName}</a>
 							</li>
 						</c:if>
 					</c:forEach>
 				</ul>
 		    </div>
-	
-			<jsp:include page="../url.jsp">
-				<jsp:param name="sort" value="${pFirstSortName},ASC" />
-				<jsp:param name="expr" value="ASC" />
-				<jsp:param name="css" value="btn btn-default${pFirstSortDirection eq 'ASC' ? ' active' : ''}" />
-				<jsp:param name="role" value="button" />
-			</jsp:include>
-			<jsp:include page="../url.jsp">
-				<jsp:param name="sort" value="${pFirstSortName},DESC" />
-				<jsp:param name="expr" value="DESC" />
-				<jsp:param name="css" value="btn btn-default${pFirstSortDirection eq 'DESC' ? ' active' : ''}" />
-				<jsp:param name="role" value="button" />
-			</jsp:include>
-	
+			
+			<a href="#" class="btn btn-default${pFirstSortDirection eq 'ASC' ? ' active' : ''}" data-ng-click="updateUrlPageableSort('${pFirstSortName},ASC')">ASC</a>
+			<a href="#" class="btn btn-default${pFirstSortDirection eq 'DESC' ? ' active' : ''}" data-ng-click="updateUrlPageableSort('${pFirstSortName},DESC')">DESC</a>
+
 		</div>
 	</c:if>
 	<c:if test="${not empty displayActionBtn &&  displayActionBtn}">
