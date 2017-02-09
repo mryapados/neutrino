@@ -127,10 +127,10 @@
 	<c:when test="${finalFieldType eq 'COLLECTION'}">
 		
 		<div ng-controller="Testage">
-		
+			rrrrrrrrr ${finalParentObject.objectType} ${finalField.name} ${finalField.ofType} 
 			<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="abc" />
 			<p>abc = {{abc}}</p>
-			<data-ui-assignment type="Album" values="abc">
+			<data-ui-assignment type="${finalField.ofClassName}" values="abc">
 				<p>BONJOUR</p>
 				<p>abc = {{abc}}</p>
 			</data-ui-assignment>

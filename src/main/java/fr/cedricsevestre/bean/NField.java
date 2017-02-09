@@ -15,6 +15,7 @@ public class NField implements Serializable {
 	private ValueType ofType;
 	private String name;
 	private String className;
+	private String ofClassName;
 	private boolean inList;
 	private boolean inView;
 	private boolean editable;
@@ -30,7 +31,7 @@ public class NField implements Serializable {
 	private String revesibleJoin;
 	
 	
-	public NField(Field field, ValueType type, ValueType ofType, String name, String className, boolean inList, boolean inView, boolean editable, SortType sortBy, int sortPriority, boolean defaultField, int displayOrder, String tabName, String groupName, List<String> enumDatas) {
+	public NField(Field field, ValueType type, ValueType ofType, String name, String className, String ofClassName, boolean inList, boolean inView, boolean editable, SortType sortBy, int sortPriority, boolean defaultField, int displayOrder, String tabName, String groupName, List<String> enumDatas) {
 		super();
 		
 		this.field = field;
@@ -38,6 +39,7 @@ public class NField implements Serializable {
 		this.ofType = ofType;
 		this.name = name;
 		this.className = className;
+		this.ofClassName = ofClassName;
 		this.inList = inList;
 		this.inView = inView;
 		this.editable = editable;
@@ -75,6 +77,12 @@ public class NField implements Serializable {
 	}
 	public void setClassName(String className) {
 		this.className = className;
+	}
+	public String getOfClassName() {
+		return ofClassName;
+	}
+	public void setOfClassName(String ofClassName) {
+		this.ofClassName = ofClassName;
 	}
 	public boolean isInList() {
 		return inList;

@@ -267,7 +267,20 @@ public class BackOfficeService { //implements IBackOfficeService{
 				enumDatas.add(e.name());
 			}
 		}
-		NField nField = new NField(field, nType.type(), nType.ofType(), field.getName(), field.getType().getSimpleName(), nType.inList(), nType.inView(), nType.editable(), nType.sortBy(), nType.sortPriority(), nType.defaultField(), nType.displayOrder(), nType.tabName(), nType.groupName(), enumDatas);
+
+		String className = null;
+		String ofClassName = null;
+		
+	    Type type = field.getGenericType();
+	    if (type instanceof ParameterizedType) {
+	        ParameterizedType pType = (ParameterizedType)type;
+	        className = ((Class<?>) pType.getRawType()).getSimpleName();
+	        ofClassName = ((Class<?>) pType.getActualTypeArguments()[0]).getSimpleName();
+	    } else {
+	    	className = field.getType().getSimpleName();
+	    }
+	    
+		NField nField = new NField(field, nType.type(), nType.ofType(), field.getName(), className, ofClassName, nType.inList(), nType.inView(), nType.editable(), nType.sortBy(), nType.sortPriority(), nType.defaultField(), nType.displayOrder(), nType.tabName(), nType.groupName(), enumDatas);
 	
 		String revesibleJoin = null;
 		if (revesibleJoin == null){
