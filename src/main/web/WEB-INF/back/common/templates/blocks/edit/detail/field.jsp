@@ -115,9 +115,9 @@
 			</c:when>
 			<c:when test="${finalObject.objectType eq 'Folder'}">
 				<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a>
-				<form:input cssClass="form-control" type="text" path="${finalField.name}"/>
-				<data-ui-assignment field="${finalField.name}"/>
-				
+
+				<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="ffff" assign="Folder"/>
+		
 			</c:when>
 			<c:otherwise>
 				<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="object"/></a>
@@ -126,25 +126,26 @@
 	</c:when>
 	<c:when test="${finalFieldType eq 'COLLECTION'}">
 		
-		<div ng-controller="Testage">
-			rrrrrrrrr ${finalParentObject.objectType} ${finalField.name} ${finalField.ofType} 
-			<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="abc" />
-			<p>abc = {{abc}}</p>
-			<data-ui-assignment type="${finalField.ofClassName}" values="abc">
-				<p>BONJOUR</p>
-				<p>abc = {{abc}}</p>
-			</data-ui-assignment>
+<!-- 		<div ng-controller="Testage"> -->
+<%-- 			<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="abc"/> --%>
+<!-- 			<p>abc = {{abc}}</p> -->
+<%-- 			<data-ui-assignment type="${finalField.ofClassName}" values="abc"> --%>
+<!-- 				<p>BONJOUR</p> -->
+<!-- 				<p>abc = {{abc}}</p> -->
+<!-- 			</data-ui-assignment> -->
 
+<!-- 		</div> -->
+		<div data-ng-controller="Testage">
+		
+		
+			<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="abc" assign="${finalField.ofClassName}"/>
+			ABCCCCCCCCCCCC = {{abc}}	
+			
+			
+			
+			<a href="#" data-ng-click="test(abc)">TTTTTTTTTTTTT</a>
+		
 		</div>
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		
 		
