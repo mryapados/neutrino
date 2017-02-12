@@ -1,9 +1,12 @@
 var fModule = angular.module('frontApp');
 
-fModule.controller('UiAssignmentCtrl', function ($scope, $uibModal, $frontPath) {
+fModule.controller('UiAssignmentCtrl', function ($scope, $uibModal, $frontPath, idProvidersFilter) {
 	console.log('in UiAssignmentCtrl');
 	
 	$scope.open = function(size, values) {
+		
+		
+		
 		var instance = $uibModal.open({
 			templateUrl: $frontPath.URL_TEMPLATE_JS + 'ui-assignement-modal.html',
 			controller: 'UiAssignmentModalCtrl',
@@ -25,7 +28,11 @@ fModule.controller('UiAssignmentCtrl', function ($scope, $uibModal, $frontPath) 
 		});
 		instance.result.then(function(idProviders) {
 			console.log(idProviders);
-			$scope.$parent.abc = idProviders;
+			//$scope.$parent.abc = idProviders;
+			
+			//idProviders = [{"type":"Album","id":253},{"type":"Album","id":278}];
+			console.log(idProviders);
+			$scope.$parent[values] = idProvidersFilter(idProvidersFilter(idProviders), 'toArray');
 		}, function () {
 	        console.log('Modal dismissed at: ' + new Date());
 	    });
@@ -120,6 +127,6 @@ fModule.controller('Testage', function ($scope) {
 	
 	$scope.test = function(test) {
 		console.log(test);
-		$scope.abc = test + [{"type":"Album","id":253},{"type":" Album","id":255}];
+		$scope.abc = [{"type":"Album","id":253},{"type":" Album","id":255}];
 	};
 });
