@@ -12,8 +12,10 @@
 			scope:true,
 			link: function(scope, element, attrs){
 				scope.type = attrs['type'];
+				scope.field = attrs['field'];
+				scope.id = attrs['id'];
 				scope.model = attrs['model'];
-				scope.many = (attrs['many'] == 'true');
+				scope.disablePreChecked = (attrs['disablePreChecked'] == 'true');
 	        },
 		};
 	});
@@ -24,11 +26,17 @@
 			require : '?ngModel',
 		    controller: function ( $scope, $element, $attrs ) {
 		        if ($attrs.assign){
-		        	var many = false;
-		        	if ($attrs.many){
-		        		many = $attrs.many;
+		        	var disablePreChecked = false;
+		        	if ($attrs.disablePreChecked){
+		        		disablePreChecked = $attrs.disablePreChecked;
 		        	}
-			        var el = $compile('<data-ui-assignment type="' + $attrs.assign + '" model="' + $attrs.ngModel + '" many="' + many + '"/></data-ui-assignment>')( $scope );
+		        	
+		        	var res = $attrs.assign.split('_');
+		        	var type = res[0];
+		        	var field = res[1];
+		        	var id = res[2];
+		        	
+			        var el = $compile('<data-ui-assignment type="' + type + '" field="' + field + '" id="' + id + '" model="' + $attrs.ngModel + '" disable-pre-checked="' + disablePreChecked + '"/></data-ui-assignment>')( $scope );
 			        $element.parent().append(el);
 		        }
 		    },

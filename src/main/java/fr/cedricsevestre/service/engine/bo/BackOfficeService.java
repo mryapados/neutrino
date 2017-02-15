@@ -267,37 +267,48 @@ public class BackOfficeService { //implements IBackOfficeService{
 				enumDatas.add(e.name());
 			}
 		}
-
+		Class<?> clazz = null;
 		String className = null;
 		String ofClassName = null;
 		
 	    Type type = field.getGenericType();
 	    if (type instanceof ParameterizedType) {
 	        ParameterizedType pType = (ParameterizedType)type;
-	        className = ((Class<?>) pType.getRawType()).getSimpleName();
+	        clazz = ((Class<?>) pType.getRawType());
+	        className = clazz.getSimpleName();
 	        ofClassName = ((Class<?>) pType.getActualTypeArguments()[0]).getSimpleName();
 	    } else {
-	    	className = field.getType().getSimpleName();
+	    	clazz = ((Class<?>) field.getType());
+	    	className = clazz.getSimpleName();
 	    }
 	    
-		NField nField = new NField(field, nType.type(), nType.ofType(), field.getName(), className, ofClassName, nType.inList(), nType.inView(), nType.editable(), nType.sortBy(), nType.sortPriority(), nType.defaultField(), nType.displayOrder(), nType.tabName(), nType.groupName(), enumDatas);
+		NField nField = new NField(field, nType.type(), nType.ofType(), field.getName(), clazz, className, ofClassName, nType.inList(), nType.inView(), nType.editable(), nType.sortBy(), nType.sortPriority(), nType.defaultField(), nType.displayOrder(), nType.tabName(), nType.groupName(), enumDatas);
 	
-		String revesibleJoin = null;
-		if (revesibleJoin == null){
-			OneToMany oneToAnyAnnotation = field.getAnnotation(OneToMany.class);
-			if (oneToAnyAnnotation != null) revesibleJoin = oneToAnyAnnotation.mappedBy();
+		String reverseJoin = null;
+		Boolean reverseIsCollection = null;
+		
+		if (reverseJoin == null){
+			OneToMany oneToManyAnnotation = field.getAnnotation(OneToMany.class);
+			if (oneToManyAnnotation != null) {
+				reverseJoin = oneToManyAnnotation.mappedBy();
+				reverseIsCollection = false;
+			}
 		}
-		if (revesibleJoin == null){
-			ManyToMany manyToAnyAnnotation = field.getAnnotation(ManyToMany.class);
-			if (manyToAnyAnnotation != null) revesibleJoin = manyToAnyAnnotation.mappedBy();
+		if (reverseJoin == null){
+			ManyToMany manyToManyAnnotation = field.getAnnotation(ManyToMany.class);
+			if (manyToManyAnnotation != null) {
+				reverseJoin = manyToManyAnnotation.mappedBy();
+				reverseIsCollection = true;
+			}
 		}
-		if (revesibleJoin != null && revesibleJoin.equals("")) revesibleJoin = null;
-		nField.setRevesibleJoin(revesibleJoin);
-
+		if (reverseJoin != null && reverseJoin.equals("")) reverseJoin = null;
+		nField.setReverseJoin(reverseJoin);
+		nField.setReverseIsCollection(reverseIsCollection);
+		
 		return nField;
 	}
 	
-	private List<NField> getNField(List<Field> fields) throws ServiceException{
+	private List<NField> getNFields(List<Field> fields) throws ServiceException {
 		List<NField> nfFields = new ArrayList<>();
 		for (Field field : fields) {
 			BOField nType = field.getAnnotation(BOField.class);
@@ -307,6 +318,22 @@ public class BackOfficeService { //implements IBackOfficeService{
 		}
 		return nfFields;
 	}
+	
+
+	public NField getNField(Class<?> entity, String fieldName)throws ServiceException {
+		Map<String, Field> mapFields = getMapFields(entity);
+		Field field = mapFields.get(fieldName);
+		if (field == null) return null;
+		BOField nType = field.getAnnotation(BOField.class);
+		if (nType != null){
+			return mkNFieldFromBOField(field, nType);
+		}
+		return null;
+	}
+	
+
+	
+	
 	
 	//Retourne une liste de NField par GroupName par TabName
 	private Map<String, Map<String, List<NField>>> getMapNField(List<Field> fields) throws ServiceException{
@@ -337,7 +364,7 @@ public class BackOfficeService { //implements IBackOfficeService{
 
 	public NDatas<IdProvider> findAll(Class<?> entity, Pageable pageable, Specification<IdProvider> spec) throws ServiceException{		
 		List<Field> fields = getFields(entity);
-		List<NField> nFields = getNField(fields);
+		List<NField> nFields = getNFields(fields);
 		pageable = transformPageRequest(nFields, pageable);
 		return new NDatas<IdProvider>(nFields, getDatas(entity, pageable, spec, EntityGraphType.FETCH, entity.getSimpleName() + ALLJOINS));
 	}
@@ -455,7 +482,7 @@ public class BackOfficeService { //implements IBackOfficeService{
 		Class<?> entity = data.getClass();
 
 		List<Field> fields = getFields(entity);
-		List<NField> nFields = getNField(fields);
+		List<NField> nFields = getNFields(fields);
 		
 		IdProvider origin = null; 
 		if (data != null && data.getId() != null) {
@@ -491,7 +518,7 @@ public class BackOfficeService { //implements IBackOfficeService{
 	
 	public void persistReverse(IdProvider data, Class<?> classObject, List<NField> nFields, IdProvider origin) throws ServiceException{
 		for (NField nField : nFields) {
-			if (nField.getRevesibleJoin() != null){
+			if (nField.getReverseJoin() != null){
 				Object object = getFieldValue(data, nField.getField());
 				if (object instanceof Iterable){
 					Object originObject = null;
@@ -501,12 +528,12 @@ public class BackOfficeService { //implements IBackOfficeService{
 					Class<?> clazz = (Class<?>) findGenericTypeOfField(nField.getField())[0];
 					Map<String, Field> clazzFields = getMapFields(clazz);
 					System.out.println("             clazz " + clazz);
-					System.out.println("             Field : " + nField.getRevesibleJoin());
+					System.out.println("             Field : " + nField.getReverseJoin());
 					for (Map.Entry<String, Field> e : clazzFields.entrySet()) {
 						Field field = e.getValue();
 						System.out.println("             	 Field : " + field.getName());
 					}
-					Field clazzField = clazzFields.get(nField.getRevesibleJoin());
+					Field clazzField = clazzFields.get(nField.getReverseJoin());
 					System.out.println("             Field found : " + (clazzField != null));
 					
 					if (originObject != null){
@@ -553,7 +580,7 @@ public class BackOfficeService { //implements IBackOfficeService{
 							// ManyToOne
 							boolean different = !mappedFieldValue.equals(data);
 							if (mappedFieldValue != null && different){
-								throw new ServiceException("Can't override field value on " + nField.getRevesibleJoin());
+								throw new ServiceException("Can't override field value on " + nField.getReverseJoin());
 							}
 							if (mappedFieldValue != null && different){
 								setFieldValue(mapped, clazzField, data);

@@ -14,6 +14,7 @@ public class NField implements Serializable {
 	private ValueType type;
 	private ValueType ofType;
 	private String name;
+	private Class<?> clazz;
 	private String className;
 	private String ofClassName;
 	private boolean inList;
@@ -28,15 +29,16 @@ public class NField implements Serializable {
 	private List<String> enumDatas;
 	private Field field;
 	
-	private String revesibleJoin;
+	private String reverseJoin;
+	private Boolean reverseIsCollection;
 	
-	
-	public NField(Field field, ValueType type, ValueType ofType, String name, String className, String ofClassName, boolean inList, boolean inView, boolean editable, SortType sortBy, int sortPriority, boolean defaultField, int displayOrder, String tabName, String groupName, List<String> enumDatas) {
+	public NField(Field field, ValueType type, ValueType ofType, String name, Class<?> clazz, String className, String ofClassName, boolean inList, boolean inView, boolean editable, SortType sortBy, int sortPriority, boolean defaultField, int displayOrder, String tabName, String groupName, List<String> enumDatas) {
 		super();
 		
 		this.field = field;
 		this.type = type;
 		this.ofType = ofType;
+		this.clazz = clazz;
 		this.name = name;
 		this.className = className;
 		this.ofClassName = ofClassName;
@@ -51,7 +53,8 @@ public class NField implements Serializable {
 		this.groupName = groupName;
 		this.enumDatas = enumDatas;
 
-		this.revesibleJoin = null;
+		this.reverseJoin = null;
+		this.reverseIsCollection = true;
 	}
 	
 	public ValueType getType() {
@@ -71,6 +74,12 @@ public class NField implements Serializable {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public Class<?> getClazz() {
+		return clazz;
+	}
+	public void setClazz(Class<?> clazz) {
+		this.clazz = clazz;
 	}
 	public String getClassName() {
 		return className;
@@ -144,12 +153,21 @@ public class NField implements Serializable {
 	public void setEnumDatas(List<String> enumDatas) {
 		this.enumDatas = enumDatas;
 	}
-	public String getRevesibleJoin() {
-		return revesibleJoin;
+	public String getReverseJoin() {
+		return reverseJoin;
 	}
-	public void setRevesibleJoin(String revesibleJoin) {
-		this.revesibleJoin = revesibleJoin;
+	public void setReverseJoin(String reverseJoin) {
+		this.reverseJoin = reverseJoin;
 	}
+
+	public Boolean getReverseIsCollection() {
+		return reverseIsCollection;
+	}
+
+	public void setReverseIsCollection(Boolean reverseIsCollection) {
+		this.reverseIsCollection = reverseIsCollection;
+	}
+
 	public Field getField() {
 		return field;
 	}

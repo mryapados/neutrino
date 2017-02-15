@@ -41,6 +41,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.bean.NDatas;
+import fr.cedricsevestre.bean.NField;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.controller.engine.AbtractController;
 import fr.cedricsevestre.dto.engine.IdProviderDto;
@@ -352,6 +353,11 @@ public class BackOfficeController extends AbtractController {
 
 	
 	private IdProvider mkIdProvider(String objectTypeId) throws IllegalArgumentException{
+		if (objectTypeId == null || objectTypeId.equals("")) return null;
+		if (objectTypeId.substring(objectTypeId.length() - 1).equals(",")){
+			objectTypeId = objectTypeId.substring(0, objectTypeId.length()-1);
+		}
+		
 		System.out.println("<<<<<<<<<<<< mkIdProvider " + objectTypeId);
 		String[] identifier = objectTypeId.split("_");
     	
@@ -499,27 +505,43 @@ public class BackOfficeController extends AbtractController {
 	}
 	
 	
-	@RequestMapping(value = BO_BLOCK_LIST_URL + "{type}/{field}/{id}", method = RequestMethod.GET)
-	public ModelAndView getAssignableblocklist(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "type") String assignType, @PathVariable(value = "field") String ownerField, @PathVariable(value = "id") Integer ownerId, Pageable pageRequest) throws JspException {
+	
+	
+	@RequestMapping(value = BO_BLOCK_LIST_URL + "{type}/{id}/{field}", method = RequestMethod.GET)
+	public ModelAndView getAssignableblocklist(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "type") String ownerType, @PathVariable(value = "id") Integer ownerId, @PathVariable(value = "field") String ownerField, Pageable pageRequest) throws JspException {
 		Folder folder = getBOFolder();
 		ModelAndView modelAndView = null;
 		try {
+			
 			String langCode = LocaleContextHolder.getLocale().getLanguage();
 			fr.cedricsevestre.entity.engine.translation.objects.Page page = common.getPage(BO_LIST_PAGE, langCode);
 			Template block = templateService.findByName(BO_BLOCK_LIST + "_" + langCode.toUpperCase());
 			modelAndView = baseView(page, block, folder);
+
 			modelAndView.addObject("page", page);
 			modelAndView.addObject("activeBlock", block);
 			response.addHeader("Object-Type", "parsedBlock");  
 
-			Class<?> object = entityLocator.getEntity(assignType).getClass();
-			modelAndView.addObject("objectType", object.getSimpleName());
-			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
-						
-			Specification<IdProvider> spec = IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId);
-			spec = Specifications.where(spec).or(IdProviderSpecification.isNotAffected(ownerField));
-			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest, spec);
+			Class<?> ownerObject = entityLocator.getEntity(ownerType).getClass();
+			NField nField = backOfficeService.getNField(ownerObject, ownerField);
 
+			Boolean many = Iterable.class.isAssignableFrom(nField.getClazz());
+			modelAndView.addObject("many", many);
+			
+			Class<?> recipientObject = entityLocator.getEntity(many ? nField.getOfClassName() : nField.getClassName()).getClass();
+			modelAndView.addObject("objectType", recipientObject.getSimpleName());
+			modelAndView.addObject("objectBaseType", recipientObject.getSuperclass().getSimpleName());
+					
+			String recipientField = nField.getReverseJoin();
+			NDatas<IdProvider> tDatas = null;
+			if (recipientField != null){
+				Specification<IdProvider> spec = IdProviderSpecification.itsFieldIsAffectedTo(recipientField, ownerId);
+				spec = Specifications.where(spec).or(IdProviderSpecification.isNotAffected(recipientField));
+				tDatas = backOfficeService.findAll(recipientObject, pageRequest, spec);
+			} else {
+				tDatas = backOfficeService.findAll(recipientObject, pageRequest);
+			}
+			
 			modelAndView.addObject("objectDatas", tDatas.getObjectDatas());
 			modelAndView.addObject("datas", tDatas.getObjectDatas().getContent());
 			modelAndView.addObject("fields", tDatas.getFields());
@@ -529,6 +551,48 @@ public class BackOfficeController extends AbtractController {
 		}
 		return modelAndView;
 	}
+	
+	
+	
+	
+	
+	
+	
+//	@Deprecated
+//	@RequestMapping(value = BO_BLOCK_LIST_URL + "{type}/{field}/{id}", method = RequestMethod.GET)
+//	public ModelAndView getAssignableblocklist_ex(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "type") String assignType, @PathVariable(value = "field") String ownerField, @PathVariable(value = "id") Integer ownerId, @RequestParam(value = "many", required = false) Boolean many, Pageable pageRequest) throws JspException {
+//		Folder folder = getBOFolder();
+//		ModelAndView modelAndView = null;
+//		try {
+//			String langCode = LocaleContextHolder.getLocale().getLanguage();
+//			fr.cedricsevestre.entity.engine.translation.objects.Page page = common.getPage(BO_LIST_PAGE, langCode);
+//			Template block = templateService.findByName(BO_BLOCK_LIST + "_" + langCode.toUpperCase());
+//			modelAndView = baseView(page, block, folder);
+//			
+//			if (many == null) many = false;
+//			modelAndView.addObject("many", many);
+//			
+//			modelAndView.addObject("page", page);
+//			modelAndView.addObject("activeBlock", block);
+//			response.addHeader("Object-Type", "parsedBlock");  
+//
+//			Class<?> object = entityLocator.getEntity(assignType).getClass();
+//			modelAndView.addObject("objectType", object.getSimpleName());
+//			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
+//						
+//			Specification<IdProvider> spec = IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId);
+//			spec = Specifications.where(spec).or(IdProviderSpecification.isNotAffected(ownerField));
+//			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest, spec);
+//
+//			modelAndView.addObject("objectDatas", tDatas.getObjectDatas());
+//			modelAndView.addObject("datas", tDatas.getObjectDatas().getContent());
+//			modelAndView.addObject("fields", tDatas.getFields());
+//
+//		} catch (ServiceException e) {
+//			throw new JspException(e);
+//		}
+//		return modelAndView;
+//	}
 	
 	
 	

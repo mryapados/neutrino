@@ -11,9 +11,9 @@
 <jsp:include page="detail/${displayType}/init.jsp" />
 <div class="list-object">
 
-	<p>values = {{values}}</p>
+	<!-- <p>values = {{values}}</p> -->
 
-	Showing <span class="label label-info">${pBegin + 1}</span> to <span class="label label-info">${pEnd}</span> of <span class="label label-info">${pTotalElements}</span> entries
+	<p>Showing <span class="label label-info">${pBegin + 1}</span> to <span class="label label-info">${pEnd}</span> of <span class="label label-info">${pTotalElements}</span> entries</p>
 
 	<div>
 		<jsp:include page="detail/${displayType}/toolbar.jsp">
@@ -39,7 +39,14 @@
 				<c:forEach var="object" items="${datas}" varStatus="status">
 					<tr>
 						<td>
-							<input type="checkbox" name="id" value="${object.id}" data-ng-model="chk${object.id}" data-ng-change="updateValues('${objectType}',${object.id}, chk${object.id})" data-ng-disabled="dsb${object.id}" />
+							<c:choose>
+								<c:when test="${many}">
+									<input type="checkbox" name="id" value="${object.id}" data-ng-model="chk${object.id}" data-ng-change="updateValues('${objectType}',${object.id}, chk${object.id})" data-ng-disabled="dsb${object.id}" />
+								</c:when>
+								<c:otherwise>
+									<input type=radio name="id" value="${object.id}" data-ng-model="lastCheckedId" data-ng-change="updateValues('${objectType}',${object.id}, chk${object.id})" data-ng-disabled="dsb${object.id}" />
+								</c:otherwise>
+							</c:choose>
 						</td>
 						<td class="text-center">
 							<c:url var="url" value="/bo/edit/" scope="request">

@@ -4,9 +4,6 @@ fModule.controller('UiAssignmentCtrl', function ($scope, $uibModal, $frontPath, 
 	console.log('in UiAssignmentCtrl');
 	
 	$scope.open = function(size, values) {
-		
-		
-		
 		var instance = $uibModal.open({
 			templateUrl: $frontPath.URL_TEMPLATE_JS + 'ui-assignement-modal.html',
 			controller: 'UiAssignmentModalCtrl',
@@ -15,22 +12,20 @@ fModule.controller('UiAssignmentCtrl', function ($scope, $uibModal, $frontPath, 
 				urlInfos: function () {
 	                return {
 	                	type: $scope.type, 
-						pageable: {size: 5, sort: 'dateAdded,DESC', page: 0,},
+	                	field: $scope.field, 
+	                	id: $scope.id, 
+						pageable: {size: 5, page: 0,},
 					}
 	            },
 	            values: function(){
 	                return $scope[values];
 	            },
-	            many: function(){
-	                return $scope.many;
+	            disablePreChecked: function(){
+	                return $scope.disablePreChecked;
 	            },
 			}
 		});
 		instance.result.then(function(idProviders) {
-			console.log(idProviders);
-			//$scope.$parent.abc = idProviders;
-			
-			//idProviders = [{"type":"Album","id":253},{"type":"Album","id":278}];
 			console.log(idProviders);
 			$scope.$parent[values] = idProvidersFilter(idProvidersFilter(idProviders), 'toArray');
 		}, function () {
@@ -40,25 +35,22 @@ fModule.controller('UiAssignmentCtrl', function ($scope, $uibModal, $frontPath, 
 
 });
 
-fModule.controller('UiAssignmentModalCtrl', function ($scope, $uibModalInstance, urlInfos, values, many) {
+fModule.controller('UiAssignmentModalCtrl', function ($scope, $uibModalInstance, urlInfos, values, disablePreChecked) {
 	console.log('in UiAssignmentModalCtrl');
 	
 	$scope.values = values;
 	$scope.init = function(disable) {
 		for(var i = 0; i < $scope.values.length; i++) {
+			$scope.lastCheckedId = $scope.values[i].id;
 			$scope['chk' + $scope.values[i].id] = true;
 			
 			//en Many, on ne peut pas enlever des objets déjà assignés en base
 			if (disable === true) $scope['dsb' + $scope.values[i].id] = true;
 		}
 	};
-	$scope.init(many);
-
-	
+	$scope.init(disablePreChecked);
 	
 	$scope.updateValues = function(type, id, value) {
-		console.log(type, id, value);
-
 		if (value) $scope.values.push({type: type, id: id});
 		else {
 			var index = null;
@@ -68,19 +60,32 @@ fModule.controller('UiAssignmentModalCtrl', function ($scope, $uibModalInstance,
 					break;
 				}
 			}
-			if (index) $scope.values.splice(index, 1);
+			if (index != null) $scope.values.splice(index, 1);
 		}
 	};
 	
-
+	$scope.mkParams = function(pageable) {
+		var params = '';
+		var sep = '?';
+		if (pageable.size){
+			params += sep + 'size=' + pageable.size;
+			sep = '&';
+		}
+		if (pageable.sort){
+			params += sep + 'sort=' + pageable.sort;
+			sep = '&';
+		}
+		if (pageable.page){
+			params += sep + 'page=' + pageable.page;
+			sep = '&';
+		}
+		return params;
+	};
+	
 	$scope.mkUrl = function(urlInfos) {
-		var url = '/neutrino/bo/blocklist/?type=' + urlInfos.type;
-		var pageable = urlInfos.pageable;
-		if (pageable.size) url += '&size=' + pageable.size;
-		if (pageable.sort) url += '&sort=' + pageable.sort;
-		if (pageable.page) url += '&page=' + pageable.page;
+		var url = '/neutrino/bo/blocklist/' + urlInfos.type + '/' + urlInfos.field + '/' + urlInfos.id;
 		$scope.urlInfos = urlInfos;
-		$scope.urlMaked = url;
+		$scope.urlMaked = url + $scope.mkParams(urlInfos.pageable);
 		$scope.init();
 	};
 	
@@ -115,18 +120,4 @@ fModule.controller('UiAssignmentModalCtrl', function ($scope, $uibModalInstance,
 		}
 	};
 
-});
-
-
-
-
-
-
-
-fModule.controller('Testage', function ($scope) {
-	
-	$scope.test = function(test) {
-		console.log(test);
-		$scope.abc = [{"type":"Album","id":253},{"type":" Album","id":255}];
-	};
 });

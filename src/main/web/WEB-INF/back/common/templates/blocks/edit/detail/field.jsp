@@ -115,9 +115,7 @@
 			</c:when>
 			<c:when test="${finalObject.objectType eq 'Folder'}">
 				<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a>
-
-				<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="ffff" assign="Folder"/>
-		
+				<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" />
 			</c:when>
 			<c:otherwise>
 				<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="object"/></a>
@@ -125,30 +123,9 @@
 		</c:choose>
 	</c:when>
 	<c:when test="${finalFieldType eq 'COLLECTION'}">
-		
-<!-- 		<div ng-controller="Testage"> -->
-<%-- 			<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="abc"/> --%>
-<!-- 			<p>abc = {{abc}}</p> -->
-<%-- 			<data-ui-assignment type="${finalField.ofClassName}" values="abc"> --%>
-<!-- 				<p>BONJOUR</p> -->
-<!-- 				<p>abc = {{abc}}</p> -->
-<!-- 			</data-ui-assignment> -->
 
-<!-- 		</div> -->
-		<div data-ng-controller="Testage">
-		
-		
-			<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="abc" assign="${finalField.ofClassName}"/>
-			ABCCCCCCCCCCCC = {{abc}}	
-			
-			
-			
-			<a href="#" data-ng-click="test(abc)">TTTTTTTTTTTTT</a>
-		
-		</div>
-		
-		
-		
+		<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" disable-pre-checked="true" />
+
 		<c:set var="collection" value="${finalObject}" />
 		<c:set var="size" value="${fn:length(collection)}" />
 		<c:if test="${size > 0}">
