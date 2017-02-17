@@ -97,12 +97,15 @@
 		
 	</c:when>
 	<c:when test="${finalFieldType eq 'OBJECT'}">
+		<c:if test="${empty finalObject}">
+			<span class="empty-field"><s:message code="bo.field.empty" text="Empty..." /></span>
+		</c:if>
 		<c:choose>
-			<c:when test="${finalObject.objectType eq 'Lang'}">
+			<c:when test="${finalField.className eq 'Lang'}">
 				<span class="lang-sm lang-lbl" lang="${finalObject.code}"></span>
 				<form:input cssClass="form-control" type="text" path="${finalField.name}"/>
 			</c:when>
-			<c:when test="${finalObject.objectType eq 'MapTemplate'}">
+			<c:when test="${finalField.className eq 'MapTemplate'}">
 				<c:choose>
 					<c:when test="${finalParentObject.id eq finalObject.model.id}">
 						<c:set var="template" value="${finalObject.block}" />
@@ -113,7 +116,9 @@
 				</c:choose>
 				<a class="linked" href="<c:url value='/bo/view/?type=Template&id=${template.id}' />"><c:out value="${template.name}"/></a> / <a class="linked" href="<c:url value='/bo/view/?type=Position&id=${finalObject.position.id}' />"><c:out value="${finalObject.position.name}"/></a>
 			</c:when>
-			<c:when test="${finalObject.objectType eq 'Folder'}">
+			<c:when test="${finalField.className eq 'Folder'}">
+				<p>papa = ${finalParentObject}</p>
+				${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}
 				<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a>
 				<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" />
 			</c:when>

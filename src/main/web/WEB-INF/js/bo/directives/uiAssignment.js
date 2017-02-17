@@ -42,8 +42,7 @@
 		    },
 			
 			link : function(scope, element, attrs, ngModelController) {
-				if (attrs.ngModel && attrs.value && attrs.assign) {
-					
+				if (attrs.ngModel && attrs.assign) {
 					$parse(attrs.ngModel).assign(scope, idProvidersFilter(attrs.value, 'toArray'));
 					ngModelController.$parsers.push(function(data) {
 						// convert data from view format to model format

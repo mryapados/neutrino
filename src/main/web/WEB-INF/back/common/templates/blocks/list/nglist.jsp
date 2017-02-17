@@ -44,7 +44,7 @@
 									<input type="checkbox" name="id" value="${object.id}" data-ng-model="chk${object.id}" data-ng-change="updateValues('${objectType}',${object.id}, chk${object.id})" data-ng-disabled="dsb${object.id}" />
 								</c:when>
 								<c:otherwise>
-									<input type=radio name="id" value="${object.id}" data-ng-model="lastCheckedId" data-ng-change="updateValues('${objectType}',${object.id}, chk${object.id})" data-ng-disabled="dsb${object.id}" />
+									<input type=radio name="id" value="${object.id}" data-ng-model="lastCheckedId" data-ng-change="overrideValues('${objectType}',${object.id})" data-ng-disabled="dsb${object.id}" />
 								</c:otherwise>
 							</c:choose>
 						</td>

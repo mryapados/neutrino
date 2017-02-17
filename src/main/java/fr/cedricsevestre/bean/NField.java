@@ -174,4 +174,16 @@ public class NField implements Serializable {
 	public void setField(Field field) {
 		this.field = field;
 	}
+
+	@Override
+	public String toString() {
+		return "NField [type=" + type + ", ofType=" + ofType + ", name=" + name + ", clazz=" + clazz + ", className="
+				+ className + ", ofClassName=" + ofClassName + ", inList=" + inList + ", inView=" + inView
+				+ ", editable=" + editable + ", sortBy=" + sortBy + ", sortPriority=" + sortPriority + ", defaultField="
+				+ defaultField + ", displayOrder=" + displayOrder + ", tabName=" + tabName + ", groupName=" + groupName
+				+ ", enumDatas=" + enumDatas + ", field=" + field + ", reverseJoin=" + reverseJoin
+				+ ", reverseIsCollection=" + reverseIsCollection + "]";
+	}
+	
+	
 }

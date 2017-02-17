@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="my" uri="/WEB-INF/taglibs/neutrino.tld" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
@@ -16,6 +16,9 @@
 	</c:when>
 	<c:when test="${finalFieldType eq 'OBJECT'}">
 		<c:choose>
+			<c:when test="${empty finalObject}">
+				<span class="empty-field"><s:message code="bo.field.empty" text="Empty..." /></span>
+			</c:when>
 			<c:when test="${finalObject.objectType eq 'Lang'}">
 				<span class="lang-sm lang-lbl" lang="${finalObject.code}"></span>
 			</c:when>
