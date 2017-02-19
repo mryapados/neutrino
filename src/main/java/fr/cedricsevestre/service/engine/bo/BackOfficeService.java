@@ -562,12 +562,15 @@ public class BackOfficeService { //implements IBackOfficeService{
 					}
 
 					List<?> list = (List<?>) object;
+					Boolean reverseIsCollection = nField.getReverseIsCollection();
+					
 					for (Object object2 : list) {
 						IdProvider mapped = (IdProvider) object2;
 						System.out.println("             MAPPED " + mapped.getName() + " - " + mapped.getClass());
 
 						Object mappedFieldValue = getFieldValue(mapped, clazzField);
-						if (mappedFieldValue instanceof Iterable){
+						
+						if (reverseIsCollection){
 							// ManyToMany
 							List<Object> mappedList = (List<Object>) getFieldValue(mapped, clazzField);
 							System.out.println("             DEJA DANS LA LISTE : " + mappedList.contains(data));
@@ -578,15 +581,14 @@ public class BackOfficeService { //implements IBackOfficeService{
 							saveData(mapped);
 						} else {
 							// ManyToOne
-							boolean different = !mappedFieldValue.equals(data);
-							if (mappedFieldValue != null && different){
-								throw new ServiceException("Can't override field value on " + nField.getReverseJoin());
-							}
-							if (mappedFieldValue != null && different){
+							if (mappedFieldValue == null){
 								setFieldValue(mapped, clazzField, data);
 								saveData(mapped);
+							} else if (!mappedFieldValue.equals(data)) {
+								throw new ServiceException("Can't override field value on " + nField.getReverseJoin());
 							}
 						}
+						
 					}
 				} else {
 					if (object != null) System.out.println("		object is : " + object.getClass().toString());

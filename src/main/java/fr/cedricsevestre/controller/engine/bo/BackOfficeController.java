@@ -3,6 +3,7 @@ package fr.cedricsevestre.controller.engine.bo;
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorSupport;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.domain.Specification;
@@ -45,6 +47,7 @@ import fr.cedricsevestre.bean.NField;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.controller.engine.AbtractController;
 import fr.cedricsevestre.dto.engine.IdProviderDto;
+import fr.cedricsevestre.dto.engine.LangDto;
 import fr.cedricsevestre.dto.engine.NoTranslationDto;
 import fr.cedricsevestre.dto.engine.TemplateDto;
 import fr.cedricsevestre.dto.engine.TranslationDto;
@@ -56,6 +59,7 @@ import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.Position;
 import fr.cedricsevestre.entity.engine.independant.objects.User;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
+import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.FormException;
@@ -763,4 +767,75 @@ public class BackOfficeController extends AbtractController {
 	
 	
 	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	@RequestMapping(value = "/objects/{type}", method = RequestMethod.GET)
+	public @ResponseBody List<IdProviderDto> getObjects(@PathVariable(value = "type") String type) throws ServiceException {
+		Class<?> object = entityLocator.getEntity(type).getClass();
+
+		Integer[] ints = {251,252,253,255,256,257,258};
+		List<Integer> ids = new ArrayList<>();
+		ids = Arrays.asList(ints);
+		
+		Pageable pageRequest = new PageRequest(0, 5);
+		
+		Specification<IdProvider> spec = IdProviderSpecification.idIn(ids);
+		Page<IdProvider> datas = backOfficeService.getDatas(object, pageRequest, spec);
+		
+		List<IdProviderDto> idProviderDtos = new ArrayList<>();
+		for (IdProvider idProvider : datas) {
+			idProviderDtos.add(IdProviderDto.from(idProvider));
+		}
+		
+		return idProviderDtos;
+	}
+
+
+
+
+//	@RequestMapping(value = "/objects/{type}", method = RequestMethod.GET)
+//	public @ResponseBody NDatas<IdProvider> getObjects(@PathVariable(value = "type") String type, @RequestBody List<Integer> ids) throws ServiceException {
+//		Class<?> object = entityLocator.getEntity(type).getClass();
+//		
+//		
+//		Pageable pageRequest = new PageRequest(0, 5);
+//		
+//		Specification<IdProvider> spec = IdProviderSpecification.idIn(ids);
+//		return backOfficeService.findAll(object, pageRequest, spec);
+//		
+//	}
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+

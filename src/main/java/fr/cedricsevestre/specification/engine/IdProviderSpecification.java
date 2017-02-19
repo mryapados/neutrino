@@ -1,5 +1,7 @@
 package fr.cedricsevestre.specification.engine;
 
+import java.util.List;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -12,6 +14,14 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 
 public class IdProviderSpecification<T extends IdProvider>{
 
+	public static <T> Specification<T> idIn(List<Integer> ids) {
+		return new Specification<T>() {
+			public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
+				return root.get("id").in(ids);
+			}
+		};
+	}
+	
 	public static <T> Specification<T> idEqualsTo(Integer id) {
 		return new Specification<T>() {
 			public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
