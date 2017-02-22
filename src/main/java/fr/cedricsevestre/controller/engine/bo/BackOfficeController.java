@@ -24,6 +24,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -115,9 +116,12 @@ public class BackOfficeController extends AbtractController {
 	public static final String BO_REMOVES_URL = "removes/";
 	public static final String BO_REMOVE_URL = "remove/";
 	
-
 	public static final String BO_BLOCK_LIST_URL = "blocklist/";
 	public static final String BO_BLOCK_LIST = "@bo_ng_block_list";
+	
+	
+	public static final Integer BO_MAX_REQUEST_ELEMENT = 1000;
+	
 	
 	@Deprecated
 	public static final String BO_ASSIGN_LIST_URL = "assignlist/";
@@ -788,16 +792,21 @@ public class BackOfficeController extends AbtractController {
 
 
 	@RequestMapping(value = "/objects/{type}", method = RequestMethod.GET)
-	public @ResponseBody List<IdProviderDto> getObjects(@PathVariable(value = "type") String type) throws ServiceException {
+	public @ResponseBody List<IdProviderDto> getObjects(@PathVariable(value = "type") String type, @RequestParam("id") Integer[] ids) throws ServiceException {
 		Class<?> object = entityLocator.getEntity(type).getClass();
 
-		Integer[] ints = {251,252,253,255,256,257,258};
-		List<Integer> ids = new ArrayList<>();
-		ids = Arrays.asList(ints);
+		System.out.println(ids);
+
+//		Integer[] ints = {251,252,253,255,256,257,258};
+//		List<Integer> ids = new ArrayList<>();
+//		ids = Arrays.asList(ints);
 		
-		Pageable pageRequest = new PageRequest(0, 5);
+		// Permet de limiter la requete
+		Pageable pageRequest = new PageRequest(0, BO_MAX_REQUEST_ELEMENT);
+		List<Integer> list = new ArrayList<>(Arrays.asList(ids));
+			
 		
-		Specification<IdProvider> spec = IdProviderSpecification.idIn(ids);
+		Specification<IdProvider> spec = IdProviderSpecification.idIn(list);
 		Page<IdProvider> datas = backOfficeService.getDatas(object, pageRequest, spec);
 		
 		List<IdProviderDto> idProviderDtos = new ArrayList<>();
@@ -809,19 +818,6 @@ public class BackOfficeController extends AbtractController {
 	}
 
 
-
-
-//	@RequestMapping(value = "/objects/{type}", method = RequestMethod.GET)
-//	public @ResponseBody NDatas<IdProvider> getObjects(@PathVariable(value = "type") String type, @RequestBody List<Integer> ids) throws ServiceException {
-//		Class<?> object = entityLocator.getEntity(type).getClass();
-//		
-//		
-//		Pageable pageRequest = new PageRequest(0, 5);
-//		
-//		Specification<IdProvider> spec = IdProviderSpecification.idIn(ids);
-//		return backOfficeService.findAll(object, pageRequest, spec);
-//		
-//	}
 
 
 

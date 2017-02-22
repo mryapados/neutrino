@@ -88,13 +88,10 @@
 		<jsp:include page="datetime.jsp" />
 	</c:when>
 	<c:when test="${finalFieldType eq 'TOBJECT' || finalFieldType eq 'NTOBJECT'}">
-		<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a>
-
 		<c:if test="${empty isInCollection || not isInCollection}">
-			<form:input cssClass="form-control" type="text" path="${finalField.name}"/>
-			<data-ui-assignment field="${finalField.name}"/>
+<%-- 			<form:input cssClass="form-control" type="text" path="${finalField.name}"/> --%>
+<%-- 			<data-ui-assignment field="${finalField.name}"/> --%>
 		</c:if>
-		
 	</c:when>
 	<c:when test="${finalFieldType eq 'OBJECT'}">
 		<c:if test="${empty finalObject}">
@@ -117,10 +114,10 @@
 				<a class="linked" href="<c:url value='/bo/view/?type=Template&id=${template.id}' />"><c:out value="${template.name}"/></a> / <a class="linked" href="<c:url value='/bo/view/?type=Position&id=${finalObject.position.id}' />"><c:out value="${finalObject.position.name}"/></a>
 			</c:when>
 			<c:when test="${finalField.className eq 'Folder'}">
-				<p>papa = ${finalParentObject}</p>
-				${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}
+<%-- 				<p>papa = ${finalParentObject}</p> --%>
+<%-- 				${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name} --%>
 				<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a>
-				<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" />
+<%-- 				<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" /> --%>
 			</c:when>
 			<c:otherwise>
 				<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="object"/></a>
@@ -129,35 +126,23 @@
 	</c:when>
 	<c:when test="${finalFieldType eq 'COLLECTION'}">
 
-		<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" disable-pre-checked="true" />
+		<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="abc" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" disable-pre-checked="true" />
+		<p>abc = {{abc}}</p>
+		<h1>SEPA</h1>
 
-		<c:set var="collection" value="${finalObject}" />
-		<c:set var="size" value="${fn:length(collection)}" />
-		<c:if test="${size > 0}">
-			<ul class="linked">
-				<c:set var="max" value="${size}" />
-				
-				<c:if test="${max > FINAL_MAX_ELEMENT}">
-					<c:set var="max" value="${FINAL_MAX_ELEMENT}" />
-				</c:if>
-				<c:forEach var="i" begin="0" end="${max - 1}">
-					<c:set var="finalObject" value="${collection.toArray()[i]}" scope="request" />
-					<c:set var="finalFieldType" value="${finalField.ofType}" scope="request" />
-					<c:set var="isInCollection" value="${true}" scope="request" />
-					<li>
-						<jsp:include page="field.jsp" />
-					</li>
-					<c:remove var="finalObject"/>
-					<c:remove var="finalFieldType"/>
-					<c:remove var="isInCollection"/>
-				</c:forEach>
-				<c:if test="${size > FINAL_MAX_ELEMENT}">
-					<li>
-						<strong><a href="#"><c:out value="${size - FINAL_MAX_ELEMENT}"/> <s:message code="bo.otherresults" text="Others results..." /></a></strong>
-					</li>
-				</c:if>
-			</ul>
-		</c:if>
+
+
+<!-- 		<input type="text" ng-model="testage"> -->
+<!-- 		<data-ui-assignment type="Project" field="albums" id="49" ng-model="testage" disable-pre-checked="false"/></data-ui-assignment> -->
+<!-- 		<p>testage = {{testage}}</p> -->
+<!-- 		<h1>SEPB</h1> -->
+
+<!-- 		<data-ui-assignment type="Project" field="albums" id="49" ng-model="testagezzzz" disable-pre-checked="false"/></data-ui-assignment> -->
+<!-- 		<p>testagezzzz = {{testagezzzz}}</p> -->
+
+<%-- 		<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" disable-pre-checked="true" /> --%>
+<%-- 		<p>{{${finalField.name}}}</p> --%>
+
 	</c:when>
 	<c:when test="${finalFieldType eq 'ENUM'}">
 		<c:set var="fieldError"><form:errors path="${finalField.name}"/></c:set>
