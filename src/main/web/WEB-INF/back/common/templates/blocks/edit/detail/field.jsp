@@ -116,8 +116,12 @@
 			<c:when test="${finalField.className eq 'Folder'}">
 <%-- 				<p>papa = ${finalParentObject}</p> --%>
 <%-- 				${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name} --%>
-				<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a>
+<%-- 				<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a> --%>
 <%-- 				<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" /> --%>
+			
+				<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" />
+				
+			
 			</c:when>
 			<c:otherwise>
 				<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="object"/></a>
@@ -126,22 +130,11 @@
 	</c:when>
 	<c:when test="${finalFieldType eq 'COLLECTION'}">
 
-		<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="abc" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" disable-pre-checked="true" />
-		<p>abc = {{abc}}</p>
-		<h1>SEPA</h1>
+		<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" disable-pre-checked="true"/>
 
 
-
-<!-- 		<input type="text" ng-model="testage"> -->
-<!-- 		<data-ui-assignment type="Project" field="albums" id="49" ng-model="testage" disable-pre-checked="false"/></data-ui-assignment> -->
-<!-- 		<p>testage = {{testage}}</p> -->
-<!-- 		<h1>SEPB</h1> -->
-
-<!-- 		<data-ui-assignment type="Project" field="albums" id="49" ng-model="testagezzzz" disable-pre-checked="false"/></data-ui-assignment> -->
-<!-- 		<p>testagezzzz = {{testagezzzz}}</p> -->
-
-<%-- 		<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" disable-pre-checked="true" /> --%>
-<%-- 		<p>{{${finalField.name}}}</p> --%>
+<%-- 	<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="abcgggg" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" disable-pre-checked="true"/> --%>
+		
 
 	</c:when>
 	<c:when test="${finalFieldType eq 'ENUM'}">

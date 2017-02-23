@@ -10,7 +10,6 @@
 			if (!objectType) $log.error('objectType is mandatory !');
 			if (!objectId) $log.error('objectId is mandatory !');
 			if (!objectField) $log.error('objectField is mandatory !');
-			if (!disablePreChecked) disablePreChecked = true;
 			if (!modalSize) modalSize = 'lg';
 			if (!pageSize) pageSize = 5;
 			if (!page) page = 0;
@@ -65,15 +64,13 @@
 
 		$scope.init = function(disable) {
 			$scope.values = [];
-			
-//			if (!values) $scope.values = [];
-//			else $scope.values = values;
-//			for(var i = 0; i < $scope.values.length; i++) {
-//				$scope.lastCheckedId = $scope.values[i].id;
-//				$scope['chk' + $scope.values[i].id] = true;
-//				//en Many, on ne peut pas enlever des objets déjà assignés en base
-//				if (disable === true) $scope['dsb' + $scope.values[i].id] = true;
-//			}
+			angular.extend($scope.values, values);
+			for(var i = 0; i < $scope.values.length; i++) {
+				$scope.lastCheckedId = $scope.values[i].id;
+				$scope['chk' + $scope.values[i].id] = true;
+				//en Many, on ne peut pas enlever des objets déjà assignés en base
+				if (disable === true) $scope['dsb' + $scope.values[i].id] = true;
+			}
 		};
 
 		$scope.init(disablePreChecked);
@@ -90,6 +87,7 @@
 				}
 				if (index != null) $scope.values.splice(index, 1);
 			}
+			console.log($scope.values);
 		};
 		$scope.overrideValues = function(type, id) {
 			$scope.values = [{type: type, id: id}];
