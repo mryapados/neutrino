@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import fr.cedricsevestre.controller.custom.ArticleController;
+import fr.cedricsevestre.controller.template.custom.TestBlockController;
 import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.custom.Album.AlbumType;
 import fr.cedricsevestre.entity.custom.File;
@@ -461,6 +463,10 @@ public class InitialisationBase {
 		templateEN.setPath("header/headerProject");
 		templateEN.setKind(Template.TemplateKind.BLOCK);
 		templateService.save(templateEN);
+		
+		
+		
+		
 		
 		Template templateFR = templateService.translate(templateEN, langFR);
 		templateFR.setName(name + "_" + langFR.getCode().toUpperCase());
@@ -1280,14 +1286,15 @@ public class InitialisationBase {
 				template.setPath(path);
 				template.setKind(Template.TemplateKind.BLOCK);
 				template.setSchema(nSchema);
-				templateService.save(template);
 				first = template;
 			} else {
 				template = templateService.translate(first, lang);
 				template.setName(name + "_" + lang.getCode().toUpperCase());
 				template.setDescription(name + " Block description " + lang.getCode());
-				templateService.save(template);
+				
 			}
+			template.setController(name);
+			templateService.save(template);
 			map.put(lang, template);
 		}
 		return map;

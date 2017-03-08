@@ -62,6 +62,11 @@ public class Template extends Translation {
 	@Column(name = "path")
 	private String path;
 
+	@BOField(type = ValueType.VARCHAR50)
+	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
+	@Column(name = "controller")
+	private String controller;
+	
 	@BOField(type = ValueType.COLLECTION, ofType = ValueType.OBJECT)
 	@OneToMany(mappedBy = "block")
 	@Cascade(CascadeType.DELETE)
@@ -93,17 +98,18 @@ public class Template extends Translation {
 	
 	@OneToMany(mappedBy = "template")
 	private List<NData> datas;
-	
+		
 	public Template() {
 		super();
 	}
 
 	public Template(Integer id, String name, Date dateAdd, Date dateUpdated, String description, Lang lang, TemplateKind type, String path,
-			Set<MapTemplate> models, Set<MapTemplate> blocks, String metaDescription, String metaTitle,
+			String controller, Set<MapTemplate> models, Set<MapTemplate> blocks, String metaDescription, String metaTitle,
 			String metaKeyWords) {
 		super(id, name, dateAdd, dateUpdated, description, lang);
 		this.kind = type;
 		this.path = path;
+		this.controller = controller;
 		this.models = models;
 		this.blocks = blocks;
 		this.metaDescription = metaDescription;
@@ -127,6 +133,14 @@ public class Template extends Translation {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+	
+	public String getController() {
+		return controller;
+	}
+
+	public void setController(String controller) {
+		this.controller = controller;
 	}
 
 	public Set<MapTemplate> getModels() {
@@ -185,12 +199,6 @@ public class Template extends Translation {
 		this.datas = datas;
 	}
 
-	
 
-	
-
-	
-
-	
 	
 }

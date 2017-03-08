@@ -1,8 +1,10 @@
 package fr.cedricsevestre.taglib;
 
 import java.io.IOException;
+import java.security.KeyStore.Entry;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.jsp.JspException;
@@ -14,6 +16,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
@@ -28,6 +32,7 @@ import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateKind;
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.service.engine.BlockControllerExecutor;
 import fr.cedricsevestre.service.engine.independant.objects.NDataService;
 import fr.cedricsevestre.service.engine.independant.objects.PositionService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
@@ -55,6 +60,12 @@ public class Block extends TagSupport implements IIncludeJSP {
 	@Autowired
 	public void NDataService(NDataService nDataService) {
 		Block.nDataService = nDataService;
+	}
+	
+	private static BlockControllerExecutor templateControllerExecutor ;
+	@Autowired
+	public void TemplateControllerExecutor(BlockControllerExecutor templateControllerExecutor) {
+		Block.templateControllerExecutor = templateControllerExecutor;
 	}
 		
 	private String position = null;
@@ -123,6 +134,14 @@ public class Block extends TagSupport implements IIncludeJSP {
 				for (MapTemplate mapTemplate : mapTemplates) {
 					Template activeBlock = mapTemplate.getBlock();
 					
+					ModelMap modelMap = templateControllerExecutor.execute(activeBlock.getController(), model, activeObject, activeBlock, pageContext);
+					if (modelMap != null){
+						for (Map.Entry<String, Object> entry : modelMap.entrySet()) {
+							pageContext.setAttribute(entry.getKey(), entry.getValue(), PageContext.REQUEST_SCOPE);
+						}
+					}
+	
+
 					NSchema nSchema =  activeBlock.getSchema();
 					List<NData> nDatas = null;
 					if (nSchema != null){
@@ -170,6 +189,8 @@ public class Block extends TagSupport implements IIncludeJSP {
 			if (Common.DEBUG) out.print("<p class=\"debug\">" + "Exit getJSP()" + "</p>");
 			
 		} catch (ServiceException e) {
+			logger.error("Erreur Block " + e.getMessage());
+			e.printStackTrace();
 			try {
 				out.println("<p class=\"bg-danger\">" + e.getMessage() + "</p>");
 			} catch (IOException ex) {
@@ -177,6 +198,8 @@ public class Block extends TagSupport implements IIncludeJSP {
 				ex.printStackTrace();
 			}
 		} catch (IOException e) {
+			logger.error("Erreur Block " + e.getMessage());
+			e.printStackTrace();
 			try {
 				out.println("<p class=\"bg-danger\">" + e.getMessage() + "</p>");
 			} catch (IOException ex) {
@@ -184,6 +207,8 @@ public class Block extends TagSupport implements IIncludeJSP {
 				ex.printStackTrace();
 			}
 		} catch (ServletException e) {
+			logger.error("Erreur Block " + e.getMessage());
+			e.printStackTrace();
 			try {
 				out.println("<p class=\"bg-danger\">" + e.getMessage() + "</p>");
 			} catch (IOException ex) {

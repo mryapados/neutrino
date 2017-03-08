@@ -24,6 +24,9 @@ public class TemplateDto extends TranslationDto {
 	private String path;
 
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
+	private String controller;
+	
+	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	private String metaDescription;
 	
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
@@ -37,10 +40,11 @@ public class TemplateDto extends TranslationDto {
 	}
 
 	public TemplateDto(String objectType, Integer id, String name, Date dateAdded, Date dateUpdated, String description, LangDto langDto, TemplateKind kind, String path,
-			String metaDescription, String metaTitle, String metaKeyWords) {
+			String controller, String metaDescription, String metaTitle, String metaKeyWords) {
 		super(objectType, id, name, dateAdded, dateUpdated, description, langDto);
 		this.kind = kind;
 		this.path = path;
+		this.controller = controller;
 		this.metaDescription = metaDescription;
 		this.metaTitle = metaTitle;
 		this.metaKeyWords = metaKeyWords;
@@ -48,12 +52,12 @@ public class TemplateDto extends TranslationDto {
 
 	public static TemplateDto from(Template template) {
 		return new TemplateDto(template.getObjectType(), template.getId(), template.getName(), template.getDateAdded(), template.getDateUpdated(), template.getDescription(), LangDto.from(template.getLang()), 
-				template.getKind(), template.getPath(), template.getMetaDescription(), template.getMetaTitle(),
+				template.getKind(), template.getPath(), template.getController(), template.getMetaDescription(), template.getMetaTitle(),
 				template.getMetaKeyWords());
 	}
 
 	public static Template to(TemplateDto templateDto){
-		return new Template(templateDto.getId(), templateDto.getName(), templateDto.getDateAdded(), templateDto.getDateUpdated(), templateDto.getDescription(), LangDto.to(templateDto.getLang()), templateDto.getKind(), templateDto.getPath(), new HashSet<MapTemplate>(), new HashSet<MapTemplate>(), templateDto.getMetaDescription(), templateDto.getMetaTitle(), templateDto.getMetaKeyWords());
+		return new Template(templateDto.getId(), templateDto.getName(), templateDto.getDateAdded(), templateDto.getDateUpdated(), templateDto.getDescription(), LangDto.to(templateDto.getLang()), templateDto.getKind(), templateDto.getPath(), templateDto.getController(), new HashSet<MapTemplate>(), new HashSet<MapTemplate>(), templateDto.getMetaDescription(), templateDto.getMetaTitle(), templateDto.getMetaKeyWords());
 	}
 
 	public TemplateKind getKind() {
@@ -66,6 +70,14 @@ public class TemplateDto extends TranslationDto {
 
 	public String getPath() {
 		return path;
+	}
+
+	public String getController() {
+		return controller;
+	}
+
+	public void setController(String controller) {
+		this.controller = controller;
 	}
 
 	public void setPath(String path) {

@@ -164,7 +164,7 @@ public abstract class BaseService<T> implements IBaseService<T>, IBOService<T>{
 	@Override
 	public Page<T> findAll(Specification<T> spec, Pageable pageable) throws ServiceException {
 		try {
-			return baseDao.findAll(pageable);
+			return baseDao.findAll(spec, pageable);
 		} catch (PersistenceException e) {
 			throw new ServiceException("Error findAll", e);
 		}

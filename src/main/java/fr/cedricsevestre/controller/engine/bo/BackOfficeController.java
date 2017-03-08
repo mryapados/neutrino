@@ -70,6 +70,7 @@ import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.engine.BaseService;
 import fr.cedricsevestre.service.engine.EntityLocator;
 import fr.cedricsevestre.service.engine.bo.BackOfficeService;
+import fr.cedricsevestre.service.engine.independant.objects.FolderService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 import fr.cedricsevestre.specification.engine.IdProviderSpecification;
@@ -86,6 +87,11 @@ public class BackOfficeController extends AbtractController {
 	
 	@Autowired
 	private PageService pageService;
+	
+	@Autowired
+	private FolderService folderService;
+	
+	
 	
 	@Autowired
 	private TemplateService templateService;
@@ -156,16 +162,9 @@ public class BackOfficeController extends AbtractController {
 			Class<?> object = entityLocator.getEntity(type).getClass();
 			modelAndView.addObject("objectType", object.getSimpleName());
 			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
-			
-			//NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest);
-
-
+		
 			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest);
-			
-			
-			
-			
-			
+
 			modelAndView.addObject("objectDatas", tDatas.getObjectDatas());
 			modelAndView.addObject("datas", tDatas.getObjectDatas().getContent());
 			modelAndView.addObject("fields", tDatas.getFields());
@@ -794,17 +793,9 @@ public class BackOfficeController extends AbtractController {
 	@RequestMapping(value = "/objects/{type}", method = RequestMethod.GET)
 	public @ResponseBody List<IdProviderDto> getObjects(@PathVariable(value = "type") String type, @RequestParam("id") Integer[] ids) throws ServiceException {
 		Class<?> object = entityLocator.getEntity(type).getClass();
-
-		System.out.println(ids);
-
-//		Integer[] ints = {251,252,253,255,256,257,258};
-//		List<Integer> ids = new ArrayList<>();
-//		ids = Arrays.asList(ints);
-		
 		// Permet de limiter la requete
 		Pageable pageRequest = new PageRequest(0, BO_MAX_REQUEST_ELEMENT);
 		List<Integer> list = new ArrayList<>(Arrays.asList(ids));
-			
 		
 		Specification<IdProvider> spec = IdProviderSpecification.idIn(list);
 		Page<IdProvider> datas = backOfficeService.getDatas(object, pageRequest, spec);
