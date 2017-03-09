@@ -38,6 +38,13 @@ public class EntityLocator{
             	entities.put(bean.getKey().toUpperCase(),  bean.getValue());
             }
         }
-    }   
+    }
+
+	public Map<String, Object> getEntities() {
+		checkEntities();
+		return entities;
+	}
+	
+    
 }
 

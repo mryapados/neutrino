@@ -1,4 +1,4 @@
-package fr.cedricsevestre.controller.template.engine.bo;
+package fr.cedricsevestre.controller.block.custom;
 
 import javax.servlet.jsp.PageContext;
 
@@ -8,13 +8,12 @@ import org.springframework.ui.ModelMap;
 
 import fr.cedricsevestre.annotation.BlockController;
 import fr.cedricsevestre.annotation.BlockMapping;
-import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 
 @BlockController
 @Component
-public class BOBlockController {
+public class TestBlockController {
 
 	@BlockMapping(blockControllerName = "@bo_block_list")
 	public ModelMap testage(Translation model, Translation activeObject, Template template, PageContext pageContext){
@@ -28,7 +27,5 @@ public class BOBlockController {
 		
 		return null;
 	}
-	
-
 	
 }

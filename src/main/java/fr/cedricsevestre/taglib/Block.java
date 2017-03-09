@@ -1,7 +1,6 @@
 package fr.cedricsevestre.taglib;
 
 import java.io.IOException;
-import java.security.KeyStore.Entry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 
 import fr.cedricsevestre.common.Common;

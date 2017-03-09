@@ -2,27 +2,19 @@ package fr.cedricsevestre.conf;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import fr.cedricsevestre.controller.custom.ArticleController;
-import fr.cedricsevestre.controller.template.custom.TestBlockController;
 import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.custom.Album.AlbumType;
 import fr.cedricsevestre.entity.custom.File;
 import fr.cedricsevestre.entity.custom.File.FileType;
-import fr.cedricsevestre.entity.custom.Marker;
 import fr.cedricsevestre.entity.custom.Member;
 import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.custom.Tag;
@@ -33,8 +25,8 @@ import fr.cedricsevestre.entity.engine.independant.objects.NData;
 import fr.cedricsevestre.entity.engine.independant.objects.NSchema;
 import fr.cedricsevestre.entity.engine.independant.objects.NSchema.ScopeType;
 import fr.cedricsevestre.entity.engine.independant.objects.NType;
-import fr.cedricsevestre.entity.engine.independant.objects.Position;
 import fr.cedricsevestre.entity.engine.independant.objects.NType.ValueType;
+import fr.cedricsevestre.entity.engine.independant.objects.Position;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Page;
@@ -46,7 +38,6 @@ import fr.cedricsevestre.service.custom.MarkerService;
 import fr.cedricsevestre.service.custom.MemberService;
 import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.custom.TagService;
-import fr.cedricsevestre.service.engine.IBaseService;
 import fr.cedricsevestre.service.engine.bo.LinkService;
 import fr.cedricsevestre.service.engine.independant.objects.FolderService;
 import fr.cedricsevestre.service.engine.independant.objects.MapTemplateService;
@@ -56,7 +47,6 @@ import fr.cedricsevestre.service.engine.independant.objects.PositionService;
 import fr.cedricsevestre.service.engine.translation.LangService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
-import fr.cedricsevestre.taglib.Head;
 
 
 @Component
@@ -1328,13 +1318,22 @@ public class InitialisationBase {
 		Map<String, NType> columns = new HashMap<>();
 		columns.put("title", new NType(NType.ValueType.VARCHAR50));
 		columns.put("links", new NType(NType.ValueType.COLLECTION, NType.ValueType.TOBJECT));
-		Map<Lang, Translation> bMenu = mkBlock("@bo_block_menu", "header/menu/headerMenu", mkNSchema(columns, ScopeType.ONE));
+		Map<Lang, Translation> bMenuFree = mkBlock("@bo_block_menu_free", "header/menu/headerFree", mkNSchema(columns, ScopeType.ONE));
+		
+		Map<Lang, Translation> bMenuObjects = mkBlock("@bo_block_menu_objects", "header/menu/headerObjects");
+		
+		
+		
+		
+		
 		
 		NData nData = null;
 		NData nDataCollection = null;
 		NData nDataCollectionItem = null;
 		
-		Map<Lang, MapTemplate> mtHeaderMenu1 = addMapTemplate(models, bMenu, position);
+		Map<Lang, MapTemplate> mtHeaderMenu1 = addMapTemplate(models, bMenuFree, position);
+		
+		Map<Lang, MapTemplate> mtHeaderMenu2 = addMapTemplate(models, bMenuObjects, position);
 		
 		//Menu Translated objects
 		//EN

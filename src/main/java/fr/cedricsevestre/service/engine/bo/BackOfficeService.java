@@ -11,9 +11,13 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 import javax.persistence.ManyToMany;
@@ -41,6 +45,8 @@ import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.bean.NDatas;
 import fr.cedricsevestre.bean.NField;
 import fr.cedricsevestre.entity.engine.IdProvider;
+import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
+import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.EntityLocator;
@@ -698,6 +704,32 @@ public class BackOfficeService { //implements IBackOfficeService{
 	}
 	
 	
+	
+	
+	
+	
+	
+	private List<String> getListObjectType(Class<?> from){
+		SortedSet<String> result = new TreeSet<>();
+		Map<String, Object> entities = entityLocator.getEntities();
+		for (Map.Entry<String, Object> entity : entities.entrySet()) {
+			if (from.isAssignableFrom(entity.getValue().getClass())){
+				String entityName = entity.getValue().getClass().getSimpleName();
+				if (customServiceLocator.isServiceExist(entityName)){
+					result.add(entityName);
+				}
+			}
+		}
+		return new ArrayList<>(result);
+	}
+	
+
+	public List<String> getListTranslationObjectType(){
+		return getListObjectType(Translation.class);
+	}
+	public List<String> getListNoTranslationObjectType(){
+		return getListObjectType(NoTranslation.class);
+	}
 	
 	
 	
