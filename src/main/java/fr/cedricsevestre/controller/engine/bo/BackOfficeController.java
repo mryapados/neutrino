@@ -64,6 +64,7 @@ import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.FormException;
+import fr.cedricsevestre.exception.ResourceNotFoundException;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.AlbumService;
 import fr.cedricsevestre.service.custom.ProjectService;
@@ -171,6 +172,8 @@ public class BackOfficeController extends AbtractController {
 
 		} catch (ServiceException e) {
 			throw new JspException(e);
+		} catch (ClassNotFoundException e) {
+			throw new ResourceNotFoundException(type + " Not found !", e);
 		}
 		return modelAndView;
 	}
@@ -207,14 +210,19 @@ public class BackOfficeController extends AbtractController {
 	}
 	
 	public void delete(String type, Integer[] ids) throws ServiceException {
-		Class<?> object = entityLocator.getEntity(type).getClass();
-		List<IdProvider> idProviders = new ArrayList<>();
-		
-		for (Integer id : ids) {
-			IdProvider data = backOfficeService.getData(object, id);
-			idProviders.add(data);
+		try {
+			Class<?> object;
+			object = entityLocator.getEntity(type).getClass();
+			List<IdProvider> idProviders = new ArrayList<>();
+			for (Integer id : ids) {
+				IdProvider data = backOfficeService.getData(object, id);
+				idProviders.add(data);
+			}
+			backOfficeService.removeDatas(idProviders);
+			
+		} catch (ClassNotFoundException e) {
+			throw new ResourceNotFoundException(type + " Not found !", e);
 		}
-		backOfficeService.removeDatas(idProviders);
 	}
 
 	
@@ -296,10 +304,7 @@ public class BackOfficeController extends AbtractController {
 			
 			modelAndView = baseView(BO_EDIT_PAGE, folder);
 			Class<?> object = entityLocator.getEntity(type).getClass();
-			
-			
-			
-			
+
 			modelAndView.addObject("objectType", object.getSimpleName());
 			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
 
@@ -324,6 +329,8 @@ public class BackOfficeController extends AbtractController {
 
 		} catch (ServiceException e) {
 			throw new JspException(e);
+		} catch (ClassNotFoundException e) {
+			throw new ResourceNotFoundException(type + " Not found !", e);
 		}
 		return modelAndView;
 	}
@@ -353,6 +360,8 @@ public class BackOfficeController extends AbtractController {
 
 		} catch (ServiceException e) {
 			throw new JspException(e);
+		} catch (ClassNotFoundException e) {
+			throw new ResourceNotFoundException(type + " Not found !", e);
 		}
 		return modelAndView;
 	}
@@ -369,7 +378,12 @@ public class BackOfficeController extends AbtractController {
 		String[] identifier = objectTypeId.split("_");
     	
     	String objectType = identifier[0];
-    	Class<?> cls = entityLocator.getEntity(objectType).getClass();
+    	Class<?> cls;
+		try {
+			cls = entityLocator.getEntity(objectType).getClass();
+		} catch (ClassNotFoundException e) {
+			throw new ResourceNotFoundException(objectType + " Not found !", e);
+		}
 		if (cls == null){
             throw new IllegalArgumentException ("Unknown idProvider type:" + objectType);
 		}
@@ -555,6 +569,8 @@ public class BackOfficeController extends AbtractController {
 
 		} catch (ServiceException e) {
 			throw new JspException(e);
+		} catch (ClassNotFoundException e) {
+			throw new ResourceNotFoundException("Ressource not found !", e);
 		}
 		return modelAndView;
 	}
@@ -650,7 +666,12 @@ public class BackOfficeController extends AbtractController {
 	@Deprecated
 	@RequestMapping(value = BO_ASSIGN_LIST_URL + "{type}/{field}/{id}", method = RequestMethod.GET)
 	public @ResponseBody List<IdProviderDto> getAssignableList(@PathVariable(value = "type") String assignType, @PathVariable(value = "field") String ownerField, @PathVariable(value = "id") Integer ownerId) throws ServiceException {
-		Class<?> object = entityLocator.getEntity(assignType).getClass();
+		Class<?> object;
+		try {
+			object = entityLocator.getEntity(assignType).getClass();
+		} catch (ClassNotFoundException e) {
+			throw new ResourceNotFoundException("Ressource not found !", e);
+		}
 		List<IdProviderDto> results = new ArrayList<>();
 		List<?> list = backOfficeService.getAllNotAffected(object.getSimpleName(), ownerField, ownerId, 0, 100);
 		for (Object item : list) {
@@ -674,7 +695,12 @@ public class BackOfficeController extends AbtractController {
 	@Deprecated
 	@RequestMapping(value = BO_ASSIGN_LIST_URL + "{type}", method = RequestMethod.GET)
 	public @ResponseBody List<IdProviderDto> getAssignableList(@PathVariable(value = "type") String assignType) throws ServiceException {
-		Class<?> object = entityLocator.getEntity(assignType).getClass();
+		Class<?> object;
+		try {
+			object = entityLocator.getEntity(assignType).getClass();
+		} catch (ClassNotFoundException e) {
+			throw new ResourceNotFoundException("Ressource not found !", e);
+		}
 		List<IdProviderDto> results = new ArrayList<>();
 		List<?> list = backOfficeService.getAll(object.getSimpleName(), 5, 10);
 		for (Object item : list) {
@@ -759,6 +785,8 @@ public class BackOfficeController extends AbtractController {
 
 		} catch (ServiceException e) {
 			throw new JspException(e);
+		} catch (ClassNotFoundException e) {
+			throw new ResourceNotFoundException("Ressource not found !", e);
 		}
 		return modelAndView;
 	}
@@ -792,26 +820,28 @@ public class BackOfficeController extends AbtractController {
 
 	@RequestMapping(value = "/objects/{type}", method = RequestMethod.GET)
 	public @ResponseBody List<IdProviderDto> getObjects(@PathVariable(value = "type") String type, @RequestParam("id") Integer[] ids) throws ServiceException {
-		Class<?> object = entityLocator.getEntity(type).getClass();
-		// Permet de limiter la requete
-		Pageable pageRequest = new PageRequest(0, BO_MAX_REQUEST_ELEMENT);
-		List<Integer> list = new ArrayList<>(Arrays.asList(ids));
-		
-		Specification<IdProvider> spec = IdProviderSpecification.idIn(list);
-		Page<IdProvider> datas = backOfficeService.getDatas(object, pageRequest, spec);
-		
-		List<IdProviderDto> idProviderDtos = new ArrayList<>();
-		for (IdProvider idProvider : datas) {
-			idProviderDtos.add(IdProviderDto.from(idProvider));
+		try {
+			Class<?> object;
+			object = entityLocator.getEntity(type).getClass();
+			
+			// Permet de limiter la requete
+			Pageable pageRequest = new PageRequest(0, BO_MAX_REQUEST_ELEMENT);
+			List<Integer> list = new ArrayList<>(Arrays.asList(ids));
+			
+			Specification<IdProvider> spec = IdProviderSpecification.idIn(list);
+			Page<IdProvider> datas = backOfficeService.getDatas(object, pageRequest, spec);
+			
+			List<IdProviderDto> idProviderDtos = new ArrayList<>();
+			for (IdProvider idProvider : datas) {
+				idProviderDtos.add(IdProviderDto.from(idProvider));
+			}
+			
+			return idProviderDtos;
+		} catch (ClassNotFoundException e) {
+			throw new ResourceNotFoundException(type + " Not found !", e);
 		}
-		
-		return idProviderDtos;
+
 	}
-
-
-
-
-
 
 }
 

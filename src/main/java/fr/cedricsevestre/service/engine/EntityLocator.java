@@ -21,9 +21,12 @@ public class EntityLocator{
     private ApplicationContext context;
     private Map<String, Object> entities;
 
-    public Object getEntity(String entityName) {
+    public Object getEntity(String entityName) throws ClassNotFoundException {
     	checkEntities();
     	Object result = entities.get(entityName.toUpperCase());
+        if (result == null) {
+        	throw new ClassNotFoundException("class '" + entityName + "' not found !");
+        }
     	logger.debug("getEntity -> Entity (" + entityName.toUpperCase() + ") is null ? = " + (result == null));
         return result;
         

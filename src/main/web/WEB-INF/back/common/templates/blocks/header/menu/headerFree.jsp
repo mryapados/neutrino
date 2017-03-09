@@ -6,9 +6,9 @@
 <my:init test="${!initialized}"/>
 
 <li uib-dropdown>
-	<a href="#" id="my-menu" uib-dropdown-toggle role="button">${title.value} <span class="caret"></span></a>
+	<a href="#" id="my-menu" uib-dropdown-toggle role="button">${nDatas.title.value} <span class="caret"></span></a>
 	<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="my-menu">
-		<c:forEach var="item" items="${links.value}" varStatus="status">
+		<c:forEach var="item" items="${nDatas.links.value}" varStatus="status">
 			<li><a href="${item.value.url}">${item.value.title}</a></li>
 		</c:forEach>
 	</ul>

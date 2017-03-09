@@ -2,6 +2,7 @@ package fr.cedricsevestre.taglib;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -152,11 +153,13 @@ public class Block extends TagSupport implements IIncludeJSP {
 						} else if (nSchema.getScope() == ScopeType.ONE){
 							nDatas = nDataService.findAllForMapTemplate(mapTemplate);
 						}
-						
-//						List<Object> properties = new ArrayList<>();
+
+						Map<String, Object> mapNDatas = new HashMap<>(); 
 						for (NData nData : nDatas) {
-							pageContext.setAttribute(nData.getPropertyName(), nDataService.getNDataValue(nData), PageContext.REQUEST_SCOPE);
+							mapNDatas.put(nData.getPropertyName(), nDataService.getNDataValue(nData));
 						}
+						pageContext.setAttribute("nDatas", mapNDatas, PageContext.REQUEST_SCOPE);
+						
 					}
 					
 					String path = templateService.getPathJSP(true, folder, page.getContext(), activeBlock, true);
