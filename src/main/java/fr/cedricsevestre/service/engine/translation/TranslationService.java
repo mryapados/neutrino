@@ -49,11 +49,15 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Transactional
-	public T translate(T base, Lang lang, Class<T> cls) throws ServiceException, InstantiationException, IllegalAccessException {
+	public T translate(T base, Lang lang) throws ServiceException, InstantiationException, IllegalAccessException {
 		if (base.getId() != null) base = translationDao.findOne(base.getId()); //Refresh object
-		T translated = cls.newInstance(); 
+		T translated = (T) base.getClass().newInstance();
 
+		
+		
+		
 		TranslationProvider translation = base.getTranslation();
 		if (translation == null){
 			translation = translationProviderDao.save(new TranslationProvider());

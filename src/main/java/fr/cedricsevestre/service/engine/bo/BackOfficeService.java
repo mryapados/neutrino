@@ -44,13 +44,16 @@ import fr.cedricsevestre.annotation.BOField.SortType;
 import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.bean.NDatas;
 import fr.cedricsevestre.bean.NField;
+import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
+import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.EntityLocator;
 import fr.cedricsevestre.service.engine.ServiceLocator;
+import fr.cedricsevestre.service.engine.translation.TranslationService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 import fr.cedricsevestre.specification.engine.IdProviderSpecification;
 
@@ -63,6 +66,9 @@ public class BackOfficeService { //implements IBackOfficeService{
 	@PersistenceContext
 	private EntityManager em;
 
+	@Autowired
+	private TranslationService<Translation> translationService;
+	
 	@Autowired
 	TemplateService templateService;
 	
@@ -414,9 +420,30 @@ public class BackOfficeService { //implements IBackOfficeService{
 	
 	
 	@SuppressWarnings("unchecked")
-	public IdProvider add(Class<?> entity) throws ServiceException {
+	public IdProvider add(Class<?> entity, Lang lang) throws ServiceException {
 		try {
-			return (IdProvider) entity.newInstance();
+			
+			
+			
+//			Page loginEN = pageService.translate(new Page(), langEN);
+//			loginEN.setName("login_" + langEN.getCode().toUpperCase());
+//			loginEN.setContext("static");
+//			loginEN.setDescription("login description en");
+//			loginEN.setModel(templateService.findByNameWithAllExceptData("login_" + langEN.getCode().toUpperCase()));
+//			pageService.save(loginEN);
+			
+			//Album albumNoProjectEN = albumService.translate(new Album(), langEN, Album.class);
+			
+
+			if (Translation.class.isAssignableFrom(entity)){
+				Translation base = (Translation) entity.newInstance();
+				Translation translation = translationService.translate((Translation) entity.newInstance(), lang);
+				return translation;
+			} else{
+				return (IdProvider) entity.newInstance();
+			}
+			
+			
 		} catch (InstantiationException e) {
 			throw new ServiceException("add -> Error", e) ;
 		} catch (IllegalAccessException e) {
@@ -424,12 +451,12 @@ public class BackOfficeService { //implements IBackOfficeService{
 		} 
 	}
 	
-	public NData<IdProvider> copy(Class<?> entity, Integer id) throws ServiceException {
+	public NData<IdProvider> copy(Class<?> entity, Integer id, Lang lang) throws ServiceException {
 		List<Field> fields = getFields(entity);
 		Map<String, Map<String, List<NField>>> nMapFields = getMapNField(fields);
 		IdProvider data = null;
 		if (id == 0){
-			data = add(entity);
+			data = add(entity, lang);
 		} else {
 			data = getData(entity, id, null);
 			data.setId(null);

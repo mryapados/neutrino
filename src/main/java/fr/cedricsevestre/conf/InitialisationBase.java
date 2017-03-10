@@ -782,7 +782,7 @@ public class InitialisationBase {
 		Calendar c = Calendar.getInstance();
 		c.add(Calendar.YEAR, 1);
 		
-		Project projectEN =   projectService.translate(new Project(), langEN, Project.class);
+		Project projectEN =   projectService.translate(new Project(), langEN);
 		name = "testproject";
 		projectEN.setDateAdded(c.getTime());
 		projectEN.setDateUpdated(c.getTime());
@@ -791,7 +791,7 @@ public class InitialisationBase {
 		projectEN.setFolder(folders.get("front"));
 		projectService.save(projectEN);
 		
-		Project projectFR = projectService.translate(projectEN, langFR, Project.class);
+		Project projectFR = projectService.translate(projectEN, langFR);
 		projectFR.setName(name + "_" + langFR.getCode().toUpperCase());
 		projectFR.setDateAdded(c.getTime());
 		projectFR.setDateUpdated(c.getTime());
@@ -801,13 +801,13 @@ public class InitialisationBase {
 	
 		Integer max = 100;
 		for (int i = 0; i < max; i++) {
-			projectEN =   projectService.translate(new Project(), langEN, Project.class);
+			projectEN =   projectService.translate(new Project(), langEN);
 			name = "generatedProject_" + i;
 			projectEN.setName(name + "_" + langEN.getCode().toUpperCase());
 			projectEN.setDescription(name + " description en");
 			projectService.save(projectEN);
 			
-			projectFR = projectService.translate(projectEN, langFR, Project.class);
+			projectFR = projectService.translate(projectEN, langFR);
 			projectFR.setName(name + "_" + langFR.getCode().toUpperCase());
 			projectFR.setDescription(name + " description fr");
 			projectService.save(projectFR);
@@ -824,14 +824,14 @@ public class InitialisationBase {
 
 		
 		
-		Album albumNoProjectEN = albumService.translate(new Album(), langEN, Album.class);
+		Album albumNoProjectEN = albumService.translate(new Album(), langEN);
 		name = "testAlbumNoProject";
 		albumNoProjectEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		albumNoProjectEN.setDescription(name + " description en");
 		albumNoProjectEN.setAlbumType(AlbumType.DEFAULT);
 		albumService.save(albumNoProjectEN);
 		
-		Album albumNoProjectFR = albumService.translate(albumNoProjectEN, langFR, Album.class);
+		Album albumNoProjectFR = albumService.translate(albumNoProjectEN, langFR);
 		albumNoProjectFR.setName(name + "_" + langFR.getCode().toUpperCase());
 		albumNoProjectFR.setDescription(name + " description fr");
 		albumNoProjectFR.setAlbumType(AlbumType.DEFAULT);
@@ -843,7 +843,7 @@ public class InitialisationBase {
 		Project ProjectEN = projectService.findByName("testproject_EN");
 		Project ProjectFR = projectService.findByName("testproject_FR");
 		
-		Album albumEN = albumService.translate(new Album(), langEN, Album.class);
+		Album albumEN = albumService.translate(new Album(), langEN);
 		name = "testAlbum";
 		albumEN.setName(name + "_" + langEN.getCode().toUpperCase());
 		albumEN.setDescription(name + " description en");
@@ -851,7 +851,7 @@ public class InitialisationBase {
 		albumEN.setAlbumType(AlbumType.DEFAULT);
 		albumService.save(albumEN);
 		
-		Album albumFR = albumService.translate(albumEN, langFR, Album.class);
+		Album albumFR = albumService.translate(albumEN, langFR);
 		albumFR.setName(name + "_" + langFR.getCode().toUpperCase());
 		albumFR.setDescription(name + " description fr");
 		albumFR.setProject(ProjectFR);
@@ -860,7 +860,7 @@ public class InitialisationBase {
 		
 		Integer max = 20;
 		for (int i = 0; i < max; i++) {
-			albumEN =   albumService.translate(new Album(), langEN, Album.class);
+			albumEN =   albumService.translate(new Album(), langEN);
 			name = "generatedAlbum_" + i;
 			albumEN.setName(name + "_" + langEN.getCode().toUpperCase());
 			albumEN.setDescription(name + " description en");
@@ -868,7 +868,7 @@ public class InitialisationBase {
 			albumEN.setAlbumType(AlbumType.DEFAULT);
 			albumService.save(albumEN);
 			
-			albumFR = albumService.translate(albumEN, langFR, Album.class);
+			albumFR = albumService.translate(albumEN, langFR);
 			albumFR.setName(name + "_" + langFR.getCode().toUpperCase());
 			albumFR.setDescription(name + " description fr");
 			albumFR.setProject(ProjectFR);
@@ -1300,7 +1300,7 @@ public class InitialisationBase {
 	
 	public Link addLink(Link master, Lang lang, String name, String title, String description, String url, String picto) throws ServiceException{
 		try {
-			Link link = linkService.translate(master, lang, Link.class);
+			Link link = linkService.translate(master, lang);
 			link.setName(name + "_" + lang.getCode().toUpperCase());
 			link.setDescription(description);
 			link.setTitle(title);

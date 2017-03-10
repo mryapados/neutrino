@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="my" uri="/WEB-INF/taglibs/neutrino.tld"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 
 <my:init test="${!initialized}" />
 
@@ -37,33 +37,26 @@
                         <span class="fa fa-user fa-fw"></span> <span class="fa fa-caret-down"></span>
                     </a>
                     <ul uib-dropdown-menu class="dropdown-menu dropdown-user">
-                        <li><a href="#"><span class="fa fa-user fa-fw"></span> <spring:message code="bo.connexion.user-profile" /></a></li>
-                        <li><a href="#"><span class="fa fa-gear fa-fw"></span> <spring:message code="bo.connexion.settings" /></a></li>
+                        <li><a href="#"><span class="fa fa-user fa-fw"></span> <s:message code="bo.connexion.user-profile" /></a></li>
+                        <li><a href="#"><span class="fa fa-gear fa-fw"></span> <s:message code="bo.connexion.settings" /></a></li>
                         <li class="divider"></li>
-                        <li><a href="<c:url value='/logout'/>"><span class="fa fa-sign-out fa-fw"></span> <spring:message code="bo.connexion.logout" /></a></li>
+                        <li><a href="<c:url value='/logout'/>"><span class="fa fa-sign-out fa-fw"></span> <s:message code="bo.connexion.logout" /></a></li>
                     </ul>
                 </li>
+                
+                
 				<li uib-dropdown>
                     <a href="#" uib-dropdown-toggle>
                        <span class="lang-sm lang-lbl-full" lang="${language}"></span> <span class="caret"></span>
                     </a>
-					<ul uib-dropdown-menu class="dropdown-menu" role="menu">
-						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="ar"></span></a></li>
-						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="be"></span></a></li>
-						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="bg"></span></a></li>
-						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="cs"></span></a></li>
-						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="da"></span></a></li>
-						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="de"></span></a></li>
-						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="el"></span></a></li>
-						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="en"></span></a></li>
-						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="es"></span></a></li>
-						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="et"></span></a></li>
-						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="fi"></span></a></li>
-						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="fr"></span></a></li>
-						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="ga"></span></a></li>
-						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="hi"></span></a></li>
-						<li><a href="#"><span class="lang-sm lang-lbl-full" lang="hr"></span></a></li>
-					</ul>
+                    <ul uib-dropdown-menu class="dropdown-menu" role="menu">
+						<c:forEach var="item" items="${langs}" varStatus="status">
+							<li>
+								<a href="<c:url value='/bo/language/?language=${item.code}'/>">
+								<span class="lang-sm lang-lbl-full" lang="${item.code}"></span></a>
+							</li>
+						</c:forEach>
+                    </ul>
 				</li>
 			</ul>
 		</div>

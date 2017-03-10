@@ -93,7 +93,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
-		interceptor.setParamName("lang");
+		interceptor.setParamName("language");
 		registry.addInterceptor(interceptor);
 
 		//ServerNameInterceptor serverNameInterceptor = new ServerNameInterceptor();

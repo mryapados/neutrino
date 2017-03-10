@@ -27,6 +27,7 @@ import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
@@ -72,6 +73,7 @@ import fr.cedricsevestre.service.engine.BaseService;
 import fr.cedricsevestre.service.engine.EntityLocator;
 import fr.cedricsevestre.service.engine.bo.BackOfficeService;
 import fr.cedricsevestre.service.engine.independant.objects.FolderService;
+import fr.cedricsevestre.service.engine.translation.LangService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 import fr.cedricsevestre.specification.engine.IdProviderSpecification;
@@ -85,14 +87,8 @@ public class BackOfficeController extends AbtractController {
 	@Autowired
 	private BackOfficeService backOfficeService;
 	
-	
 	@Autowired
-	private PageService pageService;
-	
-	@Autowired
-	private FolderService folderService;
-	
-	
+	private LangService langService;
 	
 	@Autowired
 	private TemplateService templateService;
@@ -104,6 +100,8 @@ public class BackOfficeController extends AbtractController {
 	
 	@Autowired
 	EntityLocator entityLocator;
+	
+	public static final String BO_LANGUAGE_URL = "language/";
 	
 	public static final String BO_HOME_URL = "";
 	public static final String BO_HOME_PAGE = "@bo_page_home";
@@ -118,6 +116,7 @@ public class BackOfficeController extends AbtractController {
 	public static final String BO_VIEW_PAGE = "@bo_page_view";
 	
 	public static final String BO_NEW_URL = "new/";
+	public static final String BO_NEW_TRANSLATION_URL = "new/translation/";
 	public static final String BO_NEW_PAGE = "@bo_page_new";
 	
 	public static final String BO_REMOVES_URL = "removes/";
@@ -128,11 +127,16 @@ public class BackOfficeController extends AbtractController {
 	
 	
 	public static final Integer BO_MAX_REQUEST_ELEMENT = 1000;
-	
-	
+
 	@Deprecated
 	public static final String BO_ASSIGN_LIST_URL = "assignlist/";
-	
+
+	private ModelMap init() throws ServiceException{
+		ModelMap modelMap = new ModelMap();
+		modelMap.addAttribute("langs", langService.findAll());			
+		return modelMap;
+	}
+
 	private Folder getBOFolder() throws JspException{
 		try {
 			return common.getFolder(Common.BACK);
@@ -141,13 +145,20 @@ public class BackOfficeController extends AbtractController {
 		}
 	}
 	
+	@RequestMapping(value = BO_LANGUAGE_URL, method = RequestMethod.GET)
+	public ModelAndView language(HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
+		String referer = request.getHeader("Referer");
+		ModelAndView modelAndView = new ModelAndView("redirect:" + referer);
+		return modelAndView;
+	}
+	
 	@RequestMapping(value = BO_HOME_URL, method = RequestMethod.GET)
 	public ModelAndView home() throws JspException   {
 		Folder folder = getBOFolder();
 		ModelAndView modelAndView = null;
 		try {
 			modelAndView = baseView(BO_HOME_PAGE, folder);
-
+			modelAndView.addAllObjects(init());
 		} catch (ServiceException e) {
 			throw new JspException(e);
 		}
@@ -160,6 +171,7 @@ public class BackOfficeController extends AbtractController {
 		ModelAndView modelAndView = null;
 		try {
 			modelAndView = baseView(BO_LIST_PAGE, folder);
+			modelAndView.addAllObjects(init());
 			Class<?> object = entityLocator.getEntity(type).getClass();
 			modelAndView.addObject("objectType", object.getSimpleName());
 			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
@@ -262,12 +274,23 @@ public class BackOfficeController extends AbtractController {
 	
 	
 	
-	
+	@RequestMapping(value = BO_NEW_TRANSLATION_URL, method = RequestMethod.GET)
+	public ModelAndView add(@RequestParam("type") String type, @RequestParam("lang") String langCode, @RequestParam(value = "id", required = false) Integer id) throws JspException   {
+		try {
+			Lang lang;
+			lang = langService.findByCode(langCode);
+			if (lang == null) throw new ResourceNotFoundException(langCode + " Not found !");	
+			if (id == null) id = 0;
+			return add(type, id, lang, false);
+		} catch (ServiceException e) {
+			throw new JspException(e);
+		}
+	}
 	
 	@RequestMapping(value = BO_NEW_URL, method = RequestMethod.GET)
 	public ModelAndView add(@RequestParam("type") String type, @RequestParam(value = "id", required = false) Integer id) throws JspException   {
 		if (id == null) id = 0;
-		return add(type, id, false);
+		return add(type, id, null, false);
 	}
 	
 	@RequestMapping(value = BO_NEW_URL, method = RequestMethod.POST)
@@ -275,7 +298,7 @@ public class BackOfficeController extends AbtractController {
 		if (id == null) id = 0;
 		ModelAndView modelAndView = null;
 		if (result.hasErrors()) {
-			modelAndView = add(type, id, true);
+			modelAndView = add(type, id, null, true);
 		} else{
 			try {
 				//data.setId(null);
@@ -290,19 +313,20 @@ public class BackOfficeController extends AbtractController {
 		return modelAndView;
 	}
 	
-	public ModelAndView add(String type, Integer id, Boolean saveError) throws JspException   {
-		return edit(type, id, true, saveError);
+	public ModelAndView add(String type, Integer id, Lang lang, Boolean saveError) throws JspException   {
+		return edit(type, id, lang, true, saveError);
 	}
 	public ModelAndView edit(String type, Integer id, Boolean saveError) throws JspException   {
-		return edit(type, id, false, saveError);
+		return edit(type, id, null, false, saveError);
 	}
-	public ModelAndView edit(String type, Integer id, Boolean isNew, Boolean saveError) throws JspException   {
+	public ModelAndView edit(String type, Integer id, Lang lang, Boolean isNew, Boolean saveError) throws JspException   {
 		Folder folder = getBOFolder();
 		ModelAndView modelAndView = null;
 		try {
 			System.out.println("zzzzzzzzzzzzzzzzzzzzzz type = " + type);
 			
 			modelAndView = baseView(BO_EDIT_PAGE, folder);
+			modelAndView.addAllObjects(init());
 			Class<?> object = entityLocator.getEntity(type).getClass();
 
 			modelAndView.addObject("objectType", object.getSimpleName());
@@ -310,7 +334,7 @@ public class BackOfficeController extends AbtractController {
 
 			NData<IdProvider> tData = null;
 			if (isNew){
-				tData = backOfficeService.copy(object, id);
+				tData = backOfficeService.copy(object, id, lang);
 			} else {
 				tData = backOfficeService.findOne(object, id);
 			}
@@ -341,7 +365,7 @@ public class BackOfficeController extends AbtractController {
 		ModelAndView modelAndView = null;
 		try {
 			modelAndView = baseView(BO_VIEW_PAGE, folder);
-
+			modelAndView.addAllObjects(init());
 			Class<?> object = entityLocator.getEntity(type).getClass();
 			
 			System.out.println("		Superclass = " + object.getSuperclass());
@@ -538,7 +562,8 @@ public class BackOfficeController extends AbtractController {
 			fr.cedricsevestre.entity.engine.translation.objects.Page page = common.getPage(BO_LIST_PAGE, langCode);
 			Template block = templateService.findByName(BO_BLOCK_LIST + "_" + langCode.toUpperCase());
 			modelAndView = baseView(page, block, folder);
-
+			modelAndView.addAllObjects(init());
+			
 			modelAndView.addObject("page", page);
 			modelAndView.addObject("activeBlock", block);
 			response.addHeader("Object-Type", "parsedBlock");  
@@ -591,7 +616,8 @@ public class BackOfficeController extends AbtractController {
 //			fr.cedricsevestre.entity.engine.translation.objects.Page page = common.getPage(BO_LIST_PAGE, langCode);
 //			Template block = templateService.findByName(BO_BLOCK_LIST + "_" + langCode.toUpperCase());
 //			modelAndView = baseView(page, block, folder);
-//			
+//			modelAndView.addAllObjects(init());
+	
 //			if (many == null) many = false;
 //			modelAndView.addObject("many", many);
 //			
@@ -769,6 +795,8 @@ public class BackOfficeController extends AbtractController {
 			fr.cedricsevestre.entity.engine.translation.objects.Page page = common.getPage(BO_LIST_PAGE, langCode);
 			Template block = templateService.findByName(BO_BLOCK_LIST + "_" + langCode.toUpperCase());
 			modelAndView = baseView(page, block, folder);
+			modelAndView.addAllObjects(init());
+			
 			modelAndView.addObject("page", page);
 			modelAndView.addObject("activeBlock", block);
 			response.addHeader("Object-Type", "parsedBlock");  

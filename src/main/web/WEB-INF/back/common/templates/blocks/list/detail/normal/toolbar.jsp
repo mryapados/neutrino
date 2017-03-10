@@ -84,13 +84,24 @@
 				<button id="delete_button" type="submit" class="btn btn-danger">
 					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remove
 				</button>
-				
-				<c:url var="url" value="/bo/new/" scope="request">
-					<c:param name="type" value="${objectType}"/>
-				</c:url>
-				<a href="${url}" role="button" class="btn btn-primary">
-					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
-				</a>
+
+				<div class="btn-group${position eq 'bottom' ? ' dropup' : ''}" role="group" uib-dropdown >
+					<button class="btn btn-primary" uib-dropdown-toggle>
+                       <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add <span class="lang-sm" lang="${language}"></span> <span class="caret"></span>
+                   	</button>
+                    <ul uib-dropdown-menu class="dropdown-menu" role="menu">
+						<c:forEach var="item" items="${langs}" varStatus="status">
+							<li>
+								<c:url var="url" value="/bo/new/" scope="request">
+									<c:param name="type" value="${objectType}"/>
+									<c:param name="lg" value="${item.code}"/>
+								</c:url>
+								<a href="${url}"><span class="lang-sm lang-lbl-full" lang="${item.code}"></span></a>
+							</li>
+						</c:forEach>
+                    </ul>
+				</div>
+
 			</div>
 		</div>
 	</c:if>
