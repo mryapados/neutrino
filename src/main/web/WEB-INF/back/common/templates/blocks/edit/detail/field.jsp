@@ -5,8 +5,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 
-<c:set var="FINAL_MAX_ELEMENT" value="3" />
+<h3>EDIT : finalFieldType = ${finalFieldType} - finalField.name = ${finalField.name} - finalFieldType = ${finalFieldType}</h3>
 
+<c:set var="FINAL_MAX_ELEMENT" value="3" />
 <c:choose>
 	<c:when test="${finalFieldType eq 'INTEGER'}">
 		<c:set var="fieldError"><form:errors path="${finalField.name}"/></c:set>

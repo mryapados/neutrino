@@ -1299,7 +1299,6 @@ public class InitialisationBase {
 	}
 	
 	public Link addLink(Link master, Lang lang, String name, String title, String description, String url, String picto) throws ServiceException{
-		try {
 			Link link = linkService.translate(master, lang);
 			link.setName(name + "_" + lang.getCode().toUpperCase());
 			link.setDescription(description);
@@ -1308,10 +1307,6 @@ public class InitialisationBase {
 			link.setPicto(picto);
 			linkService.save(link);
 			return link;
-		} catch (InstantiationException | IllegalAccessException e) {
-			throw new ServiceException("error addLink", e);
-		}
-
 	}
 	
 	public void generateMenu(Map<Lang, Translation> models, Position position) throws ServiceException{

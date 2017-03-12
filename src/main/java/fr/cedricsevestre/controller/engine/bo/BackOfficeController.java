@@ -275,7 +275,7 @@ public class BackOfficeController extends AbtractController {
 	
 	
 	@RequestMapping(value = BO_NEW_TRANSLATION_URL, method = RequestMethod.GET)
-	public ModelAndView add(@RequestParam("type") String type, @RequestParam("lang") String langCode, @RequestParam(value = "id", required = false) Integer id) throws JspException   {
+	public ModelAndView add(@RequestParam("type") String type, @RequestParam("lg") String langCode, @RequestParam(value = "id", required = false) Integer id) throws JspException   {
 		try {
 			Lang lang;
 			lang = langService.findByCode(langCode);
@@ -291,6 +291,34 @@ public class BackOfficeController extends AbtractController {
 	public ModelAndView add(@RequestParam("type") String type, @RequestParam(value = "id", required = false) Integer id) throws JspException   {
 		if (id == null) id = 0;
 		return add(type, id, null, false);
+	}
+	
+	@RequestMapping(value = BO_NEW_TRANSLATION_URL, method = RequestMethod.POST)
+	public ModelAndView add(@RequestParam("type") String type, @RequestParam("lg") String langCode, @RequestParam(value = "id", required = false) Integer id, @Valid @ModelAttribute("object") Translation data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
+		
+		Lang lang;
+		try {
+			lang = langService.findByCode(langCode);
+		} catch (ServiceException e) {
+			throw new JspException(e);
+		}
+		
+		if (id == null) id = 0;
+		ModelAndView modelAndView = null;
+		if (result.hasErrors()) {
+			modelAndView = add(type, id, lang, true);
+		} else{
+			try {
+				data = (Translation) backOfficeService.translate(data, lang);
+				Translation res = (Translation) backOfficeService.saveData(data);				
+				modelAndView = new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_VIEW_URL);
+				redirectAttributes.addAttribute("type", type);
+				redirectAttributes.addAttribute("id", res.getId());
+			} catch (ServiceException e) {
+				throw new JspException(e);
+			}
+		}
+		return modelAndView;
 	}
 	
 	@RequestMapping(value = BO_NEW_URL, method = RequestMethod.POST)
@@ -313,6 +341,7 @@ public class BackOfficeController extends AbtractController {
 		return modelAndView;
 	}
 	
+	
 	public ModelAndView add(String type, Integer id, Lang lang, Boolean saveError) throws JspException   {
 		return edit(type, id, lang, true, saveError);
 	}
@@ -334,7 +363,7 @@ public class BackOfficeController extends AbtractController {
 
 			NData<IdProvider> tData = null;
 			if (isNew){
-				tData = backOfficeService.copy(object, id, lang);
+				tData = backOfficeService.copy(object, id);
 			} else {
 				tData = backOfficeService.findOne(object, id);
 			}
@@ -342,12 +371,28 @@ public class BackOfficeController extends AbtractController {
 			modelAndView.addObject("fields", tData.getFields());
 			
 			if (saveError == null || saveError == false){
+
+				
+				
 				modelAndView.addObject("object", tData.getObjectData());
+			} else {
+				ModelMap modelMap = modelAndView.getModelMap();
+				Translation object2 = (Translation) modelMap.get("object");
+				
+				System.out.println(object2.getName());
+				
 			}
 
+			
+			
 			modelAndView.addObject("objectName", tData.getObjectData().getName());
 			if (object.getSuperclass().equals(Translation.class)){
 				Translation translation = (Translation) tData.getObjectData();
+				
+				if (translation.getLang() == null){
+					translation.setLang(lang);
+				}
+				
 				modelAndView.addObject("objectLang", translation.getLang());
 			}
 
@@ -491,7 +536,7 @@ public class BackOfficeController extends AbtractController {
 						//if (objects.length > 1){
 							//String[] idProviders = objects[1].split(",");
 							String[] idProviders = listString.split(",");
-							for (String string : idProviders) {						
+							for (String string : idProviders) {
 								IdProvider item = mkIdProvider(string);
 								bag.add(item);
 							}

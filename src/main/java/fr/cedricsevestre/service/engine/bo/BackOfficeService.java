@@ -419,44 +419,74 @@ public class BackOfficeService { //implements IBackOfficeService{
 	}
 	
 	
-	@SuppressWarnings("unchecked")
-	public IdProvider add(Class<?> entity, Lang lang) throws ServiceException {
+	
+	
+	public Translation translate(Translation base, Lang lang) throws ServiceException{
 		try {
+			Class<?> entity = base.getClass();
+			Object service = customServiceLocator.getService(entity.getSimpleName());
+			Class<?> clazz = service.getClass();
 			
-			
-			
-//			Page loginEN = pageService.translate(new Page(), langEN);
-//			loginEN.setName("login_" + langEN.getCode().toUpperCase());
-//			loginEN.setContext("static");
-//			loginEN.setDescription("login description en");
-//			loginEN.setModel(templateService.findByNameWithAllExceptData("login_" + langEN.getCode().toUpperCase()));
-//			pageService.save(loginEN);
-			
-			//Album albumNoProjectEN = albumService.translate(new Album(), langEN, Album.class);
-			
-
-			if (Translation.class.isAssignableFrom(entity)){
-				Translation base = (Translation) entity.newInstance();
-				Translation translation = translationService.translate((Translation) entity.newInstance(), lang);
-				return translation;
-			} else{
-				return (IdProvider) entity.newInstance();
+			Method[] methods = clazz.getMethods();
+			for (Method method : methods) {
+				System.out.println(method.getName() + " - " + method.getParameterTypes());
 			}
 			
+			Method translate;
+			Object paramsObj[] = {base, lang};
+			try {
+				//Try to find method from his service
+				Class<?> params[] = {entity, Lang.class};
+				translate = clazz.getMethod("translate", params);
+			} catch (NoSuchMethodException e) {
+				//find method from TranslationService
+				Class<?> params[] = {Translation.class, Lang.class};
+				translate = clazz.getMethod("translate", params);
+			}
+
+			return (Translation) translate.invoke(service, paramsObj);
 			
+		} catch (ClassNotFoundException e) {
+			logger.error("getData -> ClassNotFoundException", e);
+			throw new ServiceException("Error getList", e);
+		} catch (SecurityException e) {
+			logger.error("getData -> SecurityException", e);
+			throw new ServiceException("Error getList", e);
+		} catch (IllegalAccessException e) {
+			logger.error("getData -> IllegalAccessException", e);
+			throw new ServiceException("Error getList", e);
+		} catch (NoSuchMethodException e) {
+			logger.error("getData -> NoSuchMethodException", e);
+			throw new ServiceException("Error getList", e);
+		} catch (IllegalArgumentException e) {
+			logger.error("getData -> IllegalArgumentException", e);
+			throw new ServiceException("Error getList", e);
+		} catch (InvocationTargetException e) {
+			logger.error("getData -> InvocationTargetException", e);
+			throw new ServiceException("Error getList", e);
+		}
+	}
+	
+
+	
+	
+	@SuppressWarnings("unchecked")
+	public IdProvider add(Class<?> entity) throws ServiceException {
+		try {
+			return (IdProvider) entity.newInstance();
 		} catch (InstantiationException e) {
 			throw new ServiceException("add -> Error", e) ;
 		} catch (IllegalAccessException e) {
 			throw new ServiceException("add -> Error", e) ;
-		} 
+		}
 	}
 	
-	public NData<IdProvider> copy(Class<?> entity, Integer id, Lang lang) throws ServiceException {
+	public NData<IdProvider> copy(Class<?> entity, Integer id) throws ServiceException {
 		List<Field> fields = getFields(entity);
 		Map<String, Map<String, List<NField>>> nMapFields = getMapNField(fields);
 		IdProvider data = null;
 		if (id == 0){
-			data = add(entity, lang);
+			data = add(entity);
 		} else {
 			data = getData(entity, id, null);
 			data.setId(null);

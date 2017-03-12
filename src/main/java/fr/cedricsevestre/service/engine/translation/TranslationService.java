@@ -49,24 +49,43 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	
+	@Override
 	@Transactional
-	public T translate(T base, Lang lang) throws ServiceException, InstantiationException, IllegalAccessException {
-		if (base.getId() != null) base = translationDao.findOne(base.getId()); //Refresh object
-		T translated = (T) base.getClass().newInstance();
-
-		
-		
-		
-		TranslationProvider translation = base.getTranslation();
-		if (translation == null){
-			translation = translationProviderDao.save(new TranslationProvider());
+	public T save(T base) throws ServiceException {
+		logger.debug("appel de la methode save Base " + base.getClass());
+		try {
+			TranslationProvider translationProvider = base.getTranslation();
+			if (translationProvider != null){
+				if (translationProvider.getId() == null) translationProviderDao.save(translationProvider);
+			}
+			return translationDao.save(base);
+		} catch (PersistenceException e) {
+			logger.error("erreur save Base " + e.getMessage());
+			throw new ServiceException("erreur save Base", e);
 		}
-		translated.setLang(lang);
-		translated.setTranslation(translation);
-		translated.setName(base.getName());
+	}
 
-		return translated;
+	public T translate(T base, Lang lang) throws ServiceException {
+		try {
+			if (base.getId() != null) base = translationDao.findOne(base.getId()); //Refresh object
+			T translated = (T) base.getClass().newInstance();
+			TranslationProvider translation = base.getTranslation();
+			if (translation == null){
+				translation = new TranslationProvider();
+			}
+			translated.setLang(lang);
+			translated.setTranslation(translation);
+			translated.setName(base.getName());
+
+			return translated;
+		} catch (InstantiationException e) {
+			throw new ServiceException("", e);
+		} catch (IllegalAccessException e) {
+			throw new ServiceException("", e);
+		}
+
+
 	}
 
 }
