@@ -10,10 +10,11 @@
 	<p>EDIT<p>
 	<p>finalField.type = ${finalField.type}<p>
 	<p>finalField.name = ${finalField.name}<p>
+	<p>${objectType}_${finalParentObject.id}_${finalField.name}</p>
 </my:debug> 
 --%>
 
-${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}
+
 
 <c:set var="FINAL_MAX_ELEMENT" value="3" />
 <c:choose>
@@ -98,7 +99,7 @@ ${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}
 	</c:when>
 	<c:when test="${finalFieldType eq 'TOBJECT' || finalFieldType eq 'NTOBJECT'}">
 		<c:if test="${empty isInCollection || not isInCollection}">
-			<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" />
+			<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${objectType}_${finalParentObject.id}_${finalField.name}" />
 		</c:if>
 	</c:when>
 	<c:when test="${finalFieldType eq 'OBJECT'}">
@@ -129,8 +130,7 @@ ${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}
 		</c:choose>
 	</c:when>
 	<c:when test="${finalFieldType eq 'COLLECTION'}">
-		${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}
-		<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" />
+		<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${objectType}_${finalParentObject.id}_${finalField.name}" />
 	</c:when>
 	<c:when test="${finalFieldType eq 'ENUM'}">
 		<c:set var="fieldError"><form:errors path="${finalField.name}"/></c:set>

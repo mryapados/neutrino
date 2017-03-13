@@ -8,7 +8,7 @@
 		self.getObjects = function(values, objectType, objectId, objectField, disablePreChecked, modalSize, pageSize, page) {
 			if (!values) $log.error('values is mandatory !');
 			if (!objectType) $log.error('objectType is mandatory !');
-			if (!objectId) $log.error('objectId is mandatory !');
+			//if (!objectId) $log.error('objectId is mandatory !');
 			if (!objectField) $log.error('objectField is mandatory !');
 			if (!modalSize) modalSize = 'lg';
 			if (!pageSize) pageSize = 5;
@@ -144,7 +144,8 @@
 		};
 		
 		$scope.mkUrl = function(urlInfos) {
-			var url = '/neutrino/bo/blocklist/' + urlInfos.type + '/' + urlInfos.id + '/' + urlInfos.field;
+			var id = urlInfos.id == '' ? 0 : urlInfos.id;
+			var url = '/neutrino/bo/blocklist/' + urlInfos.type + '/' + id + '/' + urlInfos.field;
 			$scope.urlInfos = urlInfos;
 			$scope.urlMaked = url + $scope.mkParams(urlInfos.pageable);
 			$scope.init();

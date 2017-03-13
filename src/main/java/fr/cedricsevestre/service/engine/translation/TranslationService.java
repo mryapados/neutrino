@@ -57,7 +57,9 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 		try {
 			TranslationProvider translationProvider = base.getTranslation();
 			if (translationProvider != null){
-				if (translationProvider.getId() == null) translationProviderDao.save(translationProvider);
+				if (translationProvider.getId() == null) {
+					translationProviderDao.save(translationProvider);
+				}
 			}
 			return translationDao.save(base);
 		} catch (PersistenceException e) {
@@ -67,25 +69,20 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 	}
 
 	public T translate(T base, Lang lang) throws ServiceException {
-		try {
-			if (base.getId() != null) base = translationDao.findOne(base.getId()); //Refresh object
-			T translated = (T) base.getClass().newInstance();
-			TranslationProvider translation = base.getTranslation();
-			if (translation == null){
-				translation = new TranslationProvider();
-			}
-			translated.setLang(lang);
-			translated.setTranslation(translation);
-			translated.setName(base.getName());
+		boolean fromSomething = base.getId() != null;
+		if (fromSomething) base = translationDao.findOne(base.getId()); //Refresh object
+		
+		base.setId(null);
 
-			return translated;
-		} catch (InstantiationException e) {
-			throw new ServiceException("", e);
-		} catch (IllegalAccessException e) {
-			throw new ServiceException("", e);
+		TranslationProvider translation = base.getTranslation();
+		if (translation == null){
+			translation = new TranslationProvider();
 		}
+		base.setLang(lang);
+		base.setTranslation(translation);
+		base.setName(base.getName());
 
-
+		return base;
 	}
 
 }

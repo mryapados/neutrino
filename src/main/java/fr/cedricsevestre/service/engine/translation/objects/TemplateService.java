@@ -151,33 +151,38 @@ public class TemplateService extends TranslationService<Template>{
 		}
 	}
 	
-	@Override
-	public Template translate(Template template, Lang lang) throws ServiceException {
-		if (template.getId() != null) template = templateDao.findOne(template.getId()); //Refresh object
-		Template translated = new Template();
-		
-		TranslationProvider translation = template.getTranslation();
-		if (translation == null){
-			translation = new TranslationProvider();
-		}
-		translated.setLang(lang);
-		translated.setTranslation(translation);
-		translated.setName(template.getName());
-		translated.setPath(template.getPath());
-		translated.setKind(template.getKind());
-		translated.setSchema(template.getSchema());
-//		for (MapTemplate models : baseObject.getModels()) {
-//			// TODO
-//			System.out.println(models.getId());
+//	@Override
+//	public Template translate(Template base, Lang lang) throws ServiceException {
+//		Template template;
+//		if (base.getId() != null) {
+//			template = templateDao.findOne(base.getId()); //Refresh object
+//		} else {
+//			template = base;
 //		}
+//		Template translated = new Template();
 //		
-//		for (MapTemplate blocks : baseObject.getBlocks()) {
-//			// TODO
-//			System.out.println(blocks.getId());
+//		TranslationProvider translation = template.getTranslation();
+//		if (translation == null){
+//			translation = new TranslationProvider();
 //		}
-		
-		return translated;
-	}
+//		translated.setLang(lang);
+//		translated.setTranslation(translation);
+//		translated.setName(template.getName());
+//		translated.setPath(template.getPath());
+//		translated.setKind(template.getKind());
+//		translated.setSchema(base.getSchema());
+////		for (MapTemplate models : baseObject.getModels()) {
+////			// TODO
+////			System.out.println(models.getId());
+////		}
+////		
+////		for (MapTemplate blocks : baseObject.getBlocks()) {
+////			// TODO
+////			System.out.println(blocks.getId());
+////		}
+//		
+//		return translated;
+//	}
 
 	public Logger getLogger() {
 		return logger;
