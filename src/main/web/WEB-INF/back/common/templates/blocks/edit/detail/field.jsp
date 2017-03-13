@@ -5,7 +5,15 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 
-<h3>EDIT : finalFieldType = ${finalFieldType} - finalField.name = ${finalField.name} - finalFieldType = ${finalFieldType}</h3>
+<%-- 
+<my:debug>
+	<p>EDIT<p>
+	<p>finalField.type = ${finalField.type}<p>
+	<p>finalField.name = ${finalField.name}<p>
+</my:debug> 
+--%>
+
+${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}
 
 <c:set var="FINAL_MAX_ELEMENT" value="3" />
 <c:choose>
@@ -90,8 +98,7 @@
 	</c:when>
 	<c:when test="${finalFieldType eq 'TOBJECT' || finalFieldType eq 'NTOBJECT'}">
 		<c:if test="${empty isInCollection || not isInCollection}">
-<%-- 			<form:input cssClass="form-control" type="text" path="${finalField.name}"/> --%>
-<%-- 			<data-ui-assignment field="${finalField.name}"/> --%>
+			<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" />
 		</c:if>
 	</c:when>
 	<c:when test="${finalFieldType eq 'OBJECT'}">
@@ -100,8 +107,7 @@
 		</c:if>
 		<c:choose>
 			<c:when test="${finalField.className eq 'Lang'}">
-				<span class="lang-sm lang-lbl" lang="${finalObject.code}"></span>
-				<form:input cssClass="form-control" type="text" path="${finalField.name}"/>
+				<h1>NOTHING TO DO</h1>
 			</c:when>
 			<c:when test="${finalField.className eq 'MapTemplate'}">
 				<c:choose>
@@ -115,14 +121,7 @@
 				<a class="linked" href="<c:url value='/bo/view/?type=Template&id=${template.id}' />"><c:out value="${template.name}"/></a> / <a class="linked" href="<c:url value='/bo/view/?type=Position&id=${finalObject.position.id}' />"><c:out value="${finalObject.position.name}"/></a>
 			</c:when>
 			<c:when test="${finalField.className eq 'Folder'}">
-<%-- 				<p>papa = ${finalParentObject}</p> --%>
-<%-- 				${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name} --%>
-<%-- 				<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a> --%>
-<%-- 				<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" /> --%>
-			
 				<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" />
-				
-			
 			</c:when>
 			<c:otherwise>
 				<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="object"/></a>
@@ -130,13 +129,8 @@
 		</c:choose>
 	</c:when>
 	<c:when test="${finalFieldType eq 'COLLECTION'}">
-
-		<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" disable-pre-checked="true"/>
-
-
-<%-- 	<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="abcgggg" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" disable-pre-checked="true"/> --%>
-		
-
+		${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}
+		<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" />
 	</c:when>
 	<c:when test="${finalFieldType eq 'ENUM'}">
 		<c:set var="fieldError"><form:errors path="${finalField.name}"/></c:set>

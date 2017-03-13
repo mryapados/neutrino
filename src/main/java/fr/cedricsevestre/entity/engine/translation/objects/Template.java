@@ -67,12 +67,12 @@ public class Template extends Translation {
 	@Column(name = "controller")
 	private String controller;
 	
-	@BOField(type = ValueType.COLLECTION, ofType = ValueType.OBJECT)
+	@BOField(type = ValueType.COLLECTION, ofType = ValueType.OBJECT, editable = false)
 	@OneToMany(mappedBy = "block")
 	@Cascade(CascadeType.DELETE)
 	private Set<MapTemplate> models;
 
-	@BOField(type = ValueType.COLLECTION, ofType = ValueType.OBJECT)
+	@BOField(type = ValueType.COLLECTION, ofType = ValueType.OBJECT, editable = false)
 	@OneToMany(mappedBy = "model")
 	@Cascade(CascadeType.DELETE)
 	private Set<MapTemplate> blocks;

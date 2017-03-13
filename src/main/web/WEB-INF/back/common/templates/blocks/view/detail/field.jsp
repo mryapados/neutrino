@@ -5,8 +5,13 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<h3>VIEW : finalFieldType = ${finalFieldType} - finalField.name = ${finalField.name} - finalFieldType = ${finalFieldType}</h3>
-<h4>finalObject = ${finalObject}</h4>
+<%-- 
+<my:debug>
+	<p>VIEW<p>
+	<p>finalField.type = ${finalField.type}<p>
+	<p>finalField.name = ${finalField.name}<p>
+</my:debug> 
+--%>
 
 <c:set var="finalMaxElement" value="3" />
 
@@ -21,7 +26,6 @@
 		<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a>
 	</c:when>
 	<c:when test="${finalFieldType eq 'OBJECT'}">
-		<h1>tyype = ${finalObject.objectType}</h1>
 		<c:choose>
 			<c:when test="${finalObject.objectType eq 'Lang'}">
 				<span class="lang-sm lang-lbl" lang="${finalObject.code}"></span>

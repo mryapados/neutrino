@@ -15,8 +15,8 @@
 	</h1>
 
 	<c:url var="saveUrl" value=""/>
-	<form:form action="${saveUrl}" method="post" modelAttribute="object">
-		<input type="hidden" value="${objectType}" name="object" />
+	<form:form action="${saveUrl}" method="post" modelAttribute="objectEdit">
+		<input type="hidden" value="${objectType}" name="objectEdit" />
 
 		<div class="row">
 			<div class="col-xs-12">
@@ -24,7 +24,7 @@
 					<jsp:param value="top" name="position"/>
 				</jsp:include>
 				
-				<spring:hasBindErrors name="object">
+				<spring:hasBindErrors name="objectEdit">
 					<div class="alert alert-danger">
 						<c:forEach var="error" items="${errors.allErrors}">
 							<p><spring:message message="${error}" /></p>
@@ -76,22 +76,37 @@
 													<s:message code="bo.${objectType}.field.${field.name}" text="${defaultMessage}" />
 												</td>
 												<td>
-													<c:set var="finalParentObject" value="${object}" scope="request" />
-													<c:set var="finalObject" value="${object[field.name]}" scope="request" />
-													<c:set var="finalField" value="${field}" scope="request" />
-													<c:set var="finalFieldType" value="${finalField.type}" scope="request" />
+
 													<c:choose>
 														<c:when test="${field.editable}">
+														
+															<c:set var="finalParentObject" value="${objectEdit}" scope="request" />
+															<c:set var="finalObject" value="${objectEdit[field.name]}" scope="request" />
+															<c:set var="finalField" value="${field}" scope="request" />
+															<c:set var="finalFieldType" value="${finalField.type}" scope="request" />
+														
 															<jsp:include page="detail/field.jsp" />
+															
+															<c:remove var="finalParentObject"/>
+															<c:remove var="finalObject"/>
+															<c:remove var="finalField"/>
+															<c:remove var="finalFieldType"/>
 														</c:when>
 														<c:when test="${field.inView}">
+															<c:set var="finalParentObject" value="${objectView}" scope="request" />
+															<c:set var="finalObject" value="${objectView[field.name]}" scope="request" />
+															<c:set var="finalField" value="${field}" scope="request" />
+															<c:set var="finalFieldType" value="${finalField.type}" scope="request" />
+														
 															<jsp:include page="/WEB-INF/back/common/templates/blocks/view/detail/field.jsp" />
+															
+															<c:remove var="finalParentObject"/>
+															<c:remove var="finalObject"/>
+															<c:remove var="finalField"/>
+															<c:remove var="finalFieldType"/>
 														</c:when>
 													</c:choose>
-													<c:remove var="finalParentObject"/>
-													<c:remove var="finalObject"/>
-													<c:remove var="finalField"/>
-													<c:remove var="finalFieldType"/>
+
 												</td>
 											</tr>
 										</c:if>

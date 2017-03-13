@@ -244,7 +244,7 @@ public class BackOfficeController extends AbtractController {
 	}
 	
 	@RequestMapping(value = BO_EDIT_URL, method = RequestMethod.POST)
-	public ModelAndView save(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id, @Valid @ModelAttribute("object") IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
+	public ModelAndView save(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id, @Valid @ModelAttribute("objectEdit") IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
 		ModelAndView modelAndView = null;
 		if (result.hasErrors()) {
 			
@@ -294,7 +294,7 @@ public class BackOfficeController extends AbtractController {
 	}
 	
 	@RequestMapping(value = BO_NEW_TRANSLATION_URL, method = RequestMethod.POST)
-	public ModelAndView add(@RequestParam("type") String type, @RequestParam("lg") String langCode, @RequestParam(value = "id", required = false) Integer id, @Valid @ModelAttribute("object") Translation data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
+	public ModelAndView add(@RequestParam("type") String type, @RequestParam("lg") String langCode, @RequestParam(value = "id", required = false) Integer id, @Valid @ModelAttribute("objectEdit") Translation data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
 		
 		Lang lang;
 		try {
@@ -322,7 +322,7 @@ public class BackOfficeController extends AbtractController {
 	}
 	
 	@RequestMapping(value = BO_NEW_URL, method = RequestMethod.POST)
-	public ModelAndView add(@RequestParam("type") String type, @RequestParam(value = "id", required = false) Integer id, @Valid @ModelAttribute("object") IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
+	public ModelAndView add(@RequestParam("type") String type, @RequestParam(value = "id", required = false) Integer id, @Valid @ModelAttribute("objectEdit") IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
 		if (id == null) id = 0;
 		ModelAndView modelAndView = null;
 		if (result.hasErrors()) {
@@ -369,18 +369,13 @@ public class BackOfficeController extends AbtractController {
 			}
 			
 			modelAndView.addObject("fields", tData.getFields());
-			
-			if (saveError == null || saveError == false){
 
-				
-				
-				modelAndView.addObject("object", tData.getObjectData());
+			IdProvider objectData = tData.getObjectData();
+			if (saveError != null && saveError){
+				modelAndView.addObject("objectView", objectData);
 			} else {
-				ModelMap modelMap = modelAndView.getModelMap();
-				Translation object2 = (Translation) modelMap.get("object");
-				
-				System.out.println(object2.getName());
-				
+				modelAndView.addObject("objectView", objectData);
+				modelAndView.addObject("objectEdit", objectData);
 			}
 
 			
@@ -420,7 +415,7 @@ public class BackOfficeController extends AbtractController {
 			
 			NData<IdProvider> tData = backOfficeService.findOne(object, id);
 			modelAndView.addObject("fields", tData.getFields());
-			modelAndView.addObject("object", tData.getObjectData());
+			modelAndView.addObject("objectView", tData.getObjectData());
 			modelAndView.addObject("objectName", tData.getObjectData().getName());
 			if (object.getSuperclass().equals(Translation.class)){
 				Translation translation = (Translation) tData.getObjectData();
@@ -492,7 +487,7 @@ public class BackOfficeController extends AbtractController {
 	
 	
 	
-	@InitBinder("object")
+	@InitBinder("objectEdit")
 	protected void initBinderIdProvider(WebDataBinder binder) {
 		System.out.println("1 - initBinderIdProvider " + binder.getFieldDefaultPrefix() + " " + binder.getFieldMarkerPrefix() + " " + binder.getFieldDefaultPrefix() + " " + binder.getObjectName() + " - " + binder.getTarget());
 

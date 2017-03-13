@@ -13,11 +13,11 @@
 		<div class="btn-group" role="group" aria-label="...">
 			<div class="btn-group" role="group">
 			
-				<a href="<c:url value='/bo/edit/?type=${objectType}&id=${object.id}' />" class="btn btn-primary">
+				<a href="<c:url value='/bo/edit/?type=${objectType}&id=${objectView.id}' />" class="btn btn-primary">
 					<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 					<s:message code="bo.view.button.edit" text="Edit" />
 				</a>
-				<a href="<c:url value='/bo/new/?type=${objectType}&id=${object.id}' />" class="btn btn-primary">
+				<a href="<c:url value='/bo/new/?type=${objectType}&id=${objectView.id}' />" class="btn btn-primary">
 					<span class="glyphicon glyphicon-paste" aria-hidden="true"></span>
 					<s:message code="bo.view.button.duplicate" text="Duplicate" />
 				</a>

@@ -24,7 +24,7 @@ public class IdProviderConverter implements Converter <String, IdProvider> {
 			throw new ResourceNotFoundException(objectType + " Not found !", e);
 		}
 		if (cls == null){
-            throw new IllegalArgumentException ("Unknown noTranslation type:" + objectType);
+            throw new IllegalArgumentException ("Unknown IdProvider type:" + objectType);
 		}
 		try {
 			return (IdProvider) cls.newInstance();
