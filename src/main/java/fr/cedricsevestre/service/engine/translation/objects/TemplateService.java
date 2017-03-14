@@ -151,38 +151,37 @@ public class TemplateService extends TranslationService<Template>{
 		}
 	}
 	
-//	@Override
-//	public Template translate(Template base, Lang lang) throws ServiceException {
-//		Template template;
-//		if (base.getId() != null) {
-//			template = templateDao.findOne(base.getId()); //Refresh object
-//		} else {
-//			template = base;
+	@Override
+	public Template translate(Template base, Lang lang) throws ServiceException {
+		
+		boolean fromSomething = base.getId() != null;
+		if (fromSomething) base = templateDao.findOne(base.getId()); //Refresh object
+		
+		base.setId(null);
+
+		TranslationProvider translation = base.getTranslation();
+		if (translation == null){
+			translation = new TranslationProvider();
+		}
+		base.setLang(lang);
+		base.setTranslation(translation);
+		base.setName(base.getName());
+		base.setPath(base.getPath());
+		base.setKind(base.getKind());
+		base.setSchema(base.getSchema());
+		
+		
+//		for (MapTemplate models : baseObject.getModels()) {
+//			// TODO
+//			System.out.println(models.getId());
 //		}
-//		Template translated = new Template();
 //		
-//		TranslationProvider translation = template.getTranslation();
-//		if (translation == null){
-//			translation = new TranslationProvider();
+//		for (MapTemplate blocks : baseObject.getBlocks()) {
+//			// TODO
+//			System.out.println(blocks.getId());
 //		}
-//		translated.setLang(lang);
-//		translated.setTranslation(translation);
-//		translated.setName(template.getName());
-//		translated.setPath(template.getPath());
-//		translated.setKind(template.getKind());
-//		translated.setSchema(base.getSchema());
-////		for (MapTemplate models : baseObject.getModels()) {
-////			// TODO
-////			System.out.println(models.getId());
-////		}
-////		
-////		for (MapTemplate blocks : baseObject.getBlocks()) {
-////			// TODO
-////			System.out.println(blocks.getId());
-////		}
-//		
-//		return translated;
-//	}
+		return base;
+	}
 
 	public Logger getLogger() {
 		return logger;
