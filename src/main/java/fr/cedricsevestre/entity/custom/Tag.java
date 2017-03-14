@@ -34,13 +34,13 @@ public class Tag extends NoTranslation implements Serializable{
 
 	@BOField(type = ValueType.COLLECTION, ofType = ValueType.TOBJECT)
 	@ManyToMany(mappedBy = "tags")
-	private List<File> files;
+	private List<Media> files;
 
-	public List<File> getFiles() {
+	public List<Media> getFiles() {
 		return files;
 	}
 
-	public void setFiles(List<File> files) {
+	public void setFiles(List<Media> files) {
 		this.files = files;
 	}
 	

@@ -10,12 +10,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import fr.cedricsevestre.dao.engine.TranslationDao;
+import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.custom.Media;
-import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.engine.IdProvider;
-import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Repository
-public interface ProjectDao extends TranslationDao<Project> {
+public interface MediaDao extends TranslationDao<Media> {
+	
 
 }

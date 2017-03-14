@@ -177,6 +177,7 @@ public class BackOfficeService { //implements IBackOfficeService{
 			try {
 				return (Page<IdProvider>) findAll.invoke(service, paramsObj);
 			} catch (InvocationTargetException e) {
+				//e.printStackTrace();
 				if (entityGraphName == null) throw e;
 				return getDatas(entity, pageable, spec, null, null);
 			}

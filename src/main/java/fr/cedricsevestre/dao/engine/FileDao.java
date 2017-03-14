@@ -1,4 +1,4 @@
-package fr.cedricsevestre.dao.custom;
+package fr.cedricsevestre.dao.engine;
 
 import java.util.List;
 
@@ -11,11 +11,12 @@ import org.springframework.stereotype.Repository;
 
 import fr.cedricsevestre.dao.engine.TranslationDao;
 import fr.cedricsevestre.entity.custom.Album;
-import fr.cedricsevestre.entity.custom.File;
+import fr.cedricsevestre.entity.custom.Media;
 import fr.cedricsevestre.entity.engine.IdProvider;
+import fr.cedricsevestre.entity.engine.independant.objects.File;
 
 @Repository
-public interface FileDao extends TranslationDao<File> {
+public interface FileDao extends BaseDao<File> {
 	
 
 }

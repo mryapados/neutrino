@@ -3,7 +3,6 @@
 <%@ taglib prefix="my" uri="/WEB-INF/taglibs/neutrino.tld" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 
-
 <c:set var="position" value="${param.position}"/>
 <div class="btn-toolbar" role="toolbar" style="${position eq 'top' ? ' margin-bottom:15px;' : ' margin-top:15px;'}">
 	<div class="btn-group pull-left" role="group" aria-label="...">
@@ -13,7 +12,7 @@
 				<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>
 				<s:message code="bo.edit.button.save" text="Save" />
 			</button>
-			<a href="<c:url value='/bo/view/?type=${objectType}&id=${object.id}' />" class="btn btn-primary">
+			<a href="<c:url value='/bo/view/?type=${objectType}&id=${objectView.id}' />" class="btn btn-primary">
 				<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
 				<s:message code="bo.edit.button.cancel" text="Cancel" />
 			</a>

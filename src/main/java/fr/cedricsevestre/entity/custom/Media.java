@@ -2,8 +2,11 @@ package fr.cedricsevestre.entity.custom;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -15,23 +18,30 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedEntityGraphs;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.SafeHtml;
+import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
+
 import fr.cedricsevestre.annotation.BOField;
 import fr.cedricsevestre.annotation.BOField.ValueType;
+import fr.cedricsevestre.entity.engine.IFile;
+import fr.cedricsevestre.entity.engine.independant.objects.File;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Entity
-@Table(name = "file")
+@Table(name = "media")
 @NamedEntityGraphs({
 	@NamedEntityGraph(
-		name = "File.allJoins", 
+		name = "Media.allJoins", 
 		attributeNodes = { 
-			@NamedAttributeNode("tags")
+			@NamedAttributeNode("tags"),
+			@NamedAttributeNode("files")
 		})
 })
-public class File extends Translation {
+public class Media extends Translation {
 
 	private static final long serialVersionUID = 1L;
 
@@ -55,16 +65,22 @@ public class File extends Translation {
 	@Column(name = "date_shooting")
 	private Date dateShooting;
 	
-	@BOField(type = ValueType.VARCHAR50)
+	@BOField(type = ValueType.ENUM, ofEnum = FileType.class, inList = false)
 	@NotNull
-	@Column
+	@Column(name = "filetype")
 	@Enumerated(EnumType.STRING)
 	private FileType fileType;
 	
-	@BOField(type = ValueType.INTEGER)
+	@BOField(type = ValueType.FILE)
 	@NotNull
-	@Column
-	private Integer fileSize;
+	@OneToOne
+	private File file;
+	
+	@BOField(type = ValueType.COLLECTION, ofType = ValueType.FILE)
+	@ElementCollection
+	@CollectionTable(name="media_files", joinColumns=@JoinColumn(name="idfile"))
+	@Column(name="files")
+	private Set<File> files;
 	
 	@BOField(type = ValueType.COLLECTION, ofType = ValueType.NTOBJECT)
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -76,7 +92,7 @@ public class File extends Translation {
 		inverseJoinColumns = {
 			@JoinColumn(name = "idtag", 
 			referencedColumnName = "id")})
-	private List<Tag> tags;
+	private Set<Tag> tags;
 
 	@BOField(type = ValueType.TOBJECT)
 	@NotNull
@@ -124,19 +140,11 @@ public class File extends Translation {
 		this.fileType = fileType;
 	}
 
-	public Integer getFileSize() {
-		return fileSize;
-	}
-
-	public void setFileSize(Integer fileSize) {
-		this.fileSize = fileSize;
-	}
-
-	public List<Tag> getTags() {
+	public Set<Tag> getTags() {
 		return tags;
 	}
 
-	public void setTags(List<Tag> tags) {
+	public void setTags(Set<Tag> tags) {
 		this.tags = tags;
 	}
 
@@ -147,5 +155,23 @@ public class File extends Translation {
 	public void setAlbum(Album album) {
 		this.album = album;
 	}
+
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
+	}
+
+	public Set<File> getFiles() {
+		return files;
+	}
+
+	public void setFiles(Set<File> files) {
+		this.files = files;
+	}
+
+	
 	
 }

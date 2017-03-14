@@ -45,7 +45,6 @@ public class Member extends User implements IdProvider {
 		return getLogin();
 	}
 
-	@Override
 	public void setName(String name) {
 		setLogin(name);
 	}

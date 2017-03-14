@@ -135,4 +135,9 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
+	<tag>
+		<name>debug</name>
+		<tag-class>fr.cedricsevestre.taglib.Debug</tag-class>
+		<body-content>scriptless</body-content>
+	</tag>
 </taglib>

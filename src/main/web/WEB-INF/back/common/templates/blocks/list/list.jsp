@@ -55,7 +55,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="object" items="${datas}" varStatus="status">
+							<c:forEach var="objectView" items="${datas}" varStatus="status">
 								<tr>
 									<td>
 										<input type="checkbox" name="id" value="${object.id}"/>
@@ -63,21 +63,21 @@
 									<td class="text-center">
 										<c:url var="url" value="/bo/edit/" scope="request">
 											<c:param name="type" value="${objectType}"/>
-											<c:param name="id" value="${object.id}"/>
+											<c:param name="id" value="${objectView.id}"/>
 										</c:url>
 										<a href="${url}" title="edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
 										&nbsp
 										<c:url var="url" value="/bo/view/" scope="request">
 											<c:param name="type" value="${param.type}"/>
-											<c:param name="id" value="${object.id}"/>
+											<c:param name="id" value="${objectView.id}"/>
 										</c:url>
 										<a href="${url}" title="see"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
 									</td>
 									<c:forEach var="field" items="${fields}" varStatus="status">
 										<c:if test="${field.inList}">
 											<td>
-												<c:set var="finalParentObject" value="${object}" scope="request" />
-												<c:set var="finalObject" value="${object[field.name]}" scope="request" />
+												<c:set var="finalParentObject" value="${objectView}" scope="request" />
+												<c:set var="finalObject" value="${objectView[field.name]}" scope="request" />
 												<c:set var="finalField" value="${field}" scope="request" />
 												<c:set var="finalFieldType" value="${finalField.type}" scope="request" />
 												

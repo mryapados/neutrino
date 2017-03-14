@@ -3,8 +3,10 @@ package fr.cedricsevestre.conf;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +15,13 @@ import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.custom.Album.AlbumType;
-import fr.cedricsevestre.entity.custom.File;
-import fr.cedricsevestre.entity.custom.File.FileType;
+import fr.cedricsevestre.entity.custom.Media;
+import fr.cedricsevestre.entity.custom.Media.FileType;
 import fr.cedricsevestre.entity.custom.Member;
 import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.custom.Tag;
 import fr.cedricsevestre.entity.engine.bo.Link;
+import fr.cedricsevestre.entity.engine.independant.objects.File;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
 import fr.cedricsevestre.entity.engine.independant.objects.NData;
@@ -33,12 +36,13 @@ import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.AlbumService;
-import fr.cedricsevestre.service.custom.FileService;
+import fr.cedricsevestre.service.custom.MediaService;
 import fr.cedricsevestre.service.custom.MarkerService;
 import fr.cedricsevestre.service.custom.MemberService;
 import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.custom.TagService;
 import fr.cedricsevestre.service.engine.bo.LinkService;
+import fr.cedricsevestre.service.engine.independant.objects.FileService;
 import fr.cedricsevestre.service.engine.independant.objects.FolderService;
 import fr.cedricsevestre.service.engine.independant.objects.MapTemplateService;
 import fr.cedricsevestre.service.engine.independant.objects.NDataService;
@@ -68,6 +72,9 @@ public class InitialisationBase {
 	
 	@Autowired
 	private FileService fileService;
+	
+	@Autowired
+	private MediaService mediaService;
 	
 	@Autowired
 	private LinkService linkService;
@@ -124,7 +131,7 @@ public class InitialisationBase {
 
 		initAlbums();
 		initTags();
-		initFiles();
+		initMedias();
 		initTags2();
 		
 		initMarkers();
@@ -902,36 +909,52 @@ public class InitialisationBase {
 			
 	}
 	
-	public void initFiles() throws ServiceException, InstantiationException, IllegalAccessException{
+	public void initMedias() throws ServiceException, InstantiationException, IllegalAccessException{
 		logger.debug("init files");
 		
 		Album AlbumEN = albumService.findByName("testalbum_EN");
 		Album AlbumFR = albumService.findByName("testalbum_FR");
 		
+		Media media = new Media();
+		media.setName("testfile");
+		media.setDescription("description file");
+		media.setFileType(FileType.IMAGE);
+		media.setAlbum(AlbumEN);
+		
 		File file = new File();
-		file.setName("testfile");
-		file.setDescription("description file");
-		file.setFileType(FileType.IMAGE);
-		file.setAlbum(AlbumEN);
-		file.setFileSize(1024);
+		file.setName("file1");
+		file.setFileSize(1024L);
+		file.setPath("files/media/cerfa.pdf");
 		fileService.save(file);
+		
+		media.setFile(file);
+		
+		mediaService.save(media);
 		
 		
 		Tag tag = tagService.findByName("testtag");
 		Tag tag2 = tagService.findByName("testtag2");
-		File file2 = new File();
-		file2.setName("testfile2");
-		file2.setDescription("description file2");
-		file2.setFileType(FileType.VIDEO);
-		file2.setAlbum(AlbumEN);
-		file2.setFileSize(1024);
+		Media media2 = new Media();
+		media2.setName("testfile2");
+		media2.setDescription("description file2");
+		media2.setFileType(FileType.VIDEO);
+		media2.setAlbum(AlbumEN);
 		
-		List<Tag> tags = new ArrayList<>();
+		File file2 = new File();
+		file2.setName("file2");
+		file2.setFileSize(1024L);
+		file2.setPath("files/media/cerfa.pdf");
+		
+		media2.setFile(file2);
+		
+		fileService.save(file2);
+		
+		Set<Tag> tags = new HashSet<>();
 		tags.add(tag);
 		//tags.add(tag2);
 		
-		file2.setTags(tags);
-		fileService.save(file2);
+		media2.setTags(tags);
+		mediaService.save(media2);
 		
 		
 		
@@ -945,13 +968,13 @@ public class InitialisationBase {
 	public void initTags2() throws ServiceException, InstantiationException, IllegalAccessException{
 		logger.debug("init tags2");
 		
-		File file = fileService.findByName("testfile");
+		Media file = mediaService.findByName("testfile");
 		
 		Tag tag = new Tag();
 		tag.setName("testtagWithFile");
 		tag.setDescription("description tag");
 		
-		List<File> files = new ArrayList<>();
+		List<Media> files = new ArrayList<>();
 		files.add(file);
 		
 		tag.setFiles(files);

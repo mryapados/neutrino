@@ -5,13 +5,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<%-- 
+
 <my:debug>
 	<p>VIEW<p>
 	<p>finalField.type = ${finalField.type}<p>
 	<p>finalField.name = ${finalField.name}<p>
 </my:debug> 
---%>
 
 <c:set var="finalMaxElement" value="3" />
 

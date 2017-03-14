@@ -109,7 +109,6 @@ public abstract class Translation implements ITranslation, Serializable {
 		return name;
 	}
 
-	@Override
 	public void setName(String name) {
 		this.name = name;
 	}

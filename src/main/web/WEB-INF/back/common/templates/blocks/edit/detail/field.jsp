@@ -5,14 +5,13 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 
-<%-- 
+
 <my:debug>
 	<p>EDIT<p>
 	<p>finalField.type = ${finalField.type}<p>
 	<p>finalField.name = ${finalField.name}<p>
 	<p>${objectType}_${finalParentObject.id}_${finalField.name}</p>
 </my:debug> 
---%>
 
 
 
@@ -98,6 +97,11 @@
 		<jsp:include page="datetime.jsp" />
 	</c:when>
 	<c:when test="${finalFieldType eq 'TOBJECT' || finalFieldType eq 'NTOBJECT'}">
+		<c:if test="${empty isInCollection || not isInCollection}">
+			<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${objectType}_${finalParentObject.id}_${finalField.name}" />
+		</c:if>
+	</c:when>
+	<c:when test="${finalFieldType eq 'FILE'}">
 		<c:if test="${empty isInCollection || not isInCollection}">
 			<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${objectType}_${finalParentObject.id}_${finalField.name}" />
 		</c:if>

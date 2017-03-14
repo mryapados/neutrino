@@ -97,7 +97,6 @@ public abstract class NoTranslation implements IdProvider, Serializable {
 		return name;
 	}
 
-	@Override
 	public void setName(String name) {
 		this.name = name;
 	}

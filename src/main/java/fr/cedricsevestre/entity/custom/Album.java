@@ -38,7 +38,7 @@ public class Album extends Translation {
 		DEFAULT, OTHER
 	}
 
-	@BOField(type = ValueType.VARCHAR50)
+	@BOField(type = ValueType.ENUM, ofEnum = AlbumType.class, inList = false)
 	@NotNull
 	@Column
 	@Enumerated(EnumType.STRING)
@@ -52,7 +52,7 @@ public class Album extends Translation {
 	
 	@BOField(type = ValueType.COLLECTION, ofType = ValueType.TOBJECT)
 	@OneToMany(mappedBy = "album")
-	private List<File> files;
+	private List<Media> files;
 
 	public AlbumType getAlbumType() {
 		return albumType;
@@ -70,11 +70,11 @@ public class Album extends Translation {
 		this.project = project;
 	}
 
-	public List<File> getFiles() {
+	public List<Media> getFiles() {
 		return files;
 	}
 
-	public void setFiles(List<File> files) {
+	public void setFiles(List<Media> files) {
 		this.files = files;
 	}
 
