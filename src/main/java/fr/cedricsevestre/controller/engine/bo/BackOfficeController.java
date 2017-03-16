@@ -24,9 +24,12 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.test.annotation.Timed;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -73,6 +76,7 @@ import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.engine.BaseService;
 import fr.cedricsevestre.service.engine.EntityLocator;
 import fr.cedricsevestre.service.engine.bo.BackOfficeService;
+import fr.cedricsevestre.service.engine.independant.objects.FileService;
 import fr.cedricsevestre.service.engine.independant.objects.FolderService;
 import fr.cedricsevestre.service.engine.translation.LangService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
@@ -83,7 +87,7 @@ import fr.cedricsevestre.specification.engine.TranslationSpecification;
 @Controller
 @Scope("prototype")
 @RequestMapping(value = Common.BASE_BO_VIEWS_PATH)
-@Secured({ "ROLE_WEBMASTER", "ROLE_ADMIN", "ROLE_BO" })
+//@Secured({ "ROLE_WEBMASTER", "ROLE_ADMIN", "ROLE_BO" })
 public class BackOfficeController extends AbtractController {
 	@Autowired
 	private BackOfficeService backOfficeService;
@@ -93,14 +97,23 @@ public class BackOfficeController extends AbtractController {
 	
 	@Autowired
 	private TemplateService templateService;
-	
-	
+
 	@Autowired
 	private AlbumService albumService;
 
 	
 	@Autowired
 	EntityLocator entityLocator;
+	
+	
+	
+    private final FileService fileService;
+
+    @Autowired
+    public BackOfficeController(FileService fileService) {
+        this.fileService = fileService;
+    }
+
 	
 	public static final String BO_LANGUAGE_URL = "language/";
 	
@@ -647,15 +660,17 @@ public class BackOfficeController extends AbtractController {
 	
 	
 	
+	@RequestMapping(value = "/file/add/", method = RequestMethod.GET) 
+	public String teeeeee() {
+		return "redirect:/";
+	}
 	
 	
 	
 	
-	
-	@RequestMapping(value = "/bo/file/add/", method = RequestMethod.POST) 
+	@RequestMapping(value = "/file/add/", method = RequestMethod.POST) 
 	public String handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
-
-		//storageService.store(file);
+		fileService.store(file);
 		redirectAttributes.addFlashAttribute("message",
 				"You successfully uploaded " + file.getOriginalFilename() + "!");
 
@@ -663,8 +678,29 @@ public class BackOfficeController extends AbtractController {
 	}
 	
 	
-	
-	
+//    @RequestMapping(value = "/bo/file/add/", method = RequestMethod.POST,
+//            produces = MediaType.APPLICATION_JSON_VALUE)
+//    //@Timed
+//    public ResponseEntity<Void> handleFileUpload2(@RequestParam("file") MultipartFile file) {
+////        if (!file.isEmpty()) {
+////            try {
+////                Long fileLength = file.getSize();
+////                String contentType = file.getContentType();
+////                String originalFileName = file.getOriginalFilename();
+////                String originalFileExtension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+////                String newFilename = UUID.randomUUID().toString() + originalFileExtension;
+////                //transfer to upload folder
+////                String storageDirectory = environment.getProperty("applicationStorage.uploadFolder", "/Users/weibo/uploads-def");
+////                File newFile = new File(storageDirectory + "/" + newFilename);
+////                file.transferTo(newFile);
+////                return ResponseEntity.ok().build();
+////            } catch (Exception e) {
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+////            }
+////        } else {
+////            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+////        }
+//    }
 	
 	
 	

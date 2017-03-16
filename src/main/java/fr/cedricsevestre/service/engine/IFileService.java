@@ -1,21 +1,25 @@
 package fr.cedricsevestre.service.engine;
 
-import java.util.List;
-
-import org.springframework.context.annotation.Scope;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
-import org.springframework.stereotype.Service;
+import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
 
 import fr.cedricsevestre.entity.engine.IFile;
-import fr.cedricsevestre.exception.ServiceException;
 
-@Deprecated
+import java.nio.file.Path;
+import java.util.stream.Stream;
+
 public interface IFileService<T extends IFile> {
 
+    void init();
 
+    void store(MultipartFile file);
+
+    Stream<Path> loadAll();
+
+    Path load(String filename);
+
+    Resource loadAsResource(String filename);
+
+    void deleteAll();
 	
 }

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="my" uri="/WEB-INF/taglibs/neutrino.tld" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 
 <my:init test="${!initialized}"/>
 
@@ -19,3 +21,12 @@
 <a class="btn btn-link" href="link/" role="button">Link</a>
 </p>
 
+
+
+<form method="POST" action="/neutrino/bo/file/add/" enctype="multipart/form-data">
+    <input type="file" name="file" /><br/>
+    <input type="submit" value="Submit" />
+    
+    <input type="hidden" name="_csrf" value="${_csrf.token}" />
+
+</form>

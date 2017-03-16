@@ -27,6 +27,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -54,7 +56,15 @@ import fr.cedricsevestre.taglib.Head;
 public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 	
 	@Autowired
+	private ApplicationProperties applicationProperties;
+	
+	@Autowired
     private IdProviderConverter idProviderConverter;
+	
+    @Bean
+    public MultipartResolver multipartResolver() {
+        return new StandardServletMultipartResolver();
+    }
 	
 	@Bean
 	public UrlBasedViewResolver urlBasedViewResolver() {
@@ -77,7 +87,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 	@Bean
 	public MessageSource messageSource() {
 		SerializableResourceBundleMessageSource messageSource = new SerializableResourceBundleMessageSource();
-		messageSource.setBasenames("/WEB-INF/i18n/label_back", "/WEB-INF/i18n/label_front");
+		messageSource.setBasenames(applicationProperties.getPathBundleLabelsBack(), applicationProperties.getPathBundleLabelsFront());
 		messageSource.setDefaultEncoding("UTF-8");
 		return messageSource;
 	}

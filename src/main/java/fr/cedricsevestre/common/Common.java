@@ -3,15 +3,13 @@ package fr.cedricsevestre.common;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import fr.cedricsevestre.conf.ApplicationProperties;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.exception.ServiceException;
@@ -20,7 +18,6 @@ import fr.cedricsevestre.service.engine.translation.objects.PageService;
 
 @Component
 @Scope(value = "singleton")
-@PropertySource(value = "classpath:config.properties", name = "config")
 public class Common {	
 	private Map<String, Page> pages;
 	
@@ -39,9 +36,8 @@ public class Common {
 	@Autowired
 	private PageService pageService;
 
-	@Resource
-	private Environment environment;
-	
+	@Autowired
+	private ApplicationProperties applicationProperties;	
 
 	public enum TypeBase {
 		VIEWS("views/"),
@@ -129,7 +125,7 @@ public class Common {
 		
 	public String getApplicationFolder() {
 		if (applicationFolder == null) 
-			applicationFolder = environment.getProperty("application.folder");
+			applicationFolder = applicationProperties.getApplicationFolder();
 		return applicationFolder;
 	}
 

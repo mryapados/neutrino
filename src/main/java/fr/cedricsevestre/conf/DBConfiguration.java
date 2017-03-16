@@ -26,19 +26,19 @@ import fr.cedricsevestre.repository.CustomRepositoryFactoryBean;
 
 @Configuration
 @EnableWebMvc
-@PropertySource(value = "classpath:config.properties", name = "config")
 @EnableJpaRepositories(basePackages="fr.cedricsevestre.dao", repositoryFactoryBeanClass = CustomRepositoryFactoryBean.class)
 public class DBConfiguration extends WebMvcConfigurerAdapter{
-	@Autowired
-	private Environment environment;
 
+	@Autowired
+	private ApplicationProperties applicationProperties;
+	
 	@Bean(name = "dataSource")
 	public DataSource dataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl(environment.getProperty("jdbc.url"));
-		dataSource.setUsername(environment.getProperty("jdbc.user"));
-		dataSource.setPassword(environment.getProperty("jdbc.password"));
+		dataSource.setUrl(applicationProperties.getJdbcUrl());
+		dataSource.setUsername(applicationProperties.getJdbcUser());
+		dataSource.setPassword(applicationProperties.getJdbcPassword());
 		return dataSource;
 	}
 
