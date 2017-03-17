@@ -24,6 +24,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+import javax.annotation.PostConstruct;
+
 @Service
 @Scope(value = "singleton")
 @BOService
@@ -32,14 +34,14 @@ public class FileService extends BaseService<File> implements IFileService<File>
 	@Autowired
 	protected Common common;
 	
-    private final Path rootLocation;
-
-    @Autowired
-    public FileService(ApplicationProperties applicationProperties) {
-        this.rootLocation = Paths.get(applicationProperties.getUploadDir());
-        
-        
-        System.out.println(rootLocation);
+	@Autowired
+	protected ApplicationProperties applicationProperties;
+	
+    private Path rootLocation;
+    
+    @PostConstruct
+    private void initialize(){
+    	this.rootLocation = Paths.get(common.getWebInfFolder() + applicationProperties.getUploadDir());
     }
 
     @Override

@@ -87,7 +87,7 @@ import fr.cedricsevestre.specification.engine.TranslationSpecification;
 @Controller
 @Scope("prototype")
 @RequestMapping(value = Common.BASE_BO_VIEWS_PATH)
-//@Secured({ "ROLE_WEBMASTER", "ROLE_ADMIN", "ROLE_BO" })
+@Secured({ "ROLE_WEBMASTER", "ROLE_ADMIN", "ROLE_BO" })
 public class BackOfficeController extends AbtractController {
 	@Autowired
 	private BackOfficeService backOfficeService;
@@ -100,13 +100,10 @@ public class BackOfficeController extends AbtractController {
 
 	@Autowired
 	private AlbumService albumService;
-
 	
 	@Autowired
 	EntityLocator entityLocator;
-	
-	
-	
+
     private final FileService fileService;
 
     @Autowired

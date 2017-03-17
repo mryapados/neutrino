@@ -9,13 +9,14 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-@Configuration
-@PropertySource(value = "classpath:application.properties", name = "appconfig")
+@Component
 public class ApplicationProperties {
 	
 	@Resource
 	private Environment environment;
 
+	private String webInfFolder;
+	
 	private String jdbcUrl;
 	private String jdbcUser;
 	private String jdbcPassword;

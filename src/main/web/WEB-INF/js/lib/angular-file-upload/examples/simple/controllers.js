@@ -5,13 +5,12 @@ angular
 
 
     .module('app', ['angularFileUpload'])
-
-
+    
     .controller('AppController', ['$scope', 'FileUploader', function($scope, FileUploader) {
         var uploader = $scope.uploader = new FileUploader({
             url: '/neutrino/bo/file/add/',
             headers: {
-                'X-XSRF-TOKEN': '27ae2200-7f84-457e-a665-a6d932269f45'
+                'X-XSRF-TOKEN': '5bf0ec2e-e5e4-479d-b6e6-5b7fca495a0a'
             },
             	
             	
@@ -39,7 +38,6 @@ angular
         });
 
         // CALLBACKS
-
         uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
             console.info('onWhenAddingFileFailed', item, filter, options);
         };
