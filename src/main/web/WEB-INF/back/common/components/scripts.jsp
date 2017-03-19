@@ -11,6 +11,26 @@
 <script src="<c:url value='/js/lib/angular-resource.min.js'/>"></script>
 <script src="<c:url value='/js/lib/ui-bootstrap-tpls-2.2.0.min.js'/>"></script>
 
+<script src="<c:url value='/js/lib/ng-file-upload/dist/ng-file-upload.min.js'/>"></script>
+
+<script src="<c:url value='/js/lib/angular-filemanager/src/js/app.js'/>"></script>
+<script src="<c:url value='/js/lib/angular-filemanager/src/js/directives/directives.js'/>"></script>
+<script src="<c:url value='/js/lib/angular-filemanager/src/js/filters/filters.js'/>"></script>
+<script src="<c:url value='/js/lib/angular-filemanager/src/js/providers/config.js'/>"></script>
+<script src="<c:url value='/js/lib/angular-filemanager/src/js/entities/chmod.js'/>"></script>
+<script src="<c:url value='/js/lib/angular-filemanager/src/js/entities/item.js'/>"></script>
+<script src="<c:url value='/js/lib/angular-filemanager/src/js/services/apihandler.js'/>"></script>
+<script src="<c:url value='/js/lib/angular-filemanager/src/js/services/apimiddleware.js'/>"></script>
+<script src="<c:url value='/js/lib/angular-filemanager/src/js/services/filenavigator.js'/>"></script>
+<script src="<c:url value='/js/lib/angular-filemanager/src/js/providers/translations.js'/>"></script>
+<script src="<c:url value='/js/lib/angular-filemanager/src/js/controllers/main.js'/>"></script>
+<script src="<c:url value='/js/lib/angular-filemanager/src/js/controllers/selector-controller.js'/>"></script>
+<link href="<c:url value='/js/lib/angular-filemanager/src/css/animations.css'/>" rel="stylesheet">
+<link href="<c:url value='/js/lib/angular-filemanager/src/css/dialogs.css'/>" rel="stylesheet">
+<link href="<c:url value='/js/lib/angular-filemanager/src/css/main.css'/>" rel="stylesheet">
+
+
+
 <script src="<c:url value='/js/lib/angular-bootstrap-switch/bootstrap-switch.min.js'/>"></script>
 
 <script src="<c:url value='/js/lib/text-angular/textAngular-rangy.min.js'/>"></script>

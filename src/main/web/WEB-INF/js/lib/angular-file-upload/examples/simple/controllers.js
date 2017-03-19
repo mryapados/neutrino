@@ -10,7 +10,7 @@ angular
         var uploader = $scope.uploader = new FileUploader({
             url: '/neutrino/bo/file/add/',
             headers: {
-                'X-XSRF-TOKEN': '5bf0ec2e-e5e4-479d-b6e6-5b7fca495a0a'
+                'X-XSRF-TOKEN': '82088994-853f-4fd3-8a61-cc07f25a3d2a'
             },
             	
             	

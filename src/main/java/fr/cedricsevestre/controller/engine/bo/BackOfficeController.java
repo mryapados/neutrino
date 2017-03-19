@@ -86,69 +86,49 @@ import fr.cedricsevestre.specification.engine.TranslationSpecification;
 
 @Controller
 @Scope("prototype")
-@RequestMapping(value = Common.BASE_BO_VIEWS_PATH)
+@RequestMapping(value = Common.BO_URL)
 @Secured({ "ROLE_WEBMASTER", "ROLE_ADMIN", "ROLE_BO" })
-public class BackOfficeController extends AbtractController {
-	@Autowired
-	private BackOfficeService backOfficeService;
+public abstract class BackOfficeController extends AbtractController {
 	
-	@Autowired
-	private LangService langService;
+	protected static final String BO_HOME_URL = "";
+	protected static final String BO_HOME_PAGE = "@bo_page_home";
 	
-	@Autowired
-	private TemplateService templateService;
+	protected static final String BO_LANGUAGE_URL = "language/";
+	
+	protected static final String BO_EDIT_URL = "edit/";
+	protected static final String BO_EDIT_PAGE = "@bo_page_edit";
+	
+	protected static final String BO_VIEW_URL = "view/";
+	protected static final String BO_VIEW_PAGE = "@bo_page_view";
+	
+	protected static final String BO_NEW_URL = "new/";
+	protected static final String BO_NEW_TRANSLATION_URL = "new/translation/";
+	
+	protected static final String BO_REMOVES_URL = "removes/";
+	protected static final String BO_REMOVE_URL = "remove/";
+	
+	protected static final String BO_LIST_URL = "list/";
+	protected static final String BO_LIST_PAGE = "@bo_page_list";
+
+	protected static final String BO_BLOCK_LIST_URL = "blocklist/";
+	protected static final String BO_BLOCK_LIST = "@bo_ng_block_list";
+
+	protected static final String BO_FILE_HOME_URL = "";
+	protected static final String BO_FILE_HOME_PAGE = "@bo_page_file";
+	protected static final String BO_FILE_ADD_URL = "add/";
+	
+	protected static final Integer BO_MAX_REQUEST_ELEMENT = 1000;
 
 	@Autowired
-	private AlbumService albumService;
+	protected EntityLocator entityLocator;
 	
 	@Autowired
-	EntityLocator entityLocator;
-
-    private final FileService fileService;
-
-    @Autowired
-    public BackOfficeController(FileService fileService) {
-        this.fileService = fileService;
-    }
-
+	protected LangService langService;
 	
-	public static final String BO_LANGUAGE_URL = "language/";
+	@Autowired
+	protected BackOfficeService backOfficeService;
 	
-	public static final String BO_HOME_URL = "";
-	public static final String BO_HOME_PAGE = "@bo_page_home";
-	
-	public static final String BO_LIST_URL = "list/";
-	public static final String BO_LIST_PAGE = "@bo_page_list";
-	
-	public static final String BO_EDIT_URL = "edit/";
-	public static final String BO_EDIT_PAGE = "@bo_page_edit";
-	
-	public static final String BO_VIEW_URL = "view/";
-	public static final String BO_VIEW_PAGE = "@bo_page_view";
-	
-	public static final String BO_NEW_URL = "new/";
-	public static final String BO_NEW_TRANSLATION_URL = "new/translation/";
-	public static final String BO_NEW_PAGE = "@bo_page_new";
-	
-	public static final String BO_REMOVES_URL = "removes/";
-	public static final String BO_REMOVE_URL = "remove/";
-	
-	public static final String BO_BLOCK_LIST_URL = "blocklist/";
-	public static final String BO_BLOCK_LIST = "@bo_ng_block_list";
-	
-	
-	public static final Integer BO_MAX_REQUEST_ELEMENT = 1000;
-
-	@Deprecated
-	public static final String BO_ASSIGN_LIST_URL = "assignlist/";
-
-	private ModelMap init() throws ServiceException{
-		ModelMap modelMap = new ModelMap();
-		modelMap.addAttribute("langs", langService.findAll());			
-		return modelMap;
-	}
-
-	private Folder getBOFolder() throws JspException{
+	protected Folder getBOFolder() throws JspException{
 		try {
 			return common.getFolder(Common.BACK);
 		} catch (ServiceException e) {
@@ -156,294 +136,21 @@ public class BackOfficeController extends AbtractController {
 		}
 	}
 	
-	@RequestMapping(value = BO_LANGUAGE_URL, method = RequestMethod.GET)
-	public ModelAndView language(HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
-		String referer = request.getHeader("Referer");
-		ModelAndView modelAndView = new ModelAndView("redirect:" + referer);
-		return modelAndView;
+	private ModelMap init() throws ServiceException{
+		ModelMap modelMap = new ModelMap();
+		modelMap.addAttribute("langs", langService.findAll());			
+		return modelMap;
 	}
 	
-	@RequestMapping(value = BO_HOME_URL, method = RequestMethod.GET)
-	public ModelAndView home() throws JspException   {
-		Folder folder = getBOFolder();
-		ModelAndView modelAndView = null;
-		try {
-			modelAndView = baseView(BO_HOME_PAGE, folder);
-			modelAndView.addAllObjects(init());
-		} catch (ServiceException e) {
-			throw new JspException(e);
-		}
-		return modelAndView;
-	}
-
-	@RequestMapping(value = BO_LIST_URL, method = RequestMethod.GET)
-	public ModelAndView list(@ModelAttribute("type") String type, Pageable pageRequest) throws JspException {
-		Folder folder = getBOFolder();
-		ModelAndView modelAndView = null;
-		try {
-			modelAndView = baseView(BO_LIST_PAGE, folder);
-			modelAndView.addAllObjects(init());
-			Class<?> object = entityLocator.getEntity(type).getClass();
-			modelAndView.addObject("objectType", object.getSimpleName());
-			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
-		
-			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest);
-
-			modelAndView.addObject("objectDatas", tDatas.getObjectDatas());
-			modelAndView.addObject("datas", tDatas.getObjectDatas().getContent());
-			modelAndView.addObject("fields", tDatas.getFields());
-
-		} catch (ServiceException e) {
-			throw new JspException(e);
-		} catch (ClassNotFoundException e) {
-			throw new ResourceNotFoundException(type + " Not found !", e);
-		}
-		return modelAndView;
-	}
-
-	
-	@RequestMapping(value = BO_REMOVE_URL, method = RequestMethod.POST) 
-	public ModelAndView delete(@ModelAttribute("type") String type, @RequestParam("id") Integer id, RedirectAttributes redirectAttributes) throws JspException {
-		ModelAndView modelAndView = new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_LIST_URL);
-		redirectAttributes.addAttribute("type", type);
-		try {
-			delete(type,  new Integer[]{id});
-			redirectAttributes.addFlashAttribute("success", true);
-		} catch (ServiceException e) {
-			modelAndView = new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_VIEW_URL);
-			redirectAttributes.addAttribute("id", id);
-			redirectAttributes.addFlashAttribute("error", e);
-			redirectAttributes.addFlashAttribute("success", false);
-		}
-		return modelAndView;
-	}
-	
-	@RequestMapping(value = BO_REMOVES_URL, method = RequestMethod.POST) 
-	public ModelAndView delete(@RequestParam("type") String type, @RequestParam("id") Integer[] ids, RedirectAttributes redirectAttributes) throws JspException {
-		ModelAndView modelAndView = new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_LIST_URL);
-		try {
-			delete(type, ids);
-			redirectAttributes.addFlashAttribute("success", true);
-		} catch (ServiceException e) {
-			redirectAttributes.addFlashAttribute("error", e);
-			redirectAttributes.addFlashAttribute("success", false);
-		}
-		redirectAttributes.addAttribute("type", type);
-		return modelAndView;
-	}
-	
-	public void delete(String type, Integer[] ids) throws ServiceException {
-		try {
-			Class<?> object;
-			object = entityLocator.getEntity(type).getClass();
-			List<IdProvider> idProviders = new ArrayList<>();
-			for (Integer id : ids) {
-				IdProvider data = backOfficeService.getData(object, id);
-				idProviders.add(data);
-			}
-			backOfficeService.removeDatas(idProviders);
-			
-		} catch (ClassNotFoundException e) {
-			throw new ResourceNotFoundException(type + " Not found !", e);
-		}
-	}
-
-	
-	@RequestMapping(value = BO_EDIT_URL, method = RequestMethod.GET)
-	public ModelAndView edit(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id) throws JspException   {
-		return edit(type, id, false);
-	}
-	
-	@RequestMapping(value = BO_EDIT_URL, method = RequestMethod.POST)
-	public ModelAndView save(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id, @Valid @ModelAttribute("objectEdit") IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
-		ModelAndView modelAndView = null;
-		if (result.hasErrors()) {
-			
-			System.out.println("errrrrrrrrrrrrrrrrrrrrrrr" + result.getAllErrors().toString());
-			
-			
-			
-			
-			modelAndView = edit(type, id, true);
-		} else{
-			try {
-
-				
-				
-				backOfficeService.saveData(data);
-				modelAndView = new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_VIEW_URL);
-				redirectAttributes.addAttribute("type", type);
-				redirectAttributes.addAttribute("id", id);
-				
-			} catch (ServiceException e) {
-				throw new JspException(e);
-			}
-		}
-		return modelAndView;
-	}
-
-	
-	
-	
-	@RequestMapping(value = BO_NEW_TRANSLATION_URL, method = RequestMethod.GET)
-	public ModelAndView add(@RequestParam("type") String type, @RequestParam("lg") String langCode, @RequestParam(value = "id", required = false) Integer id) throws JspException   {
-		try {
-			Lang lang;
-			lang = langService.findByCode(langCode);
-			if (lang == null) throw new ResourceNotFoundException(langCode + " Not found !");	
-			if (id == null) id = 0;
-			return add(type, id, lang, false);
-		} catch (ServiceException e) {
-			throw new JspException(e);
-		}
-	}
-	
-	@RequestMapping(value = BO_NEW_URL, method = RequestMethod.GET)
-	public ModelAndView add(@RequestParam("type") String type, @RequestParam(value = "id", required = false) Integer id) throws JspException   {
-		if (id == null) id = 0;
-		return add(type, id, null, false);
-	}
-	
-	@RequestMapping(value = BO_NEW_TRANSLATION_URL, method = RequestMethod.POST)
-	public ModelAndView add(@RequestParam("type") String type, @RequestParam("lg") String langCode, @RequestParam(value = "id", required = false) Integer id, @Valid @ModelAttribute("objectEdit") Translation data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
-		
-		Lang lang;
-		try {
-			lang = langService.findByCode(langCode);
-		} catch (ServiceException e) {
-			throw new JspException(e);
-		}
-		
-		if (id == null) id = 0;
-		ModelAndView modelAndView = null;
-		if (result.hasErrors()) {
-			modelAndView = add(type, id, lang, true);
-		} else{
-			try {
-				Translation base = (Translation) backOfficeService.translate(data, lang);
-				Translation res = (Translation) backOfficeService.saveData(data);				
-				modelAndView = new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_VIEW_URL);
-				redirectAttributes.addAttribute("type", type);
-				redirectAttributes.addAttribute("id", res.getId());
-			} catch (ServiceException e) {
-				throw new JspException(e);
-			}
-		}
-		return modelAndView;
-	}
-	
-	@RequestMapping(value = BO_NEW_URL, method = RequestMethod.POST)
-	public ModelAndView add(@RequestParam("type") String type, @RequestParam(value = "id", required = false) Integer id, @Valid @ModelAttribute("objectEdit") IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
-		if (id == null) id = 0;
-		ModelAndView modelAndView = null;
-		if (result.hasErrors()) {
-			modelAndView = add(type, id, null, true);
-		} else{
-			try {
-				//data.setId(null);
-				IdProvider res = backOfficeService.saveData(data);				
-				modelAndView = new ModelAndView("redirect:/" + Common.BASE_BO_VIEWS_PATH + BO_VIEW_URL);
-				redirectAttributes.addAttribute("type", type);
-				redirectAttributes.addAttribute("id", res.getId());
-			} catch (ServiceException e) {
-				throw new JspException(e);
-			}
-		}
+	@Override
+	public ModelAndView baseView(String pageNameWithoutLangCode, Folder folder) throws ServiceException {
+		ModelAndView modelAndView = super.baseView(pageNameWithoutLangCode, folder);
+		modelAndView.addAllObjects(init());
 		return modelAndView;
 	}
 	
 	
-	public ModelAndView add(String type, Integer id, Lang lang, Boolean saveError) throws JspException   {
-		return edit(type, id, lang, true, saveError);
-	}
-	public ModelAndView edit(String type, Integer id, Boolean saveError) throws JspException   {
-		return edit(type, id, null, false, saveError);
-	}
-	public ModelAndView edit(String type, Integer id, Lang lang, Boolean isNew, Boolean saveError) throws JspException   {
-		Folder folder = getBOFolder();
-		ModelAndView modelAndView = null;
-		try {
-			System.out.println("zzzzzzzzzzzzzzzzzzzzzz type = " + type);
-			
-			modelAndView = baseView(BO_EDIT_PAGE, folder);
-			modelAndView.addAllObjects(init());
-			Class<?> object = entityLocator.getEntity(type).getClass();
-
-			modelAndView.addObject("objectType", object.getSimpleName());
-			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
-
-			NData<IdProvider> tData = null;
-			if (isNew){
-				tData = backOfficeService.copy(object, id);
-			} else {
-				tData = backOfficeService.findOne(object, id);
-			}
-			
-			modelAndView.addObject("fields", tData.getFields());
-
-			IdProvider objectData = tData.getObjectData();
-			if (saveError != null && saveError){
-				modelAndView.addObject("objectView", objectData);
-			} else {
-				modelAndView.addObject("objectView", objectData);
-				modelAndView.addObject("objectEdit", objectData);
-			}
-
-			
-			
-			modelAndView.addObject("objectName", tData.getObjectData().getName());
-			if (object.getSuperclass().equals(Translation.class)){
-				Translation translation = (Translation) tData.getObjectData();
-				
-				if (translation.getLang() == null){
-					translation.setLang(lang);
-				}
-				
-				modelAndView.addObject("objectLang", translation.getLang());
-			}
-
-		} catch (ServiceException e) {
-			throw new JspException(e);
-		} catch (ClassNotFoundException e) {
-			throw new ResourceNotFoundException(type + " Not found !", e);
-		}
-		return modelAndView;
-	}
-
-	@RequestMapping(value = BO_VIEW_URL, method = RequestMethod.GET)
-	public ModelAndView view(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id) throws JspException   {
-		Folder folder = getBOFolder();
-		ModelAndView modelAndView = null;
-		try {
-			modelAndView = baseView(BO_VIEW_PAGE, folder);
-			modelAndView.addAllObjects(init());
-			Class<?> object = entityLocator.getEntity(type).getClass();
-			
-			System.out.println("		Superclass = " + object.getSuperclass());
-			
-			modelAndView.addObject("objectType", object.getSimpleName());
-			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
-			
-			NData<IdProvider> tData = backOfficeService.findOne(object, id);
-			modelAndView.addObject("fields", tData.getFields());
-			modelAndView.addObject("objectView", tData.getObjectData());
-			modelAndView.addObject("objectName", tData.getObjectData().getName());
-			if (object.getSuperclass().equals(Translation.class)){
-				Translation translation = (Translation) tData.getObjectData();
-				modelAndView.addObject("objectLang", translation.getLang());
-			}
-
-		} catch (ServiceException e) {
-			throw new JspException(e);
-		} catch (ClassNotFoundException e) {
-			throw new ResourceNotFoundException(type + " Not found !", e);
-		}
-		return modelAndView;
-	}
-	
-
-	
-	private IdProvider mkIdProvider(String objectTypeId) throws IllegalArgumentException{
+	protected IdProvider mkIdProvider(String objectTypeId) throws IllegalArgumentException{
 		if (objectTypeId == null || objectTypeId.equals("")) return null;
 		if (objectTypeId.substring(objectTypeId.length() - 1).equals(",")){
 			objectTypeId = objectTypeId.substring(0, objectTypeId.length()-1);
@@ -494,10 +201,7 @@ public class BackOfficeController extends AbtractController {
 			}
     	}
 	}
-	
-	
-	
-	
+
 	@InitBinder("objectEdit")
 	protected void initBinderIdProvider(WebDataBinder binder) {
 		System.out.println("1 - initBinderIdProvider " + binder.getFieldDefaultPrefix() + " " + binder.getFieldMarkerPrefix() + " " + binder.getFieldDefaultPrefix() + " " + binder.getObjectName() + " - " + binder.getTarget());
@@ -592,389 +296,10 @@ public class BackOfficeController extends AbtractController {
 		    }
 		});
 		
-		
-		
-		
-		
-		
+
 		
 	}
 	
-	
-	
-	
-	@RequestMapping(value = BO_BLOCK_LIST_URL + "{type}/{id}/{field}", method = RequestMethod.GET)
-	public ModelAndView getAssignableblocklist(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "type") String ownerType, @PathVariable(value = "id") Integer ownerId, @PathVariable(value = "field") String ownerField, Pageable pageRequest) throws JspException {
-		Folder folder = getBOFolder();
-		ModelAndView modelAndView = null;
-		try {
-			
-			String langCode = LocaleContextHolder.getLocale().getLanguage();
-			fr.cedricsevestre.entity.engine.translation.objects.Page page = common.getPage(BO_LIST_PAGE, langCode);
-			Template block = templateService.findByName(BO_BLOCK_LIST + "_" + langCode.toUpperCase());
-			modelAndView = baseView(page, block, folder);
-			modelAndView.addAllObjects(init());
-			
-			modelAndView.addObject("page", page);
-			modelAndView.addObject("activeBlock", block);
-			response.addHeader("Object-Type", "parsedBlock");  
-
-			Class<?> ownerObject = entityLocator.getEntity(ownerType).getClass();
-			NField nField = backOfficeService.getNField(ownerObject, ownerField);
-
-			Boolean many = Iterable.class.isAssignableFrom(nField.getClazz());
-			modelAndView.addObject("many", many);
-			
-			Class<?> recipientObject = entityLocator.getEntity(many ? nField.getOfClassName() : nField.getClassName()).getClass();
-			modelAndView.addObject("objectType", recipientObject.getSimpleName());
-			modelAndView.addObject("objectBaseType", recipientObject.getSuperclass().getSimpleName());
-					
-			String recipientField = nField.getReverseJoin();
-			NDatas<IdProvider> tDatas = null;
-			if (recipientField != null){
-				Specification<IdProvider> spec = IdProviderSpecification.itsFieldIsAffectedTo(recipientField, ownerId);
-				spec = Specifications.where(spec).or(IdProviderSpecification.isNotAffected(recipientField));
-				tDatas = backOfficeService.findAll(recipientObject, pageRequest, spec);
-			} else {
-				tDatas = backOfficeService.findAll(recipientObject, pageRequest);
-			}
-			
-			modelAndView.addObject("objectDatas", tDatas.getObjectDatas());
-			modelAndView.addObject("datas", tDatas.getObjectDatas().getContent());
-			modelAndView.addObject("fields", tDatas.getFields());
-
-		} catch (ServiceException e) {
-			throw new JspException(e);
-		} catch (ClassNotFoundException e) {
-			throw new ResourceNotFoundException("Ressource not found !", e);
-		}
-		return modelAndView;
-	}
-	
-	
-	
-	
-	
-	
-	
-	@RequestMapping(value = "/file/add/", method = RequestMethod.GET) 
-	public String teeeeee() {
-		return "redirect:/";
-	}
-	
-	
-	
-	
-	@RequestMapping(value = "/file/add/", method = RequestMethod.POST) 
-	public String handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
-		fileService.store(file);
-		redirectAttributes.addFlashAttribute("message",
-				"You successfully uploaded " + file.getOriginalFilename() + "!");
-
-		return "redirect:/";
-	}
-	
-	
-//    @RequestMapping(value = "/bo/file/add/", method = RequestMethod.POST,
-//            produces = MediaType.APPLICATION_JSON_VALUE)
-//    //@Timed
-//    public ResponseEntity<Void> handleFileUpload2(@RequestParam("file") MultipartFile file) {
-////        if (!file.isEmpty()) {
-////            try {
-////                Long fileLength = file.getSize();
-////                String contentType = file.getContentType();
-////                String originalFileName = file.getOriginalFilename();
-////                String originalFileExtension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-////                String newFilename = UUID.randomUUID().toString() + originalFileExtension;
-////                //transfer to upload folder
-////                String storageDirectory = environment.getProperty("applicationStorage.uploadFolder", "/Users/weibo/uploads-def");
-////                File newFile = new File(storageDirectory + "/" + newFilename);
-////                file.transferTo(newFile);
-////                return ResponseEntity.ok().build();
-////            } catch (Exception e) {
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-////            }
-////        } else {
-////            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-////        }
-//    }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-//	@Deprecated
-//	@RequestMapping(value = BO_BLOCK_LIST_URL + "{type}/{field}/{id}", method = RequestMethod.GET)
-//	public ModelAndView getAssignableblocklist_ex(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "type") String assignType, @PathVariable(value = "field") String ownerField, @PathVariable(value = "id") Integer ownerId, @RequestParam(value = "many", required = false) Boolean many, Pageable pageRequest) throws JspException {
-//		Folder folder = getBOFolder();
-//		ModelAndView modelAndView = null;
-//		try {
-//			String langCode = LocaleContextHolder.getLocale().getLanguage();
-//			fr.cedricsevestre.entity.engine.translation.objects.Page page = common.getPage(BO_LIST_PAGE, langCode);
-//			Template block = templateService.findByName(BO_BLOCK_LIST + "_" + langCode.toUpperCase());
-//			modelAndView = baseView(page, block, folder);
-//			modelAndView.addAllObjects(init());
-	
-//			if (many == null) many = false;
-//			modelAndView.addObject("many", many);
-//			
-//			modelAndView.addObject("page", page);
-//			modelAndView.addObject("activeBlock", block);
-//			response.addHeader("Object-Type", "parsedBlock");  
-//
-//			Class<?> object = entityLocator.getEntity(assignType).getClass();
-//			modelAndView.addObject("objectType", object.getSimpleName());
-//			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
-//						
-//			Specification<IdProvider> spec = IdProviderSpecification.itsFieldIsAffectedTo(ownerField, ownerId);
-//			spec = Specifications.where(spec).or(IdProviderSpecification.isNotAffected(ownerField));
-//			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest, spec);
-//
-//			modelAndView.addObject("objectDatas", tDatas.getObjectDatas());
-//			modelAndView.addObject("datas", tDatas.getObjectDatas().getContent());
-//			modelAndView.addObject("fields", tDatas.getFields());
-//
-//		} catch (ServiceException e) {
-//			throw new JspException(e);
-//		}
-//		return modelAndView;
-//	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	@Deprecated
-	@RequestMapping(value = BO_ASSIGN_LIST_URL + "{type}/{field}/{id}", method = RequestMethod.GET)
-	public @ResponseBody List<IdProviderDto> getAssignableList(@PathVariable(value = "type") String assignType, @PathVariable(value = "field") String ownerField, @PathVariable(value = "id") Integer ownerId) throws ServiceException {
-		Class<?> object;
-		try {
-			object = entityLocator.getEntity(assignType).getClass();
-		} catch (ClassNotFoundException e) {
-			throw new ResourceNotFoundException("Ressource not found !", e);
-		}
-		List<IdProviderDto> results = new ArrayList<>();
-		List<?> list = backOfficeService.getAllNotAffected(object.getSimpleName(), ownerField, ownerId, 0, 100);
-		for (Object item : list) {
-			if (item instanceof NoTranslation){
-				results.add(NoTranslationDto.from((NoTranslation) item));
-				
-			} else if (item instanceof Translation){
-				results.add(TranslationDto.from((Translation) item));
-
-			} else if (item instanceof IdProvider){
-				results.add(IdProviderDto.from((IdProvider) item));
-
-			} else {
-				throw new ServiceException("Assign object type must implement IdProvider !");
-			}
-		}
-		System.out.println(results.size());
-		return results;
-	}
-	
-	@Deprecated
-	@RequestMapping(value = BO_ASSIGN_LIST_URL + "{type}", method = RequestMethod.GET)
-	public @ResponseBody List<IdProviderDto> getAssignableList(@PathVariable(value = "type") String assignType) throws ServiceException {
-		Class<?> object;
-		try {
-			object = entityLocator.getEntity(assignType).getClass();
-		} catch (ClassNotFoundException e) {
-			throw new ResourceNotFoundException("Ressource not found !", e);
-		}
-		List<IdProviderDto> results = new ArrayList<>();
-		List<?> list = backOfficeService.getAll(object.getSimpleName(), 5, 10);
-		for (Object item : list) {
-			if (item instanceof NoTranslation){
-				results.add(NoTranslationDto.from((NoTranslation) item));
-				
-			} else if (item instanceof Translation){
-				results.add(TranslationDto.from((Translation) item));
-
-			} else if (item instanceof IdProvider){
-				results.add(IdProviderDto.from((IdProvider) item));
-
-			} else {
-				throw new ServiceException("Assign object type must implement IdProvider !");
-			}
-		}
-		System.out.println(results.size());
-		return results;
-	}
-
-	
-	@Deprecated
-	@RequestMapping(value = BO_BLOCK_LIST_URL, method = RequestMethod.GET)
-	public ModelAndView blockList(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("type") String type, Pageable pageRequest) throws JspException {
-		
-		
-		
-		
-		try {
-			
-			List<Album> idPs = albumService.findAll(IdProviderSpecification.itsFieldIsAffectedTo("project", 49));
-			System.out.println(idPs.size());
-			
-			idPs = albumService.findAll(IdProviderSpecification.isNotAffected("project"));
-			System.out.println(idPs.size());
-			
-			
-			
-			Specification<Object> specification = Specifications.where(IdProviderSpecification.isNotAffected("project")).or(IdProviderSpecification.itsFieldIsAffectedTo("project", 49));
-			
-			idPs = albumService.findAll((Specification) specification);
-			System.out.println(idPs.size());
-			
-			
-		
-			
-		} catch (ServiceException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		Folder folder = getBOFolder();
-		ModelAndView modelAndView = null;
-		try {
-			String langCode = LocaleContextHolder.getLocale().getLanguage();
-			fr.cedricsevestre.entity.engine.translation.objects.Page page = common.getPage(BO_LIST_PAGE, langCode);
-			Template block = templateService.findByName(BO_BLOCK_LIST + "_" + langCode.toUpperCase());
-			modelAndView = baseView(page, block, folder);
-			modelAndView.addAllObjects(init());
-			
-			modelAndView.addObject("page", page);
-			modelAndView.addObject("activeBlock", block);
-			response.addHeader("Object-Type", "parsedBlock");  
-
-			Class<?> object = entityLocator.getEntity(type).getClass();
-			modelAndView.addObject("objectType", object.getSimpleName());
-			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
-			
-			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest);
-
-			modelAndView.addObject("objectDatas", tDatas.getObjectDatas());
-			modelAndView.addObject("datas", tDatas.getObjectDatas().getContent());
-			modelAndView.addObject("fields", tDatas.getFields());
-
-		} catch (ServiceException e) {
-			throw new JspException(e);
-		} catch (ClassNotFoundException e) {
-			throw new ResourceNotFoundException("Ressource not found !", e);
-		}
-		return modelAndView;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	@RequestMapping(value = "/objects/{type}", method = RequestMethod.GET)
-	public @ResponseBody List<IdProviderDto> getObjects(@PathVariable(value = "type") String type, @RequestParam("id") Integer[] ids) throws ServiceException {
-		try {
-			Class<?> object;
-			object = entityLocator.getEntity(type).getClass();
-			
-			// Permet de limiter la requete
-			Pageable pageRequest = new PageRequest(0, BO_MAX_REQUEST_ELEMENT);
-			List<Integer> list = new ArrayList<>(Arrays.asList(ids));
-			
-			Specification<IdProvider> spec = IdProviderSpecification.idIn(list);
-			Page<IdProvider> datas = backOfficeService.getDatas(object, pageRequest, spec);
-			
-			List<IdProviderDto> idProviderDtos = new ArrayList<>();
-			for (IdProvider idProvider : datas) {
-				idProviderDtos.add(IdProviderDto.from(idProvider));
-			}
-			
-			return idProviderDtos;
-		} catch (ClassNotFoundException e) {
-			throw new ResourceNotFoundException(type + " Not found !", e);
-		}
-
-	}
 
 }
 

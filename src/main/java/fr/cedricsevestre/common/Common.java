@@ -61,7 +61,8 @@ public class Common {
 	
 	public static final String BASE_WEBINF = "/WEB-INF/";
 	
-	public static final String BASE_BO_VIEWS_PATH = "bo/";
+	public static final String BO_URL = "bo/";
+	public static final String BO_FILE_URL = "file/";
 	
 	@Deprecated
 	public static final String CUSTOM_ENTITY_PACKAGE = "fr.cedricsevestre.entity.custom";

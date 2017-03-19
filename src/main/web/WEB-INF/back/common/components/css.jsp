@@ -8,6 +8,6 @@
 
 
 <link href="<c:url value='/js/lib/text-angular/textAngular.css'/>" rel="stylesheet"/>
-
+<link href="<c:url value='/js/lib/angular-filemanager/dist/angular-filemanager.min.css'/>" rel="stylesheet">
 
 <link href="<c:url value='/style/back.css'/>" rel="stylesheet">

@@ -1500,14 +1500,14 @@ public class InitialisationBase {
 		Map<Lang, Translation> mList = mkModel("@bo_model_list", "default/default");
 		Map<Lang, Translation> mView = mkModel("@bo_model_view", "default/default");
 		Map<Lang, Translation> mEdit = mkModel("@bo_model_edit", "default/default");
-
+		Map<Lang, Translation> mFile = mkModel("@bo_model_file", "default/default");
 		
 		// Pages
 		Map<Lang, Translation> pgHome = mkPage("@bo_page_home", "home", mHome);
 		Map<Lang, Translation> pgList = mkPage("@bo_page_list", "default", mList);
 		Map<Lang, Translation> pgView = mkPage("@bo_page_view", "default", mView);
 		Map<Lang, Translation> pgEdit = mkPage("@bo_page_edit", "default", mEdit);
-
+		Map<Lang, Translation> pgFile = mkPage("@bo_page_file", "default", mFile);
 		
 		// PageBlocks
 		Map<Lang, Translation> pbHeader = mkPageBlock("@bo_pageblock_header", "header/header");
@@ -1526,7 +1526,7 @@ public class InitialisationBase {
 		Map<Lang, Translation> bList = mkBlock("@bo_block_list", "list/list");
 		Map<Lang, Translation> bView = mkBlock("@bo_block_view", "view/view");
 		Map<Lang, Translation> bEdit = mkBlock("@bo_block_edit", "edit/edit");
-
+		Map<Lang, Translation> bFile = mkBlock("@bo_block_file", "file/file");
 		
 		Map<Lang, Translation> bNgList = mkBlock("@bo_ng_block_list", "list/nglist");
 		
@@ -1544,6 +1544,10 @@ public class InitialisationBase {
 		Map<Lang, MapTemplate> mtHeaderEdit = addMapTemplate(mEdit, pbHeader, pHeader);
 		Map<Lang, MapTemplate> mtArticleEdit = addMapTemplate(mEdit, bEdit, pArticle);
 		Map<Lang, MapTemplate> mtFooterEdit = addMapTemplate(mEdit, pbFooter, pFooter);
+		
+		Map<Lang, MapTemplate> mtHeaderFile = addMapTemplate(mFile, pbHeader, pHeader);
+		Map<Lang, MapTemplate> mtArticleFile = addMapTemplate(mFile, bFile, pArticle);
+		Map<Lang, MapTemplate> mtFooterFile = addMapTemplate(mFile, pbFooter, pFooter);
 	
 	}
 	
