@@ -95,17 +95,17 @@
 
 
 
-<script src="<c:url value='/js/back/app.js'/>"></script>	
-<script src="<c:url value='/js/back/controller/blockManagementCtrl.js'/>"></script>	
-<script src="<c:url value='/js/back/controller/blockSelectionCtrl.js'/>"></script>
-<script src="<c:url value='/js/back/controller/templateModalCtrl.js'/>"></script>
-<script src="<c:url value='/js/back/controller/uiPositionCtrl.js'/>"></script>
-<script src="<c:url value='/js/back/filters/backFilters.js'/>"></script>
-<script src="<c:url value='/js/back/service.js'/>"></script>
-<script src="<c:url value='/js/back/services/repositories.js'/>"></script>
-<script src="<c:url value='/js/back/services/business.js'/>"></script>
-<script src="<c:url value='/js/back/services/constants.js'/>"></script>
-<script src="<c:url value='/js/back/directives/backDirectives.js'/>"></script>		
+<script src="<c:url value='/js/src/back/app.js'/>"></script>	
+<script src="<c:url value='/js/src/back/controller/blockManagementCtrl.js'/>"></script>	
+<script src="<c:url value='/js/src/back/controller/blockSelectionCtrl.js'/>"></script>
+<script src="<c:url value='/js/src/back/controller/templateModalCtrl.js'/>"></script>
+<script src="<c:url value='/js/src/back/controller/uiPositionCtrl.js'/>"></script>
+<script src="<c:url value='/js/src/back/filters/backFilters.js'/>"></script>
+<script src="<c:url value='/js/src/back/service.js'/>"></script>
+<script src="<c:url value='/js/src/back/services/repositories.js'/>"></script>
+<script src="<c:url value='/js/src/back/services/business.js'/>"></script>
+<script src="<c:url value='/js/src/back/services/constants.js'/>"></script>
+<script src="<c:url value='/js/src/back/directives/backDirectives.js'/>"></script>		
 		
 		
 		

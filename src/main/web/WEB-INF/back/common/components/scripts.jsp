@@ -2,47 +2,28 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 
 <%-- Here set all necessary initialization for alone component like blocks --%>
-<script src="<c:url value='/js/lib/jquery-1.11.3.min.js'/>"></script>
-<%-- <script src="<c:url value='/style/bootstrap-3.3.5-dist/js/bootstrap.min.js'/>"></script> --%>
-<script src="<c:url value='/js/lib/angular-1.5.0.min.js'/>"></script>
-<script src="<c:url value='/js/lib/angular-sanitize.min.js'/>"></script>
-<script src="<c:url value='/js/lib/angular-translate.min.js'/>"></script>
-<script src="<c:url value='/js/lib/angular-cookies.min.js'/>"></script>
-<script src="<c:url value='/js/lib/angular-resource.min.js'/>"></script>
-<script src="<c:url value='/js/lib/ui-bootstrap-tpls-2.2.0.min.js'/>"></script>
+<script src="<c:url value='/js/src/lib/bower_components/jquery/dist/jquery.min.js'/>"></script>
 
-<script src="<c:url value='/js/lib/ng-file-upload/dist/ng-file-upload.min.js'/>"></script>
+<script src="<c:url value='/js/src/lib/bower_components/angular/angular.min.js'/>"></script>
+<script src="<c:url value='/js/src/lib/bower_components/angular-sanitize/angular-sanitize.min.js'/>"></script>
+<script src="<c:url value='/js/src/lib/bower_components/angular-translate/angular-translate.min.js'/>"></script>
+<script src="<c:url value='/js/src/lib/bower_components/angular-cookies/angular-cookies.js'/>"></script>
+<script src="<c:url value='/js/src/lib/bower_components/angular-resource/angular-resource.js'/>"></script>
+<script src="<c:url value='/js/src/lib/bower_components/angular-ui-bootstrap/dist/ui-bootstrap-tpls-2.5.0.min.js'/>"></script>
 
-<script src="<c:url value='/js/lib/angular-filemanager/src/js/app.js'/>"></script>
-<script src="<c:url value='/js/lib/angular-filemanager/src/js/directives/directives.js'/>"></script>
-<script src="<c:url value='/js/lib/angular-filemanager/src/js/filters/filters.js'/>"></script>
-<script src="<c:url value='/js/lib/angular-filemanager/src/js/providers/config.js'/>"></script>
-<script src="<c:url value='/js/lib/angular-filemanager/src/js/entities/chmod.js'/>"></script>
-<script src="<c:url value='/js/lib/angular-filemanager/src/js/entities/item.js'/>"></script>
-<script src="<c:url value='/js/lib/angular-filemanager/src/js/services/apihandler.js'/>"></script>
-<script src="<c:url value='/js/lib/angular-filemanager/src/js/services/apimiddleware.js'/>"></script>
-<script src="<c:url value='/js/lib/angular-filemanager/src/js/services/filenavigator.js'/>"></script>
-<script src="<c:url value='/js/lib/angular-filemanager/src/js/providers/translations.js'/>"></script>
-<script src="<c:url value='/js/lib/angular-filemanager/src/js/controllers/main.js'/>"></script>
-<script src="<c:url value='/js/lib/angular-filemanager/src/js/controllers/selector-controller.js'/>"></script>
-<link href="<c:url value='/js/lib/angular-filemanager/src/css/animations.css'/>" rel="stylesheet">
-<link href="<c:url value='/js/lib/angular-filemanager/src/css/dialogs.css'/>" rel="stylesheet">
-<link href="<c:url value='/js/lib/angular-filemanager/src/css/main.css'/>" rel="stylesheet">
+<script src="<c:url value='/js/src/lib/bower_components/textAngular/dist/textAngular-rangy.min.js'/>"></script>
+<script src="<c:url value='/js/src/lib/bower_components/textAngular/dist/textAngular-sanitize.min.js'/>"></script>
+<script src="<c:url value='/js/src/lib/bower_components/textAngular/dist/textAngular.min.js'/>"></script>
 
+<script src="<c:url value='/js/src/lib/bower_components/ng-file-upload/ng-file-upload.min.js'/>"></script>
+<script src="<c:url value='/js/src/lib/bower_components/angular-filemanager/dist/angular-filemanager.min.js'/>"></script>
 
-
-<script src="<c:url value='/js/lib/angular-bootstrap-switch/bootstrap-switch.min.js'/>"></script>
-
-<script src="<c:url value='/js/lib/text-angular/textAngular-rangy.min.js'/>"></script>
-<script src="<c:url value='/js/lib/text-angular/textAngular-sanitize.min.js'/>"></script>
-<script src="<c:url value='/js/lib/text-angular/textAngular.min.js'/>"></script>
-
-<script src="<c:url value='/js/bo/app.js'/>"></script>
-<script src="<c:url value='/js/bo/controller/datepickerPopupCtrl.js'/>"></script>
-<script src="<c:url value='/js/bo/controller/wysiwygEditorCtrl.js'/>"></script>
-<script src="<c:url value='/js/bo/controller/uiAssignmentCtrl.js'/>"></script>
-<script src="<c:url value='/js/bo/service.js'/>"></script>
-<script src="<c:url value='/js/bo/services/uiAssignmentService.js'/>"></script>
-<script src="<c:url value='/js/bo/services/constants.js'/>"></script>
-<script src="<c:url value='/js/bo/directives/uiAssignment.js'/>"></script>
-<script src="<c:url value='/js/bo/filters/idProvidersFilter.js'/>"></script>
+<script src="<c:url value='/js/src/bo/app.js'/>"></script>
+<script src="<c:url value='/js/src/bo/controller/datepickerPopupCtrl.js'/>"></script>
+<script src="<c:url value='/js/src/bo/controller/wysiwygEditorCtrl.js'/>"></script>
+<script src="<c:url value='/js/src/bo/controller/uiAssignmentCtrl.js'/>"></script>
+<script src="<c:url value='/js/src/bo/service.js'/>"></script>
+<script src="<c:url value='/js/src/bo/services/uiAssignmentService.js'/>"></script>
+<script src="<c:url value='/js/src/bo/services/constants.js'/>"></script>
+<script src="<c:url value='/js/src/bo/directives/uiAssignment.js'/>"></script>
+<script src="<c:url value='/js/src/bo/filters/idProvidersFilter.js'/>"></script>
