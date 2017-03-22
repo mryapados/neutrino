@@ -116,6 +116,7 @@ public abstract class BackOfficeController extends AbtractController {
 	protected static final String BO_FILE_HOME_URL = "";
 	protected static final String BO_FILE_HOME_PAGE = "@bo_page_file";
 	protected static final String BO_FILE_ADD_URL = "add/";
+	protected static final String BO_FILE_LIST_URL = "list/";
 	
 	protected static final Integer BO_MAX_REQUEST_ELEMENT = 1000;
 
