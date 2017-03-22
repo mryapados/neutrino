@@ -11,10 +11,10 @@
 </div>
 
 <my:discrimin name="vectorMap">
-	<c:url var="jsurl" value='/js/lib/jquery-jvectormap-2.0.3.min.js'/>
+	<c:url var="jsurl" value='/resources/lib/jquery-jvectormap-2.0.3.min.js'/>
 	<my:script src="${jsurl}"></my:script>
 	
-	<c:url var="jsurl" value='//js/lib/jquery-jvectormap-fr-merc.js'/>
+	<c:url var="jsurl" value='//resources/lib/jquery-jvectormap-fr-merc.js'/>
 	<my:script src="${jsurl}"></my:script>
 </my:discrimin>
 

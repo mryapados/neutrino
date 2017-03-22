@@ -80,7 +80,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 		registry.addResourceHandler("/test/**").addResourceLocations("/WEB-INF/test/");
 		registry.addResourceHandler("/style/**").addResourceLocations("/WEB-INF/style/");
 		registry.addResourceHandler("/image/**").addResourceLocations("/WEB-INF/image/");
-		registry.addResourceHandler("/js/**").addResourceLocations("/WEB-INF/js/");
+		registry.addResourceHandler("/resources/**").addResourceLocations("/WEB-INF/resources/");
 		registry.addResourceHandler("/files/**").addResourceLocations("/WEB-INF/files/");
 	}
 

@@ -48,7 +48,7 @@
 	</div>
 	
 	<jsp:include page="/WEB-INF/pages/common/components/scripts.jsp" /> 
-	<script src="<c:url value='/js/vendor/TweenLite.min.js'/>"></script>
+	<script src="<c:url value='/resources/vendor/TweenLite.min.js'/>"></script>
 	<script type="text/javascript">
 	$(document).ready(function(){
 	  $(document).mousemove(function(e){
