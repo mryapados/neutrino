@@ -1,21 +1,13 @@
 package fr.cedricsevestre.controller.engine.bo;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.jsp.JspException;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import fr.cedricsevestre.dto.engine.TemplateDto;
-import fr.cedricsevestre.entity.engine.IFile;
-import fr.cedricsevestre.entity.engine.translation.objects.Template;
-import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.entity.engine.independant.objects.File;
 
 public interface IFileManager {
 
@@ -39,7 +31,7 @@ public interface IFileManager {
 	
 	
     String add(MultipartFile file, String filename) throws JspException;
-    List<IFile> list(Map<String, String> params) throws JspException;
+    //ResultEncapsulator list(Map<String, String> params) throws JspException;
 	
 	
 	

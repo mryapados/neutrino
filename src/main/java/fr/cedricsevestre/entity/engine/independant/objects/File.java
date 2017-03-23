@@ -56,6 +56,12 @@ public class File implements IdProvider, IFile, Serializable {
 	@Column(name = "path")
 	private String path;
 	
+	@BOField(type = ValueType.VARCHAR50)
+	@NotNull
+	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
+	@Column
+	private String fileName;
+	
 	@BOField(type = ValueType.INTEGER)
 	@NotNull
 	@Column
@@ -91,6 +97,16 @@ public class File implements IdProvider, IFile, Serializable {
 	@Override
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	@Override
+	public String getFileName() {
+		return fileName;
+	}
+
+	@Override
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 	@Override

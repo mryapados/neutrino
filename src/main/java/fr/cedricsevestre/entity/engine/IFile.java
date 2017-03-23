@@ -6,6 +6,10 @@ public interface IFile {
 
 	void setPath(String path);
 
+	String getFileName();
+
+	void setFileName(String fileName);
+	
 	Long getFileSize();
 
 	void setFileSize(Long fileSize);

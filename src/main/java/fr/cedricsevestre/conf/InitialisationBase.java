@@ -108,6 +108,7 @@ public class InitialisationBase {
 	
 	@Autowired
 	private FolderService folderService;
+
 	
 	Map<String, Folder> folders;
 	
@@ -912,6 +913,64 @@ public class InitialisationBase {
 	public void initMedias() throws ServiceException, InstantiationException, IllegalAccessException{
 		logger.debug("init files");
 		
+		
+		
+		File file = new File();
+		file.setName("test1");
+		file.setFileSize(1024L);
+		file.setFileName("test1.test");
+		file.setPath("/");
+		fileService.save(file);
+		
+		file = new File();
+		file.setName("test2");
+		file.setFileSize(1024L);
+		file.setFileName("test2.test");
+		file.setPath("/");
+		fileService.save(file);
+		
+		file = new File();
+		file.setName("test3");
+		file.setFileSize(1024L);
+		file.setFileName("test3.test");
+		file.setPath("/test3");
+		fileService.save(file);
+		
+		file = new File();
+		file.setName("test4");
+		file.setFileSize(1024L);
+		file.setFileName("test4.test");
+		file.setPath("/test3");
+		fileService.save(file);
+		
+		file = new File();
+		file.setName("test5");
+		file.setFileSize(1024L);
+		file.setFileName("test5.test");
+		file.setPath("/test3");
+		fileService.save(file);
+		
+		file = new File();
+		file.setName("test6");
+		file.setFileSize(1024L);
+		file.setFileName("test6.test");
+		file.setPath("/test3/test5");
+		fileService.save(file);
+		
+		file = new File();
+		file.setName("test7");
+		file.setFileSize(1024L);
+		file.setFileName("test7.test");
+		file.setPath("/test3/test5");
+		fileService.save(file);	
+		
+		file = new File();
+		file.setName("test8");
+		file.setFileSize(1024L);
+		file.setFileName("test8.test");
+		file.setPath("/test3/test5");
+		fileService.save(file);
+		
 		Album AlbumEN = albumService.findByName("testalbum_EN");
 		Album AlbumFR = albumService.findByName("testalbum_FR");
 		
@@ -921,10 +980,11 @@ public class InitialisationBase {
 		media.setFileType(FileType.IMAGE);
 		media.setAlbum(AlbumEN);
 		
-		File file = new File();
+		file = new File();
 		file.setName("file1");
 		file.setFileSize(1024L);
-		file.setPath("files/media/cerfa.pdf");
+		file.setFileName("cerfa.pdf");
+		file.setPath("/media");
 		fileService.save(file);
 		
 		media.setFile(file);
@@ -943,7 +1003,8 @@ public class InitialisationBase {
 		File file2 = new File();
 		file2.setName("file2");
 		file2.setFileSize(1024L);
-		file2.setPath("files/media/cerfa.pdf");
+		file2.setFileName("cerfa2.pdf");
+		file2.setPath("/media");
 		
 		media2.setFile(file2);
 		
@@ -1500,7 +1561,7 @@ public class InitialisationBase {
 		Map<Lang, Translation> mList = mkModel("@bo_model_list", "default/default");
 		Map<Lang, Translation> mView = mkModel("@bo_model_view", "default/default");
 		Map<Lang, Translation> mEdit = mkModel("@bo_model_edit", "default/default");
-		Map<Lang, Translation> mFile = mkModel("@bo_model_file", "default/default");
+		Map<Lang, Translation> mFile = mkModel("@bo_model_file", "file/file");
 		
 		// Pages
 		Map<Lang, Translation> pgHome = mkPage("@bo_page_home", "home", mHome);
@@ -1545,9 +1606,9 @@ public class InitialisationBase {
 		Map<Lang, MapTemplate> mtArticleEdit = addMapTemplate(mEdit, bEdit, pArticle);
 		Map<Lang, MapTemplate> mtFooterEdit = addMapTemplate(mEdit, pbFooter, pFooter);
 		
-		Map<Lang, MapTemplate> mtHeaderFile = addMapTemplate(mFile, pbHeader, pHeader);
-		Map<Lang, MapTemplate> mtArticleFile = addMapTemplate(mFile, bFile, pArticle);
-		Map<Lang, MapTemplate> mtFooterFile = addMapTemplate(mFile, pbFooter, pFooter);
+//		Map<Lang, MapTemplate> mtHeaderFile = addMapTemplate(mFile, pbHeader, pHeader);
+//		Map<Lang, MapTemplate> mtArticleFile = addMapTemplate(mFile, bFile, pArticle);
+//		Map<Lang, MapTemplate> mtFooterFile = addMapTemplate(mFile, pbFooter, pFooter);
 	
 	}
 	

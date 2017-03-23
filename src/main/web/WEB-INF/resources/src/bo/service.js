@@ -4,7 +4,7 @@
 	angular.module('FileManagerApp').config(['fileManagerConfigProvider', function (config) {
       var defaults = config.$get();
       config.set({
-        appName: 'angular-filemanager',
+        appName: 'Neutrino',
         
         listUrl: '/neutrino/bo/file/list/',
         uploadUrl: 'bridges/php/handler.php',
@@ -28,10 +28,41 @@
           window.alert(msg);
         },
 
-        allowedActions: angular.extend(defaults.allowedActions, {
-          pickFiles: false,
-          pickFolders: false,
-        }),
+        searchForm: false,
+        sidebar: true,
+        breadcrumb: true,
+        allowedActions: {
+            upload: true,
+            rename: true,
+            move: true,
+            copy: true,
+            edit: true,
+            changePermissions: true,
+            compress: true,
+            compressChooseName: true,
+            extract: true,
+            download: true,
+            downloadMultiple: true,
+            preview: true,
+            remove: true,
+            createFolder: true,
+            pickFiles: false,
+            pickFolders: false
+        },
+        
+        
+        multipleDownloadFileName: 'angular-filemanager.zip',
+        showExtensionIcons: true,
+        showSizeForDirectories: false,
+        useBinarySizePrefixes: false,
+        downloadFilesByAjax: true,
+        previewImagesInModal: true,
+        enablePermissionsRecursive: true,
+        compressAsync: false,
+        extractAsync: false,
+        pickCallback: null,
+
+        
       });
     }]);
 	

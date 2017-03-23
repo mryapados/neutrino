@@ -8,6 +8,6 @@
 
 
 <link href="<c:url value='/resources/src/lib/bower_components/textAngular/dist/textAngular.css'/>" rel="stylesheet"/>
-<%-- <link href="<c:url value='/resources/src/lib/bower_components/angular-filemanager/dist/angular-filemanager.min.css'/>" rel="stylesheet"> --%>
+<link href="<c:url value='/resources/src/lib/bower_components/angular-filemanager/dist/angular-filemanager.min.css'/>" rel="stylesheet">
 
 <link href="<c:url value='/style/back.css'/>" rel="stylesheet">

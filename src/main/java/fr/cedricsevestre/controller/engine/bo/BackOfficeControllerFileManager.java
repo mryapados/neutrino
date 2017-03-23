@@ -1,5 +1,10 @@
 package fr.cedricsevestre.controller.engine.bo;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import fr.cedricsevestre.bean.NFile;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.entity.engine.IFile;
 import fr.cedricsevestre.entity.engine.independant.objects.File;
@@ -28,6 +34,17 @@ import fr.cedricsevestre.service.engine.independant.objects.FileService;
 @RequestMapping(value = Common.BO_URL + Common.BO_FILE_URL)
 public class BackOfficeControllerFileManager extends BackOfficeController implements IFileManager {
 
+	private class ResultEncapsulator{
+		private Object result;
+		public ResultEncapsulator(Object result) {
+			super();
+			this.result = result;
+		}
+		public Object getResult() {
+			return result;
+		}
+	}
+	
 	@Autowired
 	private FileService fileService;
 
@@ -52,11 +69,25 @@ public class BackOfficeControllerFileManager extends BackOfficeController implem
 	}
 	
 
-	@Override
+	//@Override
 	@RequestMapping(value = BO_FILE_LIST_URL, method = RequestMethod.POST)
-	public @ResponseBody List<IFile> list(@RequestBody Map<String, String> params) throws JspException {
-		//List<File> iFiles = fileService.findAll();
-		return null;
+	public @ResponseBody ResultEncapsulator list(@RequestBody Map<String, String> params) throws JspException {
+		try {
+			String path = params.get("path");
+			boolean onlyFolders = params.get("onlyFolders") == "true";
+
+			List<NFile> list = fileService.list(path, onlyFolders);
+			
+			
+			return new ResultEncapsulator(list);
+			
+			
+		} catch (ServiceException e) {
+			throw new JspException(e);
+		}
+		
+		
+		
 	}
 
 
