@@ -103,7 +103,7 @@
 	</c:when>
 	<c:when test="${finalFieldType eq 'FILE'}">
 		<c:if test="${empty isInCollection || not isInCollection}">
-			<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${objectType}_${finalParentObject.id}_${finalField.name}" />
+			<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${objectType}_${finalParentObject.id}_${finalField.name}" kind="file"/>
 		</c:if>
 	</c:when>
 	<c:when test="${finalFieldType eq 'OBJECT'}">

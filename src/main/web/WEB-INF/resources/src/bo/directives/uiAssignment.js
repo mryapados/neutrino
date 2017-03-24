@@ -10,7 +10,7 @@
 			templateUrl: $frontPath.URL_TEMPLATE_JS + 'ui-assignement.html', 
 			controller: function ( $scope, UiAssignmentService ) {
 				$scope.open = function(size) {
-					UiAssignmentService.getObjects($scope[$scope.model], $scope.type, $scope.id, $scope.field, $scope.disablePreChecked, size).then(function(objects) {
+					UiAssignmentService.getObjects($scope[$scope.model], $scope.type, $scope.id, $scope.field, $scope.kind, $scope.disablePreChecked, size).then(function(objects) {
 						$parse($scope.model).assign($scope.$parent, objects);
 					})
 					.catch(function(error){
@@ -25,6 +25,7 @@
 				scope.field = attrs['field'];
 				scope.id = attrs['id'];
 				scope.model = attrs['ngModel'];
+				scope.kind = attrs['kind'];
 				scope.disablePreChecked = (attrs['disablePreChecked'] == 'true');
 	        },
 		};
@@ -45,8 +46,10 @@
 		        	var type = res[0];
 		        	var id = res[1];
 		        	var field = res[2];
+		        	var kind = $attrs.kind;
+		        	if (kind === undefined) kind = '';
 		        	var model = $attrs.ngModel;
-			        var uiAssign = $compile('<data-ui-assignment type="' + type + '" field="' + field + '" id="' + id + '" ng-model="' + model + '" disable-pre-checked="' + disablePreChecked + '"/></data-ui-assignment>')( $scope );
+			        var uiAssign = $compile('<data-ui-assignment type="' + type + '" field="' + field + '" id="' + id + '" ng-model="' + model + '" kind="' + kind + '" disable-pre-checked="' + disablePreChecked + '"/></data-ui-assignment>')( $scope );
 			        $element.parent().append(uiAssign);
 
 			        var modelText = $attrs.ngModel + 'Text';

@@ -81,14 +81,14 @@ public class FileService extends BaseService<File> implements IFileService<File>
 			  }
 			});
 			for (java.io.File d : directories) {
-				nFiles.add(mkNFile(d));
+				nFiles.add(mkNFile(d, null));
 			}
 			if (!onlyFolders){
 				List<File> files = fileDao.findByPath(path);
 				for (File f : files) {
 					try{
 						java.io.File file = new java.io.File(rootLocation + path + "/" + f.getFileName());
-						nFiles.add(mkNFile(file));
+						nFiles.add(mkNFile(file, f));
 					} catch (FileNotFoundException e) {
 						logger.warn("File not found : " + f.getPath() + "/" + f.getFileName(), e);
 					}
@@ -101,10 +101,10 @@ public class FileService extends BaseService<File> implements IFileService<File>
     	
 	}
 
-    private NFile mkNFile(java.io.File file) throws IOException{
+    private NFile mkNFile(java.io.File file, File fileEntity) throws IOException{
     	if (!file.exists()) throw new FileNotFoundException();
     	Date d = new Date(file.lastModified());
-    	return new NFile(file.getName(), getPermissions(file), d, file.length(), file.isFile() ? "file" : "dir");
+    	return new NFile(file.getName(), getPermissions(file), d, file.length(), file.isFile() ? "file" : "dir", fileEntity);
     }
     private String getPermissions(java.io.File f) throws IOException {
 		// http://www.programcreek.com/java-api-examples/index.php?api=java.nio.file.attribute.PosixFileAttributes

@@ -31,6 +31,7 @@
         searchForm: false,
         sidebar: true,
         breadcrumb: true,
+        navbar: false,
         allowedActions: {
             upload: true,
             rename: true,
@@ -64,6 +65,9 @@
 
         
       });
+      
+      console.log(defaults);
+      
     }]);
 	
 	

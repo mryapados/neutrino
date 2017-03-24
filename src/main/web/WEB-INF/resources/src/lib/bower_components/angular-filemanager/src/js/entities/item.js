@@ -15,7 +15,8 @@
                 fullPath: function() {
                     var path = this.path.filter(Boolean);
                     return ('/' + path.join('/') + '/' + this.name).replace(/\/\//, '/');
-                }
+                }, 
+                tag: model && model.tag || {}
             };
 
             this.error = '';

@@ -971,6 +971,13 @@ public class InitialisationBase {
 		file.setPath("/test3/test5");
 		fileService.save(file);
 		
+		file = new File();
+		file.setName("sam");
+		file.setFileSize(1024L);
+		file.setFileName("sam.png");
+		file.setPath("/media");
+		fileService.save(file);
+		
 		Album AlbumEN = albumService.findByName("testalbum_EN");
 		Album AlbumFR = albumService.findByName("testalbum_FR");
 		

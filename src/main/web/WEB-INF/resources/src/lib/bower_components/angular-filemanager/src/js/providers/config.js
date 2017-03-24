@@ -24,6 +24,7 @@
             searchForm: true,
             sidebar: true,
             breadcrumb: true,
+            navbar: true,
             allowedActions: {
                 upload: true,
                 rename: true,

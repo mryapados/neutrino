@@ -5,7 +5,30 @@
     app.directive('angularFilemanager', ['$parse', 'fileManagerConfig', function($parse, fileManagerConfig) {
         return {
             restrict: 'EA',
-            templateUrl: fileManagerConfig.tplPath + '/main.html'
+            templateUrl: fileManagerConfig.tplPath + '/main.html',
+            link: function(scope, element, attrs) {
+            	
+            	
+            	
+            	
+            	
+            	
+            	var multiSelect = true;
+            	if ('multiSelect' in attrs){
+            		if (attrs.multiSelect === 'false') multiSelect = false;
+            	}
+            	
+            	
+            	
+            	
+            	$parse('multiSelect').assign(scope, multiSelect);
+            	
+            	
+            	
+            	
+            	console.log('multiSelect = ' + scope.multiSelect);
+                
+            }
         };
     }]);
 
