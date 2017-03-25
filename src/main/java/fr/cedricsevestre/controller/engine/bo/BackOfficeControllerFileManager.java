@@ -32,7 +32,7 @@ import fr.cedricsevestre.service.engine.independant.objects.FileService;
 
 @Controller
 @RequestMapping(value = Common.BO_URL + Common.BO_FILE_URL)
-public class BackOfficeControllerFileManager extends BackOfficeController implements IFileManager {
+public class BackOfficeControllerFileManager extends BackOfficeController {
 
 	private class ResultEncapsulator{
 		private Object result;
@@ -60,7 +60,6 @@ public class BackOfficeControllerFileManager extends BackOfficeController implem
 	}
 	
 	
-	@Override
 	@RequestMapping(value = BO_FILE_ADD_URL, method = RequestMethod.POST)
 	public @ResponseBody String add(@RequestParam("file-0") MultipartFile file, @RequestParam("filename") String filename) {
 		fileService.store(file);
@@ -69,7 +68,6 @@ public class BackOfficeControllerFileManager extends BackOfficeController implem
 	}
 	
 
-	//@Override
 	@RequestMapping(value = BO_FILE_LIST_URL, method = RequestMethod.POST)
 	public @ResponseBody ResultEncapsulator list(@RequestBody Map<String, String> params) throws JspException {
 		try {

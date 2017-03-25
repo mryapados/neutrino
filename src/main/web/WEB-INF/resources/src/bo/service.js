@@ -31,7 +31,8 @@
         searchForm: false,
         sidebar: true,
         breadcrumb: true,
-        navbar: false,
+        navbar: true,
+        multiSelect:true,
         allowedActions: {
             upload: true,
             rename: true,

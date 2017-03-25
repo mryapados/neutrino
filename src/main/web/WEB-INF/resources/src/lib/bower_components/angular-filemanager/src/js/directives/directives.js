@@ -7,26 +7,23 @@
             restrict: 'EA',
             templateUrl: fileManagerConfig.tplPath + '/main.html',
             link: function(scope, element, attrs) {
-            	
-            	
-            	
-            	
-            	
-            	
-            	var multiSelect = true;
+
+            	var multiSelect = fileManagerConfig.multiSelect;
             	if ('multiSelect' in attrs){
-            		if (attrs.multiSelect === 'false') multiSelect = false;
+            		if (attrs.multiSelect === 'true' || attrs.multiSelect === '') multiSelect = true;
+            		else if (attrs.multiSelect === 'false') multiSelect = false;
             	}
-            	
-            	
-            	
-            	
             	$parse('multiSelect').assign(scope, multiSelect);
             	
-            	
-            	
-            	
-            	console.log('multiSelect = ' + scope.multiSelect);
+            	var navbar = fileManagerConfig.navbar;
+            	console.log('navbar = ' + navbar);
+            	if ('navbar' in attrs){
+            		if (attrs.navbar === 'true' || attrs.navbar === '') navbar = true;
+            		else if (attrs.navbar === 'false') navbar = false;
+            	}
+            	console.log('navbar = ' + navbar);
+            	$parse('navbar').assign(scope, navbar);
+
                 
             }
         };

@@ -6,8 +6,4 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <my:init test="${!initialized}"/>
-<angular-filemanager></angular-filemanager>
-
-
-
-
+<angular-filemanager />
