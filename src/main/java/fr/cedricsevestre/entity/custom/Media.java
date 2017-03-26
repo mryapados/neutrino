@@ -1,7 +1,6 @@
 package fr.cedricsevestre.entity.custom;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -22,13 +21,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.SafeHtml;
-import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
-
 import fr.cedricsevestre.annotation.BOField;
 import fr.cedricsevestre.annotation.BOField.ValueType;
-import fr.cedricsevestre.entity.engine.IFile;
-import fr.cedricsevestre.entity.engine.independant.objects.File;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Entity
@@ -72,15 +66,13 @@ public class Media extends Translation {
 	private FileType fileType;
 	
 	@BOField(type = ValueType.FILE)
-	@NotNull
-	@OneToOne
-	private File file;
+	private String file;
 	
 	@BOField(type = ValueType.COLLECTION, ofType = ValueType.FILE)
 	@ElementCollection
 	@CollectionTable(name="media_files", joinColumns=@JoinColumn(name="idfile"))
 	@Column(name="files")
-	private Set<File> files;
+	private Set<String> files;
 	
 	@BOField(type = ValueType.COLLECTION, ofType = ValueType.NTOBJECT)
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -156,19 +148,19 @@ public class Media extends Translation {
 		this.album = album;
 	}
 
-	public File getFile() {
+	public String getFile() {
 		return file;
 	}
 
-	public void setFile(File file) {
+	public void setFile(String file) {
 		this.file = file;
 	}
 
-	public Set<File> getFiles() {
+	public Set<String> getFiles() {
 		return files;
 	}
 
-	public void setFiles(Set<File> files) {
+	public void setFiles(Set<String> files) {
 		this.files = files;
 	}
 

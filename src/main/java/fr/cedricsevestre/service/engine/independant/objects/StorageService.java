@@ -1,11 +1,30 @@
 package fr.cedricsevestre.service.engine.independant.objects;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFileAttributeView;
+import java.nio.file.attribute.PosixFileAttributes;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
+
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,44 +33,17 @@ import fr.cedricsevestre.annotation.BOService;
 import fr.cedricsevestre.bean.NFile;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.conf.ApplicationProperties;
-import fr.cedricsevestre.dao.engine.BaseDao;
-import fr.cedricsevestre.dao.engine.FileDao;
-import fr.cedricsevestre.entity.engine.independant.objects.File;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.exception.StorageException;
 import fr.cedricsevestre.exception.StorageFileNotFoundException;
-import fr.cedricsevestre.service.engine.BaseService;
-import fr.cedricsevestre.service.engine.CacheService;
-import fr.cedricsevestre.service.engine.IFileService;
-
-import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.nio.file.attribute.PosixFileAttributeView;
-import java.nio.file.attribute.PosixFileAttributes;
-import java.nio.file.attribute.PosixFilePermission;
-import java.nio.file.attribute.PosixFilePermissions;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Stream;
-
-import javax.annotation.PostConstruct;
-import javax.persistence.PersistenceException;
+import fr.cedricsevestre.service.engine.IStorageService;
 
 
 @Service
 @Scope(value = "singleton")
 @BOService
-public class FileService extends BaseService<File> implements IFileService<File>{
-	private Logger logger = Logger.getLogger(FileService.class);
+public class StorageService implements IStorageService{
+	private Logger logger = Logger.getLogger(StorageService.class);
 	
 	@Autowired
 	protected Common common;
@@ -61,15 +53,11 @@ public class FileService extends BaseService<File> implements IFileService<File>
 	
     private Path rootLocation;
     
-	@Autowired
-	private FileDao fileDao;
-
     @PostConstruct
     private void initialize(){
     	this.rootLocation = Paths.get(common.getWebInfFolder() + applicationProperties.getUploadDir());
     }
     
-    @Override
 	public List<NFile> list(String path, boolean onlyFolders) throws ServiceException  {
     	try{
 			List<NFile> nFiles = new ArrayList<>();
@@ -81,18 +69,18 @@ public class FileService extends BaseService<File> implements IFileService<File>
 			  }
 			});
 			for (java.io.File d : directories) {
-				nFiles.add(mkNFile(d, null));
+				nFiles.add(mkNFile(d));
 			}
 			if (!onlyFolders){
-				List<File> files = fileDao.findByPath(path);
-				for (File f : files) {
-					try{
-						java.io.File file = new java.io.File(rootLocation + path + "/" + f.getFileName());
-						nFiles.add(mkNFile(file, f));
-					} catch (FileNotFoundException e) {
-						logger.warn("File not found : " + f.getPath() + "/" + f.getFileName(), e);
-					}
-				}
+				//List<File> files = fileDao.findByPath(path);
+//				for (File f : files) {
+//					try{
+//						java.io.File file = new java.io.File(rootLocation + path + "/" + f.getFileName());
+//						nFiles.add(mkNFile(file, f));
+//					} catch (FileNotFoundException e) {
+//						logger.warn("File not found : " + f.getPath() + "/" + f.getFileName(), e);
+//					}
+//				}
 			}
 			return nFiles;
     	} catch (IOException e) {
@@ -101,10 +89,10 @@ public class FileService extends BaseService<File> implements IFileService<File>
     	
 	}
 
-    private NFile mkNFile(java.io.File file, File fileEntity) throws IOException{
+    private NFile mkNFile(java.io.File file) throws IOException{
     	if (!file.exists()) throw new FileNotFoundException();
     	Date d = new Date(file.lastModified());
-    	return new NFile(file.getName(), getPermissions(file), d, file.length(), file.isFile() ? "file" : "dir", fileEntity);
+    	return new NFile(file.getName(), getPermissions(file), d, file.length(), file.isFile() ? "file" : "dir", null);
     }
     private String getPermissions(java.io.File f) throws IOException {
 		// http://www.programcreek.com/java-api-examples/index.php?api=java.nio.file.attribute.PosixFileAttributes

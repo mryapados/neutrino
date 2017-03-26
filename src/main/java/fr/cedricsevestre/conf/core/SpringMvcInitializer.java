@@ -18,7 +18,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 import fr.cedricsevestre.conf.ApplicationConfiguration;
 import fr.cedricsevestre.conf.ApplicationProperties;
-import fr.cedricsevestre.service.engine.independant.objects.FileService;
+import fr.cedricsevestre.service.engine.independant.objects.StorageService;
 
 public class SpringMvcInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 

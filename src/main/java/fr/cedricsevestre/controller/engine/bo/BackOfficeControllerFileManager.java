@@ -1,14 +1,8 @@
 package fr.cedricsevestre.controller.engine.bo;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.cedricsevestre.bean.NFile;
 import fr.cedricsevestre.common.Common;
-import fr.cedricsevestre.entity.engine.IFile;
-import fr.cedricsevestre.entity.engine.independant.objects.File;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.exception.ServiceException;
-import fr.cedricsevestre.service.engine.independant.objects.FileService;
+import fr.cedricsevestre.service.engine.independant.objects.StorageService;
 
 @Controller
 @RequestMapping(value = Common.BO_URL + Common.BO_FILE_URL)
@@ -46,7 +37,7 @@ public class BackOfficeControllerFileManager extends BackOfficeController {
 	}
 	
 	@Autowired
-	private FileService fileService;
+	private StorageService fileService;
 
 	@RequestMapping(value = BO_FILE_HOME_URL, method = RequestMethod.GET)
 	public ModelAndView home() throws JspException   {

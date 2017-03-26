@@ -2,7 +2,7 @@
 
 	var fModule = angular.module("frontApp");
 
-	fModule.service('UiAssignmentService', function($q, $log, $uibModal, $frontPath) {
+	fModule.service('UiObjectAssignmentService', function($q, $log, $uibModal, $frontPath) {
 		
 		self = this;
 		self.getObjects = function(values, objectType, objectId, objectField, kind, disablePreChecked, modalSize, pageSize, page) {
@@ -17,8 +17,8 @@
 			var deferred = $q.defer();
 
 			var instance = $uibModal.open({
-				templateUrl: $frontPath.URL_TEMPLATE_JS + 'ui-assignement-modal.html',
-				controller: 'UiAssignmentModalCtrl',
+				templateUrl: $frontPath.URL_TEMPLATE_JS + 'ui-object-assignement-modal.html',
+				controller: 'UiObjectAssignmentModalCtrl',
 				size: modalSize,
 				resolve: {
 		            values: function(){
@@ -63,8 +63,8 @@
 	});
 	
 	
-	fModule.controller('UiAssignmentModalCtrl', function ($rootScope, $scope, $uibModalInstance, values, urlInfos, kind, disablePreChecked) {
-		console.log('in UiAssignmentModalCtrl');
+	fModule.controller('UiObjectAssignmentModalCtrl', function ($rootScope, $scope, $uibModalInstance, values, urlInfos, kind, disablePreChecked) {
+		console.log('in UiObjectAssignmentModalCtrl');
 		
 		if (kind == 'object'){
 			
@@ -144,9 +144,9 @@
 			
 			$scope.mkUrl(urlInfos);
 
-		} else if (kind == 'file'){
+		} else if (kind == 'objectFile'){
 			$scope.mkUrl = function(urlInfos) {
-				var url = '/neutrino/bo/file/';
+				var url = '/neutrino/bo/file/'; //TODO bonne url
 				$scope.urlMaked = url;
 			}
 			$scope.mkUrl();

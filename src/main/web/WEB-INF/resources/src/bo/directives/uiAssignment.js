@@ -2,15 +2,15 @@
 
 	var fModule = angular.module("frontApp");
 
-	fModule.directive('uiAssignment', function($parse, $frontPath){
+	fModule.directive('uiObjectAssignment', function($parse, $frontPath){
 		return {
 			restrict: 'E',
 			require : '?ngModel',
 			transclude: true,
-			templateUrl: $frontPath.URL_TEMPLATE_JS + 'ui-assignement.html', 
-			controller: function ( $scope, UiAssignmentService ) {
+			templateUrl: $frontPath.URL_TEMPLATE_JS + 'ui-object-assignement.html', 
+			controller: function ( $scope, UiObjectAssignmentService ) {
 				$scope.open = function(size) {
-					UiAssignmentService.getObjects($scope[$scope.model], $scope.type, $scope.id, $scope.field, $scope.kind, $scope.disablePreChecked, size).then(function(objects) {
+					UiObjectAssignmentService.getObjects($scope[$scope.model], $scope.type, $scope.id, $scope.field, $scope.kind, $scope.disablePreChecked, size).then(function(objects) {
 						$parse($scope.model).assign($scope.$parent, objects);
 					})
 					.catch(function(error){
@@ -27,6 +27,33 @@
 				scope.model = attrs['ngModel'];
 				scope.kind = attrs['kind'];
 				scope.disablePreChecked = (attrs['disablePreChecked'] == 'true');
+	        },
+		};
+	});
+	
+	fModule.directive('uiFileAssignment', function($parse, $frontPath){
+		return {
+			restrict: 'E',
+			require : '?ngModel',
+			transclude: true,
+			templateUrl: $frontPath.URL_TEMPLATE_JS + 'ui-file-assignement.html', 
+			controller: function ( $scope, UiFileAssignmentService ) {
+				$scope.open = function(size) {
+					UiFileAssignmentService.getObjects($scope[$scope.model], $scope.type, $scope.id, $scope.field, $scope.kind, $scope.disablePreChecked, size).then(function(objects) {
+						$parse($scope.model).assign($scope.$parent, objects);
+					})
+					.catch(function(error){
+						console.log(error.status);
+						console.log(error);
+					});
+				};
+			}, 
+			scope : true,
+			link: function(scope, element, attrs, ngModelController){
+				scope.type = attrs['type'];
+				scope.field = attrs['field'];
+				scope.id = attrs['id'];
+				scope.model = attrs['ngModel'];
 	        },
 		};
 	});
@@ -47,13 +74,17 @@
 		        	var id = res[1];
 		        	var field = res[2];
 		        	var kind = $attrs.kind;
-		        	if (kind === undefined) kind = '';
+		        	if (kind === undefined) kind = 'object';
+		        	
+		        	var assignType = 'object';
+		        	if (kind === 'file') assignType = 'file';
+		        	
 		        	var model = $attrs.ngModel;
-			        var uiAssign = $compile('<data-ui-assignment type="' + type + '" field="' + field + '" id="' + id + '" ng-model="' + model + '" kind="' + kind + '" disable-pre-checked="' + disablePreChecked + '"/></data-ui-assignment>')( $scope );
+			        var uiAssign = $compile('<data-ui-' + assignType + '-assignment type="' + type + '" field="' + field + '" id="' + id + '" ng-model="' + model + '" kind="' + kind + '" disable-pre-checked="' + disablePreChecked + '"/></data-ui-' + kind + '-assignment>')( $scope );
 			        $element.parent().append(uiAssign);
 
 			        var modelText = $attrs.ngModel + 'Text';
-			        var uiAssignText = $compile('<ul class="linked"><li data-ng-repeat="r in ' + modelText + ' | orderBy: \'name\'"><a class="linked" href="#">{{r.name}}</a></li><li data-ng-show="' + model+ '.length - ' + modelText + '.length > 0"><strong><a href="#">{{' + model+ '.length - ' + modelText + '.length}} <span>Others results...</span></a></strong></li></ul>')( $scope );
+			        var uiAssignText = $compile('<ul class="linked"><li data-ng-repeat="r in ' + modelText + ' | orderBy: \'name\'"><a class="linked" href="#">{{r.name}}</a></li><li data-ng-show="' + model+ '.length - ' + modelText + '.length > 0"><strong><a href="#">{{' + model + '.length - ' + modelText + '.length}} <span>Others results...</span></a></strong></li></ul>')( $scope );
 			        $element.parent().append(uiAssignText);
 
 			        $scope.$watch(model, function() {			        	
@@ -89,7 +120,12 @@
 		        }
 		    },
 			link : function(scope, element, attrs, ngModelController) {
-				if (attrs.ngModel && attrs.assign) {
+	        	var kind = attrs.kind;
+	        	if (kind === undefined) kind = 'object';
+	        	var assignType = 'object';
+	        	if (kind === 'file') assignType = 'file';
+				
+				if (attrs.ngModel && attrs.assign && assignType == 'object') {
 					$parse(attrs.ngModel).assign(scope, idProvidersFilter(attrs.value, 'toArray'));
 					ngModelController.$parsers.push(function(data) {
 						// convert data from view format to model format

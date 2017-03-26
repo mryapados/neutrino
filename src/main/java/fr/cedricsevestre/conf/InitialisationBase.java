@@ -21,7 +21,6 @@ import fr.cedricsevestre.entity.custom.Member;
 import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.custom.Tag;
 import fr.cedricsevestre.entity.engine.bo.Link;
-import fr.cedricsevestre.entity.engine.independant.objects.File;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
 import fr.cedricsevestre.entity.engine.independant.objects.NData;
@@ -36,18 +35,18 @@ import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.AlbumService;
-import fr.cedricsevestre.service.custom.MediaService;
 import fr.cedricsevestre.service.custom.MarkerService;
+import fr.cedricsevestre.service.custom.MediaService;
 import fr.cedricsevestre.service.custom.MemberService;
 import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.custom.TagService;
 import fr.cedricsevestre.service.engine.bo.LinkService;
-import fr.cedricsevestre.service.engine.independant.objects.FileService;
 import fr.cedricsevestre.service.engine.independant.objects.FolderService;
 import fr.cedricsevestre.service.engine.independant.objects.MapTemplateService;
 import fr.cedricsevestre.service.engine.independant.objects.NDataService;
 import fr.cedricsevestre.service.engine.independant.objects.NSchemaService;
 import fr.cedricsevestre.service.engine.independant.objects.PositionService;
+import fr.cedricsevestre.service.engine.independant.objects.StorageService;
 import fr.cedricsevestre.service.engine.translation.LangService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
@@ -71,7 +70,7 @@ public class InitialisationBase {
 	private TagService tagService;
 	
 	@Autowired
-	private FileService fileService;
+	private StorageService fileService;
 	
 	@Autowired
 	private MediaService mediaService;
@@ -915,68 +914,68 @@ public class InitialisationBase {
 		
 		
 		
-		File file = new File();
-		file.setName("test1");
-		file.setFileSize(1024L);
-		file.setFileName("test1.test");
-		file.setPath("/");
-		fileService.save(file);
-		
-		file = new File();
-		file.setName("test2");
-		file.setFileSize(1024L);
-		file.setFileName("test2.test");
-		file.setPath("/");
-		fileService.save(file);
-		
-		file = new File();
-		file.setName("test3");
-		file.setFileSize(1024L);
-		file.setFileName("test3.test");
-		file.setPath("/test3");
-		fileService.save(file);
-		
-		file = new File();
-		file.setName("test4");
-		file.setFileSize(1024L);
-		file.setFileName("test4.test");
-		file.setPath("/test3");
-		fileService.save(file);
-		
-		file = new File();
-		file.setName("test5");
-		file.setFileSize(1024L);
-		file.setFileName("test5.test");
-		file.setPath("/test3");
-		fileService.save(file);
-		
-		file = new File();
-		file.setName("test6");
-		file.setFileSize(1024L);
-		file.setFileName("test6.test");
-		file.setPath("/test3/test5");
-		fileService.save(file);
-		
-		file = new File();
-		file.setName("test7");
-		file.setFileSize(1024L);
-		file.setFileName("test7.test");
-		file.setPath("/test3/test5");
-		fileService.save(file);	
-		
-		file = new File();
-		file.setName("test8");
-		file.setFileSize(1024L);
-		file.setFileName("test8.test");
-		file.setPath("/test3/test5");
-		fileService.save(file);
-		
-		file = new File();
-		file.setName("sam");
-		file.setFileSize(1024L);
-		file.setFileName("sam.png");
-		file.setPath("/media");
-		fileService.save(file);
+//		File file = new File();
+//		file.setName("test1");
+//		file.setFileSize(1024L);
+//		file.setFileName("test1.test");
+//		file.setPath("/");
+//		fileService.save(file);
+//		
+//		file = new File();
+//		file.setName("test2");
+//		file.setFileSize(1024L);
+//		file.setFileName("test2.test");
+//		file.setPath("/");
+//		fileService.save(file);
+//		
+//		file = new File();
+//		file.setName("test3");
+//		file.setFileSize(1024L);
+//		file.setFileName("test3.test");
+//		file.setPath("/test3");
+//		fileService.save(file);
+//		
+//		file = new File();
+//		file.setName("test4");
+//		file.setFileSize(1024L);
+//		file.setFileName("test4.test");
+//		file.setPath("/test3");
+//		fileService.save(file);
+//		
+//		file = new File();
+//		file.setName("test5");
+//		file.setFileSize(1024L);
+//		file.setFileName("test5.test");
+//		file.setPath("/test3");
+//		fileService.save(file);
+//		
+//		file = new File();
+//		file.setName("test6");
+//		file.setFileSize(1024L);
+//		file.setFileName("test6.test");
+//		file.setPath("/test3/test5");
+//		fileService.save(file);
+//		
+//		file = new File();
+//		file.setName("test7");
+//		file.setFileSize(1024L);
+//		file.setFileName("test7.test");
+//		file.setPath("/test3/test5");
+//		fileService.save(file);	
+//		
+//		file = new File();
+//		file.setName("test8");
+//		file.setFileSize(1024L);
+//		file.setFileName("test8.test");
+//		file.setPath("/test3/test5");
+//		fileService.save(file);
+//		
+//		file = new File();
+//		file.setName("sam");
+//		file.setFileSize(1024L);
+//		file.setFileName("sam.png");
+//		file.setPath("/media");
+//		fileService.save(file);
 		
 		Album AlbumEN = albumService.findByName("testalbum_EN");
 		Album AlbumFR = albumService.findByName("testalbum_FR");
@@ -987,14 +986,13 @@ public class InitialisationBase {
 		media.setFileType(FileType.IMAGE);
 		media.setAlbum(AlbumEN);
 		
-		file = new File();
-		file.setName("file1");
-		file.setFileSize(1024L);
-		file.setFileName("cerfa.pdf");
-		file.setPath("/media");
-		fileService.save(file);
-		
-		media.setFile(file);
+//		file = new File();
+//		file.setName("file1");
+//		file.setFileSize(1024L);
+//		file.setFileName("cerfa.pdf");
+//		file.setPath("/media");
+//		fileService.save(file);
+//		media.setFile(file);
 		
 		mediaService.save(media);
 		
@@ -1007,15 +1005,13 @@ public class InitialisationBase {
 		media2.setFileType(FileType.VIDEO);
 		media2.setAlbum(AlbumEN);
 		
-		File file2 = new File();
-		file2.setName("file2");
-		file2.setFileSize(1024L);
-		file2.setFileName("cerfa2.pdf");
-		file2.setPath("/media");
-		
-		media2.setFile(file2);
-		
-		fileService.save(file2);
+//		File file2 = new File();
+//		file2.setName("file2");
+//		file2.setFileSize(1024L);
+//		file2.setFileName("cerfa2.pdf");
+//		file2.setPath("/media");
+//		media2.setFile(file2);
+//		fileService.save(file2);
 		
 		Set<Tag> tags = new HashSet<>();
 		tags.add(tag);

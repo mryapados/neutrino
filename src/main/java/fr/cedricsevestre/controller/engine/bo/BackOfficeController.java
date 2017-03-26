@@ -76,7 +76,7 @@ import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.engine.BaseService;
 import fr.cedricsevestre.service.engine.EntityLocator;
 import fr.cedricsevestre.service.engine.bo.BackOfficeService;
-import fr.cedricsevestre.service.engine.independant.objects.FileService;
+import fr.cedricsevestre.service.engine.independant.objects.StorageService;
 import fr.cedricsevestre.service.engine.independant.objects.FolderService;
 import fr.cedricsevestre.service.engine.translation.LangService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
