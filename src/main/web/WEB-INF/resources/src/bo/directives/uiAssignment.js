@@ -8,9 +8,9 @@
 			require : '?ngModel',
 			transclude: true,
 			templateUrl: $frontPath.URL_TEMPLATE_JS + 'ui-object-assignement.html', 
-			controller: function ( $scope, UiObjectAssignmentService ) {
+			controller: function ( $scope, UiAssignmentService ) {
 				$scope.open = function(size) {
-					UiObjectAssignmentService.getObjects($scope[$scope.model], $scope.type, $scope.id, $scope.field, $scope.kind, $scope.disablePreChecked, size).then(function(objects) {
+					UiAssignmentService.getObjects($scope[$scope.model], $scope.type, $scope.id, $scope.field, $scope.kind, $scope.disablePreChecked, size).then(function(objects) {
 						$parse($scope.model).assign($scope.$parent, objects);
 					})
 					.catch(function(error){
@@ -37,9 +37,9 @@
 			require : '?ngModel',
 			transclude: true,
 			templateUrl: $frontPath.URL_TEMPLATE_JS + 'ui-file-assignement.html', 
-			controller: function ( $scope, UiFileAssignmentService ) {
+			controller: function ( $scope, UiAssignmentService ) {
 				$scope.open = function(size) {
-					UiFileAssignmentService.getObjects($scope[$scope.model], $scope.type, $scope.id, $scope.field, $scope.kind, $scope.disablePreChecked, size).then(function(objects) {
+					UiAssignmentService.getObjects($scope[$scope.model], $scope.type, $scope.id, $scope.field, $scope.kind, $scope.disablePreChecked, size).then(function(objects) {
 						$parse($scope.model).assign($scope.$parent, objects);
 					})
 					.catch(function(error){
@@ -54,11 +54,12 @@
 				scope.field = attrs['field'];
 				scope.id = attrs['id'];
 				scope.model = attrs['ngModel'];
+				scope.kind = attrs['kind'];
 	        },
 		};
 	});
 
-	fModule.directive('input', function($parse, idProvidersFilter, $compile, $http, $frontPath) {
+	fModule.directive('input', function($parse, idProvidersFilter, stringsFilter, $compile, $http, $frontPath) {
 		return {
 			restrict : 'E',
 			require : '?ngModel',
@@ -76,11 +77,8 @@
 		        	var kind = $attrs.kind;
 		        	if (kind === undefined) kind = 'object';
 		        	
-		        	var assignType = 'object';
-		        	if (kind === 'file') assignType = 'file';
-		        	
 		        	var model = $attrs.ngModel;
-			        var uiAssign = $compile('<data-ui-' + assignType + '-assignment type="' + type + '" field="' + field + '" id="' + id + '" ng-model="' + model + '" kind="' + kind + '" disable-pre-checked="' + disablePreChecked + '"/></data-ui-' + kind + '-assignment>')( $scope );
+			        var uiAssign = $compile('<data-ui-' + kind + '-assignment type="' + type + '" field="' + field + '" id="' + id + '" ng-model="' + model + '" kind="' + kind + '" disable-pre-checked="' + disablePreChecked + '"/></data-ui-' + kind + '-assignment>')( $scope );
 			        $element.parent().append(uiAssign);
 
 			        var modelText = $attrs.ngModel + 'Text';
@@ -122,19 +120,32 @@
 			link : function(scope, element, attrs, ngModelController) {
 	        	var kind = attrs.kind;
 	        	if (kind === undefined) kind = 'object';
-	        	var assignType = 'object';
-	        	if (kind === 'file') assignType = 'file';
 				
-				if (attrs.ngModel && attrs.assign && assignType == 'object') {
-					$parse(attrs.ngModel).assign(scope, idProvidersFilter(attrs.value, 'toArray'));
-					ngModelController.$parsers.push(function(data) {
-						// convert data from view format to model format
-						return idProvidersFilter(data, 'toArray'); // converted
-					});
-					ngModelController.$formatters.push(function(data) {
-						// convert data from model format to view format
-						return idProvidersFilter(data);  // converted
-					});
+				if (attrs.ngModel && attrs.assign) {
+					
+					if (kind == 'object'){
+						$parse(attrs.ngModel).assign(scope, idProvidersFilter(attrs.value, 'toArray'));
+						ngModelController.$parsers.push(function(data) {
+							// convert data from view format to model format
+							return idProvidersFilter(data, 'toArray'); // converted
+						});
+						ngModelController.$formatters.push(function(data) {
+							// convert data from model format to view format
+							return idProvidersFilter(data);  // converted
+						});
+					} else if (kind == 'file'){
+						$parse(attrs.ngModel).assign(scope, stringsFilter(attrs.value, 'toArray'));
+						ngModelController.$parsers.push(function(data) {
+							// convert data from view format to model format
+							return stringsFilter(data, 'toArray'); // converted
+						});
+						ngModelController.$formatters.push(function(data) {
+							// convert data from model format to view format
+							return stringsFilter(data);  // converted
+						});
+					} else {
+						$parse(attrs.ngModel).assign(scope, attrs.value);
+					}
 					
 				}
 			}

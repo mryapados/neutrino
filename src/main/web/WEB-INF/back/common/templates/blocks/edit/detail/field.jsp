@@ -134,7 +134,14 @@
 		</c:choose>
 	</c:when>
 	<c:when test="${finalFieldType eq 'COLLECTION'}">
-		<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${objectType}_${finalParentObject.id}_${finalField.name}" />
+		<c:choose>
+			<c:when test="${finalField.ofType eq 'FILE'}">
+				<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${objectType}_${finalParentObject.id}_${finalField.name}" kind="file" />
+			</c:when>
+			<c:otherwise>
+				<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${objectType}_${finalParentObject.id}_${finalField.name}" />
+			</c:otherwise>
+		</c:choose>
 	</c:when>
 	<c:when test="${finalFieldType eq 'ENUM'}">
 		<c:set var="fieldError"><form:errors path="${finalField.name}"/></c:set>

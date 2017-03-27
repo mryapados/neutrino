@@ -994,6 +994,12 @@ public class InitialisationBase {
 //		fileService.save(file);
 //		media.setFile(file);
 		
+		media.setFile("/media/cerfa.pdf");
+		
+		Set<String> files = new HashSet<>();
+		files.add("/media/c,erfa.pdf");
+		files.add("/media/cerfa2.pdf");
+		media.setFiles(files);
 		mediaService.save(media);
 		
 		

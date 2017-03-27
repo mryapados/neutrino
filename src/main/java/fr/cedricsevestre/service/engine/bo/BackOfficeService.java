@@ -10,6 +10,7 @@ import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -38,6 +39,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
 import fr.cedricsevestre.annotation.BOField;
 import fr.cedricsevestre.annotation.BOField.SortType;
@@ -50,6 +52,7 @@ import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
+import fr.cedricsevestre.exception.ResourceNotFoundException;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.EntityLocator;
 import fr.cedricsevestre.service.engine.ServiceLocator;
@@ -788,6 +791,171 @@ public class BackOfficeService { //implements IBackOfficeService{
 	public List<String> getListNoTranslationObjectType(){
 		return getListObjectType(NoTranslation.class);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	private static final Character BINDER_COLLECTION_CHAR_FIRST = 91; // "["
+	private static final Character BINDER_COLLECTION_CHAR_LAST = 93; // "["
+	private static final Character BINDER_COLLECTION_CHAR_SEPARATOR = 44; // ","
+	private static final Character BINDER_IDPROVIDER_CHAR_SEPARATOR = 95; // "_"
+	private static final String BINDER_STRING_COMMA_REPLACE = "&c";
+	private static final String BINDER_STRING_CHAR_FIRST_REPLACE = "&o";
+	private static final String BINDER_STRING_CHAR_LAST_REPLACE = "&f";
+	
+	public IdProvider stringToIdProvider(String objectTypeId) throws IllegalArgumentException{
+		if (objectTypeId == null || objectTypeId.equals("")) return null;
+		if (objectTypeId.substring(objectTypeId.length() - 1).equals(",")){
+			objectTypeId = objectTypeId.substring(0, objectTypeId.length()-1);
+		}
+		
+		String[] identifier = objectTypeId.split((BINDER_IDPROVIDER_CHAR_SEPARATOR).toString());
+    	
+    	String objectType = identifier[0];
+    	Class<?> cls;
+		try {
+			cls = entityLocator.getEntity(objectType).getClass();
+		} catch (ClassNotFoundException e) {
+			throw new ResourceNotFoundException(objectType + " Not found !", e);
+		}
+		if (cls == null){
+            throw new IllegalArgumentException ("Unknown idProvider type:" + objectType);
+		}
+
+    	Integer id = null;
+    	if (identifier.length > 1){
+    		try {
+	    		id = Integer.parseInt(identifier[1]);
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException("Can't parse " + identifier[1] + " !", e);
+			}
+    	}
+
+    	if (id == null){
+    		try {
+    			return ((IdProvider) cls.newInstance());
+    		} catch (InstantiationException e) {
+    			throw new IllegalArgumentException (e.getMessage(),  e);
+    		} catch (IllegalAccessException e) {
+    			throw new IllegalArgumentException (e.getMessage(),  e);
+    		} 
+    	} else {
+    		try {
+    			return getData(cls, id);
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException("Can't parse " + identifier[1] + " !", e);
+			} catch (ServiceException e) {
+				throw new IllegalArgumentException("Can't get " + cls.getName() + ", id = " + id + " !", e);
+			}
+    	}
+	}
+	public boolean isNormalCollection(String expr){
+    	Character first = expr.charAt(0);
+    	Character last = expr.charAt(expr.length() - 1);
+    	return (first == BINDER_COLLECTION_CHAR_FIRST && last == BINDER_COLLECTION_CHAR_LAST);
+	}
+	public String idProviderToString(IdProvider idProvider){
+		return idProvider.getObjectType() + BINDER_IDPROVIDER_CHAR_SEPARATOR + idProvider.getId().toString();
+	}
+	public String idProvidersToString(Collection<?> collection){
+		StringBuilder result = new StringBuilder();
+	    for (Object object : collection) {
+	    	IdProvider idProvider = (IdProvider) object;		    		
+	    	result.append(idProvider.getObjectType() + BINDER_IDPROVIDER_CHAR_SEPARATOR + idProvider.getId().toString() + BINDER_COLLECTION_CHAR_SEPARATOR);
+		}
+	    return result.toString();
+	}
+	public List<IdProvider> stringToIdProviders(String expr){
+		List<IdProvider> list = new ArrayList<>();
+		String[] idProviders = expr.split((BINDER_COLLECTION_CHAR_SEPARATOR).toString());
+		for (String string : idProviders) {
+			IdProvider item = stringToIdProvider(string);
+			list.add(item);
+		}
+		return list;
+	}
+	public String collectionToString(Collection<?> collection){
+		StringBuilder result = new StringBuilder();
+		result.append(BINDER_COLLECTION_CHAR_FIRST);
+	    for (Object object : collection) {
+	    	result.append(collectionToStringEncode(object.toString()) + BINDER_COLLECTION_CHAR_SEPARATOR);
+		}
+	    result.append(BINDER_COLLECTION_CHAR_LAST);
+	    return result.toString();
+	}
+	public String collectionToStringEncode(String expr){
+		String ret = HtmlUtils.htmlEscape(expr.toString());
+		ret = ret.replace((BINDER_COLLECTION_CHAR_SEPARATOR).toString(), BINDER_STRING_COMMA_REPLACE);
+		ret = ret.replace((BINDER_COLLECTION_CHAR_FIRST).toString(), BINDER_STRING_CHAR_FIRST_REPLACE);
+		ret = ret.replace((BINDER_COLLECTION_CHAR_LAST).toString(), BINDER_STRING_CHAR_LAST_REPLACE);
+		return ret;
+	}
+	public String collectionToStringDecode(String expr){
+		String ret = expr.replace(BINDER_STRING_COMMA_REPLACE, (BINDER_COLLECTION_CHAR_SEPARATOR).toString());
+		return HtmlUtils.htmlUnescape(ret.toString());
+	}
+	public Collection<String> stringToCollection(Class<? extends Collection> collectionType, String expr) throws IllegalArgumentException{
+		try {
+			Collection<String> list = collectionType.newInstance();
+			String string = expr.substring(1, expr.length() - 1);
+			String[] split = string.split((BINDER_COLLECTION_CHAR_SEPARATOR).toString());
+			for (String e : split) {
+				list.add(collectionToStringDecode(e));
+			}
+			return list;
+
+		} catch (InstantiationException e) {
+			throw new IllegalArgumentException("todo", e);
+		} catch (IllegalAccessException e) {
+			throw new IllegalArgumentException("todo", e);
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

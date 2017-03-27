@@ -8,10 +8,12 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.PosixFileAttributeView;
 import java.nio.file.attribute.PosixFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -60,33 +62,21 @@ public class StorageService implements IStorageService{
     
 	public List<NFile> list(String path, boolean onlyFolders) throws ServiceException  {
     	try{
+			File dir = new File(rootLocation + path);
+			File[] fileList = dir.listFiles();
 			List<NFile> nFiles = new ArrayList<>();
-			java.io.File dir = new java.io.File(rootLocation + path);
-			java.io.File[] directories = dir.listFiles(new FilenameFilter() {
-			  @Override
-			  public boolean accept(java.io.File current, String name) {
-			    return new java.io.File(current, name).isDirectory();
-			  }
-			});
-			for (java.io.File d : directories) {
-				nFiles.add(mkNFile(d));
-			}
-			if (!onlyFolders){
-				//List<File> files = fileDao.findByPath(path);
-//				for (File f : files) {
-//					try{
-//						java.io.File file = new java.io.File(rootLocation + path + "/" + f.getFileName());
-//						nFiles.add(mkNFile(file, f));
-//					} catch (FileNotFoundException e) {
-//						logger.warn("File not found : " + f.getPath() + "/" + f.getFileName(), e);
-//					}
-//				}
+			if (fileList != null) {
+				for (File f : fileList) {
+					if (!f.exists() || (onlyFolders && !f.isDirectory())) {
+						continue;
+					}
+					nFiles.add(mkNFile(f));
+				}
 			}
 			return nFiles;
     	} catch (IOException e) {
 			throw new ServiceException("todo", e);
 		}
-    	
 	}
 
     private NFile mkNFile(java.io.File file) throws IOException{

@@ -2,10 +2,16 @@ package fr.cedricsevestre.controller.engine.bo;
 
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorSupport;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +19,9 @@ import javax.servlet.jsp.JspException;
 import javax.validation.Valid;
 
 import org.hibernate.collection.internal.PersistentBag;
+import org.hibernate.collection.internal.PersistentSet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
@@ -46,6 +54,8 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.HtmlUtils;
+import org.springframework.web.util.UriUtils;
 
 import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.bean.NDatas;
@@ -119,7 +129,7 @@ public abstract class BackOfficeController extends AbtractController {
 	protected static final String BO_FILE_LIST_URL = "list/";
 	
 	protected static final Integer BO_MAX_REQUEST_ELEMENT = 1000;
-
+		
 	@Autowired
 	protected EntityLocator entityLocator;
 	
@@ -149,59 +159,6 @@ public abstract class BackOfficeController extends AbtractController {
 		modelAndView.addAllObjects(init());
 		return modelAndView;
 	}
-	
-	
-	protected IdProvider mkIdProvider(String objectTypeId) throws IllegalArgumentException{
-		if (objectTypeId == null || objectTypeId.equals("")) return null;
-		if (objectTypeId.substring(objectTypeId.length() - 1).equals(",")){
-			objectTypeId = objectTypeId.substring(0, objectTypeId.length()-1);
-		}
-		
-		System.out.println("<<<<<<<<<<<< mkIdProvider " + objectTypeId);
-		String[] identifier = objectTypeId.split("_");
-    	
-    	String objectType = identifier[0];
-    	Class<?> cls;
-		try {
-			cls = entityLocator.getEntity(objectType).getClass();
-		} catch (ClassNotFoundException e) {
-			throw new ResourceNotFoundException(objectType + " Not found !", e);
-		}
-		if (cls == null){
-            throw new IllegalArgumentException ("Unknown idProvider type:" + objectType);
-		}
-
-    	Integer id = null;
-    	if (identifier.length > 1){
-    		try {
-	    		id = Integer.parseInt(identifier[1]);
-			} catch (NumberFormatException e) {
-				System.out.println("/////////////////////////// " + "Can't parse " + identifier[1] + " !");
-				
-				throw new IllegalArgumentException("Can't parse " + identifier[1] + " !", e);
-			}
-    	}
-
-    	if (id == null){
-    		try {
-    			System.out.println("<<<<<<<<<<<< new id ");
-    			return ((IdProvider) cls.newInstance());
-    		} catch (InstantiationException e) {
-    			throw new IllegalArgumentException (e.getMessage(),  e);
-    		} catch (IllegalAccessException e) {
-    			throw new IllegalArgumentException (e.getMessage(),  e);
-    		} 
-    	} else {
-    		try {
-    			System.out.println("<<<<<<<<<<<< mkIdProvider id " + id);
-    			return (backOfficeService.getData(cls, id));
-			} catch (NumberFormatException e) {
-				throw new IllegalArgumentException("Can't parse " + identifier[1] + " !", e);
-			} catch (ServiceException e) {
-				throw new IllegalArgumentException("Can't get " + cls.getName() + ", id = " + id + " !", e);
-			}
-    	}
-	}
 
 	@InitBinder("objectEdit")
 	protected void initBinderIdProvider(WebDataBinder binder) {
@@ -213,91 +170,101 @@ public abstract class BackOfficeController extends AbtractController {
 		    {
 		    	if(objectTypeId == null || objectTypeId == "") setValue(null);
 		    	else {
-		    		setValue(mkIdProvider(objectTypeId));
+		    		setValue(backOfficeService.stringToIdProvider(objectTypeId));
 		    	}
 		    }
 		    @Override
 		    public String getAsText() {
-		    	System.out.println("getAsText = " + getValue());
 			    if(getValue() == null) return "";
-			    IdProvider object = (IdProvider) getValue();
-			    return object.getObjectType() + "_" + object.getId().toString();
+			    return backOfficeService.idProviderToString((IdProvider) getValue());
 		    }
 		});
 
-		binder.registerCustomEditor(Iterable.class, new PropertyEditorSupport() {
-		    @Override 
-		    public void setAsText(final String listString)
-		    {
-		    	System.out.println("listString = " + listString);
+		binder.registerCustomEditor(List.class, new CustomCollectionEditor(List.class) {
+
+			@Override
+			protected Object convertElement(Object element) {
+				return element;
+			}
+			
+			@Override
+			public void setAsText(final String listString) {
 		    	if(listString == null || listString.trim().length() == 0) {
 		    		setValue(null);
 		    		return;
 		    	}
-//		    	String[] objects = listString.split("=");
-//		    	
-//		    	String[] types = objects[0].split(";");
-		    	
-		    	
 
-		    	//if (types.length == 2 && types[1].equals(IdProvider.class.getName())){
-		    		//Convert string to List of Idprovider if possible
-		    		try {
-						List<IdProvider> bag = new ArrayList<>();
-						//if (objects.length > 1){
-							//String[] idProviders = objects[1].split(",");
-							String[] idProviders = listString.split(",");
-							for (String string : idProviders) {
-								IdProvider item = mkIdProvider(string);
-								bag.add(item);
-							}
-						//}
-						setValue(bag);
-						return;
-		    		} catch (IllegalArgumentException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-		    		
-		    		
-		    		
-		    		
-//		    	} else {
-//		    		System.out.println("Set original value");
-//		    		//Set original value
-//		    		setValue(listString);
-//		    		return;
-//		    	}
-		    	
-		    	
-		    }
+		    	if (backOfficeService.isNormalCollection(listString)){
+					setValue(backOfficeService.stringToCollection(ArrayList.class, listString));
+		    	} else {
+		    		setValue(backOfficeService.stringToIdProviders(listString));
+		    	}
+			}
 
-		    @SuppressWarnings("unchecked")
 			@Override
-		    public String getAsText() {
-			    if(getValue() == null) return "";
-			    Iterable<Object> list = (Iterable<Object>) getValue();
-			    //StringBuilder result = new StringBuilder(list.getClass().getName() + ";" + IdProvider.class.getName() + "=");
-			    
-			    StringBuilder result = new StringBuilder();
-			    //Convert list to Idproviders String if possible
-			    for (Object object : list) {
-			    	if (object instanceof IdProvider){
-			    		IdProvider idProvider = (IdProvider) object;		    		
-			    		result.append(idProvider.getObjectType() + "_" + idProvider.getId().toString() + ",");
-			    	} else {
-			    		//Return original list
-			    		return list.toString();
-			    	}
+			public String getAsText() {
+				Collection<?> collection = (Collection<?>) getValue();
+				
+				if (collection == null) return "";
+				
+				//Get object type from first element
+				Class<?> clazz = null;
+				if (collection.size() > 0){
+					clazz = collection.iterator().next().getClass();
 				}
-			    return result.toString();
-		    }
+				
+				if (clazz == null) return "";
+				
+				if (IdProvider.class.isAssignableFrom(clazz)){
+					return backOfficeService.idProvidersToString(collection);
+				} else {
+					return backOfficeService.collectionToString(collection);
+				}
+			}
 		});
-		
 
+		binder.registerCustomEditor(Set.class, new CustomCollectionEditor(Set.class) {
+
+			@Override
+			protected Object convertElement(Object element) {
+				return element;
+			}
+			
+			@Override
+			public void setAsText(final String listString) {
+		    	if(listString == null || listString.trim().length() == 0) {
+		    		setValue(null);
+		    		return;
+		    	}
+
+		    	if (backOfficeService.isNormalCollection(listString)){
+					setValue(backOfficeService.stringToCollection(HashSet.class, listString));
+		    	} else {
+		    		setValue(backOfficeService.stringToIdProviders(listString));
+		    	}
+			}
+
+			@Override
+			public String getAsText() {
+				Collection<?> collection = (Collection<?>) getValue();
+				
+				if (collection == null) return "";
+				
+				//Get object type from first element
+				Class<?> clazz = null;
+				if (collection.size() > 0){
+					clazz = collection.iterator().next().getClass();
+				}
+				
+				if (clazz == null) return "";
+				
+				if (IdProvider.class.isAssignableFrom(clazz)){
+					return backOfficeService.idProvidersToString(collection);
+				} else {
+					return backOfficeService.collectionToString(collection);
+				}
+			}
+		});
 		
 	}
 	
