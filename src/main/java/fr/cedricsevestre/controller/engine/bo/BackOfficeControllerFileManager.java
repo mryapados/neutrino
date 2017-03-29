@@ -7,6 +7,7 @@ import javax.servlet.jsp.JspException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -50,6 +51,19 @@ public class BackOfficeControllerFileManager extends BackOfficeController {
 		}
 	}
 	
+	@RequestMapping(value = BO_FILE_SINGLE_URL, method = RequestMethod.GET)
+	public ModelAndView single(@RequestParam(value = "navbar", required = false, defaultValue = "true") Boolean navbar, @RequestParam(value = "multi", required = false, defaultValue = "true") Boolean multi, @RequestParam(value = "sidebar", required = false, defaultValue = "true") Boolean sidebar) throws JspException   {
+		try {
+			Folder folder = getBOFolder();
+			ModelAndView modelAndView = baseView(BO_FILE_SINGLE_PAGE, folder);
+			modelAndView.addObject("navbar", navbar);
+			modelAndView.addObject("multi", multi);
+			modelAndView.addObject("sidebar", sidebar);
+			return modelAndView;
+		} catch (ServiceException e) {
+			throw new JspException(e);
+		}
+	}
 	
 	@RequestMapping(value = BO_FILE_ADD_URL, method = RequestMethod.POST)
 	public @ResponseBody String add(@RequestParam("file-0") MultipartFile file, @RequestParam("filename") String filename) {
@@ -57,6 +71,8 @@ public class BackOfficeControllerFileManager extends BackOfficeController {
 		
 		return "gggggggggggggg";
 	}
+	
+	
 	
 
 	@RequestMapping(value = BO_FILE_LIST_URL, method = RequestMethod.POST)

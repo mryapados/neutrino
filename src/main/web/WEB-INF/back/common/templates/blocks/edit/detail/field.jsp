@@ -136,7 +136,7 @@
 	<c:when test="${finalFieldType eq 'COLLECTION'}">
 		<c:choose>
 			<c:when test="${finalField.ofType eq 'FILE'}">
-				<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${objectType}_${finalParentObject.id}_${finalField.name}" kind="file" />
+				<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${objectType}_${finalParentObject.id}_${finalField.name}" kind="file" many="true" />
 			</c:when>
 			<c:otherwise>
 				<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${objectType}_${finalParentObject.id}_${finalField.name}" />

@@ -3,9 +3,6 @@
     angular.module('FileManagerApp').controller('FileManagerCtrl', [
         '$scope', '$rootScope', '$window', '$translate', 'fileManagerConfig', 'item', 'fileNavigator', 'apiMiddleware',
         function($scope, $rootScope, $window, $translate, fileManagerConfig, Item, FileNavigator, ApiMiddleware) {
-
-        console.log('multiSelect = ' + $scope.multiSelect);
-        	
         	
         var $storage = $window.localStorage;
         $scope.config = fileManagerConfig;
@@ -58,7 +55,6 @@
         };
 
         $scope.tempsChange = function(){
-        	console.log('multiSelect = ' + $scope.multiSelect);
         	$rootScope.$broadcast('filemanagerSelectItemChanged', $scope.temps);
         };
 
@@ -72,7 +68,6 @@
                 return;
             }
             if (! item || (isRightClick && $scope.isSelected(item))) {
-            	console.log('here1');
                 return;
             }
             
@@ -83,14 +78,12 @@
             }
 
             if ($event && $event.shiftKey && !isRightClick) {
-            	console.log('here2');
                 var list = $scope.fileList;
                 var indexInList = list.indexOf(item);
                 var lastSelected = $scope.temps[0];
                 var i = list.indexOf(lastSelected);
                 var current = undefined;
                 if (lastSelected && list.indexOf(lastSelected) < indexInList) {
-                	console.log('here3');
                     $scope.temps = [];
                     while (i <= indexInList) {
                         current = list[i];
@@ -101,7 +94,6 @@
                     return;
                 }
                 if (lastSelected && list.indexOf(lastSelected) > indexInList) {
-                	console.log('here4');
                     $scope.temps = [];
                     while (i >= indexInList) {
                         current = list[i];
@@ -113,12 +105,10 @@
                 }
             }
             if ($event && !isRightClick && ($event.ctrlKey || $event.metaKey)) {
-            	console.log('here5');
                 $scope.isSelected(item) ? $scope.temps.splice(indexInTemp, 1) : $scope.temps.push(item);
                 $scope.tempsChange();
                 return;
             }
-            console.log('here6');
             $scope.temps = [item];
         };
 

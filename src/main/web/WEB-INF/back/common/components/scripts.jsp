@@ -44,12 +44,10 @@
 <script src="<c:url value='/resources/src/bo/app.js'/>"></script>
 <script src="<c:url value='/resources/src/bo/controller/datepickerPopupCtrl.js'/>"></script>
 <script src="<c:url value='/resources/src/bo/controller/wysiwygEditorCtrl.js'/>"></script>
-<script src="<c:url value='/resources/src/bo/controller/uiAssignmentCtrl.js'/>"></script>
 <script src="<c:url value='/resources/src/bo/service.js'/>"></script>
-<script src="<c:url value='/resources/src/bo/services/uiAssignmentService.js'/>"></script>
 <script src="<c:url value='/resources/src/bo/services/constants.js'/>"></script>
 <script src="<c:url value='/resources/src/bo/directives/uiAssignment.js'/>"></script>
-<script src="<c:url value='/resources/src/bo/filters/idProvidersFilter.js'/>"></script>
+<script src="<c:url value='/resources/src/bo/directives/uiFile.js'/>"></script>
 
 
 

@@ -1571,6 +1571,7 @@ public class InitialisationBase {
 		Map<Lang, Translation> mView = mkModel("@bo_model_view", "default/default");
 		Map<Lang, Translation> mEdit = mkModel("@bo_model_edit", "default/default");
 		Map<Lang, Translation> mFile = mkModel("@bo_model_file", "file/file");
+		Map<Lang, Translation> mFileSingle = mkModel("@bo_model_file_single", "file/single");
 		
 		// Pages
 		Map<Lang, Translation> pgHome = mkPage("@bo_page_home", "home", mHome);
@@ -1578,6 +1579,7 @@ public class InitialisationBase {
 		Map<Lang, Translation> pgView = mkPage("@bo_page_view", "default", mView);
 		Map<Lang, Translation> pgEdit = mkPage("@bo_page_edit", "default", mEdit);
 		Map<Lang, Translation> pgFile = mkPage("@bo_page_file", "default", mFile);
+		Map<Lang, Translation> pgFileSingle = mkPage("@bo_page_file_single", "default", mFileSingle);
 		
 		// PageBlocks
 		Map<Lang, Translation> pbHeader = mkPageBlock("@bo_pageblock_header", "header/header");

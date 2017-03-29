@@ -16,15 +16,12 @@
             	$parse('multiSelect').assign(scope, multiSelect);
             	
             	var navbar = fileManagerConfig.navbar;
-            	console.log('navbar = ' + navbar);
             	if ('navbar' in attrs){
             		if (attrs.navbar === 'true' || attrs.navbar === '') navbar = true;
             		else if (attrs.navbar === 'false') navbar = false;
             	}
-            	console.log('navbar = ' + navbar);
             	$parse('navbar').assign(scope, navbar);
 
-                
             }
         };
     }]);

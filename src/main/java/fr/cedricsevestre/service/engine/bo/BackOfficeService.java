@@ -920,7 +920,9 @@ public class BackOfficeService { //implements IBackOfficeService{
 		return ret;
 	}
 	public String collectionToStringDecode(String expr){
-		String ret = expr.replace(BINDER_STRING_COMMA_REPLACE, (BINDER_COLLECTION_CHAR_SEPARATOR).toString());
+		String ret = expr.replace(BINDER_STRING_CHAR_LAST_REPLACE, (BINDER_COLLECTION_CHAR_LAST).toString());
+		ret = ret.replace(BINDER_STRING_CHAR_FIRST_REPLACE, (BINDER_COLLECTION_CHAR_FIRST).toString());
+		ret = ret.replace(BINDER_STRING_COMMA_REPLACE, (BINDER_COLLECTION_CHAR_SEPARATOR).toString());
 		return HtmlUtils.htmlUnescape(ret.toString());
 	}
 	public Collection<String> stringToCollection(Class<? extends Collection> collectionType, String expr) throws IllegalArgumentException{

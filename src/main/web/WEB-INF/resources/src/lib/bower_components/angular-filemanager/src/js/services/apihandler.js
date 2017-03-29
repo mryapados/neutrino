@@ -46,7 +46,6 @@
             self.error = '';
 
             $http.post(apiUrl, data).success(function(data, code) {
-            	console.log(data);
                 dfHandler(data, deferred, code);
             }).error(function(data, code) {
                 dfHandler(data, deferred, code, 'Unknown error listing, check the response');
