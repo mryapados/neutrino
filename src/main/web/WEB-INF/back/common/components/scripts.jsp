@@ -41,13 +41,13 @@
 
 
 
-<script src="<c:url value='/resources/src/bo/app.js'/>"></script>
-<script src="<c:url value='/resources/src/bo/controller/datepickerPopupCtrl.js'/>"></script>
-<script src="<c:url value='/resources/src/bo/controller/wysiwygEditorCtrl.js'/>"></script>
-<script src="<c:url value='/resources/src/bo/service.js'/>"></script>
-<script src="<c:url value='/resources/src/bo/services/constants.js'/>"></script>
-<script src="<c:url value='/resources/src/bo/directives/uiAssignment.js'/>"></script>
-<script src="<c:url value='/resources/src/bo/directives/uiFile.js'/>"></script>
+<script src="<c:url value='/resources/src/bo/js/app.js'/>"></script>
+<script src="<c:url value='/resources/src/bo/js/controller/datepickerPopupCtrl.js'/>"></script>
+<script src="<c:url value='/resources/src/bo/js/controller/wysiwygEditorCtrl.js'/>"></script>
+<script src="<c:url value='/resources/src/bo/js/service.js'/>"></script>
+<script src="<c:url value='/resources/src/bo/js/services/constants.js'/>"></script>
+<script src="<c:url value='/resources/src/bo/js/directives/uiAssignment.js'/>"></script>
+<script src="<c:url value='/resources/src/bo/js/directives/uiFile.js'/>"></script>
 
 
 

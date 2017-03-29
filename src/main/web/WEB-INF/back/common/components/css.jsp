@@ -11,3 +11,4 @@
 <link href="<c:url value='/resources/src/lib/bower_components/angular-filemanager/dist/angular-filemanager.min.css'/>" rel="stylesheet">
 
 <link href="<c:url value='/style/back.css'/>" rel="stylesheet">
+<link href="<c:url value='/resources/src/bo/css/ui-file.css'/>" rel="stylesheet">

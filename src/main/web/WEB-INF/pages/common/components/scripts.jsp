@@ -19,8 +19,8 @@
 <script src="<c:url value='/resources/src/lib/bower_components/ng-file-upload/ng-file-upload.min.js'/>"></script>
 <script src="<c:url value='/resources/src/lib/bower_components/angular-filemanager/dist/angular-filemanager.min.js'/>"></script>
 
-<script src="<c:url value='/resources/src/front/app.js'/>"></script>
-<script src="<c:url value='/resources/src/front/controller/mapCtrl.js'/>"></script>
+<script src="<c:url value='/resources/src/front/js/app.js'/>"></script>
+<script src="<c:url value='/resources/src/front/js/controller/mapCtrl.js'/>"></script>
 
 
 

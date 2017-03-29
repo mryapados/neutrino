@@ -39,15 +39,42 @@
 			require : '?ngModel',
 			transclude: true,
 			templateUrl: $frontPath.URL_TEMPLATE_JS + 'ui-file-assignement.html', 
-			controller: function ( $scope, UiAssignmentService ) {
+			controller: function ( $scope, UiAssignmentService, idProvidersFilter ) {
 				$scope.open = function(size) {
+					
 					UiAssignmentService.getObjects($scope[$scope.model], $scope.type, $scope.id, $scope.field, $scope.kind, $scope.many, $scope.disablePreChecked, size).then(function(objects) {
-						$parse($scope.model).assign($scope.$parent, objects);
+						console.log(objects);
+						$parse($scope.model).assign($scope.$parent, objects, $parse);
 					})
 					.catch(function(error){
 						console.log(error.status);
 						console.log(error);
 					});
+				};
+				
+				$scope.clear = function() {
+
+
+//					console.log($scope.model);
+//					console.log($scope.$parent[$scope.model]);
+//					console.log($scope[$scope.model]);
+//					
+//					
+//					var empty = $scope[$scope.model];
+//					empty.length = 0
+//					$parse($scope.model).assign($scope, empty);
+					
+					
+					//$scope.$parent.files = [];
+					
+					//$parse(attrs.ngModel).assign(scope, idProvidersFilter(attrs.value, 'toArray'));
+					
+					
+					
+					
+					
+					
+					
 				};
 			}, 
 			scope : true,

@@ -1,0 +1,787 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+body {
+    background-color: #fff;
+    color: #525252;
+}
+
+.mots-cles h2 {
+    color: #6a4834 !important;
+}
+
+
+/*header*/
+header {	
+	background-color:#fff;
+} 
+header a, header a:hover, header a:focus {
+    color:#6a4834;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+.header-nav a.contact {
+    background: rgba(0, 0, 0, 0) url("../images/Yvoir_contact.png") no-repeat scroll 0 0;
+    margin-right: 20px;
+    padding-left: 40px;
+}
+.header-club a.panier {
+    background: rgba(0, 0, 0, 0) url("../images/Yvoir_panier.png") no-repeat scroll 0 0;
+    margin-right: 20px;
+    padding-left: 35px;
+    width: 90px !important;
+}
+.header-club a.connection {
+    background: rgba(0, 0, 0, 0) url("../images/yvoir_mon-compte.png") no-repeat scroll 0 0;
+    padding-left: 30px;
+}
+.header-nav-club a.menu {
+    background: rgba(0, 0, 0, 0) url("../images/Yvoir_menu.png") no-repeat scroll left 5px / 20px auto;
+    margin-right: 20px;
+    padding-left: 35px;
+}
+.header-nav a.recherche {
+    background: rgba(0, 0, 0, 0) url("../images/Yvoir_recherche.png") no-repeat scroll 0 4px;
+	padding-left: 28px;
+}
+.header-nav a {
+    margin-right: 0;
+    min-width: 1px;
+	padding-top: 5px;
+}
+
+.MENU-desktop .navbar .left > ul > li > a {
+    color: #6a4834;
+    font-family: "ralewaymedium";
+    font-size: 1em;
+    padding: 6px 14px;
+    text-transform: uppercase;
+	font-weight: normal;
+}
+
+.MENU-desktop .navbar .left > ul > li.mn-region > a,
+.MENU-desktop .navbar .left > ul > li.mn-cultures > a,
+.MENU-desktop .navbar .left > ul > li.mn-region > a:hover,
+.MENU-desktop .navbar .left > ul > li.mn-cultures > a:hover {
+    font-family: "ralewaybold";
+}
+.cross span {
+    color: #70b121;
+}
+
+.MENU-desktop .navbar .left > ul > li {
+    display: inline-block;
+    margin-right: 0;
+    padding: 6px 0;
+}
+.MENU-desktop li.dropdown.mn-region, .MENU-desktop li.dropdown.mn-cultures {
+    background: transparent none repeat scroll 0 0;
+}
+.MENU-desktop li.dropdown.mn-region {
+    width: 107px;
+}
+.MENU-desktop .navbar .left > ul > li {
+    display: inline-block;
+    margin-right: 0;
+    padding: 6px 0;
+}
+.MENU-desktop li.dropdown.mn-cereales {
+    width: 169px;
+}
+.MENU-desktop li.dropdown {
+    background: transparent none repeat scroll 0 0;
+}
+
+.MENU-desktop .navbar .left > ul > li.mn-region > a {
+    background: rgba(0, 0, 0, 0) url("../images/sep-menu-club.jpg") no-repeat scroll right 6px;
+}
+
+.MENU-desktop .navbar .left > ul > li.mn-cultures > a {
+    background: rgba(0, 0, 0, 0) url("../images/sep-menu-club.jpg") no-repeat scroll left 6px;
+}
+
+.MENU-desktop .navbar ul li.dropdown:hover > a,
+.MENU-desktop .navbar ul li.dropdown.open > a
+{
+	font-family: "ralewaymedium";
+} 
+.MENU-desktop .left ul .dropdown a.dropdown-toggle:hover,
+.MENU-desktop .left ul .dropdown a.dropdown-toggle:focus,
+.MENU-desktop .left ul .dropdown a.dropdown-toggle:active {
+	font-family: "ralewaymedium";
+}
+.MENU-desktop .left > ul > li.dropdown.open,
+.MENU-desktop .left > ul > li.dropdown:hover {
+	background: transparent;
+}
+.MENU-desktop .left > ul > li > ul.dropdown-menu {
+    background: #312118;	
+}
+.dropdown-menu .sub-menu li {
+    background: #4f2c17;
+    border-bottom: 1px solid #61422f;
+}
+.social .color-2 a.email, .social .color-2 a.email:hover {
+    color: #6a4834;
+} 
+.BLOC-singles-article .cadena img {
+    height: 19px;
+    width: auto;
+}
+.LISTE-region > ul > li > ul > li {
+    background: #4f2c17;
+    border-bottom: 1px solid #61422f;
+}
+.MENU-desktop .navbar .left > ul > li > a:focus,
+.MENU-desktop .navbar .left > ul > li > a:active {
+	border-bottom: 6px solid #046c2f; 
+}
+
+/*recherche*/
+
+.dropdown.search.open {
+    background-color: transparent;
+}
+.dropdown.search .dropdown-menu {
+    background-color: transparent;
+    border: 1px solid black;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0);
+    min-width: 1px;
+    padding: 0;
+}
+.dropdown.search .navbar-form .form-control {
+
+    width: 100%;
+}
+
+.dropdown.search .navbar-form .form-group {
+    width: 87.7%;
+}
+.dropdown.search .dropdown-menu .navbar-left {
+    float: none !important;
+    padding: 0;
+    width: auto;
+	margin: 0;
+}
+.header-nav a.recherche {
+    background: rgba(0, 0, 0, 0) url("../images/Yvoir_recherche.png") no-repeat scroll left 5px / 16px auto;
+	min-height: 36px;
+}
+/**/
+.BLOC-article h1 a {
+    color: #525252;
+}
+
+footer ul li span {
+	font-size: 0.9em;
+    margin-bottom: 0px;
+	border-bottom: 0;
+}
+footer .liens-utiles ul li span,
+footer .liens-utiles ul li span {
+    border-bottom: 1px solid #fff;
+	font-size: 0.9em;
+    margin-bottom: 12px;
+}
+
+footer {	
+	background-color: #413f3c;
+	border-top: 10px solid #046c2f;
+} 
+footer ul li a, footer ul li a:hover {
+    color: #fff;
+	background: url(../images/fleche-listes_blanc.png) no-repeat left top;
+	padding-left: 23px;
+	text-transform: uppercase;
+	background-size: 9px auto;
+}
+
+/* BLOC article */
+.BLOC-article h2, .BLOC-article-horiz h2, .BLOC-singles-article h2 {
+	color:#6a4834;
+}
+.info-video {
+    background: rgba(0, 0, 0, 0) url("../images/picto-video_Yvoir.png") no-repeat scroll left top;
+	color: #6a4834;
+}
+.BLOC-article .date, .BLOC-article-horiz .date, .BLOC-singles-article .date {
+	color: #6a4834;
+}
+.detail-article h2 {
+    color: #6a4834;
+}
+
+.BLOC-article h2 a, .BLOC-article-horiz h2 a, .BLOC-singles-article h2 a {
+	color:#6a4834;
+}
+/* BLOC focus */
+.BLOC-focus {
+	background-color:#70b121;
+}
+/* BLOC standard */
+
+.BLOC-standard {
+	border-top:3px solid #046c2f;
+	border-bottom:3px solid #046c2f;
+}
+.BLOC-standard h2 {
+	color:#70b121;
+}
+.BLOC-article p, .BLOC-article p a {
+    color: #6a4834;
+}
+.BLOC-standard .liste2col li, .BLOC-standard .liste1col li {
+	background: rgba(0, 0, 0, 0) url("../images/fleche-listes.png") no-repeat scroll left 0;
+}
+.BLOC-standard .liste2col li a, .BLOC-standard .liste2col li a:hover, .BLOC-standard .liste1col li a, .BLOC-standard .liste1col li a:hover {
+    color: #6a4834;
+}
+.BLOC-standard .contenu p {
+    color: #6a4834;
+}
+.container.row .h2 {
+	border-bottom:3px solid #046c2f;
+	color: #6a4834;
+}
+.container.row .h2 a {
+	color: #6a4834;
+}
+.lien-h2, .lien-h2:hover {
+	color:#046c2f;
+}
+/* BLOC arcticle moyen horizontal */
+.BLOC-article-horiz .sur-titre, .BLOC-singles-article .sur-titre  {
+	color:#70b121;
+}
+.BLOC-article-horiz p a, .BLOC-singles-article p a {
+	color:#6a4834;
+}
+/* BLOC Agenda */
+.listeAgenda .date {
+	color:#70b121;
+}
+.listeAgenda .sujet {
+    color: #6a4834;
+}
+
+.btn2  {
+	background-color:#046c2f;
+}
+
+/* BLOC outils */
+.BLOC-outil, .BLOC-outil:hover  {
+	background-color:#70b121;
+}
+
+/* BLOC les plus lus */
+.BLOC-plus-lus ol li::before {
+    background: #70b121;
+}
+.BLOC-plus-lus ol li a {
+    color:#6a4834;
+}
+.BLOC-plus-lus .date {
+    color:#6a4834;
+}
+.BLOC-standard .contenu p a:hover {
+	color:#2c9100;
+}
+
+.BLOC-standard form .btn, .FORM-connection .btn {
+    background-color: #046c2f;
+}
+.FORM-connection h2 {
+	color: #6a4834;
+}
+
+/* MENU desktop */
+.MENU-desktop {	
+	background-color:#fff;
+}
+
+.h1  {	
+	border-bottom-color:#2c9100;
+}
+
+/* MENU VERTICAL*/
+
+.menu-wrap {
+    background: #312118;
+}
+.icon-list li a.separator {
+    background: rgba(0, 0, 0, 0) url("../images/separator-menu-burger_yvoir-club.png") no-repeat scroll left top;
+    padding-top: 25px;
+}
+
+
+
+/* ARIANE */
+.breadcrumb, .breadcrumb a, .breadcrumb > li + li::before, .breadcrumb > .active {	
+	color:#2c9100;
+}
+
+/* CONTACT */
+.BLOC-coordonnees .email {
+	background:url(../images/picto-email-club.png) no-repeat left top;
+}
+.FORM-connection .lien {
+    color: #70b121;
+}
+
+/* AGENDA */
+.agenda .listeAgenda .btn {
+	 background-color:#046c2f;
+}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus, .pagination > li > a:hover {
+    color: #2c9100!important;
+} 
+.pagination > a:focus,
+.pagination > a:hover,
+.footer-pagination .btn.btn-default:hover,
+.footer-pagination .btn.btn-default:focus {
+	color: #2c9100!important;
+}
+
+.mots-cles .contenu ul li a  {
+	color:#046c2f;
+}
+
+.cross li.video {
+	background:url(../images/picto-cross-video-arvalis-infos.png) no-repeat left top;
+}
+.cross li.outil {
+	background:url(../images/picto-cross-outil-arvalis-infos.png) no-repeat left top;
+}
+.cross li.article {
+	background:url(../images/picto-cross-article-arvalis-infos.png) no-repeat left top;
+}
+
+.detail-article h4 {
+	color:#2c9100;
+}
+.detail-article p a {
+	color:#2c9100;
+}
+
+.social a {
+	background-color:#70b121;
+}
+.social .color-2 a {
+	background-color:#2c9100;
+}
+
+.syndication select.form-control {
+    background: #fff url("../images/bg-select-arvalis-infos.png") no-repeat scroll right top;
+}
+.nbr-comments  {
+	color:#2c9100;
+}
+
+/*RECHERCHE*/
+
+.filtres .btn {
+	background-color: #70b121;
+	}
+
+.input-recherche .btn {
+	background-color: #046c2f;
+}
+
+.container.h1 {
+	border-bottom: 1px solid #525252;
+}
+p {
+	color:#6a4834;
+}
+.form-group input, .form-group select, .form-group textarea {
+    color: #6a4834 !important;
+}
+
+/* detail article */ 
+
+.detail-article h3 {
+	color:#70b121;
+}
+
+.BLOC-reagissez h2,
+.BLOC-message .titre {
+    color: #6a4834;
+} 
+  /* BLOCS*/  
+  
+.BLOC-focus.newsletter a {
+    background: rgba(0, 0, 0, 0) url("../images/newsletter.png") no-repeat scroll 320px 15px;
+}
+.BLOC-focus.region a {
+    background: rgba(0, 0, 0, 0) url("../images/region.png") no-repeat scroll 330px 15px;
+}
+.BLOC-focus.video a {
+    background: rgba(0, 0, 0, 0) url("../images/video.png") no-repeat scroll 307px 15px;
+}
+
+.BLOC-focus a {
+    background: rgba(0, 0, 0, 0) url("../images/picto-encarts-yvoir.png") no-repeat scroll 325px 15px;
+}
+.BLOC-standard h2 {
+    color: #70b121;
+}
+
+/*rwd*/
+.BLOC-standard {
+    border-bottom: 4px solid #046c2f;
+    border-top: 4px solid #046c2f;
+}
+.btn.btn-default {
+    background-color: #046c2f;
+}
+
+.BLOC-standard.sondage .contenu .actions button {
+ 	background-color: #6a4834 !important;
+}
+
+.actions a.btn.btn-default.btn2 {
+	background-color: #046c2f !important;
+}
+
+.lien-h2-rwd.presto, .lien-h2-rwd.presto:hover {
+    background: rgba(0, 0, 0, 0) url("../images/fleche-listes_Yvoir-Presto.png") no-repeat scroll right top;
+    color: #e97100;
+}
+
+.header-club {
+     border-bottom: 4px solid #046c2f;
+}
+
+.header-club .MENU-desktop li.dropdown.mn-cereales, 
+.header-club .MENU-desktop li.dropdown.mn-vegetaux,
+.header-club .MENU-desktop li.dropdown.mn-pommedeterre,
+.MENU-desktop li.dropdown.mn-cultures,
+.header-club .MENU-desktop li.dropdown.mn-lin, 
+.header-club .MENU-desktop li.dropdown.mn-tabac, 
+.header-club .MENU-desktop li.dropdown.mn-mais, 
+.header-club .MENU-desktop li.dropdown.mn-fourrages,
+.MENU-desktop li.dropdown.mn-region {
+    width: auto;
+}
+
+.filtres a.btn.btn-default {
+    background: #70b121;
+}
+/**modifier pwd**/
+
+.mot-de-passe .input-group-addon {
+    background-color: transparent;
+    border: 0 none;
+    border-radius: 0;
+    color: #525252;
+    font-family: "ralewaysemibold";
+    font-size: 1em;
+    font-weight: normal;
+    line-height: 1.3em;
+    min-width: 209px;
+    padding: 0 15px 0 0;
+    text-align: right;
+}
+
+.mot-de-passe .input-group .form-control {
+    background-color: #fff;
+    min-width: 360px;
+}
+.mot-de-passe .input-group {
+    margin-bottom: 10px;
+}
+
+
+/**SYNDICATION**/
+
+.tableau-syndication th {
+	background: #046c2f;
+	border-color: #fff;
+	padding: 7px;
+	color: #fff;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+.tableau-syndication td {
+	background: #f3f4f3;
+	border-color: #fff;
+	padding: 10px;
+	padding: 20px 10px;
+}
+table,
+tr,
+td {
+	border-color: #fff;
+	text-align: center;
+}
+td.titre-article {
+	font-family: "ralewaymedium";
+    font-size: 0.95em;
+    line-height: 1.2em;
+    padding-left: 20px;
+    text-align: left;
+	width: 200px;
+}
+
+.date-syndication {
+	max-width: 135px;
+	display: inline-block;
+	}
+.form-syndication {
+	display:inline-block;
+}
+
+.btn.enregistrer,
+.btn.supprimer,
+.btn.suspendre {
+	height: 35px;
+	width: 35px;
+	display: inline-block;
+	margin: 0 7px;
+}
+.btn.suspendre {
+	background: url(../images/suspendre-club.png) no-repeat center top;
+}
+.btn.supprimer {
+	background: url(../images/supprimer-club.png) no-repeat center top;
+}
+.btn.enregistrer {
+	background: url(../images/enregistrer-club.png) no-repeat center top;
+}
+
+.tableau-syndication .date {
+	min-width: 35%;
+}
+.tableau-syndication .actions {
+	min-width: 15%;
+	text-align: center;
+}
+.date-publication {
+	font-size: 1em;
+	font-family: arial;
+	}
+.tableau-syndication select.form-control {
+    background: #fff url("../images/bg-select.png") no-repeat scroll right top;
+	font-size: 0.9em !important;
+    min-height: 34px;
+	margin-right: 10px;
+}
+.tableau-syndication .form-group label {
+    font-family: arial;
+    font-size: 1em;
+	margin-right: 10px;
+}
+.tableau-syndication .form-group {
+    margin-bottom: 0;
+}
+.tableau-syndication {
+	padding: 0;
+}
+td.classement {
+	width: 18%;
+}
+.tableau-syndication table {
+	margin-bottom: 40px;
+}
+
+.filtres-syndication h3 {
+	color: #046c2f;
+	font-size: 1.35em;
+	font-family:'ralewaysemibold';
+	border-bottom: 2px solid #046c2f;
+	padding-bottom: 7px;
+	margin-bottom: 15px;
+}
+	
+.filtres-syndication ul li {
+	list-style: none;
+	padding: 5px 0;
+}
+.filtres-syndication ul {
+	padding: 0;
+}
+.filtres-syndication ul li input {
+	margin-right: 10px;
+}	
+	
+.filtres-syndication ul.sous-elements {
+	padding-left: 30px;
+}	
+
+.filtres-syndication .btn {
+	background: #046c2f;
+	font-style: normal;
+	font-size: 1.2em;
+	padding: 10px 40px;
+	}	
+
+.LAME .row.lame-filtres {
+	margin-bottom: 35px;
+}	
+.LAME.filtres-syndication {
+	padding-top: 0;
+	}	
+	
+.LAME.syndication-content {
+	padding-bottom: 30px;
+}
+.filtres-syndication ul li input {
+    margin-right: 10px;
+}
+.automatique-depuis {
+    background-color: #f3f4f3;
+    display: inline-block;
+    width: 50px;
+}
+
+.BLOC-agenda .surtitre {
+    color: #70b121;
+}
+.BLOC-article h1.titre-article-h1,
+.BLOC-article-horiz h3 a, 
+.BLOC-singles-article h3 a,
+.BLOC-article h1 a, 
+.BLOC-article-horiz h3 a,
+h3.titre-article-big a,
+.BLOC-agenda h2,
+p.horaire,
+.detail-agenda .titre,
+.filtres h2,
+.filtres .form-group label,
+.filtres .critere span,
+.form-group input, 
+.form-group select, 
+.form-group textarea,
+.filtres .ajout-critere,
+.container.h1,
+.liste-bloc-fournisseurs li  strong,
+.BLOC-coordonnees span,
+.contacter .form-group label,
+.BLOC-coordonnees .coordonnees ,
+.BLOC-coordonnees .coordonnees a,
+.signature,
+.syndication .form-group label,
+.BLOC-reagissez span,
+.FORM-connection .control-label,
+.BLOC-standard .liste2col li, 
+.BLOC-standard .liste1col li,
+.abonnements ul li,
+.detail-article > ul li,
+.mot-de-passe .input-group-addon,
+.coodonnes form .form-group label, 
+.civilite span,
+.radio-inline ,
+.coodonnes h2,
+.radio label, 
+.checkbox label,
+.tableau-syndication td,
+.filtres-syndication ul li {
+    color: #6a4834 !important;
+}
+.coordonnees a.btn {
+	color: #fff !important;
+}
+
+
+/************************/
+
+
+/**header-connexion**/
+
+.btn.btn-default.connexion-header,
+.btn.btn-default.connexion-header:hover{
+    background: rgba(0, 0, 0, 0) url("../images/yvoir_mon-compte.png") no-repeat scroll left top;
+    font-style: normal;
+    padding: 7px 0 10px 30px;
+    text-transform: uppercase;
+	color: #6a4834 !important;
+	margin: 0;
+	font-weight: bold;
+}
+
+
+.dropdown.connexion.open .btn.btn-default.connexion-header:active,
+.dropdown.connexion.open .btn.btn-default.connexion-header:focus {
+	background: rgba(0, 0, 0, 0) url("../images/close_connexion.png") no-repeat scroll left 70px top 45px;
+	margin: 10px 10px 0 0;
+	padding: 10px 0 50px;
+	color: #fff !important;
+}
+.dropdown.connexion {
+	margin-top: 13px;
+}	
+.dropdown.connexion .dropdown-menu > li,
+.dropdown.connexion .dropdown-menu > li:hover {
+	background: rgb(49, 33, 24);
+	padding: 0px;
+	width: 100%;
+}	
+.dropdown.connexion .dropdown-menu {
+    min-width: 145px;
+}
+.dropdown.connexion .dropdown-menu > li a,
+.dropdown.connexion .dropdown-menu > li a:hover {
+	color: #fff;
+	background: #403f3b;
+	min-height: 1px;
+	margin-top: 0;
+	font-size: 0.8em;
+	margin-right: 0;
+	padding: 13px 13px 13px 0px;
+    text-align: right;
+	 width: 100%;
+}
+.dropdown.connexion .dropdown-menu > li a:hover {
+	text-decoration: underline;
+}	
+.dropdown.connexion .dropdown-menu {
+	background-color: #403f3b;
+	border: 0;
+	border-radius: 0;
+	padding: 10px 0 0 0 ;
+	left: auto;
+	right:0;
+	margin-top: -2px;
+	text-align: right;
+}
+
+.dropdown.connexion.open {
+    background: #403f3b;
+    width: 145px;
+	margin-top:0;
+}	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
