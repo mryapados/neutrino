@@ -70,7 +70,8 @@
 					//$parse(attrs.ngModel).assign(scope, idProvidersFilter(attrs.value, 'toArray'));
 					
 					
-					
+					var empty =[];
+					$parse($scope.model).assign($scope.$parent, empty);
 					
 					
 					
@@ -134,24 +135,30 @@
 			        	var uiAssignText = $compile('<ul class="linked"><li data-ng-repeat="r in ' + modelText + ' | orderBy: \'name\'"><ui-file url="r" /></li><li data-ng-show="' + model+ '.length - ' + modelText + '.length > 0"><strong><a href="#">{{' + model + '.length - ' + modelText + '.length}} <span>Others results...</span></a></strong></li></ul>')( $scope );
 			        	$element.parent().append(uiAssignText);
 			        	$scope.$watch(model, function() {
+			        		
 				        	var max = 5;
 							var objects = $scope[model];
+							
+							console.log(objects);
+							
+							var files = [];
 				      		if (objects && objects.length > 0){
 				      			if (!max) max = objects.length;
 				      			else if (objects.length < max) max = objects.length;
-				      			
-				      			var files = [];
+
 				      			for(var i = 0; i < max; i++) {
 				      				files.push($frontPath.URL_FILES_FOLDER + objects[i]);
 				      			}
-				      			$scope[modelText] = files;
+				      			
 				      		}
+				      		$scope[modelText] = files;
 				        });
 
 			        } else {
 			        	var uiAssignText = $compile('<ul class="linked"><li data-ng-repeat="r in ' + modelText + ' | orderBy: \'name\'"><a class="linked" href="#">{{r.name}}</a></li><li data-ng-show="' + model+ '.length - ' + modelText + '.length > 0"><strong><a href="#">{{' + model + '.length - ' + modelText + '.length}} <span>Others results...</span></a></strong></li></ul>')( $scope );
 				        $element.parent().append(uiAssignText);
 				        $scope.$watch(model, function() {
+				        	
 				        	var max = 5;
 							var objects = $scope[model];
 				      		if (objects && objects.length > 0){
@@ -306,7 +313,7 @@
 			    	return strings;
 				} else {
 					var strings = [];
-					strings.push(decode(object));
+					if (object != '') strings.push(decode(object));
 					return strings;
 				}
 

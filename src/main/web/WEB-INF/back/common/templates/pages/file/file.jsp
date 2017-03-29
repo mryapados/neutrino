@@ -20,7 +20,7 @@
 </my:head>
 <my:body>
 
-	<angular-filemanager navbar="false" multi-select />
+	<angular-filemanager navbar multi-select />
 
 </my:body>
 </html>
