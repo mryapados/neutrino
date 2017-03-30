@@ -84,7 +84,8 @@
 					//$parse(attrs.ngModel).assign(scope, idProvidersFilter(attrs.value, 'toArray'));
 					
 					
-					
+					var empty =[];
+					$parse($scope.model).assign($scope.$parent, empty);
 					
 					
 					
@@ -165,6 +166,7 @@
 			        	var uiAssignText = $compile('<ul class="linked"><li data-ng-repeat="r in ' + modelText + ' | orderBy: \'name\'"><a class="linked" href="#">{{r.name}}</a></li><li data-ng-show="' + model+ '.length - ' + modelText + '.length > 0"><strong><a href="#">{{' + model + '.length - ' + modelText + '.length}} <span>Others results...</span></a></strong></li></ul>')( $scope );
 				        $element.parent().append(uiAssignText);
 				        $scope.$watch(model, function() {
+				        	
 				        	var max = 5;
 							var objects = $scope[model];
 				      		if (objects && objects.length > 0){
@@ -323,7 +325,6 @@
 					console.log(object);
 					var strings = [];
 					if (object != '') strings.push(decode(object));
-					console.log(strings);
 					return strings;
 				}
 
