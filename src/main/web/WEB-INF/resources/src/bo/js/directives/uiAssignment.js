@@ -40,11 +40,15 @@
 			transclude: true,
 			templateUrl: $frontPath.URL_TEMPLATE_JS + 'ui-file-assignement.html', 
 			controller: function ( $scope, UiAssignmentService, idProvidersFilter ) {
-				$scope.open = function(size) {
-					
+				$scope.add = function(size) {
 					UiAssignmentService.getObjects($scope[$scope.model], $scope.type, $scope.id, $scope.field, $scope.kind, $scope.many, $scope.disablePreChecked, size).then(function(objects) {
-						console.log(objects);
-						$parse($scope.model).assign($scope.$parent, objects, $parse);
+						var values = [];
+						angular.extend(values, $scope[$scope.model]);
+						console.log(values);
+						angular.forEach(objects, function(value, key) {
+							if (values.indexOf(value) == -1) values.push(value);
+						});
+						$parse($scope.model).assign($scope.$parent, values, $parse);
 					})
 					.catch(function(error){
 						console.log(error.status);
@@ -61,8 +65,18 @@
 //					
 //					
 //					var empty = $scope[$scope.model];
-//					empty.length = 0
-//					$parse($scope.model).assign($scope, empty);
+//					console.log(empty);
+//				
+//					
+//					while(empty.length > 0) {
+//						empty.pop();
+//					}
+//					console.log(empty);
+					
+					
+					var empty = [];
+					
+					$parse($scope.model).assign($scope.$parent, empty);
 					
 					
 					//$scope.$parent.files = [];
@@ -136,16 +150,15 @@
 			        	$scope.$watch(model, function() {
 				        	var max = 5;
 							var objects = $scope[model];
+							var files = [];
 				      		if (objects && objects.length > 0){
 				      			if (!max) max = objects.length;
 				      			else if (objects.length < max) max = objects.length;
-				      			
-				      			var files = [];
 				      			for(var i = 0; i < max; i++) {
 				      				files.push($frontPath.URL_FILES_FOLDER + objects[i]);
 				      			}
-				      			$scope[modelText] = files;
 				      		}
+				      		$scope[modelText] = files;
 				        });
 
 			        } else {
@@ -225,6 +238,8 @@
 	//Filter
 	fModule.filter('idProviders', function () {
 		return function(object, method) {
+			console.log('in idProviders');
+			
 			if (!method) method = 'toString';
 			if (method == 'toArray'){
 		    	var res = object.split(",");
@@ -305,8 +320,10 @@
 			    	});
 			    	return strings;
 				} else {
+					console.log(object);
 					var strings = [];
-					strings.push(decode(object));
+					if (object != '') strings.push(decode(object));
+					console.log(strings);
 					return strings;
 				}
 
@@ -476,12 +493,15 @@
 	
 
 	fModule.controller('UiFileAssignmentModalCtrl', function ($rootScope, $scope, $uibModalInstance, values, urlInfos, kind, disablePreChecked) {
+		
+
+		
 		$scope.mkUrl = function(urlInfos) {
 			var url = '/neutrino/bo/file/single/?navbar=false&multi=' + urlInfos.many;
 			$scope.urlMaked = url;
 		}
 		$scope.mkUrl(urlInfos);
-
+		
 		$rootScope.$on('filemanagerSelectItemChanged', function(event, data) {
 			$scope.values = [];
 			for(var i = 0; i < data.length; i++) {

@@ -5,15 +5,14 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 
-
+<c:set var="assignType" value="hidden" />
 <my:debug>
 	<p>EDIT<p>
 	<p>finalField.type = ${finalField.type}<p>
 	<p>finalField.name = ${finalField.name}<p>
 	<p>${objectType}_${finalParentObject.id}_${finalField.name}</p>
+	<c:set var="assignType" value="text" />
 </my:debug> 
-
-
 
 <c:set var="FINAL_MAX_ELEMENT" value="3" />
 <c:choose>
@@ -98,12 +97,12 @@
 	</c:when>
 	<c:when test="${finalFieldType eq 'TOBJECT' || finalFieldType eq 'NTOBJECT'}">
 		<c:if test="${empty isInCollection || not isInCollection}">
-			<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${objectType}_${finalParentObject.id}_${finalField.name}" />
+			<form:input cssClass="form-control" type="${assignType}" path="${finalField.name}" ng-model="${finalField.name}" assign="${objectType}_${finalParentObject.id}_${finalField.name}" />
 		</c:if>
 	</c:when>
 	<c:when test="${finalFieldType eq 'FILE'}">
 		<c:if test="${empty isInCollection || not isInCollection}">
-			<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${objectType}_${finalParentObject.id}_${finalField.name}" kind="file"/>
+			<form:input cssClass="form-control" type="${assignType}" path="${finalField.name}" ng-model="${finalField.name}" assign="${objectType}_${finalParentObject.id}_${finalField.name}" kind="file"/>
 		</c:if>
 	</c:when>
 	<c:when test="${finalFieldType eq 'OBJECT'}">
@@ -126,7 +125,7 @@
 				<a class="linked" href="<c:url value='/bo/view/?type=Template&id=${template.id}' />"><c:out value="${template.name}"/></a> / <a class="linked" href="<c:url value='/bo/view/?type=Position&id=${finalObject.position.id}' />"><c:out value="${finalObject.position.name}"/></a>
 			</c:when>
 			<c:when test="${finalField.className eq 'Folder'}">
-				<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" />
+				<form:input cssClass="form-control" type="${assignType}" path="${finalField.name}" ng-model="${finalField.name}" assign="${finalParentObject.objectType}_${finalParentObject.id}_${finalField.name}" />
 			</c:when>
 			<c:otherwise>
 				<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="object"/></a>
@@ -136,10 +135,10 @@
 	<c:when test="${finalFieldType eq 'COLLECTION'}">
 		<c:choose>
 			<c:when test="${finalField.ofType eq 'FILE'}">
-				<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${objectType}_${finalParentObject.id}_${finalField.name}" kind="file" many="true" />
+				<form:input cssClass="form-control" type="${assignType}" path="${finalField.name}" ng-model="${finalField.name}" assign="${objectType}_${finalParentObject.id}_${finalField.name}" kind="file" many="true" />
 			</c:when>
 			<c:otherwise>
-				<form:input cssClass="form-control" type="text" path="${finalField.name}" ng-model="${finalField.name}" assign="${objectType}_${finalParentObject.id}_${finalField.name}" />
+				<form:input cssClass="form-control" type="${assignType}" path="${finalField.name}" ng-model="${finalField.name}" assign="${objectType}_${finalParentObject.id}_${finalField.name}" />
 			</c:otherwise>
 		</c:choose>
 	</c:when>
