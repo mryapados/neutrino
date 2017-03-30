@@ -156,7 +156,7 @@ public class BackOfficeControllerEdit extends BackOfficeController {
 		} else{
 			try {
 				Translation base = (Translation) backOfficeService.translate(data, lang);
-				Translation res = (Translation) backOfficeService.saveData(data);				
+				Translation res = (Translation) backOfficeService.saveData(base);				
 				modelAndView = new ModelAndView("redirect:/" + Common.BO_URL + BO_VIEW_URL);
 				redirectAttributes.addAttribute("type", type);
 				redirectAttributes.addAttribute("id", res.getId());
@@ -224,9 +224,9 @@ public class BackOfficeControllerEdit extends BackOfficeController {
 			if (object.getSuperclass().equals(Translation.class)){
 				Translation translation = (Translation) tData.getObjectData();
 				
-				if (translation.getLang() == null){
+				//if (translation.getLang() == null){
 					translation.setLang(lang);
-				}
+				//}
 				
 				modelAndView.addObject("objectLang", translation.getLang());
 			}

@@ -26,6 +26,13 @@
 					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remove
 				</button>
 				
+				
+				<a href="<c:url value='/bo/new/?type=${objectType}&id=${objectView.id}' />" class="btn btn-primary">
+					<span class="glyphicon glyphicon-paste" aria-hidden="true"></span>
+					<s:message code="bo.view.button.duplicate" text="Duplicate" />
+				</a>
+				
+				
 			</div>
 		</div>
 		

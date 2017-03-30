@@ -5,7 +5,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 
-<c:set var="assignType" value="hidden" />
+<c:set var="assignType" value="text" />
 <my:debug>
 	<p>EDIT<p>
 	<p>finalField.type = ${finalField.type}<p>
