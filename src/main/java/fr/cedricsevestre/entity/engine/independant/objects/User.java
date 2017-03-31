@@ -54,16 +54,18 @@ public abstract class User implements IdProvider, Serializable {
 	@Column(name = "username")
 	private String login;
 
-	@NotNull
+	@BOField(type = ValueType.PASSWORD)
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	@Column(name = "encrypted_password")
 	private String encryptedPassword;
 
 	@NotNull
+	@BOField(type = ValueType.BOOLEAN)
 	@Column(name = "enabled")
 	private Boolean enabled;
 	
 	@NotNull
+	@BOField(type = ValueType.VARCHAR50)
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	@Column(name = "role")
 	private String role;

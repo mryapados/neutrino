@@ -35,8 +35,8 @@ public abstract class Translation implements ITranslation, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "object_type", insertable = false, updatable = false)
-    private String objectType;
+//	@Column(name = "object_type", insertable = false, updatable = false)
+//    private String objectType;
 	
 	@BOField(type = ValueType.INTEGER, editable = false)
 	@Id
@@ -90,8 +90,9 @@ public abstract class Translation implements ITranslation, Serializable {
 		this.lang = lang;
 	}
 
+	@Override
 	public String getObjectType() {
-		return objectType;
+		return this.getClass().getSimpleName();
 	}
 
 	@Override

@@ -87,28 +87,41 @@ import fr.cedricsevestre.specification.engine.TranslationSpecification;
 @Controller
 public class BackOfficeControllerEdit extends BackOfficeController {
 
+	
+	
+	protected static final String REDIRECT = "redirect:/";
+	protected static final String REDIRECT_TYPE = "type";
+	protected static final String REDIRECT_ID = "id";
+	
+	protected static final String ATTR_OBJECTTYPE = "objectType";
+	protected static final String ATTR_OBJECTBASETYPE = "objectBaseType";
+	protected static final String ATTR_OBJECTLANG = "objectLang";
+	protected static final String ATTR_FIELD = "fields";
+	protected static final String ATTR_OBJECTVIEW = "objectView";
+	protected static final String ATTR_OBJECTEDIT = "objectEdit";
+	protected static final String ATTR_OBJECTNAME = "objectName";
+	protected static final String ATTR_TYPE = "type";
+	protected static final String ATTR_ID = "id";
+	protected static final String ATTR_LG = "lg";
+	
+	protected static final String COPY = " [Copy]";
+	
 	@RequestMapping(value = BO_EDIT_URL, method = RequestMethod.GET)
-	public ModelAndView edit(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id) throws JspException   {
-		return edit(type, id, false);
+	public ModelAndView edit(@RequestParam(ATTR_TYPE) String type, @RequestParam(ATTR_ID) Integer id) throws JspException   {
+		return edit(type, id, null, false);
 	}
 	
 	@RequestMapping(value = BO_EDIT_URL, method = RequestMethod.POST)
-	public ModelAndView save(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id, @Valid @ModelAttribute("objectEdit") IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
+	public ModelAndView save(@RequestParam(ATTR_TYPE) String type, @RequestParam(ATTR_ID) Integer id, @Valid @ModelAttribute(ATTR_OBJECTEDIT) IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
 		ModelAndView modelAndView = null;
 		if (result.hasErrors()) {
-			
-			System.out.println("errrrrrrrrrrrrrrrrrrrrrrr" + result.getAllErrors().toString());
-
-			modelAndView = edit(type, id, true);
+			modelAndView = edit(type, id, null, true);
 		} else{
 			try {
-
-				
-				
-				backOfficeService.saveData(data);
-				modelAndView = new ModelAndView("redirect:/" + Common.BO_URL + BO_VIEW_URL);
-				redirectAttributes.addAttribute("type", type);
-				redirectAttributes.addAttribute("id", id);
+				IdProvider idProvider = backOfficeService.saveData(data);
+				modelAndView = new ModelAndView(REDIRECT + Common.BO_URL + BO_VIEW_URL);
+				redirectAttributes.addAttribute(REDIRECT_TYPE, idProvider.getObjectType());
+				redirectAttributes.addAttribute(REDIRECT_ID, idProvider.getId());
 				
 			} catch (ServiceException e) {
 				throw new JspException(e);
@@ -116,130 +129,157 @@ public class BackOfficeControllerEdit extends BackOfficeController {
 		}
 		return modelAndView;
 	}
-
 	
-	
-	
-	@RequestMapping(value = BO_NEW_TRANSLATION_URL, method = RequestMethod.GET)
-	public ModelAndView add(@RequestParam("type") String type, @RequestParam("lg") String langCode, @RequestParam(value = "id", required = false) Integer id) throws JspException   {
-		try {
-			Lang lang;
-			lang = langService.findByCode(langCode);
-			if (lang == null) throw new ResourceNotFoundException(langCode + " Not found !");	
-			if (id == null) id = 0;
-			return add(type, id, lang, false);
-		} catch (ServiceException e) {
-			throw new JspException(e);
-		}
-	}
-	
-	@RequestMapping(value = BO_NEW_URL, method = RequestMethod.GET)
-	public ModelAndView add(@RequestParam("type") String type, @RequestParam(value = "id", required = false) Integer id) throws JspException   {
-		if (id == null) id = 0;
-		return add(type, id, null, false);
-	}
-	
-	@RequestMapping(value = BO_NEW_TRANSLATION_URL, method = RequestMethod.POST)
-	public ModelAndView add(@RequestParam("type") String type, @RequestParam("lg") String langCode, @RequestParam(value = "id", required = false) Integer id, @Valid @ModelAttribute("objectEdit") Translation data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
-		
-		Lang lang;
-		try {
-			lang = langService.findByCode(langCode);
-		} catch (ServiceException e) {
-			throw new JspException(e);
-		}
-		
-		if (id == null) id = 0;
-		ModelAndView modelAndView = null;
-		if (result.hasErrors()) {
-			modelAndView = add(type, id, lang, true);
-		} else{
-			try {
-				Translation base = (Translation) backOfficeService.translate(data, lang);
-				Translation res = (Translation) backOfficeService.saveData(base);				
-				modelAndView = new ModelAndView("redirect:/" + Common.BO_URL + BO_VIEW_URL);
-				redirectAttributes.addAttribute("type", type);
-				redirectAttributes.addAttribute("id", res.getId());
-			} catch (ServiceException e) {
-				throw new JspException(e);
-			}
-		}
-		return modelAndView;
-	}
-	
-	@RequestMapping(value = BO_NEW_URL, method = RequestMethod.POST)
-	public ModelAndView add(@RequestParam("type") String type, @RequestParam(value = "id", required = false) Integer id, @Valid @ModelAttribute("objectEdit") IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
-		if (id == null) id = 0;
-		ModelAndView modelAndView = null;
-		if (result.hasErrors()) {
-			modelAndView = add(type, id, null, true);
-		} else{
-			try {
-				IdProvider res = backOfficeService.saveData(data);				
-				modelAndView = new ModelAndView("redirect:/" + Common.BO_URL + BO_VIEW_URL);
-				redirectAttributes.addAttribute("type", type);
-				redirectAttributes.addAttribute("id", res.getId());
-			} catch (ServiceException e) {
-				throw new JspException(e);
-			}
-		}
-		return modelAndView;
-	}
-	
-	
-	public ModelAndView add(String type, Integer id, Lang lang, Boolean saveError) throws JspException   {
-		return edit(type, id, lang, true, saveError);
-	}
-	public ModelAndView edit(String type, Integer id, Boolean saveError) throws JspException   {
-		return edit(type, id, null, false, saveError);
-	}
-	public ModelAndView edit(String type, Integer id, Lang lang, Boolean isNew, Boolean saveError) throws JspException   {
+	public ModelAndView edit(String type, Integer id, Lang lang, Boolean saveError) throws JspException   {
+		//Si id = null cela signifie que c'est un nouveau objet, lang est utile si c'est un objet de type Translation
 		try {
 			Folder folder = getBOFolder();
 			ModelAndView modelAndView = baseView(BO_EDIT_PAGE, folder);
 
 			Class<?> object = entityLocator.getEntity(type).getClass();
 
-			modelAndView.addObject("objectType", object.getSimpleName());
-			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
+			modelAndView.addObject(ATTR_OBJECTTYPE, object.getSimpleName());
+			modelAndView.addObject(ATTR_OBJECTBASETYPE, object.getSuperclass().getSimpleName());
 
-			NData<IdProvider> tData = null;
-			if (isNew){
-				tData = backOfficeService.copy(object, id);
+			NData<IdProvider> tData;
+			if (id == null) {
+				tData = backOfficeService.add(object);
+				if (Translation.class.isAssignableFrom(object)) {
+					Translation translation = (Translation) backOfficeService.translate((Translation) tData.getObjectData(), lang);
+					modelAndView.addObject(ATTR_OBJECTLANG, translation.getLang());
+				}
 			} else {
 				tData = backOfficeService.findOne(object, id);
 			}
-			
-			modelAndView.addObject("fields", tData.getFields());
+
+			modelAndView.addObject(ATTR_FIELD, tData.getFields());
 
 			IdProvider objectData = tData.getObjectData();
-			if (saveError != null && saveError){
-				modelAndView.addObject("objectView", objectData);
+			if (saveError != null && saveError) {
+				modelAndView.addObject(ATTR_OBJECTVIEW, objectData);
 			} else {
-				modelAndView.addObject("objectView", objectData);
-				modelAndView.addObject("objectEdit", objectData);
+				modelAndView.addObject(ATTR_OBJECTVIEW, objectData);
+				modelAndView.addObject(ATTR_OBJECTEDIT, objectData);
 			}
-
-			modelAndView.addObject("objectName", tData.getObjectData().getName());
-			if (object.getSuperclass().equals(Translation.class)){
-				Translation translation = (Translation) tData.getObjectData();
-				
-				//if (translation.getLang() == null){
-					translation.setLang(lang);
-				//}
-				
-				modelAndView.addObject("objectLang", translation.getLang());
-			}
+			modelAndView.addObject(ATTR_OBJECTNAME, tData.getObjectData().getName());
 
 			return modelAndView;
-			
+
 		} catch (ServiceException e) {
 			throw new JspException(e);
 		} catch (ClassNotFoundException e) {
 			throw new ResourceNotFoundException(type + " Not found !", e);
 		}
-		
+
 	}
+	
+	
+	@RequestMapping(value = BO_NEW_TRANSLATION_URL, method = RequestMethod.GET)
+	public ModelAndView add(@RequestParam(ATTR_TYPE) String type, @RequestParam(ATTR_LG) String langCode, @RequestParam(value = ATTR_ID, required = false) Integer id, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException   {
+		try {
+			Lang lang = langService.findByCode(langCode);
+			if (lang == null) throw new ResourceNotFoundException(langCode + " Not found !");	
+			if (id == null) return edit(type, id, lang, false);
+			IdProvider added = copy(type, id, lang);
+			ModelAndView modelAndView = new ModelAndView(REDIRECT + Common.BO_URL + BO_EDIT_URL);
+			redirectAttributes.addAttribute(REDIRECT_TYPE, added.getObjectType());
+			redirectAttributes.addAttribute(REDIRECT_ID, added.getId());
+			return modelAndView;
+		} catch (ServiceException e) {
+			throw new JspException(e);
+		}
+	}
+	
+	@RequestMapping(value = BO_NEW_URL, method = RequestMethod.GET)
+	public ModelAndView add(@RequestParam(ATTR_TYPE) String type, @RequestParam(value = ATTR_ID, required = false) Integer id, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException   {
+		if (id == null) return edit(type, id, null, false);
+		IdProvider added = copy(type, id, null);
+		ModelAndView modelAndView = new ModelAndView(REDIRECT + Common.BO_URL + BO_EDIT_URL);
+		redirectAttributes.addAttribute(REDIRECT_TYPE, added.getObjectType());
+		redirectAttributes.addAttribute(REDIRECT_ID, added.getId());
+		return modelAndView;
+	}
+	
+	
+	@RequestMapping(value = BO_NEW_TRANSLATION_URL, method = RequestMethod.POST)
+	public ModelAndView neww(@RequestParam(ATTR_TYPE) String type, @RequestParam(ATTR_LG) String langCode, @Valid @ModelAttribute(ATTR_OBJECTEDIT) IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
+		try {
+			Lang lang = langService.findByCode(langCode);
+			if (lang == null) throw new ResourceNotFoundException(langCode + " Not found !");	
+
+			ModelAndView modelAndView = null;
+			if (result.hasErrors()) {
+				modelAndView = edit(type, null, lang, true);
+			} else{
+				try {
+					Translation translation = (Translation) backOfficeService.translate((Translation) data, lang);
+					translation = (Translation) backOfficeService.saveData(translation);
+					
+					modelAndView = new ModelAndView(REDIRECT + Common.BO_URL + BO_VIEW_URL);
+					redirectAttributes.addAttribute(REDIRECT_TYPE, translation.getObjectType());
+					redirectAttributes.addAttribute(REDIRECT_ID, translation.getId());
+					
+				} catch (ServiceException e) {
+					throw new JspException(e);
+				}
+			}
+			return modelAndView;
+		
+		} catch (ServiceException e) {
+			throw new JspException(e);
+		}
+	}
+	
+	@RequestMapping(value = BO_NEW_URL, method = RequestMethod.POST)
+	public ModelAndView neww(@RequestParam(ATTR_TYPE) String type, @Valid @ModelAttribute(ATTR_OBJECTEDIT) IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
+		ModelAndView modelAndView = null;
+		if (result.hasErrors()) {
+			modelAndView = edit(type, null, null, true);
+		} else{
+			try {
+				IdProvider idProvider = backOfficeService.saveData(data);					
+				
+				modelAndView = new ModelAndView(REDIRECT + Common.BO_URL + BO_VIEW_URL);
+				redirectAttributes.addAttribute(REDIRECT_TYPE, idProvider.getObjectType());
+				redirectAttributes.addAttribute(REDIRECT_ID, idProvider.getId());
+				
+			} catch (ServiceException e) {
+				throw new JspException(e);
+			}
+		}
+		return modelAndView;
+	}
+
+	public IdProvider copy(String type, Integer id, Lang lang) throws JspException   {
+		try {
+			if (id == 0) throw new JspException("Id = 0");
+			
+			Class<?> object = entityLocator.getEntity(type).getClass();
+			if (Translation.class.isAssignableFrom(object)) {
+				Translation base = (Translation) backOfficeService.getData(object, id);
+				if (lang == null) lang = base.getLang();
+				Translation translation = (Translation) backOfficeService.translate(base, lang);
+				translation.setName(translation.getName() + COPY);
+				return backOfficeService.saveData(translation);
+			} else if(NoTranslation.class.isAssignableFrom(object)){
+				NoTranslation noTranslation = (NoTranslation) backOfficeService.getData(object, id, null);
+				noTranslation.setId(null);
+				noTranslation.setName(noTranslation.getName() + COPY);
+				return backOfficeService.saveData(noTranslation);
+			} else {
+				IdProvider idProvider = backOfficeService.getData(object, id, null);
+				idProvider.setId(null);
+				return backOfficeService.saveData(idProvider);
+			}
+
+		} catch (ServiceException e) {
+			throw new JspException(e);
+		} catch (ClassNotFoundException e) {
+			throw new ResourceNotFoundException(type + " Not found !", e);
+		}
+	}
+	
+	
 
 
 }

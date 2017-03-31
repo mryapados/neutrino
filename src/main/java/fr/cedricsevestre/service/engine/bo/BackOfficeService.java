@@ -474,10 +474,23 @@ public class BackOfficeService { //implements IBackOfficeService{
 
 	
 	
+//	@SuppressWarnings("unchecked")
+//	public IdProvider add(Class<?> entity) throws ServiceException {
+//		try {
+//			return (IdProvider) entity.newInstance();
+//		} catch (InstantiationException e) {
+//			throw new ServiceException("add -> Error", e) ;
+//		} catch (IllegalAccessException e) {
+//			throw new ServiceException("add -> Error", e) ;
+//		}
+//	}
+	
 	@SuppressWarnings("unchecked")
-	public IdProvider add(Class<?> entity) throws ServiceException {
+	public NData<IdProvider> add(Class<?> entity) throws ServiceException {
 		try {
-			return (IdProvider) entity.newInstance();
+			List<Field> fields = getFields(entity);
+			Map<String, Map<String, List<NField>>> nMapFields = getMapNField(fields);
+			return new NData<IdProvider>(nMapFields, (IdProvider) entity.newInstance());
 		} catch (InstantiationException e) {
 			throw new ServiceException("add -> Error", e) ;
 		} catch (IllegalAccessException e) {
@@ -485,20 +498,20 @@ public class BackOfficeService { //implements IBackOfficeService{
 		}
 	}
 	
-	public NData<IdProvider> copy(Class<?> entity, Integer id) throws ServiceException {
-		List<Field> fields = getFields(entity);
-		Map<String, Map<String, List<NField>>> nMapFields = getMapNField(fields);
-		IdProvider data = null;
-		if (id == 0){
-			data = add(entity);
-		} else {
-			data = getData(entity, id, null);
-			data.setId(null);
-			saveData(data);
-
-		}
-		return new NData<IdProvider>(nMapFields, data);
-	}
+//	public NData<IdProvider> copy(Class<?> entity, Integer id) throws ServiceException {
+//		List<Field> fields = getFields(entity);
+//		Map<String, Map<String, List<NField>>> nMapFields = getMapNField(fields);
+//		IdProvider data = null;
+//		if (id == 0){
+//			data = add(entity);
+//		} else {
+//			data = getData(entity, id, null);
+//			data.setId(null);
+//			saveData(data);
+//
+//		}
+//		return new NData<IdProvider>(nMapFields, data);
+//	}
 	
 	private IdProvider completeData(Class<?> entity, IdProvider data, List<NField> nFields, IdProvider origin) throws ServiceException{
 		// get data original if id != null

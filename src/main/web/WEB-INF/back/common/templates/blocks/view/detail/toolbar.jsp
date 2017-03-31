@@ -22,17 +22,30 @@
 					<s:message code="bo.view.button.duplicate" text="Duplicate" />
 				</a>
 
+				<c:if test="${not empty objectLang}">
+					<div class="btn-group${position eq 'bottom' ? ' dropup' : ''}" role="group" uib-dropdown >
+						<button id="add_button" class="btn btn-primary" uib-dropdown-toggle>
+	                       <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Translate <span class="lang-sm" lang="${language}"></span> <span class="caret"></span>
+	                   	</button>
+						<ul uib-dropdown-menu class="dropdown-menu" role="menu">
+							<c:forEach var="item" items="${langs}" varStatus="status">
+								<li>
+									<c:url var="url" value="/bo/new/translation/">
+										<c:param name="type" value="${objectType}" />
+										<c:param name="lg" value="${item.code}" />
+										<c:param name="id" value="${objectView.id}"/>
+									</c:url> <a href="${url}"><span class="lang-sm lang-lbl-full" lang="${item.code}"></span></a>
+								</li>
+							</c:forEach>
+						</ul>
+					</div>
+
+				</c:if>
+
 				<button id="delete_button" type="submit" class="btn btn-danger">
 					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remove
 				</button>
-				
-				
-				<a href="<c:url value='/bo/new/?type=${objectType}&id=${objectView.id}' />" class="btn btn-primary">
-					<span class="glyphicon glyphicon-paste" aria-hidden="true"></span>
-					<s:message code="bo.view.button.duplicate" text="Duplicate" />
-				</a>
-				
-				
+
 			</div>
 		</div>
 		

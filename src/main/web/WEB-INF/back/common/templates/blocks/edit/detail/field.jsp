@@ -16,6 +16,15 @@
 
 <c:set var="FINAL_MAX_ELEMENT" value="3" />
 <c:choose>
+	<c:when test="${finalFieldType eq 'BOOLEAN'}">
+		<c:set var="fieldError"><form:errors path="${finalField.name}"/></c:set>
+		<div class="">
+			<form:checkbox path="${finalField.name}" />
+		</div>
+		<c:if test="${not empty fieldError}">
+			<div class="alert alert-danger"><strong>Error !</strong> ${fieldError}</div>
+		</c:if>
+	</c:when>
 	<c:when test="${finalFieldType eq 'INTEGER'}">
 		<c:set var="fieldError"><form:errors path="${finalField.name}"/></c:set>
 		<div class="form-group${not empty fieldError ? ' has-error has-feedback' : ''}">
@@ -58,6 +67,18 @@
 				</c:if>
 			</c:otherwise>
 		</c:choose>
+	</c:when>
+	<c:when test="${finalFieldType eq 'PASSWORD'}">
+		<c:set var="fieldError"><form:errors path="${finalField.name}"/></c:set>
+		<div class="form-group${not empty fieldError ? ' has-error has-feedback' : ''}">
+			<form:input cssClass="form-control" type="password" path="${finalField.name}"/>
+			<c:if test="${not empty fieldError}">
+				<span class="glyphicon glyphicon-remove form-control-feedback"></span>
+			</c:if>
+		</div>
+		<c:if test="${not empty fieldError}">
+			<div class="alert alert-danger"><strong>Error !</strong> ${fieldError}</div>
+		</c:if>
 	</c:when>
 	<c:when test="${finalFieldType eq 'VARCHAR255'}">
 		<c:set var="fieldError"><form:errors path="${finalField.name}"/></c:set>

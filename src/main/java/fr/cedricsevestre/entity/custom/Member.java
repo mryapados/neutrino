@@ -9,6 +9,8 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
+import fr.cedricsevestre.annotation.BOField;
+import fr.cedricsevestre.annotation.BOField.ValueType;
 import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.independant.objects.User;
 
@@ -18,18 +20,22 @@ public class Member extends User implements IdProvider {
 
 	private static final long serialVersionUID = 1L;
 	
+	@BOField(type = ValueType.VARCHAR50)
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "first_name")
 	private String firstName;
 	
+	@BOField(type = ValueType.VARCHAR50)
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "last_name")
 	private String lastName;
 
+	@BOField(type = ValueType.VARCHAR50)
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "nick_name")
 	private String nickName;
 	
+	@BOField(type = ValueType.VARCHAR50)
 	@NotNull
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "mail")

@@ -11,8 +11,8 @@ import java.lang.annotation.Target;
 public @interface BOField {
 	public enum ValueType {
 		NULL, 
-		INTEGER, FLOAT, DOUBLE, 
-		VARCHAR50, VARCHAR255, TEXT, HTML,
+		BOOLEAN, INTEGER, FLOAT, DOUBLE, 
+		PASSWORD, VARCHAR50, VARCHAR255, TEXT, HTML,
 		DATETIME, DATE, TIME, 
 		IMAGE, FILE, URL, 
 		TOBJECT, NTOBJECT, OBJECT, 

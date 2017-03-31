@@ -32,8 +32,8 @@ public abstract class NoTranslation implements IdProvider, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "object_type", insertable = false, updatable = false)
-    private String objectType;
+//	@Column(name = "object_type", insertable = false, updatable = false)
+//    private String objectType;
 	
 	@BOField(type = ValueType.INTEGER, editable = false)
 	@Id
@@ -79,7 +79,7 @@ public abstract class NoTranslation implements IdProvider, Serializable {
 
 	@Override
 	public String getObjectType() {
-		return objectType;
+		return this.getClass().getSimpleName();
 	}
 
 	@Override

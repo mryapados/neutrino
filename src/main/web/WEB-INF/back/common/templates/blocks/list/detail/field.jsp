@@ -10,6 +10,9 @@
 <c:set var="finalMaxElement" value="3" />
 
 <c:choose>
+	<c:when test="${finalFieldType eq 'PASSWORD'}">
+		<c:out value="********"/>
+	</c:when>
 	<c:when test="${finalFieldType eq 'DATETIME'}">
 		<fmt:formatDate value="${finalObject}"/>
 	</c:when>
