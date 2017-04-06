@@ -21,4 +21,9 @@ public interface TranslationDao<T extends Translation> extends BaseDao<T> {
 	
 	@Query("SELECT t FROM #{#entityName} t WHERE t.name =:name")
 	T findByName(@Param("name") String name);
+
+	@Query("SELECT t FROM #{#entityName} t WHERE (t.folder IS NULL OR t.folder.id =:folderId) AND (t.name =:name AND t.lang.id =:langId)")
+	T identify(@Param("folderId") Integer folderId, @Param("name") String name, @Param("langId") Integer langId);
+	
+	
 }

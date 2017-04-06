@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.exception.ServiceException;
 
@@ -19,13 +20,20 @@ import fr.cedricsevestre.exception.ServiceException;
 @Scope("prototype")
 public class LoginController extends AbtractController {
 	public static final String LOGINPAGE = "login";
+	public static final String BACKFOLDER = "back";
 	
     @RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView view(Folder folder) {
 		System.out.println("login controller");
 		ModelAndView modelAndView = null;
 		try {
+
 			modelAndView = baseView(LOGINPAGE, null, folder);
+			if (modelAndView == null) {
+				folder = common.getFolder(Common.BACK);
+				modelAndView = baseView(LOGINPAGE, null, folder);
+			}
+			
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

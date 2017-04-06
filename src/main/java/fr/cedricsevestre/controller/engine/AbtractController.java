@@ -71,15 +71,16 @@ public abstract class AbtractController {
 		return false;
 	}
 
-	public ModelAndView baseView(String pageNameWithoutLangCode, Folder folder) throws ServiceException {
-		return baseView(pageNameWithoutLangCode, null, folder);
+	public ModelAndView baseView(String pageName, Folder folder) throws ServiceException {
+		return baseView(pageName, null, folder);
 	}
-	public ModelAndView baseView(String pageNameWithoutLangCode, Translation activeObject, Folder folder) throws ServiceException {
+	public ModelAndView baseView(String pageName, Translation activeObject, Folder folder) throws ServiceException {
 		Locale locale = LocaleContextHolder.getLocale();
-		return baseView(common.getPage(pageNameWithoutLangCode, locale.getLanguage()), activeObject, folder);
+		return baseView(common.getPage(folder, pageName, common.getLang(locale.getLanguage())), activeObject, folder);
 	}
 	
 	public ModelAndView baseView(Page page, Translation activeObject, Folder folder) throws ServiceException {
+		if (page == null) return null; //404
 		if (Common.DEBUG) System.out.println(this.getClass() + " - baseview - page : " + page.getName());
 		Template model = page.getModel();
 		ModelAndView modelAndView = baseView(page, model, folder);

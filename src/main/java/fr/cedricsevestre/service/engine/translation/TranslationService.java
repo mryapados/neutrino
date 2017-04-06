@@ -39,6 +39,7 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 	@Autowired
 	protected TranslationProviderDao translationProviderDao;
 
+	@Deprecated
 	public T findByName(String name) throws ServiceException {
 		try {
 			System.out.println("findbyname " + name + " " + translationDao);
@@ -49,6 +50,14 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 		}
 	}
 
+	public T identify(Integer folderId, String name, Integer langId) throws ServiceException {
+		try {
+			System.out.println("identify " + name + " " + langId + " " + translationDao);
+			return translationDao.identify(folderId, name, langId);
+		} catch (PersistenceException e) {
+			throw new ServiceException("erreur identify Base", e);
+		}
+	}
 	
 	@Override
 	@Transactional
@@ -81,7 +90,8 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 		base.setLang(lang);
 		base.setTranslation(translation);
 		base.setName(base.getName());
-
+		base.setFolder(base.getFolder());
+		
 		return base;
 	}
 

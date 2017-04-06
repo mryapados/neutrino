@@ -22,5 +22,8 @@ public interface NoTranslationDao<T extends NoTranslation> extends BaseDao<T> {
 //	@Query("SELECT nt FROM NoTranslation nt WHERE nt.objectType = :type")
 //	List<NoTranslation> findAllForType(@Param("type") String type);
 	
+	@Query("SELECT t FROM #{#entityName} t WHERE (t.folder IS NULL OR t.folder.id =:folderId) AND (t.name =:name)")
+	T identify(@Param("folderId") Integer folderId, @Param("name") String name);
+	
 	
 }

@@ -16,8 +16,8 @@ import fr.cedricsevestre.entity.engine.translation.objects.Template;
 @Repository
 public interface TemplateDao extends TranslationDao<Template> {
 	
-	@Query("SELECT t FROM Template t LEFT JOIN FETCH t.models m LEFT JOIN t.blocks b LEFT JOIN FETCH t.translation tr LEFT JOIN FETCH tr.translations trs WHERE t.name =:name")
-	Template findByNameWithAllExceptData(@Param("name") String name);
+	@Query("SELECT t FROM Template t LEFT JOIN FETCH t.models m LEFT JOIN t.blocks b LEFT JOIN FETCH t.translation tr LEFT JOIN FETCH tr.translations trs WHERE (t.folder IS NULL OR t.folder =:folderId) AND (t.name =:name AND t.lang.id =:langId)")
+	Template identifyWithAllExceptData(@Param("folderId") Integer folderId, @Param("name") String name, @Param("langId") Integer langId);
 		
 	@Query("SELECT t FROM Template t WHERE t.kind ='BLOCK' AND t.models IS EMPTY")
 	List<Template> findAllBlockNotAffected();

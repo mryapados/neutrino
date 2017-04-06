@@ -82,15 +82,16 @@ public class Block extends TagSupport implements IIncludeJSP {
 					Page page = (Page) pageContext.getAttribute(Attributes.PAGE.toString(), PageContext.REQUEST_SCOPE);
 					if (model == null) model = page.getModel();
 					
-					Integer activeObjectId = 0;
-					if (activeObject != null) activeObjectId = activeObject.getId();
-					
-					out.println("<data-ui-position model=\"" + model.getName() + "\" activeobject=\"" + activeObjectId + "\" position=\"" + position + "\" />");
+					String activeObjectId = "";
+					if (activeObject != null) activeObjectId = activeObject.getId().toString();
+
+					Position pos = positionService.findByName(position);
+					out.println("<data-ui-position model-id=\"" + model.getId() + "\" active-object-id=\"" + activeObjectId + "\" position-id=\"" + pos.getId() + "\" />");
 				} else {
 					getJsp();
 				}
 			} else getJsp();
-		} catch (IOException e) {
+		} catch (IOException | ServiceException e) {
 			try {
 				out.println("<p class=\"bg-danger\">" + e.getMessage() + "</p>");
 			} catch (IOException ex) {

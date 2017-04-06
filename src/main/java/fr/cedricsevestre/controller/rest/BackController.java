@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -82,6 +83,7 @@ public class BackController extends AbtractController {
 	@Autowired
 	private TObjectService tObjectService;
 	
+	@Deprecated
 	@RequestMapping(value = "/templates/exist/", method = RequestMethod.GET)
 	public @ResponseBody Boolean checkJSPExist(@ModelAttribute("context") String context, @ModelAttribute("type") String type, @ModelAttribute("path") String path, @ModelAttribute("name") String name) throws ServiceException {
 		System.out.println("context = " + context);
@@ -97,6 +99,7 @@ public class BackController extends AbtractController {
 		return templateService.checkJSPExist(common.getWebInfFolder(), context, template);
 	}
 
+	@Deprecated
 	@RequestMapping(value = "/positions", method = RequestMethod.GET)
 	public @ResponseBody Map<String, PositionDto> getPositions() throws ServiceException {
 		Iterable<Position> positions = positionService.findAll();
@@ -107,56 +110,12 @@ public class BackController extends AbtractController {
 		return mapPositions;
 	}
 
-	@RequestMapping(value = "models/{model}/activeobjects/{activeobject}/positions/{position}/blocks", method = RequestMethod.GET)
-	public @ResponseBody List<BlockDto> getBlocksForPosition(
-			@PathVariable(value = "model") String modelName, 
-			@PathVariable(value = "activeobject") Integer activeObjectId, 
-			@PathVariable(value = "position") String positionName) throws ServiceException {
-		List<BlockDto> blockDtos = new ArrayList<>();
-		
-		List<Translation> models = new ArrayList<>();
-		Template template = templateService.findByName(modelName);
-		models.add(template);
 
-		Translation activeObject = null;
-		if (activeObjectId > 0){
-			activeObject = tObjectService.findOne(activeObjectId);
-		}
-		if (activeObject != null){
-			models.add(activeObject);
-		}
-		Position pos = positionService.findByNameForModelsWithMaps(models, positionName);
-
-		if (pos != null){
-			List<MapTemplate> mapTemplates;
-			mapTemplates = pos.getMapTemplates();
-			for (MapTemplate mapTemplate : mapTemplates) {
-				blockDtos.add(BlockDto.from(mapTemplate));
-			}
-		}		
-		return blockDtos;
-	}
 
 	
 	
 
 
-	@RequestMapping(value = "/parsedblock/{pageName}/{blockName}", method = RequestMethod.GET)
-	public ModelAndView getParsedBlock(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "pageName") String pageName, @PathVariable(value = "blockName") String blockName, Folder folder) throws ServiceException {
-		ModelAndView modelAndView = null;
-		try {
-			Page page = pageService.findByName(pageName);
-			Template block = templateService.findByName(blockName);
-			modelAndView = baseView(page, block, folder);
-			modelAndView.addObject("page", page);
-			modelAndView.addObject("activeBlock", block);
-			response.addHeader("Object-Type", "parsedBlock");  
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return modelAndView;
-	}
 	
 	@Deprecated
 	@RequestMapping(value = "/addmapblock", method = RequestMethod.POST)
@@ -172,6 +131,7 @@ public class BackController extends AbtractController {
 	}
 	
 	
+	@Deprecated
 	@RequestMapping(value = "/maptemplates", method = RequestMethod.POST)
 	public @ResponseBody BlockDto saveMapBlock(@Valid @RequestBody MapTemplateSimpleDto mapTemplateSimpleDto, BindingResult result) throws ServiceException, FormException {
 		if (result.hasErrors()){
@@ -193,6 +153,7 @@ public class BackController extends AbtractController {
 		return BlockDto.from(mapTemplateService.saveAndOrder(mapTemplate));
 	}
 	
+	@Deprecated
 	@RequestMapping(value = "maptemplates/{id}", method = RequestMethod.DELETE)
 	public BlockDto delete(@PathVariable("id") Integer mapBlockId) throws ServiceException {
 		MapTemplate mapTemplate = mapTemplateService.findOne(mapBlockId);
@@ -200,50 +161,24 @@ public class BackController extends AbtractController {
 		return BlockDto.from(mapTemplate);
 	}
 	
-	// RESTFull (ngResource)
-	@RequestMapping(value = "/langs", method = RequestMethod.GET)
-	public @ResponseBody List<LangDto> getLangs() throws ServiceException {
-		Iterable<Lang> langs = langService.findAll();
-		List<LangDto> langsDto = new ArrayList<>();
-		for (Lang lang : langs) {
-			langsDto.add(LangDto.from(lang));
-		}
-		return langsDto;
-	}
 	
+	// RESTFull (ngResource)	
+	@Deprecated
 	@RequestMapping(value = "/tobjects/{id}", method = RequestMethod.GET)
 	public @ResponseBody TranslationDto getTObject(@PathVariable(value = "id") Integer id) throws ServiceException {
 		Translation translation = tObjectService.findOne(id);
 		return TranslationDto.from(translation);
 	}
 	
-	@RequestMapping(value = "/folders/{name}", method = RequestMethod.GET)
-	public @ResponseBody FolderDto getFolder(@PathVariable(value = "name") String folderName) throws ServiceException {
-		Folder folder = folderService.findByName(folderName);
-		return FolderDto.from(folder);
-	}
-	
-	@RequestMapping(value = "/pages/{name}", method = RequestMethod.GET)
-	public @ResponseBody PageDto getPage(@PathVariable(value = "name") String pageName) throws ServiceException {
-		Page page = pageService.findByName(pageName);
-		return PageDto.from(page);
-	}
 
-	@RequestMapping(value = "/templates", method = RequestMethod.GET)
-	public @ResponseBody List<TemplateDto> getTemplates() throws ServiceException {
-		List<Template> templates = templateService.findAllBlockAndPageBlock();
-		List<TemplateDto> templatesDto = new ArrayList<>();
-		for (Template template : templates) {
-			templatesDto.add(TemplateDto.from(template));
-		}
-		return templatesDto;
-	}
 	
+	@Deprecated
 	@RequestMapping(value = "/templates/{name}", method = RequestMethod.GET)
 	public @ResponseBody TemplateDto getTemplate(@PathVariable(value = "name") String templateName) throws ServiceException {
 		Template template = templateService.findByName(templateName);
 		return TemplateDto.from(template);
 	}
+	@Deprecated
 	@RequestMapping(value = "/templates/{name}", method = RequestMethod.PUT)
 	public @ResponseBody TemplateDto updateTemplate(@PathVariable(value = "name") String templateName,@Valid @RequestBody TemplateDto templateDto, BindingResult result) throws ServiceException, FormException {
 		if (result.hasErrors()){
@@ -257,6 +192,134 @@ public class BackController extends AbtractController {
 		return TemplateDto.from(templateService.save(TemplateDto.to(templateDto)));
 	}
 
+	
+	
+	
+	
+	
+	
+
+	@RequestMapping(value = "/parsedblock/{pageId}/{blockId}", method = RequestMethod.GET)
+	public ModelAndView getParsedBlock(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "pageId") Integer pageId, @PathVariable(value = "blockId") Integer blockId, @RequestParam(value = "folderId", required = false) Integer folderId, Folder folder) throws ServiceException {
+		ModelAndView modelAndView = null;
+		try {
+			if (folderId != null) folder = folderService.findOne(folderId);
+			Page page = pageService.findOne(pageId);	
+			Template block = templateService.findOne(blockId);
+
+			modelAndView = baseView(page, block, folder);
+			modelAndView.addObject("page", page);
+			modelAndView.addObject("activeBlock", block);
+			response.addHeader("Object-Type", "parsedBlock");  
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return modelAndView;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@RequestMapping(value = "/folder", method = RequestMethod.GET)
+	public @ResponseBody List<FolderDto> getFolders() throws ServiceException {
+		List<Folder> folders = (List<Folder>) folderService.findAll();
+		List<FolderDto> foldersDto = new ArrayList<>();
+		for (Folder folder : folders) {
+			foldersDto.add(FolderDto.from(folder));
+		}
+		return foldersDto;
+	}
+	@RequestMapping(value = "/folder", method = RequestMethod.GET, params={"id"})
+	public @ResponseBody FolderDto getFolder(@RequestParam(value = "id", required = true) Integer id) throws ServiceException {
+		Folder folder = folderService.findOne(id);
+		return FolderDto.from(folder);
+	}
+	@RequestMapping(value = "/folder", method = RequestMethod.GET, params={"name"})
+	public @ResponseBody FolderDto getFolderByName(@RequestParam(value = "name", required = true) String name) throws ServiceException {
+		Folder folder = folderService.findByName(name);
+		return FolderDto.from(folder);
+	}
+
+	@RequestMapping(value = "/page", method = RequestMethod.GET)
+	public @ResponseBody PageDto getPage(@RequestParam(value = "id", required = true) Integer id) throws ServiceException {
+		Page page = pageService.findOne(id);
+		return PageDto.from(page);
+	}
+	
+	@RequestMapping(value = "/template", method = RequestMethod.GET)
+	public @ResponseBody List<TemplateDto> getTemplates() throws ServiceException {
+		List<Template> templates = templateService.findAllBlockAndPageBlock();
+		List<TemplateDto> templatesDto = new ArrayList<>();
+		for (Template template : templates) {
+			templatesDto.add(TemplateDto.from(template));
+		}
+		return templatesDto;
+	}
+	@RequestMapping(value = "/template", method = RequestMethod.GET, params={"id"})
+	public @ResponseBody TemplateDto getTemplate(@RequestParam(value = "id", required = true) Integer id) throws ServiceException {
+		Template template = templateService.findOne(id);
+		return TemplateDto.from(template);
+	}
+	
+	
+	@RequestMapping(value = "/lang", method = RequestMethod.GET)
+	public @ResponseBody List<LangDto> getLangs() throws ServiceException {
+		Iterable<Lang> langs = langService.findAll();
+		List<LangDto> langsDto = new ArrayList<>();
+		for (Lang lang : langs) {
+			langsDto.add(LangDto.from(lang));
+		}
+		return langsDto;
+	}
+	@RequestMapping(value = "/lang", method = RequestMethod.GET, params={"id"})
+	public @ResponseBody LangDto getLang(@RequestParam(value = "id", required = true) Integer id) throws ServiceException {
+		Lang lang = langService.findOne(id);
+		return LangDto.from(lang);
+	}
+	@RequestMapping(value = "/lang", method = RequestMethod.GET, params={"code"})
+	public @ResponseBody LangDto getLangByCode(@RequestParam(value = "code", required = true) String code) throws ServiceException {
+		Lang lang = langService.findByCode(code);
+		return LangDto.from(lang);
+	}
+
+	
+	//Model : Page ou PageBlock
+	//ActiveObject : ActiveObject
+	//Position : Position
+	@RequestMapping(value = "/blocks", method = RequestMethod.GET, params={"modelId", "activeObjectId", "positionId"})
+	public @ResponseBody List<BlockDto> getBlocksForPosition(
+			@RequestParam(value = "modelId", required = true) Integer modelId, 
+			@RequestParam(value = "activeObjectId", required = true) Integer activeObjectId, 
+			@RequestParam(value = "positionId", required = true) Integer positionId) throws ServiceException {
+		List<BlockDto> blockDtos = new ArrayList<>();
+		
+		List<Translation> models = new ArrayList<>();
+		Template template = templateService.findOne(modelId);
+		models.add(template);
+
+		if (activeObjectId != null){
+			models.add(tObjectService.findOne(activeObjectId));
+		}
+
+		Position pos = positionService.findOneForModelsWithMaps(models, positionId);
+
+		if (pos != null){
+			List<MapTemplate> mapTemplates;
+			mapTemplates = pos.getMapTemplates();
+			for (MapTemplate mapTemplate : mapTemplates) {
+				blockDtos.add(BlockDto.from(mapTemplate));
+			}
+		}		
+		return blockDtos;
+	}
+	
+	
 	
 	
 	

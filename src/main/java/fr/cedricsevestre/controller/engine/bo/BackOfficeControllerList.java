@@ -118,11 +118,12 @@ public class BackOfficeControllerList extends BackOfficeController {
 	@RequestMapping(value = BO_BLOCK_LIST_URL + "{type}/{id}/{field}", method = RequestMethod.GET)
 	public ModelAndView getAssignableblocklist(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "type") String ownerType, @PathVariable(value = "id") Integer ownerId, @PathVariable(value = "field") String ownerField, Pageable pageRequest) throws JspException {
 		try {
-			String langCode = LocaleContextHolder.getLocale().getLanguage();
-			fr.cedricsevestre.entity.engine.translation.objects.Page page = common.getPage(BO_LIST_PAGE, langCode);
-			Template block = templateService.findByName(BO_BLOCK_LIST + "_" + langCode.toUpperCase());
-
+			Lang lang = common.getLang(LocaleContextHolder.getLocale().getLanguage());
 			Folder folder = getBOFolder();
+			
+			fr.cedricsevestre.entity.engine.translation.objects.Page page = common.getPage(folder, BO_LIST_PAGE, lang);
+			Template block = templateService.identify(folder.getId(), BO_BLOCK_LIST, lang.getId());
+
 			ModelAndView modelAndView = baseView(page, block, folder);
 
 			modelAndView.addObject("page", page);

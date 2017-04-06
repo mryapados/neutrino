@@ -47,6 +47,7 @@ public class PageService extends TranslationService<Page>{
 		translated.setLang(lang);
 		translated.setTranslation(translation);
 		translated.setName(page.getName());
+		translated.setFolder(page.getFolder());
 		translated.setContext(page.getContext());
 		
 		Template pageModel = page.getModel();

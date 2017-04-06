@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -23,6 +24,7 @@ import fr.cedricsevestre.annotation.BOField;
 import fr.cedricsevestre.annotation.BOField.SortType;
 import fr.cedricsevestre.annotation.BOField.ValueType;
 import fr.cedricsevestre.entity.engine.IdProvider;
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 
 @Entity
 @Table(name = "notranslation")
@@ -62,6 +64,10 @@ public abstract class NoTranslation implements IdProvider, Serializable {
 	@Column(name = "description")
 	private String description;
 
+	@BOField(type = ValueType.OBJECT)
+	@OneToOne
+	private Folder folder;
+	
 	public NoTranslation() {
 		super();
 		this.setDateAdded(new Date());
@@ -123,6 +129,14 @@ public abstract class NoTranslation implements IdProvider, Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public Folder getFolder() {
+		return folder;
+	}
+
+	public void setFolder(Folder folder) {
+		this.folder = folder;
 	}
 
 	@Override

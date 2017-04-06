@@ -86,9 +86,6 @@ import fr.cedricsevestre.specification.engine.TranslationSpecification;
 
 @Controller
 public class BackOfficeControllerEdit extends BackOfficeController {
-
-	
-	
 	protected static final String REDIRECT = "redirect:/";
 	protected static final String REDIRECT_TYPE = "type";
 	protected static final String REDIRECT_ID = "id";
@@ -278,9 +275,6 @@ public class BackOfficeControllerEdit extends BackOfficeController {
 			throw new ResourceNotFoundException(type + " Not found !", e);
 		}
 	}
-	
-	
-
 
 }
 

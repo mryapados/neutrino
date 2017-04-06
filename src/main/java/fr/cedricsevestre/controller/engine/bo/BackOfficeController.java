@@ -156,8 +156,8 @@ public abstract class BackOfficeController extends AbtractController {
 	}
 	
 	@Override
-	public ModelAndView baseView(String pageNameWithoutLangCode, Folder folder) throws ServiceException {
-		ModelAndView modelAndView = super.baseView(pageNameWithoutLangCode, folder);
+	public ModelAndView baseView(String pageName, Folder folder) throws ServiceException {
+		ModelAndView modelAndView = super.baseView(pageName, folder);
 		modelAndView.addAllObjects(init());
 		return modelAndView;
 	}

@@ -34,7 +34,7 @@
 								<ul class="dropdown-menu" aria-labelledby="dropdownLang">
 									<li><a data-ng-click="switchLang('')">{{'block-selection.lang.all' | translate}}</a></li>
 									<li role="separator" class="divider"></li>
-									<li data-ng-repeat="lang in BlockManagementFacade.getLangs() | orderBy: 'code'">
+									<li data-ng-repeat="lang in langs | orderBy: 'code'">
 										<a data-ng-click="switchLang(lang.code)">{{lang.code | uppercase}}</a>
 									</li>
 								</ul>
@@ -46,7 +46,7 @@
 
 				<div class="col-xs-12">
 					<ul class="list-block">
-						<li data-ng-repeat="block in BlockManagementFacade.getTemplates() | orderBy: 'name' | filter : {lang:{code:currentLang}, $ : search} ">
+						<li data-ng-repeat="block in templates | orderBy: 'name' | filter : {lang:{code:currentLang}, $ : search} ">
 							<div drag="block" dragStyle="columnDrag">
 								<p class="block-title"><strong>{{block.name}}</strong></p>
 								<p><strong>{{'block-selection.block.path' | translate}} : </strong>{{block.path}}</p>

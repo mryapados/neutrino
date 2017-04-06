@@ -88,15 +88,15 @@
 	bModule.directive('uiPosition', function($backPath, BlockManagementService){
 		return {
 			scope: {
-				position: '@',
-				model: '@',
-				activeobject: '@',
+				positionId: '@',
+				modelId: '@',
+				activeObjectId: '@',
 			},
 			restrict: 'E',
 			templateUrl: $backPath.URL_TEMPLATE_JS + 'ui-position.html', 
 			controller: 'UiPositionCtrl', 
 			link: function(scope, element, attrs){
-				scope.facade = BlockManagementService;
+				
 	        },
 		};
 	});

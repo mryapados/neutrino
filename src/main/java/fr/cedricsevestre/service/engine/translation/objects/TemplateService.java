@@ -51,9 +51,9 @@ public class TemplateService extends TranslationService<Template>{
 	
 	
 	
-	public Template findByNameWithAllExceptData(String name) throws ServiceException {
+	public Template identifyWithAllExceptData(Integer folderId, String name, Integer langId) throws ServiceException {
 		try {
-			return templateDao.findByNameWithAllExceptData(name);
+			return templateDao.identifyWithAllExceptData(folderId, name, langId);
 		} catch (PersistenceException e) {
 			throw new ServiceException("erreur findByNameWithAllExceptData Template", e);
 		}

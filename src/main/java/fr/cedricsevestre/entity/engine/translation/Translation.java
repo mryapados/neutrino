@@ -26,6 +26,7 @@ import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 import fr.cedricsevestre.annotation.BOField;
 import fr.cedricsevestre.annotation.BOField.SortType;
 import fr.cedricsevestre.annotation.BOField.ValueType;
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 
 @Entity
 @Table(name = "translation")
@@ -74,6 +75,10 @@ public abstract class Translation implements ITranslation, Serializable {
 	@JoinColumn(name="id_translation")
 	private TranslationProvider translation;
 	
+	@BOField(type = ValueType.OBJECT)
+	@OneToOne
+	private Folder folder;
+
 	public Translation() {
 		super();
 		this.setDateAdded(new Date());
@@ -146,6 +151,14 @@ public abstract class Translation implements ITranslation, Serializable {
 	@Override
 	public void setLang(Lang lang) {
 		this.lang = lang;
+	}
+
+	public Folder getFolder() {
+		return folder;
+	}
+
+	public void setFolder(Folder folder) {
+		this.folder = folder;
 	}
 
 	@Override

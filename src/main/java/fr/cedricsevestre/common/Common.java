@@ -11,9 +11,11 @@ import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.conf.ApplicationProperties;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
+import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.independant.objects.FolderService;
+import fr.cedricsevestre.service.engine.translation.LangService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
 
 @Component
@@ -24,6 +26,8 @@ public class Common {
 	private Map<String, Folder> foldersByName;
 	private Map<String, Folder> foldersByServerName;
 	
+	private Map<String, Lang> langs;
+		
 	private String applicationFolder;
 	private String webInfFolder;
 	
@@ -36,6 +40,9 @@ public class Common {
 	@Autowired
 	private PageService pageService;
 
+	@Autowired
+	protected LangService langService;
+	
 	@Autowired
 	private ApplicationProperties applicationProperties;	
 
@@ -99,15 +106,27 @@ public class Common {
 		return foldersByServerName.get(serverName);
 	}
 	
-	public Page getPage(String pageNameWithoutLangCode, String langCode) throws ServiceException {
-		String pageName = pageNameWithoutLangCode + "_" + langCode.toUpperCase();
+	public Lang getLang(String langCode) throws ServiceException {
+		if (langs == null){
+			langs = new HashMap<>();
+		}
+		if(!langs.containsKey(langCode)){
+			Lang lang = langService.findByCode(langCode);
+			if (lang != null) langs.put(langCode, lang);
+		}
+		return langs.get(langCode);
+	}
+
+	public Page getPage(Folder folder, String pageName, Lang lang) throws ServiceException {
+		String pageNameLong = (folder.getName() + "_" + pageName + "_" + lang.getCode()).toUpperCase();
 		if (pages == null){
 			pages = new HashMap<>();
 		}
-		if(!pages.containsKey(pageName)){
-			pages.put(pageName, pageService.findByName(pageName));
+		if(!pages.containsKey(pageNameLong)){
+			Page page = pageService.identify(folder.getId(), pageName, lang.getId());
+			if (page != null) pages.put(pageNameLong, page);
 		}
-		return pages.get(pageName);
+		return pages.get(pageNameLong);
 	}
 	
 	public String getBasePath(Boolean webInf, Folder folder, TypeBase typeBase){

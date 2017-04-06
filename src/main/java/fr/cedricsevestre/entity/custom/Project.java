@@ -36,12 +36,7 @@ public class Project extends Translation {
 	@SafeHtml(whitelistType = WhiteListType.BASIC)
 	@Column(name = "testage")
 	private String testage;
-	
-	
-	@BOField(type = ValueType.OBJECT)
-	@OneToOne
-	private Folder folder;
-		
+
 	@BOField(type = ValueType.COLLECTION, ofType = ValueType.TOBJECT)
 	@OneToMany(mappedBy = "project")
 	private List<Album> albums;
@@ -55,14 +50,6 @@ public class Project extends Translation {
 
 	public void setTestage(String testage) {
 		this.testage = testage;
-	}
-
-	public Folder getFolder() {
-		return folder;
-	}
-
-	public void setFolder(Folder folder) {
-		this.folder = folder;
 	}
 
 	public List<Album> getAlbums() {

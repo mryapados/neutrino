@@ -40,5 +40,14 @@ public abstract class NoTranslationService<T extends NoTranslation> extends Base
 			throw new ServiceException("erreur findByName Base", e);
 		}
 	}
+	
+	public T identify(Integer folderId, String name) throws ServiceException {
+		try {
+			System.out.println("identify " + name + " " + noTranslationDao);
+			return noTranslationDao.identify(folderId, name);
+		} catch (PersistenceException e) {
+			throw new ServiceException("erreur identify Base", e);
+		}
+	}
 
 }

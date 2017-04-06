@@ -1,87 +1,38 @@
 (function() {
 	var bModule = angular.module('backServices');
 
-	bModule.service('BlockManagementService', function($rootScope, $q, $uibModal, FolderService, LangService, PageService, TemplateService, BlockService, MapTemplateService, TObjectService, $backPath) {
-		var folder;
-		var page;
+	bModule.service('BlockManagementService', function($rootScope, $q, FolderService, PageService, TemplateService, LangService, BlockService, $backPath) {
+		var folder = null;
+		var page = null;
 		var activeObject = null;
 		self = this;
+
+		self.getFolder = function() {
+			return folder;
+		};
+		self.getPage = function() {
+			return page;
+		};
+		self.getActiveObject = function() {
+			return activeObject;
+		};
 		
-		var templates;
+		var templates = null;
 		self.getTemplates = function() {
 			return templates;
 		};
-		var langs;
+		var langs = null;
 		self.getLangs = function() {
 			return langs;
 		};
 		
-		self.init = function(folderName, pageName, activeObjectId) {
-			var deferred = $q.defer();
-			
-			var promise = FolderService.getFolder(folderName).then(function(data){
-				folder = data;
-			})
-			.then(function(){
-				self.initPage(pageName);
-			})
-			.then(function(){
-				if (activeObjectId != null){
-					TObjectService.getTObject(activeObjectId).then(function(data){
-						activeObject = data;
-					});
-				}
-			})
-			.then(function(){
-				self.initLangs();
-			})
-			.then(function(){
-				self.initTemplates();
-			})
-			.catch(function(error) {
-				console.log('errrrrrrrrrrrrrrrrrrrrror');
-				console.log(error);
-			})
-			.finally(function() {
-				deferred.resolve();
-			});
-			
-			
-			
-//			var promise = PageService.getPage(pageName)
-//			.then(function(data){
-//				page = data;
-//			})
-//			.then(function(){
-//				if (activeObjectId != null){
-//					TObjectService.getTObject(activeObjectId).then(function(data){
-//						activeObject = data;
-//					});
-//				}
-//			})
-//			.then(function(){
-//				self.initLangs();
-//				
-//				
-//			})
-//			.then(function(){
-//				self.initTemplates();
-//			})
-//			.catch(function(error) {
-//				console.log(error);
-//			})
-//			.finally(function() {
-//				deferred.resolve();
-//			});
-			return deferred.promise;
-			
-			
-		};
 		
-		self.initFolder = function(folderName) {
+		self.initFolder = function(folderId) {
 			var deferred = $q.defer();
 			if (!folder) {
-				FolderService.getFolder(folderName).then(function(data){
+				console.log('init folder');
+				FolderService.getFolder(folderId).then(function(data){
+					console.log('folder initialized');
 					folder = data;
 					deferred.resolve();
 				});
@@ -91,10 +42,12 @@
 			return deferred.promise;
 		};
 		
-		self.initPage = function(pageName) {
+		self.initPage = function(pageId) {
 			var deferred = $q.defer();
 			if (!page) {
-				PageService.getPage(pageName).then(function(data){
+				console.log('init page');
+				PageService.getPage(pageId).then(function(data){
+					console.log('page initialized');
 					page = data;
 					deferred.resolve();
 				});
@@ -103,33 +56,6 @@
 			}
 			return deferred.promise;
 		};
-		
-		self.initLangs = function() {
-			var deferred = $q.defer();
-			if (!langs) {
-				LangService.getLangs().then(function(data) {
-					langs = data;
-					deferred.resolve();
-				});
-			} else {
-				deferred.resolve();
-			}
-			return deferred.promise;
-		};
-		
-//		self.initTemplates = function() {
-//			var deferred = $q.defer();
-//			if (!templates) {
-//				TemplateService.getTemplates().then(function(data) {
-//					templates = data;
-//					console.log(data);
-//					deferred.resolve();
-//				});
-//			} else {
-//				deferred.resolve();
-//			}
-//			return deferred.promise;
-//		};
 		
 		self.initTemplates = function() {
 			var deferred = $q.defer();
@@ -143,58 +69,59 @@
 			}
 			return deferred.promise;
 		};
-		self.getParsedBlock = function(blockName) {
-			return $backPath.URL_SERVER_REST + '@back/parsedblock/' + page.name + '/' + blockName + '?servername=' + folder.serverName[0];
-		}
-
-		self.setMapBlock = function(modelName, blockName, positionName, ordered) {
-    		var dataObj = {
-    				modelName : modelName,
-    				blockName : blockName,
-    				positionName : positionName, 
-    				ordered : ordered
-    		};
+		self.initLangs = function() {
 			var deferred = $q.defer();
-			MapTemplateService.save(dataObj).then(function(data) {
-				deferred.resolve(data);
-			});
+			if (!langs) {
+				LangService.getLangs().then(function(data) {
+					langs = data;
+					deferred.resolve();
+				});
+			} else {
+				deferred.resolve();
+			}
 			return deferred.promise;
-		}
-		
-        self.getPathTemplateForm = function() {
-        	return $backPath.URL_TEMPLATE_MODAL;
-        }
-        
-        self.openModal = function(templateId) {
-			var instance = $uibModal.open({
-				templateUrl: $backPath.URL_TEMPLATE_MODAL_EDIT,
-				controller: 'TemplateModalCtrl',
-				resolve: {
-					template: function(){
-						return TemplateService.getTemplate(templateId);
-					}, 
-					page: function() { return page;}, 
-				}
-			});
-			instance.result.then(function(savedTemplate) {
-				
-				if (templates) {
-					// TODO Update templates list
-					
-					//var oldTemplate =getByIdFilter(templates, templateId);
-					//var index = templates.indexOf(oldTemplate);
-
-					//templates[index] = savedTemplate;
-	
-				
-	
-				}
-
-				
-				
-				
-			});
 		};
+
+
+		var initialized = $q.defer();
+		self.init = function(folderId, pageId, activeObjectId) {
+			if (folderId && pageId){
+				console.log('init');
+				$q.all([self.initFolder(folderId), self.initPage(pageId)]).then(function() {
+					
+				}).catch(function(error) {
+					console.log(error);
+					initialized.reject();
+				})
+				.finally(function() {
+					console.log('fin init');
+					initialized.resolve();
+				});
+			}
+			return initialized.promise;
+		};
+		
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 	});
 	
@@ -202,8 +129,8 @@
 	
 	bModule.service('TemplateService', function(TemplateResource, TemplateRepository, $backPath) {
 		self = this;
-		self.getTemplate = function(templateName) {
-			return TemplateResource.get({name : templateName}).$promise;
+		self.getTemplate = function(id) {
+			return TemplateResource.get({id : id}).$promise;
 		};
 		self.getTemplates = function() {
 			return TemplateResource.getAll().$promise;
@@ -238,8 +165,11 @@
 	});
 	bModule.service('LangService', function(LangResource, $backPath) {
 		self = this;
-		self.getLang = function(langName) {
-			return LangResource.get({name : langName}).$promise;
+		self.getLang = function(id) {
+			return LangResource.get({id : id}).$promise;
+		};
+		self.getLangByCode = function(code) {
+			return LangResource.get({code : code}).$promise;
 		};
 		self.getLangs = function() {
 			return LangResource.getAll().$promise;
@@ -247,8 +177,11 @@
 	});
 	bModule.service('FolderService', function(FolderResource, $backPath) {
 		self = this;
-		self.getFolder = function(folderName) {
-			return FolderResource.get({name : folderName}).$promise;
+		self.getFolder = function(id) {
+			return FolderResource.get({id : id}).$promise;
+		};
+		self.getFolderByName = function(name) {
+			return FolderResource.get({name : name}).$promise;
 		};
 		self.getFolders = function() {
 			return FolderResource.getAll().$promise;
@@ -256,13 +189,34 @@
 	});
 	bModule.service('PageService', function(PageResource, $backPath) {
 		self = this;
-		self.getPage = function(pageName) {
-			return PageResource.get({name : pageName}).$promise;
+		self.getPage = function(id) {
+			return PageResource.get({id : id}).$promise;
 		};
 		self.getPages = function() {
 			return PageResource.getAll().$promise;
 		};
 	});
+	
+	
+	bModule.service('BlockService', function(BlockResource, $backPath) {
+		self = this;
+		self.getBlocksForModelPosition = function(modelId, activeObjectId, positionId) {
+			return BlockResource.getAll({modelId : modelId, activeObjectId : activeObjectId, positionId : positionId}).$promise;
+		};
+	});
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	bModule.service('TObjectService', function(TObjectResource, $backPath) {
 		self = this;
 		self.getTObject = function(id) {
@@ -272,12 +226,7 @@
 	
 	
 	
-	bModule.service('BlockService', function(BlockResource, $backPath) {
-		self = this;
-		self.getBlocksForModelPosition = function(modelName, activeObject, positionName) {
-			return BlockResource.getAll({model : modelName, activeobject:activeObject, position : positionName}).$promise;
-		};
-	});
+
 	bModule.service('PositionService', function(PositionRepository, $backPath) {
 		self = this;
 		self.getPosition = function(positionName) {

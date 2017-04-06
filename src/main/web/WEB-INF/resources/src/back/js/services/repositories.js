@@ -33,8 +33,8 @@
 	});
 	
 	bModule.factory("TemplateResource", function($resource, $backPath) {
-	  	var API_URI = '@back/templates/:name';  				
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {name: '@name'}, {
+	  	var API_URI = '@back/template';  				
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -44,8 +44,8 @@
 	});
 	
 	bModule.factory("LangResource", function($resource, $backPath) {
-	  	var API_URI = '@back/langs/:name';  				
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {name: '@name'}, {
+	  	var API_URI = '@back/lang';  				
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id', code: '@code'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -56,8 +56,8 @@
 	
 	
 	bModule.factory("FolderResource", function($resource, $backPath) {
-	  	var API_URI = '@back/folders/:name';  				
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {name: '@name'}, {
+	  	var API_URI = '@back/folder';  				
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id', name: '@name'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -67,8 +67,8 @@
 	});
 	
 	bModule.factory("PageResource", function($resource, $backPath) {
-	  	var API_URI = '@back/pages/:name';  				
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {name: '@name'}, {
+	  	var API_URI = '@back/page';  				
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -78,8 +78,8 @@
 	});
 	
 	bModule.factory("BlockResource", function($resource, $backPath) {
-	  	var API_URI = '@back/models/:model/activeobjects/:activeobject/positions/:position/blocks';  				
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {model: '@model', activeobject: '@activeobject', positions: '@position'}, {
+	  	var API_URI = '@back/blocks';  				
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {modelId: '@modelId', activeObjectId: '@activeObjectId', positionId: '@positionId'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},

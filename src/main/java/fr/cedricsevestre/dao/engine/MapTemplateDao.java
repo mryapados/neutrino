@@ -15,4 +15,5 @@ import fr.cedricsevestre.entity.engine.translation.objects.Template;
 public interface MapTemplateDao extends BaseDao<MapTemplate> {
 	@Query("SELECT mt FROM MapTemplate mt WHERE mt.model=:model AND mt.position=:position ORDER BY mt.ordered")
 	List<MapTemplate> findAllForModelAndPosition(@Param("model") Translation model, @Param("position") Position position);
+
 }
