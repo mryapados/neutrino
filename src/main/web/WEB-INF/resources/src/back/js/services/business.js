@@ -1,7 +1,7 @@
 (function() {
 	var bModule = angular.module('backServices');
 
-	bModule.service('BlockManagementService', function($rootScope, $q, FolderService, PageService, TemplateService, LangService, BlockService, $backPath) {
+	bModule.service('BlockManagementService', function($rootScope, $q, FolderService, PageService, TemplateService, LangService, BlockService, MapTemplateService, TObjectService, $backPath) {
 		var folder = null;
 		var page = null;
 		var activeObject = null;
@@ -57,6 +57,24 @@
 			return deferred.promise;
 		};
 		
+		self.initActiveObject = function(activeObjectId) {
+			var deferred = $q.defer();
+			if (!activeObject) {
+				if (!activeObjectId) deferred.resolve();
+				else {
+					TObjectService.getTObject(activeObjectId).then(function(data){
+						activeObject = data;
+						console.log(activeObject);
+						deferred.resolve();
+					});
+				}
+			} else {
+				deferred.resolve();
+			}
+			return deferred.promise;
+		};
+		
+
 		self.initTemplates = function() {
 			var deferred = $q.defer();
 			if (!templates) {
@@ -87,7 +105,7 @@
 		self.init = function(folderId, pageId, activeObjectId) {
 			if (folderId && pageId){
 				console.log('init');
-				$q.all([self.initFolder(folderId), self.initPage(pageId)]).then(function() {
+				$q.all([self.initFolder(folderId), self.initPage(pageId), self.initActiveObject(activeObjectId)]).then(function() {
 					
 				}).catch(function(error) {
 					console.log(error);
@@ -101,12 +119,27 @@
 			return initialized.promise;
 		};
 		
-
+		self.setMapBlock = function(modelId, blockId, positionId, ordered) {
+    		var dataObj = {
+    				modelId : modelId,
+    				blockId : blockId,
+    				positionId : positionId, 
+    				ordered : ordered
+    		};
+			var deferred = $q.defer();
+			MapTemplateService.save(dataObj).then(function(data) {
+				deferred.resolve(data);
+			});
+			return deferred.promise;
+		}
 		
-		
-		
-		
-		
+		self.removeMapBlock = function(blockId) {
+			var deferred = $q.defer();
+			MapTemplateService.remove(blockId).then(function(data) {
+				deferred.resolve(data);
+			});
+			return deferred.promise;
+		}
 		
 		
 		
@@ -205,17 +238,16 @@
 		};
 	});
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	bModule.service('MapTemplateService', function(MapTemplateResource, $backPath) {
+		self = this;
+		self.save = function(mapTemplate) {
+			var fn = (mapTemplate.id) ? MapTemplateResource.update : MapTemplateResource.save;
+			return fn.call(MapTemplateResource, {}, mapTemplate).$promise;
+		};
+		self.remove = function(id) {
+			return MapTemplateResource.remove({id:id}).$promise;
+		};
+	});
 	
 	bModule.service('TObjectService', function(TObjectResource, $backPath) {
 		self = this;
@@ -223,6 +255,26 @@
 			return TObjectResource.get({id : id}).$promise;
 		};
 	});
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -236,14 +288,5 @@
 			return PositionRepository.getAll();
 		};		
 	});
-	bModule.service('MapTemplateService', function(MapTemplateResource, $backPath) {
-		self = this;
-		self.save = function(mapTemplate) {
-			var fn = (mapTemplate.id) ? MapTemplateResource.update : MapTemplateResource.save;
-			return fn.call(MapTemplateResource, {}, mapTemplate).$promise;
-		};
-		self.remove = function(id) {
-			return MapTemplateResource.remove({id:id}).$promise;
-		};
-	});
+
 }());

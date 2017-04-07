@@ -1,7 +1,10 @@
 package fr.cedricsevestre.controller.custom;
 
+import java.util.Locale;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +43,9 @@ public class ProjectController extends AbtractController {
 	}
 
 	private Translation getActiveObject(String projectName, Folder folder) throws ServiceException{
-		return projectService.findByName(projectName);
+		Locale locale = LocaleContextHolder.getLocale();
+		
+		return projectService.identify(folder.getId(), projectName, common.getLang(locale.getLanguage()).getId());
 		
 		//if not found or folder not equal to project folder return 404 exception.
 		

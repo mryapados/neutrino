@@ -113,63 +113,8 @@ public class BackController extends AbtractController {
 
 
 	
-	
-
-
-	
-	@Deprecated
-	@RequestMapping(value = "/addmapblock", method = RequestMethod.POST)
-	public @ResponseBody MapTemplateDto exSaveMapBlock(@RequestBody MapTemplateSimpleDto mapTemplateSimpleDto) throws ServiceException {
-		System.out.println(mapTemplateSimpleDto.toString());
-		
-		MapTemplate mapTemplate = new MapTemplate();
-		mapTemplate.setModel(templateService.findByName(mapTemplateSimpleDto.getModelName()));
-		mapTemplate.setBlock(templateService.findByName(mapTemplateSimpleDto.getBlockName()));
-		mapTemplate.setPosition(positionService.findByName(mapTemplateSimpleDto.getPositionName()));
-		mapTemplate.setOrdered(mapTemplateSimpleDto.getOrdered());
-		return MapTemplateDto.from(mapTemplateService.saveAndOrder(mapTemplate));
-	}
-	
-	
-	@Deprecated
-	@RequestMapping(value = "/maptemplates", method = RequestMethod.POST)
-	public @ResponseBody BlockDto saveMapBlock(@Valid @RequestBody MapTemplateSimpleDto mapTemplateSimpleDto, BindingResult result) throws ServiceException, FormException {
-		if (result.hasErrors()){
-			List<String> errors = new ArrayList<>();
-			for (ObjectError objectError : result.getAllErrors()) {
-				errors.add(objectError.getDefaultMessage());
-				System.out.println(objectError.getDefaultMessage());
-			}
-			throw new FormException("form errors", result.getAllErrors());			
-		}
-
-		System.out.println(mapTemplateSimpleDto.toString());
-		
-		MapTemplate mapTemplate = new MapTemplate();
-		mapTemplate.setModel(templateService.findByName(mapTemplateSimpleDto.getModelName()));
-		mapTemplate.setBlock(templateService.findByName(mapTemplateSimpleDto.getBlockName()));
-		mapTemplate.setPosition(positionService.findByName(mapTemplateSimpleDto.getPositionName()));
-		mapTemplate.setOrdered(mapTemplateSimpleDto.getOrdered());
-		return BlockDto.from(mapTemplateService.saveAndOrder(mapTemplate));
-	}
-	
-	@Deprecated
-	@RequestMapping(value = "maptemplates/{id}", method = RequestMethod.DELETE)
-	public BlockDto delete(@PathVariable("id") Integer mapBlockId) throws ServiceException {
-		MapTemplate mapTemplate = mapTemplateService.findOne(mapBlockId);
-		mapTemplateService.removeById(mapBlockId);
-		return BlockDto.from(mapTemplate);
-	}
-	
-	
 	// RESTFull (ngResource)	
-	@Deprecated
-	@RequestMapping(value = "/tobjects/{id}", method = RequestMethod.GET)
-	public @ResponseBody TranslationDto getTObject(@PathVariable(value = "id") Integer id) throws ServiceException {
-		Translation translation = tObjectService.findOne(id);
-		return TranslationDto.from(translation);
-	}
-	
+
 
 	
 	@Deprecated
@@ -197,17 +142,28 @@ public class BackController extends AbtractController {
 	
 	
 	
-	
-
-	@RequestMapping(value = "/parsedblock/{pageId}/{blockId}", method = RequestMethod.GET)
-	public ModelAndView getParsedBlock(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "pageId") Integer pageId, @PathVariable(value = "blockId") Integer blockId, @RequestParam(value = "folderId", required = false) Integer folderId, Folder folder) throws ServiceException {
+	@RequestMapping(value = "/parsedblock/{pageId}/{blockId}/{activeObjectId}", method = RequestMethod.GET)
+	public ModelAndView getParsedBlockWithActiveObject(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "pageId") Integer pageId, @PathVariable(value = "blockId") Integer blockId, @PathVariable(value = "activeObjectId") Integer activeObjectId, @RequestParam(value = "folderId", required = false) Integer folderId, Folder folder) throws ServiceException {
+		return getParsedBlock(request, response, pageId, blockId, activeObjectId, folderId, folder);
+	}
+	@RequestMapping(value = "/parsedblock/{pageId}/{blockId}/", method = RequestMethod.GET)
+	public ModelAndView getParsedBlockWithoutActiveObject(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "pageId") Integer pageId, @PathVariable(value = "blockId") Integer blockId, @RequestParam(value = "folderId", required = false) Integer folderId, Folder folder) throws ServiceException {
+		return getParsedBlock(request, response, pageId, blockId, null, folderId, folder);
+	}
+	public ModelAndView getParsedBlock(HttpServletRequest request, HttpServletResponse response, Integer pageId, Integer blockId, Integer activeObjectId, Integer folderId, Folder folder) throws ServiceException {
 		ModelAndView modelAndView = null;
 		try {
 			if (folderId != null) folder = folderService.findOne(folderId);
 			Page page = pageService.findOne(pageId);	
 			Template block = templateService.findOne(blockId);
-
-			modelAndView = baseView(page, block, folder);
+			
+			Translation activeObject = null;
+			if (activeObjectId != null){
+				activeObject = tObjectService.findOne(activeObjectId);
+			}
+			
+			modelAndView = baseView(page, block, activeObject, folder);
+			
 			modelAndView.addObject("page", page);
 			modelAndView.addObject("activeBlock", block);
 			response.addHeader("Object-Type", "parsedBlock");  
@@ -222,8 +178,12 @@ public class BackController extends AbtractController {
 	
 	
 	
-	
-	
+
+	@RequestMapping(value = "/tobject", method = RequestMethod.GET, params={"id"})
+	public @ResponseBody TranslationDto getTObject(@RequestParam(value = "id", required = true) Integer id) throws ServiceException {
+		Translation translation = tObjectService.findOne(id);
+		return TranslationDto.from(translation);
+	}
 	
 	
 	@RequestMapping(value = "/folder", method = RequestMethod.GET)
@@ -292,7 +252,7 @@ public class BackController extends AbtractController {
 	//Model : Page ou PageBlock
 	//ActiveObject : ActiveObject
 	//Position : Position
-	@RequestMapping(value = "/blocks", method = RequestMethod.GET, params={"modelId", "activeObjectId", "positionId"})
+	@RequestMapping(value = "/block", method = RequestMethod.GET, params={"modelId", "activeObjectId", "positionId"})
 	public @ResponseBody List<BlockDto> getBlocksForPosition(
 			@RequestParam(value = "modelId", required = true) Integer modelId, 
 			@RequestParam(value = "activeObjectId", required = true) Integer activeObjectId, 
@@ -319,8 +279,30 @@ public class BackController extends AbtractController {
 		return blockDtos;
 	}
 	
-	
-	
+	@RequestMapping(value = "/mapTemplate", method = RequestMethod.POST)
+	public @ResponseBody BlockDto saveMapTemplate(@Valid @RequestBody MapTemplateSimpleDto mapTemplateSimpleDto, BindingResult result) throws ServiceException, FormException {
+		if (result.hasErrors()){
+			List<String> errors = new ArrayList<>();
+			for (ObjectError objectError : result.getAllErrors()) {
+				errors.add(objectError.getDefaultMessage());
+				System.out.println(objectError.getDefaultMessage());
+			}
+			throw new FormException("form errors", result.getAllErrors());			
+		}
+
+		MapTemplate mapTemplate = new MapTemplate();
+		mapTemplate.setModel(templateService.findOne(mapTemplateSimpleDto.getModelId()));
+		mapTemplate.setBlock(templateService.findOne(mapTemplateSimpleDto.getBlockId()));
+		mapTemplate.setPosition(positionService.findOne(mapTemplateSimpleDto.getPositionId()));
+		mapTemplate.setOrdered(mapTemplateSimpleDto.getOrdered());
+		return BlockDto.from(mapTemplateService.saveAndOrder(mapTemplate));
+	}
+	@RequestMapping(value = "/mapTemplate", method = RequestMethod.DELETE, params={"id"})
+	public BlockDto deleteMapTemplate(@RequestParam(value = "id", required = true) Integer id) throws ServiceException {
+		MapTemplate mapTemplate = mapTemplateService.findOne(id);
+		mapTemplateService.removeById(id);
+		return BlockDto.from(mapTemplate);
+	}
 	
 	
 }

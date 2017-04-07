@@ -83,15 +83,15 @@ public abstract class AbtractController {
 		if (page == null) return null; //404
 		if (Common.DEBUG) System.out.println(this.getClass() + " - baseview - page : " + page.getName());
 		Template model = page.getModel();
-		ModelAndView modelAndView = baseView(page, model, folder);
-		modelAndView.addObject("page", page);
-		modelAndView.addObject("activeObject", activeObject);
+		ModelAndView modelAndView = baseView(page, model, activeObject, folder);
 		return modelAndView;
 	}
 	
-	public ModelAndView baseView(Page page, Template template, Folder folder) throws ServiceException {
+	public ModelAndView baseView(Page page, Template template, Translation activeObject, Folder folder) throws ServiceException {
 		String pathModelAndView = templateService.getPathJSP(false, folder, page.getContext(), template, false);
 		ModelAndView modelAndView = new ModelAndView(pathModelAndView);
+		modelAndView.addObject("page", page);
+		modelAndView.addObject("activeObject", activeObject);
 		modelAndView.addObject("applicationFolder", common.getApplicationFolder());
 		modelAndView.addObject("template", template);
 		modelAndView.addObject("initialized", false);

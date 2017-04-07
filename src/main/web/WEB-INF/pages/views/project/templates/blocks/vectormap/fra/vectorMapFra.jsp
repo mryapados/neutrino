@@ -4,4 +4,4 @@
 
 <my:init test="${!initialized}"/>
 
-<jsp:include page="/WEB-INF/pages/common/templates/blocks/vectormap/fra/vectorMapFra.jsp" />
+<h1> VECTORMAP </h1>

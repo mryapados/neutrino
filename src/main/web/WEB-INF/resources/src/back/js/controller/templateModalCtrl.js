@@ -1,5 +1,3 @@
-var bModule = angular.module("backApp");
-
 bModule.controller('TemplateModalCtrl', function($scope, $uibModalInstance, $backPath, template, page, TemplateService) {	
 	$scope.exist = function() {
 		return TemplateService.getExist(page.context, template.kind, template.path, template.name)
@@ -9,10 +7,6 @@ bModule.controller('TemplateModalCtrl', function($scope, $uibModalInstance, $bac
 				path: '\"...' + template.path + '/' + template.name + '.jsp\"',
 			};
 		});
-	};
-	
-	$scope.cancel = function() {
-		$uibModalInstance.dismiss('cancel');
 	};
 	
 	$scope.cancel = function() {
@@ -42,6 +36,3 @@ bModule.controller('TemplateModalCtrl', function($scope, $uibModalInstance, $bac
 	
 	$scope.exist();
 });
-
-
-

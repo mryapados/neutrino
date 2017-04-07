@@ -100,7 +100,7 @@ public class InitialisationBase {
 	private PositionService positionService;
 	
 	@Autowired
-	private MapTemplateService mapService;
+	private MapTemplateService mapTemplateService;
 	
 	@Autowired
 	private PageService pageService;
@@ -678,7 +678,7 @@ public class InitialisationBase {
 
 		mapTemplate.setPosition(positionService.findByName(position));
 		mapTemplate.setOrdered(ordered);
-		mapService.save(mapTemplate);
+		mapTemplateService.save(mapTemplate);
 		return mapTemplate;
 	}
 	
@@ -1206,7 +1206,7 @@ public class InitialisationBase {
 		mapTemplate.setBlock((Template) block);
 		mapTemplate.setPosition(position);
 		mapTemplate.setOrdered(ordered);
-		mapService.save(mapTemplate);
+		mapTemplateService.save(mapTemplate);
 		return mapTemplate;
 	}
 	public Map<Lang, MapTemplate> addMapTemplate(Map<Lang, Translation> models, Map<Lang, Translation> blocks, Position position) throws ServiceException{

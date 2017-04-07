@@ -1,20 +1,6 @@
 (function() {
 	var bModule = angular.module('backServices');
 
-//	module.factory("BlockRepository", function($http, $backPath) {
-//		return {
-//			getAllForModel: function(modelName) {
-//				return $http.get($backPath.URL_SERVER_REST + '@back/blocks/' + modelName)
-//				.then(function(response) {
-//		            return response.data;
-//				})
-//				.catch(function(error){
-//					console.log(error.status);
-//					console.log(error);
-//				});
-//			}
-//		};
-//	});
 	bModule.factory("TemplateRepository", function($http, $backPath) {
 		return {
 			exist: function(context, kind, path, name) {
@@ -78,7 +64,7 @@
 	});
 	
 	bModule.factory("BlockResource", function($resource, $backPath) {
-	  	var API_URI = '@back/blocks';  				
+	  	var API_URI = '@back/block';  				
 	  	return $resource($backPath.URL_SERVER_REST + API_URI, {modelId: '@modelId', activeObjectId: '@activeObjectId', positionId: '@positionId'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
@@ -87,6 +73,43 @@
 	  		update: {method: 'PUT'}
 	  	});
 	});
+	
+	bModule.factory("MapTemplateResource", function($resource, $backPath) {
+	  	var API_URI = '@back/mapTemplate';			
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id'}, {
+	  		save:   {method: 'POST'},
+	  		get:    {method: 'GET'},
+	  		getAll: {method: 'GET', isArray: true},
+	  		remove: {method: 'DELETE'},
+	  		update: {method: 'PUT'}
+	  	});
+	});
+	
+	bModule.factory("TObjectResource", function($resource, $backPath) {
+	  	var API_URI = '@back/tobject';			
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id'}, {
+	  		save:   {method: 'POST'},
+	  		get:    {method: 'GET'},
+	  		getAll: {method: 'GET', isArray: true},
+	  		remove: {method: 'DELETE'},
+	  		update: {method: 'PUT'}
+	  	});
+	});
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	bModule.factory("PositionRepository", function($http, $backPath) {
 		return {
@@ -140,27 +163,9 @@
 	});
 	
 	
-	bModule.factory("MapTemplateResource", function($resource, $backPath) {
-	  	var API_URI = '@back/maptemplates/:id';			
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id'}, {
-	  		save:   {method: 'POST'},
-	  		get:    {method: 'GET'},
-	  		getAll: {method: 'GET', isArray: true},
-	  		remove: {method: 'DELETE'},
-	  		update: {method: 'PUT'}
-	  	});
-	});
+
 	
-	bModule.factory("TObjectResource", function($resource, $backPath) {
-	  	var API_URI = '@back/tobjects/:id';			
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id'}, {
-	  		save:   {method: 'POST'},
-	  		get:    {method: 'GET'},
-	  		getAll: {method: 'GET', isArray: true},
-	  		remove: {method: 'DELETE'},
-	  		update: {method: 'PUT'}
-	  	});
-	});
+
 	
 	
 }());

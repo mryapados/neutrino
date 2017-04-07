@@ -58,7 +58,12 @@ public class Import extends ImportSupport implements IIncludeJSP {
 	
 	public void getJsp() throws JspException{
 		try {
-			Template target = templateService.findByName(template);
+			
+			Folder folder = (Folder) pageContext.getAttribute(Attributes.FOLDER.toString(), PageContext.REQUEST_SCOPE);
+			Page page = (Page) pageContext.getAttribute(Attributes.PAGE.toString(), PageContext.REQUEST_SCOPE);
+			
+			
+			Template target = templateService.identify(folder.getId(), template, page.getLang().getId());
 
 			NSchema nSchema =  target.getSchema();
 			List<NData> nDatas = null;
@@ -75,8 +80,7 @@ public class Import extends ImportSupport implements IIncludeJSP {
 				}
 			}
 			
-			Folder folder = (Folder) pageContext.getAttribute(Attributes.FOLDER.toString(), PageContext.REQUEST_SCOPE);
-			Page page = (Page) pageContext.getAttribute(Attributes.PAGE.toString(), PageContext.REQUEST_SCOPE);
+
 			String path = templateService.getPathJSP(true, folder, page.getContext(), target, true);
 			
 			if (target.getKind() == TemplateKind.BLOCK){

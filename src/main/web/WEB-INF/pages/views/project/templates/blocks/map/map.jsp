@@ -4,4 +4,4 @@
 
 <my:init test="${!initialized}"/>
 
-<jsp:include page="/WEB-INF/pages/common/templates/blocks/map/map.jsp" />
+<h1> MAP </h1>

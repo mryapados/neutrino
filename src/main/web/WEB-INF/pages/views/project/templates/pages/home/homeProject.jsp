@@ -6,4 +6,4 @@
 <%-- <jsp:include page="/WEB-INF/pages/common/templates/pages/home/home.jsp" /> --%>
 <%-- <my:import url="/WEB-INF/pages/common/templates/pages/home/home.jsp" /> --%>
 
-<my:import template="home_${language}" />
+<my:import template="home" />

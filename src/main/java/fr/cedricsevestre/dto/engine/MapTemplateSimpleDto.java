@@ -5,45 +5,45 @@ import java.io.Serializable;
 public class MapTemplateSimpleDto implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private String modelName;
-	private String blockName;
-	private String positionName;
+	private Integer modelId;
+	private Integer blockId;
+	private Integer positionId;
 	private Integer ordered;
 
 	public MapTemplateSimpleDto() {
 
 	}
 
-	public MapTemplateSimpleDto(String modelName, String blockName, String positionName, Integer ordered) {
+	public MapTemplateSimpleDto(Integer modelId, Integer blockId, Integer positionId, Integer ordered) {
 		super();
-		this.modelName = modelName;
-		this.blockName = blockName;
-		this.positionName = positionName;
+		this.modelId = modelId;
+		this.blockId = blockId;
+		this.positionId = positionId;
 		this.ordered = ordered;
 	}
 
-	public String getModelName() {
-		return modelName;
+	public Integer getModelId() {
+		return modelId;
 	}
 
-	public void setModelName(String modelName) {
-		this.modelName = modelName;
+	public void setModelId(Integer modelId) {
+		this.modelId = modelId;
 	}
 
-	public String getBlockName() {
-		return blockName;
+	public Integer getBlockId() {
+		return blockId;
 	}
 
-	public void setBlockName(String blockName) {
-		this.blockName = blockName;
+	public void setBlockId(Integer blockId) {
+		this.blockId = blockId;
 	}
 
-	public String getPositionName() {
-		return positionName;
+	public Integer getPositionId() {
+		return positionId;
 	}
 
-	public void setPositionName(String positionName) {
-		this.positionName = positionName;
+	public void setPositionId(Integer positionId) {
+		this.positionId = positionId;
 	}
 
 	public Integer getOrdered() {
@@ -56,8 +56,7 @@ public class MapTemplateSimpleDto implements Serializable {
 
 	@Override
 	public String toString() {
-		return "MapTemplateSimpleDto [modelName=" + modelName + ", blockName=" + blockName + ", positionName="
-				+ positionName + ", ordered=" + ordered + "]";
+		return "MapTemplateSimpleDto [modelId=" + modelId + ", blockId=" + blockId + ", positionId=" + positionId + ", ordered=" + ordered + "]";
 	}
 
 	

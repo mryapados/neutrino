@@ -62,21 +62,13 @@
                 element.bind('dragover', dragOver);
                 element.bind('drop', function (evt) {
                     drop(evt, element, scope.dropStyle);
-                    var model = scope.model;
-                    if (!scope[attrs['drop']]) {
-                        var res = attrs['drop'].split('-');
-                        var ordered = 0;
-                        if (res[1] == 'top'){
-                        	ordered = -1;
-                        } else {
-                        	ordered = 1;
-                        }
-                        dropData = {name: res[0], ordered:ordered};
-                    } else {
-                    	dropData = scope[attrs["drop"]];
-                    }
-                    var pathEvent = 'dropEvent_' + dropData.name + '@' + model;
-                    $rootScope.$broadcast(pathEvent, $rootScope.draggedElement, dropData);
+
+                    var ordered = 0;
+                    if (attrs.drop == 'top') ordered = -1;
+                    else if (attrs.drop == 'bottom') ordered = -1;
+
+                    var pathEvent = 'dropEvent_' + scope.positionId + '@' + scope.modelId;
+                    $rootScope.$broadcast(pathEvent, $rootScope.draggedElement, ordered);
 
                 });
             }
