@@ -140,29 +140,10 @@ public class Block extends TagSupport implements IIncludeJSP {
 							pageContext.setAttribute(entry.getKey(), entry.getValue(), PageContext.REQUEST_SCOPE);
 						}
 					}
-	
+										
+					Map<String, Object> nDatas = nDataService.getNDatas(mapTemplate);
+					pageContext.setAttribute("nDatas", nDatas, PageContext.REQUEST_SCOPE);
 
-					NSchema nSchema =  activeBlock.getSchema();
-					List<NData> nDatas = null;
-					if (nSchema != null){
-						//pb lazy
-						//activeBlock ne contient pas datas qui n'est pas initialisé car lazy
-						//Il faut donc recharger le template en demandant explicitement les datas.
-						//Ou charger les datas directement, c'est la méthode choisie ici.
-						if (nSchema.getScope() == ScopeType.ALL){
-							nDatas = nDataService.findAllForTemplate(activeBlock);
-						} else if (nSchema.getScope() == ScopeType.ONE){
-							nDatas = nDataService.findAllForMapTemplate(mapTemplate);
-						}
-
-						Map<String, Object> mapNDatas = new HashMap<>(); 
-						for (NData nData : nDatas) {
-							mapNDatas.put(nData.getPropertyName(), nDataService.getNDataValue(nData));
-						}
-						pageContext.setAttribute("nDatas", mapNDatas, PageContext.REQUEST_SCOPE);
-						
-					}
-					
 					String path = templateService.getPathJSP(true, folder, page.getContext(), activeBlock, true);
 
 					if (Common.DEBUG) out.print("<p class=\"debug\">" + "path = " + path + "</p>");
@@ -177,11 +158,8 @@ public class Block extends TagSupport implements IIncludeJSP {
 					}
 					
 					//remove ndata attributes
-					if (nDatas != null){
-						for (NData nData : nDatas) {
-							pageContext.removeAttribute(nData.getPropertyName(), PageContext.REQUEST_SCOPE);
-						}
-					}
+					pageContext.removeAttribute("nDatas", PageContext.REQUEST_SCOPE);
+				
 					
 					
 				}

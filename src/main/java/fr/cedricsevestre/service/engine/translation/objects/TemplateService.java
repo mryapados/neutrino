@@ -1,10 +1,13 @@
 package fr.cedricsevestre.service.engine.translation.objects;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
+import javax.servlet.jsp.PageContext;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,9 @@ import fr.cedricsevestre.dao.engine.TemplateDao;
 import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
+import fr.cedricsevestre.entity.engine.independant.objects.NData;
+import fr.cedricsevestre.entity.engine.independant.objects.NSchema;
+import fr.cedricsevestre.entity.engine.independant.objects.NSchema.ScopeType;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.TranslationProvider;

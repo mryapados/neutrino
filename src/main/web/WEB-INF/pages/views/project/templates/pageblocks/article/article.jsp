@@ -8,15 +8,15 @@
 
 <h1>PAGEBLOCK NAME = ${activeBlock.name} </h1>
 
-<h2>attribut : title = ${title.value} - ${title.type}</h2>
-<h2>attribut : number = ${number.value} - ${number.type}</h2>
+<h2>attribut : title = ${nDatas.title.value} - ${nDatas.title.type}</h2>
+<h2>attribut : number = ${nDatas.number.value} - ${nDatas.number.type}</h2>
 
-<h2>attribut : album = ${album.value.name} - ${album.type} - ${album.objectType}</h2>
-<c:forEach var="item" items="${albums.value}" varStatus="status">
+<h2>attribut : album = ${nDatas.album.value.name} - ${nDatas.album.type} - ${nDatas.album.objectType}</h2>
+<c:forEach var="item" items="${nDatas.albums.value}" varStatus="status">
 	<h2>Element ${status.index} : ${item.value.name} - ${item.type}</h2>
 </c:forEach>
 
-<c:forEach var="item" items="${numbers.value}" varStatus="status">
+<c:forEach var="item" items="${nDatas.numbers.value}" varStatus="status">
 	<h2>Element ${status.index} : ${item.value} - ${item.type}</h2>
 </c:forEach>
 

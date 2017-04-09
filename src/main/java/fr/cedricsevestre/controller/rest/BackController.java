@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -47,14 +48,17 @@ import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateKind;
 import fr.cedricsevestre.exception.FormException;
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.service.engine.BlockControllerExecutor;
 import fr.cedricsevestre.service.engine.independant.objects.FolderService;
 import fr.cedricsevestre.service.engine.independant.objects.MapTemplateService;
+import fr.cedricsevestre.service.engine.independant.objects.NDataService;
 import fr.cedricsevestre.service.engine.independant.objects.PositionService;
 import fr.cedricsevestre.service.engine.translation.LangService;
 import fr.cedricsevestre.service.engine.translation.TObjectService;
 import fr.cedricsevestre.service.engine.translation.TranslationService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
+import fr.cedricsevestre.taglib.Block;
 
 @RestController
 @Scope("prototype")
@@ -82,6 +86,14 @@ public class BackController extends AbtractController {
 	
 	@Autowired
 	private TObjectService tObjectService;
+	
+	@Autowired
+	private NDataService nDataService;
+
+	@Autowired
+	private BlockControllerExecutor templateControllerExecutor ;
+	
+	
 	
 	@Deprecated
 	@RequestMapping(value = "/templates/exist/", method = RequestMethod.GET)
@@ -141,31 +153,76 @@ public class BackController extends AbtractController {
 	
 	
 	
+//	@Deprecated
+//	@RequestMapping(value = "/parsedblock/{pageId}/{blockId}/{activeObjectId}", method = RequestMethod.GET)
+//	public ModelAndView exGetParsedBlockWithActiveObject(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "pageId") Integer pageId, @PathVariable(value = "blockId") Integer blockId, @PathVariable(value = "activeObjectId") Integer activeObjectId, @RequestParam(value = "folderId", required = false) Integer folderId, Folder folder) throws ServiceException {
+//		return exGetParsedBlock(request, response, pageId, blockId, activeObjectId, folderId, folder);
+//	}
+//	@Deprecated
+//	@RequestMapping(value = "/parsedblock/{pageId}/{blockId}/", method = RequestMethod.GET)
+//	public ModelAndView exGetParsedBlockWithoutActiveObject(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "pageId") Integer pageId, @PathVariable(value = "blockId") Integer blockId, @RequestParam(value = "folderId", required = false) Integer folderId, Folder folder) throws ServiceException {
+//		return exGetParsedBlock(request, response, pageId, blockId, null, folderId, folder);
+//	}
+//	@Deprecated
+//	public ModelAndView exGetParsedBlock(HttpServletRequest request, HttpServletResponse response, Integer pageId, Integer blockId, Integer activeObjectId, Integer folderId, Folder folder) throws ServiceException {
+//		ModelAndView modelAndView = null;
+//		try {
+//			if (folderId != null) folder = folderService.findOne(folderId);
+//			Page page = pageService.findOne(pageId);	
+//			Template block = templateService.findOne(blockId);
+//			
+//			Translation activeObject = null;
+//			if (activeObjectId != null){
+//				activeObject = tObjectService.findOne(activeObjectId);
+//			}
+//			
+//			modelAndView = baseView(page, block, activeObject, folder);
+//			
+//			modelAndView.addObject("page", page);
+//			modelAndView.addObject("activeBlock", block);
+//			response.addHeader("Object-Type", "parsedBlock");  
+//		} catch (ServiceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return modelAndView;
+//	}
 	
-	@RequestMapping(value = "/parsedblock/{pageId}/{blockId}/{activeObjectId}", method = RequestMethod.GET)
-	public ModelAndView getParsedBlockWithActiveObject(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "pageId") Integer pageId, @PathVariable(value = "blockId") Integer blockId, @PathVariable(value = "activeObjectId") Integer activeObjectId, @RequestParam(value = "folderId", required = false) Integer folderId, Folder folder) throws ServiceException {
-		return getParsedBlock(request, response, pageId, blockId, activeObjectId, folderId, folder);
+
+
+	@RequestMapping(value = "/parsedblock/{pageId}/{mapTemplateId}/{activeObjectId}", method = RequestMethod.GET)
+	public ModelAndView getParsedBlockWithActiveObject(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "pageId") Integer pageId, @PathVariable(value = "mapTemplateId") Integer mapTemplateId, @PathVariable(value = "activeObjectId") Integer activeObjectId, @RequestParam(value = "folderId", required = false) Integer folderId, Folder folder) throws ServiceException {
+		return getParsedBlock(request, response, pageId, mapTemplateId, activeObjectId, folderId, folder);
 	}
-	@RequestMapping(value = "/parsedblock/{pageId}/{blockId}/", method = RequestMethod.GET)
-	public ModelAndView getParsedBlockWithoutActiveObject(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "pageId") Integer pageId, @PathVariable(value = "blockId") Integer blockId, @RequestParam(value = "folderId", required = false) Integer folderId, Folder folder) throws ServiceException {
-		return getParsedBlock(request, response, pageId, blockId, null, folderId, folder);
+
+	@RequestMapping(value = "/parsedblock/{pageId}/{mapTemplateId}/", method = RequestMethod.GET)
+	public ModelAndView getParsedBlockWithoutActiveObject(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "pageId") Integer pageId, @PathVariable(value = "mapTemplateId") Integer mapTemplateId, @RequestParam(value = "folderId", required = false) Integer folderId, Folder folder) throws ServiceException {
+		return getParsedBlock(request, response, pageId, mapTemplateId, null, folderId, folder);
 	}
-	public ModelAndView getParsedBlock(HttpServletRequest request, HttpServletResponse response, Integer pageId, Integer blockId, Integer activeObjectId, Integer folderId, Folder folder) throws ServiceException {
+	public ModelAndView getParsedBlock(HttpServletRequest request, HttpServletResponse response, Integer pageId, Integer mapTemplateId, Integer activeObjectId, Integer folderId, Folder folder) throws ServiceException {
 		ModelAndView modelAndView = null;
 		try {
 			if (folderId != null) folder = folderService.findOne(folderId);
-			Page page = pageService.findOne(pageId);	
-			Template block = templateService.findOne(blockId);
+			MapTemplate mapTemplate =  mapTemplateService.findOne(mapTemplateId);
 			
+			Page page = pageService.findOne(pageId);	
+			Template block = mapTemplate.getBlock();
+
 			Translation activeObject = null;
 			if (activeObjectId != null){
 				activeObject = tObjectService.findOne(activeObjectId);
 			}
 			
+			ModelMap modelMap = templateControllerExecutor.execute(block.getController(), mapTemplate.getModel(), activeObject, block, null);	
+			Map<String, Object> nDatas = nDataService.getNDatas(mapTemplate);
+			
 			modelAndView = baseView(page, block, activeObject, folder);
 			
 			modelAndView.addObject("page", page);
 			modelAndView.addObject("activeBlock", block);
+			modelAndView.addObject("nDatas", nDatas);
+			modelAndView.addAllObjects(modelMap);
+			
 			response.addHeader("Object-Type", "parsedBlock");  
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block
@@ -173,10 +230,6 @@ public class BackController extends AbtractController {
 		}
 		return modelAndView;
 	}
-	
-	
-	
-	
 	
 
 	@RequestMapping(value = "/tobject", method = RequestMethod.GET, params={"id"})

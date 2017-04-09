@@ -11,18 +11,13 @@
 		if (lang == undefined){lang = 'en';}
 		$translateProvider.preferredLanguage(lang);
 		$translateProvider.useLoader('i18nLoader');
-		
-		console.log(lang);
 	});
 	bModule.run(function($cookies) {
 
 		
 	});
 	bModule.factory('i18nLoader', function ($http, $q, $backPath) {
-		console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
 	    return function (options) {
-	    	console.log('ffffffff');
-	    	
 		    var deferred = $q.defer();
 			$http.get($backPath.URL_SERVER_REST + '@front/labels/' + options.key)
 			.then(function(response) {

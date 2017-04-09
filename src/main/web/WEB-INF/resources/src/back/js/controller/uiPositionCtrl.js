@@ -18,7 +18,9 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 		
 		var activeObjectId = $scope.activeObject == null ? '' : $scope.activeObject.id;
 		$scope.getParsedBlock = function(block) {
-			return $backPath.URL_SERVER_REST + '@back/parsedblock/' + $scope.page.id + '/' + block.id + '/' + activeObjectId + '?folderId=' + $scope.folder.id;
+			
+			console.log(block);
+			return $backPath.URL_SERVER_REST + '@back/parsedblock/' + $scope.page.id + '/' + block.idMapTemplate + '/' + activeObjectId + '?folderId=' + $scope.folder.id;
 		}
 		
 	    $scope.$on('dropEvent_' + $scope.positionId + '@' + $scope.modelId, function (evt, block, ordered) {

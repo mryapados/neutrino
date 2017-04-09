@@ -1,10 +1,13 @@
 package fr.cedricsevestre.service.engine.independant.objects;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 import javax.persistence.PersistenceException;
+import javax.servlet.jsp.PageContext;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,8 @@ import fr.cedricsevestre.bean.NDataValue;
 import fr.cedricsevestre.dao.engine.NDataDao;
 import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
 import fr.cedricsevestre.entity.engine.independant.objects.NData;
+import fr.cedricsevestre.entity.engine.independant.objects.NSchema;
+import fr.cedricsevestre.entity.engine.independant.objects.NSchema.ScopeType;
 import fr.cedricsevestre.entity.engine.independant.objects.NType.ValueType;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
@@ -108,6 +113,28 @@ public class NDataService extends BaseService<NData>{
 		}
 	}
 		
+	public Map<String, Object> getNDatas(MapTemplate mapTemplate) throws ServiceException{
+		Template block = mapTemplate.getBlock();
+		Map<String, Object> mapNDatas = new HashMap<>(); 
+		NSchema nSchema =  block.getSchema();
+		List<NData> nDatas = null;
+		if (nSchema != null){
+			//pb lazy
+			//block ne contient pas datas qui n'est pas initialisé car lazy
+			//Il faut donc recharger le template en demandant explicitement les datas.
+			//Ou charger les datas directement, c'est la méthode choisie ici.
+			if (nSchema.getScope() == ScopeType.ALL){
+				nDatas = findAllForTemplate(block);
+			} else if (nSchema.getScope() == ScopeType.ONE){
+				nDatas = findAllForMapTemplate(mapTemplate);
+			}
+			for (NData nData : nDatas) {
+				mapNDatas.put(nData.getPropertyName(), getNDataValue(nData));
+			}
+		}
+		return mapNDatas;
+	}
+	
 	public Logger getLogger() {
 		return logger;
 	}
