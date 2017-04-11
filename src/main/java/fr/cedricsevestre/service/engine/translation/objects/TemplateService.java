@@ -34,6 +34,7 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.TranslationProvider;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateKind;
+import fr.cedricsevestre.exception.JSPNotFoundException;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.CacheService;
 import fr.cedricsevestre.service.engine.translation.TranslationService;
@@ -151,7 +152,7 @@ public class TemplateService extends TranslationService<Template>{
 				if (checkJSPExist(common.getWebInfFolder(), pathContext, template)){
 					return pathJSP(webInf,pathContext, template, jsp);
 				} else {
-					throw new ServiceException("JSP not found for template : " + template.getName() + "(" + template.getPath() + "), context : " + context);
+					throw new JSPNotFoundException("JSP not found for template : " + template.getName() + "(" + template.getPath() + "), context : " + context);
 				}
 			}
 		}

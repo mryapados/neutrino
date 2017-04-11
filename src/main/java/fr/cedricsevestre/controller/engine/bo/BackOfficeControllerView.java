@@ -1,7 +1,5 @@
 package fr.cedricsevestre.controller.engine.bo;
 
-import javax.servlet.jsp.JspException;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +10,7 @@ import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.Translation;
+import fr.cedricsevestre.exception.ControllerException;
 import fr.cedricsevestre.exception.ResourceNotFoundException;
 import fr.cedricsevestre.exception.ServiceException;
 
@@ -19,7 +18,7 @@ import fr.cedricsevestre.exception.ServiceException;
 public class BackOfficeControllerView extends BackOfficeController {
 
 	@RequestMapping(value = BO_VIEW_URL, method = RequestMethod.GET)
-	public ModelAndView view(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id) throws JspException   {
+	public ModelAndView view(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id) throws ControllerException   {
 		try {
 			Folder folder = getBOFolder();
 			ModelAndView modelAndView = baseView(BO_VIEW_PAGE, folder);
@@ -41,7 +40,7 @@ public class BackOfficeControllerView extends BackOfficeController {
 
 			return modelAndView;
 		} catch (ServiceException e) {
-			throw new JspException(e);
+			throw new ControllerException(e);
 		} catch (ClassNotFoundException e) {
 			throw new ResourceNotFoundException(type + " Not found !", e);
 		}

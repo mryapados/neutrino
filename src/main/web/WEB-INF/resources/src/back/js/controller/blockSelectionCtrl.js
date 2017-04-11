@@ -1,3 +1,4 @@
+(function() {
 var bModule = angular.module("backApp");
 
 bModule.controller('BlockSelectionCtrl', function($scope, BlockManagementService) {
@@ -29,4 +30,4 @@ bModule.controller('BlockSelectionCtrl', function($scope, BlockManagementService
 });
 
 
-
+}());

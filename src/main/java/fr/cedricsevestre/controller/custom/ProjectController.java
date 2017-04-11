@@ -15,7 +15,10 @@ import fr.cedricsevestre.controller.engine.AbtractController;
 import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.Translation;
+import fr.cedricsevestre.exception.ControllerException;
+import fr.cedricsevestre.exception.ResourceNotFoundException;
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.exception.UtilException;
 import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 
@@ -30,22 +33,20 @@ public class ProjectController extends AbtractController {
 	public static final String HOMEPROJECTPAGE = "project";
 	
 	@RequestMapping(value = "/project", method = RequestMethod.GET)
-	public ModelAndView view(@ModelAttribute("p") String project, Folder folder) {
+	public ModelAndView view(@ModelAttribute("p") String project, Folder folder) throws ResourceNotFoundException, ControllerException, ServiceException {
 		ModelAndView modelAndView = null;
-		try {
-			modelAndView = baseView(HOMEPROJECTPAGE, getActiveObject(project, folder), folder);
-			modelAndView.addObject("project", project);
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		modelAndView = baseView(HOMEPROJECTPAGE, getActiveObject(project, folder), folder);
+		modelAndView.addObject("project", project);
 		return modelAndView;
 	}
 
-	private Translation getActiveObject(String projectName, Folder folder) throws ServiceException{
-		Locale locale = LocaleContextHolder.getLocale();
-		
-		return projectService.identify(folder.getId(), projectName, common.getLang(locale.getLanguage()).getId());
+	private Translation getActiveObject(String projectName, Folder folder) throws ControllerException, ResourceNotFoundException{
+		try {
+			Locale locale = LocaleContextHolder.getLocale();
+			return projectService.identify(folder.getId(), projectName, common.getLang(locale.getLanguage()).getId());
+		} catch (ServiceException | UtilException e) {
+			throw new ControllerException(e);
+		}
 		
 		//if not found or folder not equal to project folder return 404 exception.
 		

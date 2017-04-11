@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
+import fr.cedricsevestre.exception.ControllerException;
+import fr.cedricsevestre.exception.ResourceNotFoundException;
 import fr.cedricsevestre.exception.ServiceException;
 
 @Controller
@@ -16,21 +18,12 @@ public class HomeController extends AbtractController{
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView viewHome() {
-		ModelAndView modelAndView = new ModelAndView("/index");
-		return modelAndView;
+		return new ModelAndView("/index");
 	}
 
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public ModelAndView view(Folder folder) {
-		System.out.println("home controller");
-		ModelAndView modelAndView = null;
-		try {
-			modelAndView = baseView(HOMEPAGE, null, folder);
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return modelAndView;
+	public ModelAndView view(Folder folder) throws ResourceNotFoundException, ControllerException {
+		return baseView(HOMEPAGE, null, folder);
 	}
 	
 }

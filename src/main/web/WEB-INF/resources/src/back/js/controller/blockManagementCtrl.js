@@ -1,3 +1,4 @@
+(function() {
 var bModule = angular.module("backApp");
 
 bModule.controller('BlockManagementCtrl', function ($scope, $rootScope, BlockManagementService, $backPath) {
@@ -7,3 +8,5 @@ bModule.controller('BlockManagementCtrl', function ($scope, $rootScope, BlockMan
 		});
 	}
 });
+
+}());

@@ -68,9 +68,11 @@ import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
+import fr.cedricsevestre.exception.ControllerException;
 import fr.cedricsevestre.exception.FormException;
 import fr.cedricsevestre.exception.ResourceNotFoundException;
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.exception.UtilException;
 import fr.cedricsevestre.service.custom.AlbumService;
 import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.engine.BaseService;
@@ -90,7 +92,7 @@ public class BackOfficeControllerList extends BackOfficeController {
 	private TemplateService templateService;
 
 	@RequestMapping(value = BO_LIST_URL, method = RequestMethod.GET)
-	public ModelAndView list(@ModelAttribute("type") String type, Pageable pageRequest) throws JspException {
+	public ModelAndView list(@ModelAttribute("type") String type, Pageable pageRequest) throws ControllerException {
 
 		try {
 			Folder folder = getBOFolder();
@@ -108,7 +110,7 @@ public class BackOfficeControllerList extends BackOfficeController {
 
 			return modelAndView;
 		} catch (ServiceException e) {
-			throw new JspException(e);
+			throw new ControllerException(e);
 		} catch (ClassNotFoundException e) {
 			throw new ResourceNotFoundException(type + " Not found !", e);
 		}
@@ -116,7 +118,7 @@ public class BackOfficeControllerList extends BackOfficeController {
 	}
 
 	@RequestMapping(value = BO_BLOCK_LIST_URL + "{type}/{id}/{field}", method = RequestMethod.GET)
-	public ModelAndView getAssignableblocklist(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "type") String ownerType, @PathVariable(value = "id") Integer ownerId, @PathVariable(value = "field") String ownerField, Pageable pageRequest) throws JspException {
+	public ModelAndView getAssignableblocklist(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "type") String ownerType, @PathVariable(value = "id") Integer ownerId, @PathVariable(value = "field") String ownerField, Pageable pageRequest) throws ResourceNotFoundException, ControllerException {
 		try {
 			Lang lang = common.getLang(LocaleContextHolder.getLocale().getLanguage());
 			Folder folder = getBOFolder();
@@ -157,14 +159,16 @@ public class BackOfficeControllerList extends BackOfficeController {
 			return modelAndView;
 			
 		} catch (ServiceException e) {
-			throw new JspException(e);
+			throw new ControllerException(e);
 		} catch (ClassNotFoundException e) {
 			throw new ResourceNotFoundException("Ressource not found !", e);
+		} catch (UtilException e) {
+			throw new ControllerException(e);
 		}
 	}
 
 	@RequestMapping(value = "/objects/{type}", method = RequestMethod.GET)
-	public @ResponseBody List<IdProviderDto> getObjects(@PathVariable(value = "type") String type, @RequestParam("id") Integer[] ids) throws ServiceException {
+	public @ResponseBody List<IdProviderDto> getObjects(@PathVariable(value = "type") String type, @RequestParam("id") Integer[] ids) throws ControllerException {
 		try {
 			Class<?> object;
 			object = entityLocator.getEntity(type).getClass();
@@ -184,6 +188,8 @@ public class BackOfficeControllerList extends BackOfficeController {
 			return idProviderDtos;
 		} catch (ClassNotFoundException e) {
 			throw new ResourceNotFoundException(type + " Not found !", e);
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
 		}
 
 	}

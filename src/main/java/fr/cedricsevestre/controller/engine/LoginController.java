@@ -14,7 +14,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
+import fr.cedricsevestre.exception.ControllerException;
+import fr.cedricsevestre.exception.ResourceNotFoundException;
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.exception.UtilException;
 
 @Controller
 @Scope("prototype")
@@ -23,23 +26,20 @@ public class LoginController extends AbtractController {
 	public static final String BACKFOLDER = "back";
 	
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ModelAndView view(Folder folder) {
-		System.out.println("login controller");
+	public ModelAndView view(Folder folder) throws ControllerException  {
 		ModelAndView modelAndView = null;
 		try {
-
-			modelAndView = baseView(LOGINPAGE, null, folder);
-			if (modelAndView == null) {
+			try {
+				modelAndView = baseView(LOGINPAGE, null, folder);
+			} catch (ResourceNotFoundException e1) {
 				folder = common.getFolder(Common.BACK);
 				modelAndView = baseView(LOGINPAGE, null, folder);
 			}
-			
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return modelAndView;
+		} catch (UtilException e) {
+			throw new ControllerException(e);
 		}
-
-		return modelAndView;
+		
 	}
     
     

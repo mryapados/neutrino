@@ -228,16 +228,13 @@
 		self.getPages = function() {
 			return PageResource.getAll().$promise;
 		};
-	});
-	
-	
+	});	
 	bModule.service('BlockService', function(BlockResource, $backPath) {
 		self = this;
 		self.getBlocksForModelPosition = function(modelId, activeObjectId, positionId) {
 			return BlockResource.getAll({modelId : modelId, activeObjectId : activeObjectId, positionId : positionId}).$promise;
 		};
 	});
-	
 	bModule.service('MapTemplateService', function(MapTemplateResource, $backPath) {
 		self = this;
 		self.save = function(mapTemplate) {
@@ -248,7 +245,6 @@
 			return MapTemplateResource.remove({id:id}).$promise;
 		};
 	});
-	
 	bModule.service('TObjectService', function(TObjectResource, $backPath) {
 		self = this;
 		self.getTObject = function(id) {
@@ -256,37 +252,5 @@
 		};
 	});
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	bModule.service('PositionService', function(PositionRepository, $backPath) {
-		self = this;
-		self.getPosition = function(positionName) {
-			return PositionRepository.get(positionName);
-		};
-		self.getPositions = function() {
-			return PositionRepository.getAll();
-		};		
-	});
 
 }());

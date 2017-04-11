@@ -1,98 +1,34 @@
 package fr.cedricsevestre.controller.engine.bo;
 
-import java.beans.PropertyEditor;
 import java.beans.PropertyEditorSupport;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.jsp.JspException;
-import javax.validation.Valid;
-
-import org.hibernate.collection.internal.PersistentBag;
-import org.hibernate.collection.internal.PersistentSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.context.annotation.Scope;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.domain.Specifications;
-import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.test.annotation.Timed;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.util.HtmlUtils;
-import org.springframework.web.util.UriUtils;
 
-import fr.cedricsevestre.bean.NData;
-import fr.cedricsevestre.bean.NDatas;
-import fr.cedricsevestre.bean.NField;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.controller.engine.AbtractController;
-import fr.cedricsevestre.dto.engine.IdProviderDto;
-import fr.cedricsevestre.dto.engine.LangDto;
-import fr.cedricsevestre.dto.engine.NoTranslationDto;
-import fr.cedricsevestre.dto.engine.TemplateDto;
-import fr.cedricsevestre.dto.engine.TranslationDto;
-import fr.cedricsevestre.entity.custom.Album;
-import fr.cedricsevestre.entity.custom.Project;
-import fr.cedricsevestre.entity.custom.Tag;
 import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
-import fr.cedricsevestre.entity.engine.independant.objects.Position;
-import fr.cedricsevestre.entity.engine.independant.objects.User;
-import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
-import fr.cedricsevestre.entity.engine.translation.Lang;
-import fr.cedricsevestre.entity.engine.translation.Translation;
-import fr.cedricsevestre.entity.engine.translation.objects.Template;
-import fr.cedricsevestre.exception.FormException;
+import fr.cedricsevestre.exception.ControllerException;
 import fr.cedricsevestre.exception.ResourceNotFoundException;
 import fr.cedricsevestre.exception.ServiceException;
-import fr.cedricsevestre.service.custom.AlbumService;
-import fr.cedricsevestre.service.custom.ProjectService;
-import fr.cedricsevestre.service.engine.BaseService;
+import fr.cedricsevestre.exception.UtilException;
 import fr.cedricsevestre.service.engine.EntityLocator;
 import fr.cedricsevestre.service.engine.bo.BackOfficeService;
-import fr.cedricsevestre.service.engine.independant.objects.StorageService;
-import fr.cedricsevestre.service.engine.independant.objects.FolderService;
 import fr.cedricsevestre.service.engine.translation.LangService;
-import fr.cedricsevestre.service.engine.translation.objects.PageService;
-import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
-import fr.cedricsevestre.specification.engine.IdProviderSpecification;
-import fr.cedricsevestre.specification.engine.TranslationSpecification;
 
 @Controller
 @Scope("prototype")
@@ -141,11 +77,11 @@ public abstract class BackOfficeController extends AbtractController {
 	@Autowired
 	protected BackOfficeService backOfficeService;
 	
-	protected Folder getBOFolder() throws JspException{
+	protected Folder getBOFolder() throws ResourceNotFoundException, ControllerException{
 		try {
 			return common.getFolder(Common.BACK);
-		} catch (ServiceException e) {
-			throw new JspException("Can't obtain BO folder", e);
+		} catch (UtilException e) {
+			throw new ControllerException("Can't obtain BO folder", e);
 		}
 	}
 	
@@ -156,10 +92,14 @@ public abstract class BackOfficeController extends AbtractController {
 	}
 	
 	@Override
-	public ModelAndView baseView(String pageName, Folder folder) throws ServiceException {
-		ModelAndView modelAndView = super.baseView(pageName, folder);
-		modelAndView.addAllObjects(init());
-		return modelAndView;
+	public ModelAndView baseView(String pageName, Folder folder) throws ControllerException {
+		try{
+			ModelAndView modelAndView = super.baseView(pageName, folder);
+			modelAndView.addAllObjects(init());
+			return modelAndView;
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
+		}
 	}
 
 	@InitBinder("objectEdit")

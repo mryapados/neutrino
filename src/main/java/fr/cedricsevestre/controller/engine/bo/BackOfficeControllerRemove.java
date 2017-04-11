@@ -68,6 +68,7 @@ import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
+import fr.cedricsevestre.exception.ControllerException;
 import fr.cedricsevestre.exception.FormException;
 import fr.cedricsevestre.exception.ResourceNotFoundException;
 import fr.cedricsevestre.exception.ServiceException;
@@ -89,13 +90,13 @@ public class BackOfficeControllerRemove extends BackOfficeController {
 
 
 	@RequestMapping(value = BO_REMOVE_URL, method = RequestMethod.POST) 
-	public ModelAndView delete(@ModelAttribute("type") String type, @RequestParam("id") Integer id, RedirectAttributes redirectAttributes) throws JspException {
+	public ModelAndView delete(@ModelAttribute("type") String type, @RequestParam("id") Integer id, RedirectAttributes redirectAttributes) throws ControllerException {
 		ModelAndView modelAndView = new ModelAndView("redirect:/" + Common.BO_URL + BO_LIST_URL);
 		redirectAttributes.addAttribute("type", type);
 		try {
 			delete(type,  new Integer[]{id});
 			redirectAttributes.addFlashAttribute("success", true);
-		} catch (ServiceException e) {
+		} catch (ControllerException e) {
 			modelAndView = new ModelAndView("redirect:/" + Common.BO_URL + BO_VIEW_URL);
 			redirectAttributes.addAttribute("id", id);
 			redirectAttributes.addFlashAttribute("error", e);
@@ -105,12 +106,12 @@ public class BackOfficeControllerRemove extends BackOfficeController {
 	}
 	
 	@RequestMapping(value = BO_REMOVES_URL, method = RequestMethod.POST) 
-	public ModelAndView delete(@RequestParam("type") String type, @RequestParam("id") Integer[] ids, RedirectAttributes redirectAttributes) throws JspException {
+	public ModelAndView delete(@RequestParam("type") String type, @RequestParam("id") Integer[] ids, RedirectAttributes redirectAttributes) {
 		ModelAndView modelAndView = new ModelAndView("redirect:/" + Common.BO_URL + BO_LIST_URL);
 		try {
 			delete(type, ids);
 			redirectAttributes.addFlashAttribute("success", true);
-		} catch (ServiceException e) {
+		} catch (ControllerException e) {
 			redirectAttributes.addFlashAttribute("error", e);
 			redirectAttributes.addFlashAttribute("success", false);
 		}
@@ -118,7 +119,7 @@ public class BackOfficeControllerRemove extends BackOfficeController {
 		return modelAndView;
 	}
 	
-	public void delete(String type, Integer[] ids) throws ServiceException {
+	public void delete(String type, Integer[] ids) throws ControllerException {
 		try {
 			Class<?> object;
 			object = entityLocator.getEntity(type).getClass();
@@ -131,6 +132,8 @@ public class BackOfficeControllerRemove extends BackOfficeController {
 			
 		} catch (ClassNotFoundException e) {
 			throw new ResourceNotFoundException(type + " Not found !", e);
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
 		}
 	}
 

@@ -12,25 +12,21 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
+import fr.cedricsevestre.exception.ControllerException;
+import fr.cedricsevestre.exception.ResourceNotFoundException;
 import fr.cedricsevestre.exception.ServiceException;
 
 @Controller
 public class BackOfficeControllerHome extends BackOfficeController {
 
 	@RequestMapping(value = BO_HOME_URL, method = RequestMethod.GET)
-	public ModelAndView home() throws JspException   {
+	public ModelAndView home() throws JspException, ResourceNotFoundException, ControllerException   {
 		Folder folder = getBOFolder();
-		ModelAndView modelAndView = null;
-		try {
-			modelAndView = baseView(BO_HOME_PAGE, folder);
-		} catch (ServiceException e) {
-			throw new JspException(e);
-		}
-		return modelAndView;
+		return baseView(BO_HOME_PAGE, folder);
 	}
 	
 	@RequestMapping(value = BO_LANGUAGE_URL, method = RequestMethod.GET)
-	public ModelAndView language(HttpServletRequest request, RedirectAttributes redirectAttributes) throws JspException {
+	public ModelAndView language(HttpServletRequest request, RedirectAttributes redirectAttributes) throws ControllerException {
 		String referer = request.getHeader("Referer");
 		ModelAndView modelAndView = new ModelAndView("redirect:" + referer);
 		return modelAndView;

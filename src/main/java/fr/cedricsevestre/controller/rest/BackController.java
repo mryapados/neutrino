@@ -7,11 +7,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.jsp.PageContext;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.ui.ModelMap;
@@ -27,17 +25,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.controller.engine.AbtractController;
-import fr.cedricsevestre.dto.engine.TranslationDto;
 import fr.cedricsevestre.dto.engine.BlockDto;
 import fr.cedricsevestre.dto.engine.FolderDto;
 import fr.cedricsevestre.dto.engine.LangDto;
-import fr.cedricsevestre.dto.engine.MapTemplateDto;
 import fr.cedricsevestre.dto.engine.MapTemplateSimpleDto;
 import fr.cedricsevestre.dto.engine.PageDto;
 import fr.cedricsevestre.dto.engine.PositionDto;
 import fr.cedricsevestre.dto.engine.TemplateDto;
+import fr.cedricsevestre.dto.engine.TranslationDto;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
 import fr.cedricsevestre.entity.engine.independant.objects.Position;
@@ -46,7 +42,10 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateKind;
+import fr.cedricsevestre.exception.ControllerException;
 import fr.cedricsevestre.exception.FormException;
+import fr.cedricsevestre.exception.JSPNotFoundException;
+import fr.cedricsevestre.exception.ResourceNotFoundException;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.BlockControllerExecutor;
 import fr.cedricsevestre.service.engine.independant.objects.FolderService;
@@ -55,10 +54,8 @@ import fr.cedricsevestre.service.engine.independant.objects.NDataService;
 import fr.cedricsevestre.service.engine.independant.objects.PositionService;
 import fr.cedricsevestre.service.engine.translation.LangService;
 import fr.cedricsevestre.service.engine.translation.TObjectService;
-import fr.cedricsevestre.service.engine.translation.TranslationService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
-import fr.cedricsevestre.taglib.Block;
 
 @RestController
 @Scope("prototype")
@@ -122,13 +119,6 @@ public class BackController extends AbtractController {
 		return mapPositions;
 	}
 
-
-
-	
-	// RESTFull (ngResource)	
-
-
-	
 	@Deprecated
 	@RequestMapping(value = "/templates/{name}", method = RequestMethod.GET)
 	public @ResponseBody TemplateDto getTemplate(@PathVariable(value = "name") String templateName) throws ServiceException {
@@ -151,55 +141,45 @@ public class BackController extends AbtractController {
 
 	
 	
+
 	
 	
-//	@Deprecated
-//	@RequestMapping(value = "/parsedblock/{pageId}/{blockId}/{activeObjectId}", method = RequestMethod.GET)
-//	public ModelAndView exGetParsedBlockWithActiveObject(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "pageId") Integer pageId, @PathVariable(value = "blockId") Integer blockId, @PathVariable(value = "activeObjectId") Integer activeObjectId, @RequestParam(value = "folderId", required = false) Integer folderId, Folder folder) throws ServiceException {
-//		return exGetParsedBlock(request, response, pageId, blockId, activeObjectId, folderId, folder);
-//	}
-//	@Deprecated
-//	@RequestMapping(value = "/parsedblock/{pageId}/{blockId}/", method = RequestMethod.GET)
-//	public ModelAndView exGetParsedBlockWithoutActiveObject(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "pageId") Integer pageId, @PathVariable(value = "blockId") Integer blockId, @RequestParam(value = "folderId", required = false) Integer folderId, Folder folder) throws ServiceException {
-//		return exGetParsedBlock(request, response, pageId, blockId, null, folderId, folder);
-//	}
-//	@Deprecated
-//	public ModelAndView exGetParsedBlock(HttpServletRequest request, HttpServletResponse response, Integer pageId, Integer blockId, Integer activeObjectId, Integer folderId, Folder folder) throws ServiceException {
-//		ModelAndView modelAndView = null;
-//		try {
-//			if (folderId != null) folder = folderService.findOne(folderId);
-//			Page page = pageService.findOne(pageId);	
-//			Template block = templateService.findOne(blockId);
-//			
-//			Translation activeObject = null;
-//			if (activeObjectId != null){
-//				activeObject = tObjectService.findOne(activeObjectId);
-//			}
-//			
-//			modelAndView = baseView(page, block, activeObject, folder);
-//			
-//			modelAndView.addObject("page", page);
-//			modelAndView.addObject("activeBlock", block);
-//			response.addHeader("Object-Type", "parsedBlock");  
-//		} catch (ServiceException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return modelAndView;
-//	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
 
 	@RequestMapping(value = "/parsedblock/{pageId}/{mapTemplateId}/{activeObjectId}", method = RequestMethod.GET)
-	public ModelAndView getParsedBlockWithActiveObject(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "pageId") Integer pageId, @PathVariable(value = "mapTemplateId") Integer mapTemplateId, @PathVariable(value = "activeObjectId") Integer activeObjectId, @RequestParam(value = "folderId", required = false) Integer folderId, Folder folder) throws ServiceException {
+	public ModelAndView getParsedBlockWithActiveObject(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "pageId") Integer pageId, @PathVariable(value = "mapTemplateId") Integer mapTemplateId, @PathVariable(value = "activeObjectId") Integer activeObjectId, @RequestParam(value = "folderId", required = false) Integer folderId, Folder folder) throws ControllerException, ResourceNotFoundException {
 		return getParsedBlock(request, response, pageId, mapTemplateId, activeObjectId, folderId, folder);
 	}
 
 	@RequestMapping(value = "/parsedblock/{pageId}/{mapTemplateId}/", method = RequestMethod.GET)
-	public ModelAndView getParsedBlockWithoutActiveObject(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "pageId") Integer pageId, @PathVariable(value = "mapTemplateId") Integer mapTemplateId, @RequestParam(value = "folderId", required = false) Integer folderId, Folder folder) throws ServiceException {
+	public ModelAndView getParsedBlockWithoutActiveObject(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "pageId") Integer pageId, @PathVariable(value = "mapTemplateId") Integer mapTemplateId, @RequestParam(value = "folderId", required = false) Integer folderId, Folder folder) throws ControllerException, ResourceNotFoundException {
 		return getParsedBlock(request, response, pageId, mapTemplateId, null, folderId, folder);
 	}
-	public ModelAndView getParsedBlock(HttpServletRequest request, HttpServletResponse response, Integer pageId, Integer mapTemplateId, Integer activeObjectId, Integer folderId, Folder folder) throws ServiceException {
+	public ModelAndView getParsedBlock(HttpServletRequest request, HttpServletResponse response, Integer pageId, Integer mapTemplateId, Integer activeObjectId, Integer folderId, Folder folder) throws ControllerException, ResourceNotFoundException {
 		ModelAndView modelAndView = null;
 		try {
 			if (folderId != null) folder = folderService.findOne(folderId);
@@ -224,81 +204,122 @@ public class BackController extends AbtractController {
 			modelAndView.addAllObjects(modelMap);
 			
 			response.addHeader("Object-Type", "parsedBlock");  
+		} catch (JSPNotFoundException e) {
+			throw new ResourceNotFoundException(e);
 		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ControllerException(e);
 		}
 		return modelAndView;
 	}
 	
 
 	@RequestMapping(value = "/tobject", method = RequestMethod.GET, params={"id"})
-	public @ResponseBody TranslationDto getTObject(@RequestParam(value = "id", required = true) Integer id) throws ServiceException {
-		Translation translation = tObjectService.findOne(id);
-		return TranslationDto.from(translation);
+	public @ResponseBody TranslationDto getTObject(@RequestParam(value = "id", required = true) Integer id) throws ControllerException, ResourceNotFoundException {
+		try {
+			Translation translation = tObjectService.findOne(id);
+			return TranslationDto.from(translation);
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
+		}
 	}
 	
 	
 	@RequestMapping(value = "/folder", method = RequestMethod.GET)
-	public @ResponseBody List<FolderDto> getFolders() throws ServiceException {
-		List<Folder> folders = (List<Folder>) folderService.findAll();
-		List<FolderDto> foldersDto = new ArrayList<>();
-		for (Folder folder : folders) {
-			foldersDto.add(FolderDto.from(folder));
+	public @ResponseBody List<FolderDto> getFolders() throws ControllerException, ResourceNotFoundException {
+		try {
+			List<Folder> folders = (List<Folder>) folderService.findAll();
+			List<FolderDto> foldersDto = new ArrayList<>();
+			for (Folder folder : folders) {
+				foldersDto.add(FolderDto.from(folder));
+			}
+			return foldersDto;
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
 		}
-		return foldersDto;
 	}
 	@RequestMapping(value = "/folder", method = RequestMethod.GET, params={"id"})
-	public @ResponseBody FolderDto getFolder(@RequestParam(value = "id", required = true) Integer id) throws ServiceException {
-		Folder folder = folderService.findOne(id);
-		return FolderDto.from(folder);
+	public @ResponseBody FolderDto getFolder(@RequestParam(value = "id", required = true) Integer id) throws ControllerException, ResourceNotFoundException {
+		try {
+			Folder folder = folderService.findOne(id);
+			return FolderDto.from(folder);
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
+		}
 	}
 	@RequestMapping(value = "/folder", method = RequestMethod.GET, params={"name"})
-	public @ResponseBody FolderDto getFolderByName(@RequestParam(value = "name", required = true) String name) throws ServiceException {
-		Folder folder = folderService.findByName(name);
-		return FolderDto.from(folder);
+	public @ResponseBody FolderDto getFolderByName(@RequestParam(value = "name", required = true) String name) throws ControllerException, ResourceNotFoundException {
+		try {
+			Folder folder = folderService.findByName(name);
+			return FolderDto.from(folder);
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
+		}
 	}
 
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
-	public @ResponseBody PageDto getPage(@RequestParam(value = "id", required = true) Integer id) throws ServiceException {
-		Page page = pageService.findOne(id);
-		return PageDto.from(page);
+	public @ResponseBody PageDto getPage(@RequestParam(value = "id", required = true) Integer id) throws ControllerException, ResourceNotFoundException {
+		try {
+			Page page = pageService.findOne(id);
+			return PageDto.from(page);
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
+		}
 	}
 	
 	@RequestMapping(value = "/template", method = RequestMethod.GET)
-	public @ResponseBody List<TemplateDto> getTemplates() throws ServiceException {
-		List<Template> templates = templateService.findAllBlockAndPageBlock();
-		List<TemplateDto> templatesDto = new ArrayList<>();
-		for (Template template : templates) {
-			templatesDto.add(TemplateDto.from(template));
+	public @ResponseBody List<TemplateDto> getTemplates() throws ControllerException, ResourceNotFoundException {
+		try {
+			List<Template> templates = templateService.findAllBlockAndPageBlock();
+			List<TemplateDto> templatesDto = new ArrayList<>();
+			for (Template template : templates) {
+				templatesDto.add(TemplateDto.from(template));
+			}
+			return templatesDto;
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
 		}
-		return templatesDto;
 	}
 	@RequestMapping(value = "/template", method = RequestMethod.GET, params={"id"})
-	public @ResponseBody TemplateDto getTemplate(@RequestParam(value = "id", required = true) Integer id) throws ServiceException {
-		Template template = templateService.findOne(id);
-		return TemplateDto.from(template);
+	public @ResponseBody TemplateDto getTemplate(@RequestParam(value = "id", required = true) Integer id) throws ControllerException, ResourceNotFoundException {
+		try {
+			Template template = templateService.findOne(id);
+			return TemplateDto.from(template);
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
+		}
 	}
 	
 	
 	@RequestMapping(value = "/lang", method = RequestMethod.GET)
-	public @ResponseBody List<LangDto> getLangs() throws ServiceException {
-		Iterable<Lang> langs = langService.findAll();
-		List<LangDto> langsDto = new ArrayList<>();
-		for (Lang lang : langs) {
-			langsDto.add(LangDto.from(lang));
+	public @ResponseBody List<LangDto> getLangs() throws ControllerException, ResourceNotFoundException {
+		try {
+			Iterable<Lang> langs = langService.findAll();
+			List<LangDto> langsDto = new ArrayList<>();
+			for (Lang lang : langs) {
+				langsDto.add(LangDto.from(lang));
+			}
+			return langsDto;
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
 		}
-		return langsDto;
 	}
 	@RequestMapping(value = "/lang", method = RequestMethod.GET, params={"id"})
-	public @ResponseBody LangDto getLang(@RequestParam(value = "id", required = true) Integer id) throws ServiceException {
-		Lang lang = langService.findOne(id);
-		return LangDto.from(lang);
+	public @ResponseBody LangDto getLang(@RequestParam(value = "id", required = true) Integer id) throws ControllerException, ResourceNotFoundException {
+		try {
+			Lang lang = langService.findOne(id);
+			return LangDto.from(lang);
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
+		}
 	}
 	@RequestMapping(value = "/lang", method = RequestMethod.GET, params={"code"})
-	public @ResponseBody LangDto getLangByCode(@RequestParam(value = "code", required = true) String code) throws ServiceException {
-		Lang lang = langService.findByCode(code);
-		return LangDto.from(lang);
+	public @ResponseBody LangDto getLangByCode(@RequestParam(value = "code", required = true) String code) throws ControllerException, ResourceNotFoundException {
+		try {
+			Lang lang = langService.findByCode(code);
+			return LangDto.from(lang);
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
+		}
 	}
 
 	
@@ -309,52 +330,65 @@ public class BackController extends AbtractController {
 	public @ResponseBody List<BlockDto> getBlocksForPosition(
 			@RequestParam(value = "modelId", required = true) Integer modelId, 
 			@RequestParam(value = "activeObjectId", required = true) Integer activeObjectId, 
-			@RequestParam(value = "positionId", required = true) Integer positionId) throws ServiceException {
-		List<BlockDto> blockDtos = new ArrayList<>();
+			@RequestParam(value = "positionId", required = true) Integer positionId) throws ControllerException, ResourceNotFoundException {
 		
-		List<Translation> models = new ArrayList<>();
-		Template template = templateService.findOne(modelId);
-		models.add(template);
-
-		if (activeObjectId != null){
-			models.add(tObjectService.findOne(activeObjectId));
-		}
-
-		Position pos = positionService.findOneForModelsWithMaps(models, positionId);
-
-		if (pos != null){
-			List<MapTemplate> mapTemplates;
-			mapTemplates = pos.getMapTemplates();
-			for (MapTemplate mapTemplate : mapTemplates) {
-				blockDtos.add(BlockDto.from(mapTemplate));
+		try {
+			List<BlockDto> blockDtos = new ArrayList<>();
+			
+			List<Translation> models = new ArrayList<>();
+			Template template = templateService.findOne(modelId);
+			models.add(template);
+	
+			if (activeObjectId != null){
+				models.add(tObjectService.findOne(activeObjectId));
 			}
-		}		
+	
+			Position pos = positionService.findOneForModelsWithMaps(models, positionId);
+	
+			if (pos != null){
+				List<MapTemplate> mapTemplates;
+				mapTemplates = pos.getMapTemplates();
+				for (MapTemplate mapTemplate : mapTemplates) {
+					blockDtos.add(BlockDto.from(mapTemplate));
+				}
+			}		
 		return blockDtos;
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
+		}
 	}
 	
 	@RequestMapping(value = "/mapTemplate", method = RequestMethod.POST)
-	public @ResponseBody BlockDto saveMapTemplate(@Valid @RequestBody MapTemplateSimpleDto mapTemplateSimpleDto, BindingResult result) throws ServiceException, FormException {
-		if (result.hasErrors()){
-			List<String> errors = new ArrayList<>();
-			for (ObjectError objectError : result.getAllErrors()) {
-				errors.add(objectError.getDefaultMessage());
-				System.out.println(objectError.getDefaultMessage());
+	public @ResponseBody BlockDto saveMapTemplate(@Valid @RequestBody MapTemplateSimpleDto mapTemplateSimpleDto, BindingResult result) throws ControllerException, ResourceNotFoundException, FormException {
+		try {
+			if (result.hasErrors()){
+				List<String> errors = new ArrayList<>();
+				for (ObjectError objectError : result.getAllErrors()) {
+					errors.add(objectError.getDefaultMessage());
+					System.out.println(objectError.getDefaultMessage());
+				}
+				throw new FormException("form errors", result.getAllErrors());			
 			}
-			throw new FormException("form errors", result.getAllErrors());			
-		}
-
-		MapTemplate mapTemplate = new MapTemplate();
-		mapTemplate.setModel(templateService.findOne(mapTemplateSimpleDto.getModelId()));
-		mapTemplate.setBlock(templateService.findOne(mapTemplateSimpleDto.getBlockId()));
-		mapTemplate.setPosition(positionService.findOne(mapTemplateSimpleDto.getPositionId()));
-		mapTemplate.setOrdered(mapTemplateSimpleDto.getOrdered());
+	
+			MapTemplate mapTemplate = new MapTemplate();
+			mapTemplate.setModel(tObjectService.findOne(mapTemplateSimpleDto.getModelId()));
+			mapTemplate.setBlock(templateService.findOne(mapTemplateSimpleDto.getBlockId()));
+			mapTemplate.setPosition(positionService.findOne(mapTemplateSimpleDto.getPositionId()));
+			mapTemplate.setOrdered(mapTemplateSimpleDto.getOrdered());
 		return BlockDto.from(mapTemplateService.saveAndOrder(mapTemplate));
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
+		}
 	}
 	@RequestMapping(value = "/mapTemplate", method = RequestMethod.DELETE, params={"id"})
-	public BlockDto deleteMapTemplate(@RequestParam(value = "id", required = true) Integer id) throws ServiceException {
-		MapTemplate mapTemplate = mapTemplateService.findOne(id);
-		mapTemplateService.removeById(id);
-		return BlockDto.from(mapTemplate);
+	public BlockDto deleteMapTemplate(@RequestParam(value = "id", required = true) Integer id) throws ControllerException, ResourceNotFoundException {
+		try {
+			MapTemplate mapTemplate = mapTemplateService.findOne(id);
+			mapTemplateService.removeById(id);
+			return BlockDto.from(mapTemplate);
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
+		}
 	}
 	
 	

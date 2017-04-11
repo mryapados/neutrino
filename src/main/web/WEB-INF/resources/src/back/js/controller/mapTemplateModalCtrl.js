@@ -1,3 +1,4 @@
+(function() {
 var bModule = angular.module("backApp");
 
 bModule.controller('ModalDemoCtrl', function ($scope, $uibModal, $log) {
@@ -28,3 +29,5 @@ bModule.controller('ModalDemoCtrl', function ($scope, $uibModal, $log) {
     });
   };
 });
+
+}());

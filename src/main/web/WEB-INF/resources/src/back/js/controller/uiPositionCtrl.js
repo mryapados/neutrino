@@ -1,7 +1,11 @@
+(function() {
 var bModule = angular.module('backApp');
 
 bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagementService, TemplateService, BlockService, $backPath) {
 	BlockManagementService.init().then(function() {
+		const SCOPE_MODEL = 'MODEL';
+		const SCOPE_ACTIVEOBJECT = 'ACTIVEOBJECT';
+		
 		$scope.debug = false;
 		
 		BlockService.getBlocksForModelPosition($scope.modelId, $scope.activeObjectId, $scope.positionId).then(function(data) {
@@ -18,31 +22,16 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 		
 		var activeObjectId = $scope.activeObject == null ? '' : $scope.activeObject.id;
 		$scope.getParsedBlock = function(block) {
-			
-			console.log(block);
 			return $backPath.URL_SERVER_REST + '@back/parsedblock/' + $scope.page.id + '/' + block.idMapTemplate + '/' + activeObjectId + '?folderId=' + $scope.folder.id;
 		}
 		
 	    $scope.$on('dropEvent_' + $scope.positionId + '@' + $scope.modelId, function (evt, block, ordered) {
 	    	console.log($scope.positionId + '@' + $scope.modelId, $scope.page, block, ordered);
-
-			var instance = $uibModal.open({
-				templateUrl: $backPath.URL_TEMPLATE_MODAL_CHOICE_SCOPE,
-				controller: function ( $scope, $uibModalInstance ) {
-	
-					$scope.scopeActiveObject = function() {
-						$uibModalInstance.close('ACTIVEOBJECT');
-					};	
-					$scope.scopeModel = function() {
-						$uibModalInstance.close('MODEL');
-					};	
-					
-				}, 
-			});
-			instance.result.then(function(choice) {
+	    	
+			var setMapBlock = function(choice) {
 				var scopeChoice = null;
-				if (choice == 'MODEL') scopeChoice = $scope.modelId;
-				else if (choice == 'ACTIVEOBJECT') scopeChoice = activeObjectId;
+				if (choice == SCOPE_MODEL) scopeChoice = $scope.modelId;
+				else if (choice == SCOPE_ACTIVEOBJECT) scopeChoice = activeObjectId;
 				
 				console.log(scopeChoice);
 				
@@ -53,8 +42,30 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 		        		$scope.blocks.push(data);
 		        	}
 				});
-			});
+			}
 	    	
+	    	if ($scope.activeObject == null){
+	    		setMapBlock(SCOPE_MODEL);
+	    	} else {
+				var instance = $uibModal.open({
+					templateUrl: $backPath.URL_TEMPLATE_MODAL_CHOICE_SCOPE,
+					size: 'sm',
+					controller: function ( $scope, $uibModalInstance ) {
+		
+						$scope.scopeActiveObject = function() {
+							$uibModalInstance.close(SCOPE_ACTIVEOBJECT);
+						};	
+						$scope.scopeModel = function() {
+							$uibModalInstance.close(SCOPE_MODEL);
+						};	
+						
+					}, 
+				});
+				instance.result.then(function(choice) {
+					setMapBlock(choice);
+				});
+	    	}
+
 
 	    }); 
 		
@@ -75,6 +86,7 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 			var instance = $uibModal.open({
 				templateUrl: $backPath.URL_TEMPLATE_MODAL_EDIT,
 				controller: 'TemplateModalCtrl',
+				size: 'lg',
 				resolve: {
 					template: function(){
 						return blockId;
@@ -107,7 +119,4 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 });
 
 
-
-
-
-
+}());

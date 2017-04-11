@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import fr.cedricsevestre.bean.NFile;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
+import fr.cedricsevestre.exception.ControllerException;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.independant.objects.StorageService;
 
@@ -41,28 +42,19 @@ public class BackOfficeControllerFileManager extends BackOfficeController {
 	private StorageService fileService;
 
 	@RequestMapping(value = BO_FILE_HOME_URL, method = RequestMethod.GET)
-	public ModelAndView home() throws JspException   {
-		try {
-			Folder folder = getBOFolder();
-			ModelAndView modelAndView = baseView(BO_FILE_HOME_PAGE, folder);
-			return modelAndView;
-		} catch (ServiceException e) {
-			throw new JspException(e);
-		}
+	public ModelAndView home() throws ControllerException   {
+		Folder folder = getBOFolder();
+		return baseView(BO_FILE_HOME_PAGE, folder);
 	}
 	
 	@RequestMapping(value = BO_FILE_SINGLE_URL, method = RequestMethod.GET)
-	public ModelAndView single(@RequestParam(value = "navbar", required = false, defaultValue = "true") Boolean navbar, @RequestParam(value = "multi", required = false, defaultValue = "true") Boolean multi, @RequestParam(value = "sidebar", required = false, defaultValue = "true") Boolean sidebar) throws JspException   {
-		try {
-			Folder folder = getBOFolder();
-			ModelAndView modelAndView = baseView(BO_FILE_SINGLE_PAGE, folder);
-			modelAndView.addObject("navbar", navbar);
-			modelAndView.addObject("multi", multi);
-			modelAndView.addObject("sidebar", sidebar);
-			return modelAndView;
-		} catch (ServiceException e) {
-			throw new JspException(e);
-		}
+	public ModelAndView single(@RequestParam(value = "navbar", required = false, defaultValue = "true") Boolean navbar, @RequestParam(value = "multi", required = false, defaultValue = "true") Boolean multi, @RequestParam(value = "sidebar", required = false, defaultValue = "true") Boolean sidebar) throws ControllerException   {
+		Folder folder = getBOFolder();
+		ModelAndView modelAndView = baseView(BO_FILE_SINGLE_PAGE, folder);
+		modelAndView.addObject("navbar", navbar);
+		modelAndView.addObject("multi", multi);
+		modelAndView.addObject("sidebar", sidebar);
+		return modelAndView;
 	}
 	
 	@RequestMapping(value = BO_FILE_ADD_URL, method = RequestMethod.POST)
@@ -76,23 +68,16 @@ public class BackOfficeControllerFileManager extends BackOfficeController {
 	
 
 	@RequestMapping(value = BO_FILE_LIST_URL, method = RequestMethod.POST)
-	public @ResponseBody ResultEncapsulator list(@RequestBody Map<String, String> params) throws JspException {
+	public @ResponseBody ResultEncapsulator list(@RequestBody Map<String, String> params) throws ControllerException {
 		try {
 			String path = params.get("path");
 			boolean onlyFolders = params.get("onlyFolders") == "true";
 
 			List<NFile> list = fileService.list(path, onlyFolders);
-			
-			
 			return new ResultEncapsulator(list);
-			
-			
 		} catch (ServiceException e) {
-			throw new JspException(e);
+			throw new ControllerException(e);
 		}
-		
-		
-		
 	}
 
 

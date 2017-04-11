@@ -13,7 +13,9 @@ import fr.cedricsevestre.conf.ApplicationProperties;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.objects.Page;
+import fr.cedricsevestre.exception.ResourceNotFoundException;
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.exception.UtilException;
 import fr.cedricsevestre.service.engine.independant.objects.FolderService;
 import fr.cedricsevestre.service.engine.translation.LangService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
@@ -84,49 +86,76 @@ public class Common {
 		return webInfFolder;
 	}
 	
-	private void addFolder(String serverName) throws ServiceException{
-		Folder folder = folderService.findByServerName(serverName);
-		String folderName = folder.getName();
-		if (foldersByName.containsKey(folderName)){
-			folder = foldersByName.get(folderName);
-		} else {
-			foldersByName.put(folderName, folder);
+	private void addFolder(String serverName) throws UtilException {
+		try {
+			Folder folder = folderService.findByServerName(serverName);
+			String folderName = folder.getName();
+			if (foldersByName.containsKey(folderName)) {
+				folder = foldersByName.get(folderName);
+			} else {
+				foldersByName.put(folderName, folder);
+			}
+			foldersByServerName.put(serverName, folder);
+		} catch (ServiceException e) {
+			throw new UtilException(e);
 		}
-		foldersByServerName.put(serverName, folder);
 	}
-	
-	public Folder getFolder(String serverName) throws ServiceException {
-		if (foldersByName == null){
+
+	public Folder getFolder(String serverName) throws UtilException, ResourceNotFoundException {
+		if (foldersByName == null) {
 			foldersByName = new HashMap<>();
 			foldersByServerName = new HashMap<>();
 		}
-		if(!foldersByServerName.containsKey(serverName)){
+		if (!foldersByServerName.containsKey(serverName)) {
 			addFolder(serverName);
 		}
-		return foldersByServerName.get(serverName);
-	}
-	
-	public Lang getLang(String langCode) throws ServiceException {
-		if (langs == null){
-			langs = new HashMap<>();
-		}
-		if(!langs.containsKey(langCode)){
-			Lang lang = langService.findByCode(langCode);
-			if (lang != null) langs.put(langCode, lang);
-		}
-		return langs.get(langCode);
+		Folder folder = foldersByServerName.get(serverName);
+		if (folder == null) throw new ResourceNotFoundException("Folder not found from servername " + serverName + " !");
+		return folder;
 	}
 
-	public Page getPage(Folder folder, String pageName, Lang lang) throws ServiceException {
-		String pageNameLong = (folder.getName() + "_" + pageName + "_" + lang.getCode()).toUpperCase();
-		if (pages == null){
-			pages = new HashMap<>();
+	public Lang getLang(String langCode) throws UtilException, ResourceNotFoundException {
+		try {
+			if (langs == null) {
+				langs = new HashMap<>();
+			}
+			if (!langs.containsKey(langCode)) {
+				Lang lang = langService.findByCode(langCode);
+				if (lang != null)
+					langs.put(langCode, lang);
+			}
+			Lang lang = langs.get(langCode);
+			if (lang == null) throw new ResourceNotFoundException("lang not found from code " + langCode + " !");
+			return lang;
+		} catch (ServiceException e) {
+			throw new UtilException(e);
 		}
-		if(!pages.containsKey(pageNameLong)){
-			Page page = pageService.identify(folder.getId(), pageName, lang.getId());
-			if (page != null) pages.put(pageNameLong, page);
+	}
+
+	public Page getPage(Folder folder, String pageName, Lang lang) throws UtilException, ResourceNotFoundException {
+		try {
+			String pageNameLong = (folder.getName() + "_" + pageName + "_" + lang.getCode()).toUpperCase();
+			if (pages == null) {
+				pages = new HashMap<>();
+			}
+			if (!pages.containsKey(pageNameLong)) {
+				Page page = pageService.identify(folder.getId(), pageName, lang.getId());
+				if (page != null)
+					pages.put(pageNameLong, page);
+			}
+			Page page = pages.get(pageNameLong);
+			if (page == null) {
+				String folderString = "";
+				if (folder != null) folderString = " folder = " + folder.getName();
+
+				String langString = "";
+				if (lang != null) langString = " lang = " + lang.getName();
+				throw new ResourceNotFoundException("Page " + pageName + " not found ! " + folderString + " " + langString);
+			}
+			return page;
+		} catch (ServiceException e) {
+			throw new UtilException(e);
 		}
-		return pages.get(pageNameLong);
 	}
 	
 	public String getBasePath(Boolean webInf, Folder folder, TypeBase typeBase){
