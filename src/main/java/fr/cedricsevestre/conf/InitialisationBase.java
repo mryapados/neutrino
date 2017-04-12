@@ -1617,38 +1617,38 @@ public class InitialisationBase {
 	private void initCv() throws ServiceException{
 		//Folder
 		Folder folder = new Folder();
-		folder.setName("cv");
+		folder.setName("samuel");
 		List<String> serverNames = new ArrayList<>();
 		serverNames.add("localhost");
 		serverNames.add("127.0.0.1");
-		serverNames.add("cv");
+		serverNames.add("samuel");
 		folder.setServerName(serverNames);
-		folder.setPath("cv/");
+		folder.setPath("resume/samuel/");
 		folderService.save(folder);
 		folders.put(folder.getName(), folder);
 
 		
 		// Positions
 		Map<String, Position> mapPosition = new HashMap<>();
-		Position pHeader = addPosition(mapPosition, "@cv_header");
-		Position pheaderMenu = addPosition(mapPosition, "@cv_headerMenu");
-		Position pNav = addPosition(mapPosition, "@cv_nav");
-		Position pAside = addPosition(mapPosition, "@cv_aside");
-		Position pArticle = addPosition(mapPosition, "@cv_article");
-		Position pFooter = addPosition(mapPosition, "@cv_footer");
+		Position pHeader = addPosition(mapPosition, "resume_header");
+		Position pheaderMenu = addPosition(mapPosition, "resume_headerMenu");
+		Position pNav = addPosition(mapPosition, "resume_nav");
+		Position pAside = addPosition(mapPosition, "resume_aside");
+		Position pArticle = addPosition(mapPosition, "resume_article");
+		Position pFooter = addPosition(mapPosition, "resume_footer");
 		
 		// Models
-		Map<Lang, Translation> mDefault = mkModel(folder, "@cv_model_default", "default/default");
+		Map<Lang, Translation> mDefault = mkModel(folder, "resume_model_default", "default/default");
 
 		
 		// Pages
-		Map<Lang, Translation> pgDefault = mkPage(folder, "@cv_page_default", "default", mDefault);
+		Map<Lang, Translation> pgDefault = mkPage(folder, "resume_page_default", "default", mDefault);
 		
 		// PageBlocks
-		Map<Lang, Translation> pbHeader = mkPageBlock(folder, "@cv_pageblock_header", "header/header");
+		Map<Lang, Translation> pbHeader = mkPageBlock(folder, "resume_pageblock_header", "header/header");
 		
 		// PageBlocks
-		Map<Lang, Translation> pbFooter = mkPageBlock(folder, "@cv_pageblock_footer", "footer/footer");
+		Map<Lang, Translation> pbFooter = mkPageBlock(folder, "resume_pageblock_footer", "footer/footer");
 				
 		// Blocks
 		generateMenu(folder, pbHeader, pheaderMenu);

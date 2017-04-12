@@ -37,7 +37,7 @@
 <div id="preloader"></div>
 
 <header>
-	<my:block position="@cv_header" />
+	<my:block position="resume_header" />
 </header>
 
 <!-- Container -->
@@ -274,7 +274,7 @@
         data-animation-duration="500"
         data-animation-delay="800"
         data-animation-distance="50px">
-	<my:block position="@cv_footer" />
+	<my:block position="resume_footer" />
 </footer>
 
 <!-- Back to Top -->

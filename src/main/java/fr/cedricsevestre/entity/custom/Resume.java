@@ -27,7 +27,7 @@ import fr.cedricsevestre.entity.engine.translation.Link;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Entity
-@Table(name = "curriculum_vitae")
+@Table(name = "resume")
 
 @NamedEntityGraphs({
 	@NamedEntityGraph(
@@ -37,7 +37,7 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 		})
 })
 
-public class CurriculumVitae extends Translation {
+public class Resume extends Translation {
 
 	private static final long serialVersionUID = 1L;
 
