@@ -21,7 +21,7 @@ public class IdProviderConverter implements Converter <String, IdProvider> {
 		try {
 			cls = entityLocator.getEntity(objectType).getClass();
 		} catch (ClassNotFoundException e) {
-			throw new ResourceNotFoundException(objectType + " Not found !", e);
+			throw new IllegalArgumentException(objectType + " Not found !", e);
 		}
 		if (cls == null){
             throw new IllegalArgumentException ("Unknown IdProvider type:" + objectType);

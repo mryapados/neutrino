@@ -29,6 +29,16 @@
 		<name>body</name>
 		<tag-class>fr.cedricsevestre.taglib.Body</tag-class>
 		<body-content>scriptless</body-content>
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 	</tag>
 	<tag>
 		<name>block</name>

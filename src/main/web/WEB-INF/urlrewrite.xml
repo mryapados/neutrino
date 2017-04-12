@@ -4,7 +4,10 @@
        <to>/admin/index</to>
     </rule>
 
-
+    <rule>
+       <from>^/index.html$</from>
+       <to>/</to>
+    </rule>
 
 
     <rule>
@@ -17,7 +20,14 @@
     </rule>
 
     <rule>
+       <from>^/([a-zA-Z0-9_\-]+).html$</from>
+       <to>/page/page?pg=$1</to>
+    </rule>
+
+    <rule>
        <from>^/demo/api.do?method=getUser&amp;uid=(.*)$</from>
        <to>/demo/api/user/$1</to>
     </rule>
 </urlrewrite>
+
+

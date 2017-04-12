@@ -5,8 +5,8 @@
 
         function dragStart(evt, element, dragStyle) {
             element.addClass(dragStyle);
-            evt.originalEvent.dataTransfer.setData( "id", evt.target.id );
-            evt.originalEvent.dataTransfer.effectAllowed = 'move';
+//            evt.originalEvent.dataTransfer.setData( "id", evt.target.id );
+//            evt.originalEvent.dataTransfer.effectAllowed = 'move';
         };
 
         function dragEnd(evt, element, dragStyle) {

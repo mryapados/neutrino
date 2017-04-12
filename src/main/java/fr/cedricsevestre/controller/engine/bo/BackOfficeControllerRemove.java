@@ -90,7 +90,7 @@ public class BackOfficeControllerRemove extends BackOfficeController {
 
 
 	@RequestMapping(value = BO_REMOVE_URL, method = RequestMethod.POST) 
-	public ModelAndView delete(@ModelAttribute("type") String type, @RequestParam("id") Integer id, RedirectAttributes redirectAttributes) throws ControllerException {
+	public ModelAndView delete(@ModelAttribute("type") String type, @RequestParam("id") Integer id, RedirectAttributes redirectAttributes) throws ControllerException, ResourceNotFoundException {
 		ModelAndView modelAndView = new ModelAndView("redirect:/" + Common.BO_URL + BO_LIST_URL);
 		redirectAttributes.addAttribute("type", type);
 		try {
@@ -106,7 +106,7 @@ public class BackOfficeControllerRemove extends BackOfficeController {
 	}
 	
 	@RequestMapping(value = BO_REMOVES_URL, method = RequestMethod.POST) 
-	public ModelAndView delete(@RequestParam("type") String type, @RequestParam("id") Integer[] ids, RedirectAttributes redirectAttributes) {
+	public ModelAndView delete(@RequestParam("type") String type, @RequestParam("id") Integer[] ids, RedirectAttributes redirectAttributes) throws ResourceNotFoundException {
 		ModelAndView modelAndView = new ModelAndView("redirect:/" + Common.BO_URL + BO_LIST_URL);
 		try {
 			delete(type, ids);
@@ -119,7 +119,7 @@ public class BackOfficeControllerRemove extends BackOfficeController {
 		return modelAndView;
 	}
 	
-	public void delete(String type, Integer[] ids) throws ControllerException {
+	public void delete(String type, Integer[] ids) throws ControllerException, ResourceNotFoundException {
 		try {
 			Class<?> object;
 			object = entityLocator.getEntity(type).getClass();

@@ -32,6 +32,9 @@ public class Body extends TagSupport {
 		Body.common = common;
 	}
 	
+	private String id;
+	private String cssClass;
+	
 	private static final String BLOCKPREVIEW = "blockPreview";
 	private static final String FOLDER = "folder";
 	private static final String SURFER = "surfer";
@@ -43,6 +46,12 @@ public class Body extends TagSupport {
 		logger.debug("Enter in doStartTag()");
 		JspWriter out = pageContext.getOut();
 		try {			
+			String bodyCssClass = "";
+			if (cssClass != null) bodyCssClass = " class=\"" + cssClass + "\"";
+			
+			String bodyId = "";
+			if (id != null) bodyId = " id=\"" + id + "\"";
+			
 			Boolean blockPreview = (Boolean) pageContext.getAttribute(BLOCKPREVIEW, PageContext.REQUEST_SCOPE);
 			if (blockPreview){
 				User surfer = (User) pageContext.getAttribute(SURFER, PageContext.REQUEST_SCOPE);
@@ -53,12 +62,12 @@ public class Body extends TagSupport {
 					String initObjects = folder.getId() + ", " + page.getId();
 					if (activeObject != null) initObjects += ", " + activeObject.getId();
 					
-					out.println("<body data-ng-app=\"backApp\" data-ng-controller=\"BlockManagementCtrl\" data-ng-init=\"init(" + initObjects + ")\">");
+					out.println("<body" + bodyId + bodyCssClass + " data-ng-app=\"backApp\" data-ng-controller=\"BlockManagementCtrl\" data-ng-init=\"init(" + initObjects + ")\">");
 				} else {
-					out.println("<body data-ng-app=\"frontApp\">");
+					out.println("<body" + bodyId + bodyCssClass + " data-ng-app=\"frontApp\">");
 				}
 			} else {
-				out.println("<body data-ng-app=\"frontApp\">");
+				out.println("<body" + bodyId + bodyCssClass + " data-ng-app=\"frontApp\">");
 			}
 		} catch (IOException e) {
 			try {
@@ -74,14 +83,7 @@ public class Body extends TagSupport {
 	public int doEndTag() {
 		logger.debug("Enter in doEndTag()");
 		JspWriter out = pageContext.getOut();
-		try {
-			Folder folder = (Folder) pageContext.getAttribute(FOLDER, PageContext.REQUEST_SCOPE);
-			pageContext.include(common.getBasePath(true, folder, TypeBase.COMMON) + "components/scripts.jsp");
-			String engineScript = (String) pageContext.getAttribute(NENGINESCRIPT, PageContext.REQUEST_SCOPE); 
-			if (engineScript != null){
-				out.println(engineScript);		
-			}
-			
+		try {			
 			User surfer = (User) pageContext.getAttribute(SURFER, PageContext.REQUEST_SCOPE);
 			if (surfer.getRole().equals(User.ROLE_ADMIN)){
 				String adminPath = common.getBasePath(true, null, TypeBase.ADMIN);
@@ -91,6 +93,14 @@ public class Body extends TagSupport {
 					pageContext.include(adminPath + "components/backManagement.jsp");
 				}
 			}
+			
+			Folder folder = (Folder) pageContext.getAttribute(FOLDER, PageContext.REQUEST_SCOPE);
+			pageContext.include(common.getBasePath(true, folder, TypeBase.COMMON) + "components/scripts.jsp");
+			String engineScript = (String) pageContext.getAttribute(NENGINESCRIPT, PageContext.REQUEST_SCOPE); 
+			if (engineScript != null){
+				out.println(engineScript);		
+			}
+			
 			out.println("</body>");
 		} catch (IOException | ServletException e) {
 			try {
@@ -100,9 +110,20 @@ public class Body extends TagSupport {
 				ex.printStackTrace();
 			}
 		}
-		return EVAL_BODY_INCLUDE;
+		return EVAL_BODY_AGAIN;
 	}
 	
-
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getCssClass() {
+		return cssClass;
+	}
+	public void setCssClass(String cssClass) {
+		this.cssClass = cssClass;
+	}
 	
 }

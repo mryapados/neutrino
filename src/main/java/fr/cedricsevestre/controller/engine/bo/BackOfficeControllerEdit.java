@@ -105,12 +105,12 @@ public class BackOfficeControllerEdit extends BackOfficeController {
 	protected static final String COPY = " [Copy]";
 	
 	@RequestMapping(value = BO_EDIT_URL, method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam(ATTR_TYPE) String type, @RequestParam(ATTR_ID) Integer id) throws ControllerException   {
+	public ModelAndView edit(@RequestParam(ATTR_TYPE) String type, @RequestParam(ATTR_ID) Integer id) throws ControllerException, ResourceNotFoundException   {
 		return edit(type, id, null, false);
 	}
 	
 	@RequestMapping(value = BO_EDIT_URL, method = RequestMethod.POST)
-	public ModelAndView save(@RequestParam(ATTR_TYPE) String type, @RequestParam(ATTR_ID) Integer id, @Valid @ModelAttribute(ATTR_OBJECTEDIT) IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws ControllerException {
+	public ModelAndView save(@RequestParam(ATTR_TYPE) String type, @RequestParam(ATTR_ID) Integer id, @Valid @ModelAttribute(ATTR_OBJECTEDIT) IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws ControllerException, ResourceNotFoundException {
 		ModelAndView modelAndView = null;
 		if (result.hasErrors()) {
 			modelAndView = edit(type, id, null, true);
@@ -128,7 +128,7 @@ public class BackOfficeControllerEdit extends BackOfficeController {
 		return modelAndView;
 	}
 	
-	public ModelAndView edit(String type, Integer id, Lang lang, Boolean saveError) throws ControllerException   {
+	public ModelAndView edit(String type, Integer id, Lang lang, Boolean saveError) throws ControllerException, ResourceNotFoundException   {
 		//Si id = null cela signifie que c'est un nouveau objet, lang est utile si c'est un objet de type Translation
 		try {
 			Folder folder = getBOFolder();
@@ -173,7 +173,7 @@ public class BackOfficeControllerEdit extends BackOfficeController {
 	
 	
 	@RequestMapping(value = BO_NEW_TRANSLATION_URL, method = RequestMethod.GET)
-	public ModelAndView add(@RequestParam(ATTR_TYPE) String type, @RequestParam(ATTR_LG) String langCode, @RequestParam(value = ATTR_ID, required = false) Integer id, HttpServletRequest request, RedirectAttributes redirectAttributes) throws ControllerException   {
+	public ModelAndView add(@RequestParam(ATTR_TYPE) String type, @RequestParam(ATTR_LG) String langCode, @RequestParam(value = ATTR_ID, required = false) Integer id, HttpServletRequest request, RedirectAttributes redirectAttributes) throws ControllerException, ResourceNotFoundException   {
 		try {
 			Lang lang = langService.findByCode(langCode);
 			if (lang == null) throw new ResourceNotFoundException(langCode + " Not found !");	
@@ -189,7 +189,7 @@ public class BackOfficeControllerEdit extends BackOfficeController {
 	}
 	
 	@RequestMapping(value = BO_NEW_URL, method = RequestMethod.GET)
-	public ModelAndView add(@RequestParam(ATTR_TYPE) String type, @RequestParam(value = ATTR_ID, required = false) Integer id, HttpServletRequest request, RedirectAttributes redirectAttributes) throws ControllerException   {
+	public ModelAndView add(@RequestParam(ATTR_TYPE) String type, @RequestParam(value = ATTR_ID, required = false) Integer id, HttpServletRequest request, RedirectAttributes redirectAttributes) throws ControllerException, ResourceNotFoundException   {
 		if (id == null) return edit(type, id, null, false);
 		IdProvider added = copy(type, id, null);
 		ModelAndView modelAndView = new ModelAndView(REDIRECT + Common.BO_URL + BO_EDIT_URL);
@@ -200,7 +200,7 @@ public class BackOfficeControllerEdit extends BackOfficeController {
 	
 	
 	@RequestMapping(value = BO_NEW_TRANSLATION_URL, method = RequestMethod.POST)
-	public ModelAndView neww(@RequestParam(ATTR_TYPE) String type, @RequestParam(ATTR_LG) String langCode, @Valid @ModelAttribute(ATTR_OBJECTEDIT) IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws ControllerException {
+	public ModelAndView neww(@RequestParam(ATTR_TYPE) String type, @RequestParam(ATTR_LG) String langCode, @Valid @ModelAttribute(ATTR_OBJECTEDIT) IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws ControllerException, ResourceNotFoundException {
 		try {
 			Lang lang = langService.findByCode(langCode);
 			if (lang == null) throw new ResourceNotFoundException(langCode + " Not found !");	
@@ -229,7 +229,7 @@ public class BackOfficeControllerEdit extends BackOfficeController {
 	}
 	
 	@RequestMapping(value = BO_NEW_URL, method = RequestMethod.POST)
-	public ModelAndView neww(@RequestParam(ATTR_TYPE) String type, @Valid @ModelAttribute(ATTR_OBJECTEDIT) IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws ControllerException {
+	public ModelAndView neww(@RequestParam(ATTR_TYPE) String type, @Valid @ModelAttribute(ATTR_OBJECTEDIT) IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws ControllerException, ResourceNotFoundException {
 		ModelAndView modelAndView = null;
 		if (result.hasErrors()) {
 			modelAndView = edit(type, null, null, true);
@@ -248,7 +248,7 @@ public class BackOfficeControllerEdit extends BackOfficeController {
 		return modelAndView;
 	}
 
-	public IdProvider copy(String type, Integer id, Lang lang) throws ControllerException   {
+	public IdProvider copy(String type, Integer id, Lang lang) throws ControllerException, ResourceNotFoundException   {
 		try {
 			if (id == 0) throw new ControllerException("Id = 0");
 			

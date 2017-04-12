@@ -92,7 +92,7 @@ public abstract class BackOfficeController extends AbtractController {
 	}
 	
 	@Override
-	public ModelAndView baseView(String pageName, Folder folder) throws ControllerException {
+	public ModelAndView baseView(String pageName, Folder folder) throws ControllerException, ResourceNotFoundException {
 		try{
 			ModelAndView modelAndView = super.baseView(pageName, folder);
 			modelAndView.addAllObjects(init());

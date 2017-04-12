@@ -18,7 +18,7 @@ import fr.cedricsevestre.dao.engine.bo.LinkDao;
 import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.custom.Marker;
 import fr.cedricsevestre.entity.engine.IdProvider;
-import fr.cedricsevestre.entity.engine.bo.Link;
+import fr.cedricsevestre.entity.engine.translation.Link;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.translation.TranslationService;

@@ -18,7 +18,7 @@ import fr.cedricsevestre.exception.ServiceException;
 public class BackOfficeControllerView extends BackOfficeController {
 
 	@RequestMapping(value = BO_VIEW_URL, method = RequestMethod.GET)
-	public ModelAndView view(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id) throws ControllerException   {
+	public ModelAndView view(@ModelAttribute("type") String type, @ModelAttribute("id") Integer id) throws ControllerException, ResourceNotFoundException   {
 		try {
 			Folder folder = getBOFolder();
 			ModelAndView modelAndView = baseView(BO_VIEW_PAGE, folder);

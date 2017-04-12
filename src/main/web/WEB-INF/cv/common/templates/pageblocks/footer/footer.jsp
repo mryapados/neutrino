@@ -6,28 +6,57 @@
 <my:init test="${!initialized}"/>
 
 
-
-	<div class="container">
-		<ul class="back-footer-links">
-			<li><a href="https://github.com/twbs/bootstrap">GitHub</a></li>
-			<li><a href="https://twitter.com/getbootstrap">Twitter</a></li>
-			<li><a href="../getting-started/#examples">Examples</a></li>
-			<li><a href="../about/">About</a></li>
-		</ul>
-		<p>
-			Designed and built with all the love in the world by <a
-				href="https://twitter.com/mdo" target="_blank">@mdo</a> and <a
-				href="https://twitter.com/fat" target="_blank">@fat</a>. Maintained
-			by the <a href="https://github.com/orgs/twbs/people">core team</a>
-			with the help of <a
-				href="https://github.com/twbs/bootstrap/graphs/contributors">our
-				contributors</a>.
-		</p>
-		<p>
-			Code licensed <a
-				href="https://github.com/twbs/bootstrap/blob/master/LICENSE"
-				target="_blank" rel="license">MIT</a>, docs <a
-				href="https://creativecommons.org/licenses/by/3.0/" target="_blank"
-				rel="license">CC BY 3.0</a>.
-		</p>
+<div class="container-fluid nopadding">
+	<div class="row">
+		<div class="col-sm-3">
+			<h5 class="font-accident-two-bold uppercase">Gridus HTML
+				Template</h5>
+			<p class="inline-block">The Gridus Resume Template has an unique
+				modern flat intuitive design. You can choose one of 8 pre-defined
+				Color schemes.</p>
+			<div class="divider-dynamic"></div>
+		</div>
+		<div class="col-sm-3 cv-link">
+			<h5 class="font-accident-two-bold uppercase">Download cv</h5>
+			<div class="dividewhite1"></div>
+			<a href="#!"><i class="fa fa-long-arrow-down" aria-hidden="true"></i>English</a>
+			<a href="#!"><i class="fa fa-long-arrow-down" aria-hidden="true"></i>German</a>
+			<a href="#!"><i class="fa fa-long-arrow-down" aria-hidden="true"></i>Spanish</a>
+			<p class="inline-block">The CV is in .pdf format. Use the Adobe
+				Reader to open it.</p>
+			<div class="divider-dynamic"></div>
+		</div>
+		<div class="col-sm-3">
+			<h5 class="font-accident-two-bold uppercase">Newsletter</h5>
+			<div class="dividewhite1"></div>
+			<input class="newsletter-email" type="email" required="" name="ne"
+				placeholder="Your Email"> <a href="#!"
+				class="btn btn-wh-trans btn-xs">OK</a>
+			<div class="divider-dynamic"></div>
+		</div>
+		<div class="col-sm-3">
+			<h5 class="font-accident-two-bold uppercase">Follow me</h5>
+			<div class="follow">
+				<ul class="list-inline social">
+					<li><a target="_blank" href="#" class="rst-icon-facebook"><i
+							class="fa fa-facebook"></i></a></li>
+					<li><a target="_blank" href="#" class="rst-icon-twitter"><i
+							class="fa fa-twitter"></i></a></li>
+					<li><a target="_blank" href="#" class="rst-icon-pinterest"><i
+							class="fa fa-pinterest"></i></a></li>
+					<li><a target="_blank" href="#" class="rst-icon-instagram"><i
+							class="fa fa-instagram"></i></a></li>
+					<li><a target="_blank" href="#" class="rst-icon-youtube"><i
+							class="fa fa-youtube"></i></a></li>
+				</ul>
+			</div>
+			<div class="divider-dynamic"></div>
+		</div>
 	</div>
+	<div class="dividewhite1"></div>
+	<div class="row">
+		<div class="col-md-12 copyrights">
+			<p>© 2016 Samuel Anderson.</p>
+		</div>
+	</div>
+</div>

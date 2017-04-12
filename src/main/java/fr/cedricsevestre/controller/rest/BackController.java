@@ -184,13 +184,16 @@ public class BackController extends AbtractController {
 		try {
 			if (folderId != null) folder = folderService.findOne(folderId);
 			MapTemplate mapTemplate =  mapTemplateService.findOne(mapTemplateId);
+			if (mapTemplate == null) throw new ResourceNotFoundException("mapTemplate id " + mapTemplateId + " not found !");
 			
-			Page page = pageService.findOne(pageId);	
+			Page page = pageService.findOne(pageId);
+			if (page == null) throw new ResourceNotFoundException("Page id " + pageId + " not found !");
 			Template block = mapTemplate.getBlock();
 
 			Translation activeObject = null;
 			if (activeObjectId != null){
 				activeObject = tObjectService.findOne(activeObjectId);
+				if (activeObject == null) throw new ResourceNotFoundException("activeObject id " + activeObjectId + " not found !");
 			}
 			
 			ModelMap modelMap = templateControllerExecutor.execute(block.getController(), mapTemplate.getModel(), activeObject, block, null);	

@@ -92,7 +92,7 @@ public class BackOfficeControllerList extends BackOfficeController {
 	private TemplateService templateService;
 
 	@RequestMapping(value = BO_LIST_URL, method = RequestMethod.GET)
-	public ModelAndView list(@ModelAttribute("type") String type, Pageable pageRequest) throws ControllerException {
+	public ModelAndView list(@ModelAttribute("type") String type, Pageable pageRequest) throws ControllerException, ResourceNotFoundException {
 
 		try {
 			Folder folder = getBOFolder();
@@ -168,7 +168,7 @@ public class BackOfficeControllerList extends BackOfficeController {
 	}
 
 	@RequestMapping(value = "/objects/{type}", method = RequestMethod.GET)
-	public @ResponseBody List<IdProviderDto> getObjects(@PathVariable(value = "type") String type, @RequestParam("id") Integer[] ids) throws ControllerException {
+	public @ResponseBody List<IdProviderDto> getObjects(@PathVariable(value = "type") String type, @RequestParam("id") Integer[] ids) throws ControllerException, ResourceNotFoundException {
 		try {
 			Class<?> object;
 			object = entityLocator.getEntity(type).getClass();

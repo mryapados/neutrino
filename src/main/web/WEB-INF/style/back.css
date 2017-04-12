@@ -3,18 +3,6 @@ body{
 	
 }
 
-
-
-p.debug{
-	margin:0;
-	padding:0;
-	color: orange;
-	font-size: 0.6em;
-}
-p.debug:before{
-	content: "debug : ";
-}
-
 #page{
 	margin: 50px 0 0;
 }

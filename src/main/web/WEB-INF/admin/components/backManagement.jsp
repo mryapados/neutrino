@@ -2,6 +2,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="my" uri="/WEB-INF/taglibs/neutrino.tld" %>
 
 <!-- Back office ROLE_ADMIN	-->
 <div id="back-management">
@@ -90,11 +91,9 @@
 </div>
 
 
+<my:import url="/admin/components/angularLibs.jsp" />
 
-
-
-
-
+<!-- BlockManagement app -->
 <script src="<c:url value='/resources/src/back/js/app.js'/>"></script>	
 <script src="<c:url value='/resources/src/back/js/controller/blockManagementCtrl.js'/>"></script>	
 <script src="<c:url value='/resources/src/back/js/controller/blockSelectionCtrl.js'/>"></script>
@@ -106,8 +105,6 @@
 <script src="<c:url value='/resources/src/back/js/services/business.js'/>"></script>
 <script src="<c:url value='/resources/src/back/js/services/constants.js'/>"></script>
 <script src="<c:url value='/resources/src/back/js/directives/backDirectives.js'/>"></script>		
-		
-		
 		
 		
 		

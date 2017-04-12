@@ -20,6 +20,7 @@ import fr.cedricsevestre.bean.NFile;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.exception.ControllerException;
+import fr.cedricsevestre.exception.ResourceNotFoundException;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.independant.objects.StorageService;
 
@@ -42,13 +43,13 @@ public class BackOfficeControllerFileManager extends BackOfficeController {
 	private StorageService fileService;
 
 	@RequestMapping(value = BO_FILE_HOME_URL, method = RequestMethod.GET)
-	public ModelAndView home() throws ControllerException   {
+	public ModelAndView home() throws ControllerException, ResourceNotFoundException   {
 		Folder folder = getBOFolder();
 		return baseView(BO_FILE_HOME_PAGE, folder);
 	}
 	
 	@RequestMapping(value = BO_FILE_SINGLE_URL, method = RequestMethod.GET)
-	public ModelAndView single(@RequestParam(value = "navbar", required = false, defaultValue = "true") Boolean navbar, @RequestParam(value = "multi", required = false, defaultValue = "true") Boolean multi, @RequestParam(value = "sidebar", required = false, defaultValue = "true") Boolean sidebar) throws ControllerException   {
+	public ModelAndView single(@RequestParam(value = "navbar", required = false, defaultValue = "true") Boolean navbar, @RequestParam(value = "multi", required = false, defaultValue = "true") Boolean multi, @RequestParam(value = "sidebar", required = false, defaultValue = "true") Boolean sidebar) throws ControllerException, ResourceNotFoundException   {
 		Folder folder = getBOFolder();
 		ModelAndView modelAndView = baseView(BO_FILE_SINGLE_PAGE, folder);
 		modelAndView.addObject("navbar", navbar);

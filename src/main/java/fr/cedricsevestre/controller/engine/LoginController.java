@@ -26,7 +26,7 @@ public class LoginController extends AbtractController {
 	public static final String BACKFOLDER = "back";
 	
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ModelAndView view(Folder folder) throws ControllerException  {
+	public ModelAndView view(Folder folder) throws ControllerException, ResourceNotFoundException  {
 		ModelAndView modelAndView = null;
 		try {
 			try {
