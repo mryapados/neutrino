@@ -65,7 +65,7 @@ public class Import extends ImportSupport implements IIncludeJSP {
 			Page page = (Page) pageContext.getAttribute(Attributes.PAGE.toString(), PageContext.REQUEST_SCOPE);
 			
 			
-			Template target = templateService.identify(folder.getId(), template, page.getLang().getId());
+			Template target = templateService.identify(folder, template, page.getLang());
 
 			NSchema nSchema =  target.getSchema();
 			List<NData> nDatas = null;

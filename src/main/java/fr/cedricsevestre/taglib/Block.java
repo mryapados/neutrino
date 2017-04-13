@@ -120,6 +120,8 @@ public class Block extends TagSupport implements IIncludeJSP {
 			if (model == null) model = page.getModel();
 			models.add(model);
 			
+			models.add(page);
+
 			Translation activeObject = (Translation) pageContext.getAttribute(Attributes.ACTIVEOBJECT.toString(), PageContext.REQUEST_SCOPE);
 			if (activeObject != null){
 				models.add(activeObject);

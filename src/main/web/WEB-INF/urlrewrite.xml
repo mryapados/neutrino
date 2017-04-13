@@ -1,4 +1,5 @@
 <urlrewrite>
+
     <rule>
        <from>^/admin/$</from>
        <to>/admin/index</to>
@@ -8,8 +9,32 @@
        <from>^/index.html$</from>
        <to>/</to>
     </rule>
+    
+    <rule>
+       <from>^/bo/([a-zA-Z0-9_\-]+)/$</from>
+       <to>/@bo/$1/</to>
+    </rule>
+    <rule>
+       <from>^/file/$</from>
+       <to>/@file/</to>
+    </rule>
 
 
+	<!-- With keywords -->
+    <rule>
+       <from>^/([a-zA-Z0-9_\-]+)/article-([0-9])/$</from>
+       <to>/article/article?id=$2</to>
+    </rule>
+    <rule>
+       <from>^/([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+)/$</from>
+       <to>/project/project?p=$2</to>
+    </rule>
+    <rule>
+       <from>^/([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+).html$</from>
+       <to>/page/page?pg=$2</to>
+    </rule>
+
+	<!-- Without keywords -->
     <rule>
        <from>^/article-([0-9])/$</from>
        <to>/article/article?id=$1</to>
@@ -18,11 +43,15 @@
        <from>^/([a-zA-Z0-9_\-]+)/$</from>
        <to>/project/project?p=$1</to>
     </rule>
-
     <rule>
        <from>^/([a-zA-Z0-9_\-]+).html$</from>
        <to>/page/page?pg=$1</to>
     </rule>
+
+
+
+
+
 
     <rule>
        <from>^/demo/api.do?method=getUser&amp;uid=(.*)$</from>

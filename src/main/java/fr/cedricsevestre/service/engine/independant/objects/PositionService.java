@@ -51,7 +51,7 @@ public class PositionService extends BaseService<Position> implements IBOService
 		}
 	}
 	
-	@Deprecated
+
 	public Position findByNameForModelsWithMaps(List<Translation> models, String positionName) throws ServiceException {
 		try {
 			return positionDao.findByNameForModelsWithMaps(models, positionName);
@@ -60,9 +60,9 @@ public class PositionService extends BaseService<Position> implements IBOService
 		}
 	}
 	
-	public Position findOneForModelsWithMaps(List<Translation> models, Integer positionId) throws ServiceException {
+	public Position findOneForObjectsWithMaps(List<Translation> objects, Integer positionId) throws ServiceException {
 		try {
-			return positionDao.findOneForModelsWithMaps(models, positionId);
+			return positionDao.findOneForObjectsWithMaps(objects, positionId);
 		} catch (PersistenceException e) {
 			throw new ServiceException("erreur findById position", e);
 		}

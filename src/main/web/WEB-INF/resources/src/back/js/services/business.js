@@ -231,8 +231,8 @@
 	});	
 	bModule.service('BlockService', function(BlockResource, $backPath) {
 		self = this;
-		self.getBlocksForModelPosition = function(modelId, activeObjectId, positionId) {
-			return BlockResource.getAll({modelId : modelId, activeObjectId : activeObjectId, positionId : positionId}).$promise;
+		self.getBlocksForModelPosition = function(modelId, pageId, activeObjectId, positionId) {
+			return BlockResource.getAll({modelId : modelId, pageId : pageId, activeObjectId : activeObjectId, positionId : positionId}).$promise;
 		};
 	});
 	bModule.service('MapTemplateService', function(MapTemplateResource, $backPath) {

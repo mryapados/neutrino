@@ -2,11 +2,15 @@ package fr.cedricsevestre.entity.engine.translation;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,6 +19,8 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -26,6 +32,7 @@ import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 import fr.cedricsevestre.annotation.BOField;
 import fr.cedricsevestre.annotation.BOField.SortType;
 import fr.cedricsevestre.annotation.BOField.ValueType;
+import fr.cedricsevestre.entity.custom.Tag;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 
 @Entity
@@ -75,10 +82,18 @@ public abstract class Translation implements ITranslation, Serializable {
 	@JoinColumn(name="id_translation")
 	private TranslationProvider translation;
 	
-	@BOField(type = ValueType.OBJECT)
-	@OneToOne
-	private Folder folder;
-
+	@BOField(type = ValueType.COLLECTION, ofType = ValueType.OBJECT)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+		name = "translation_folders", 
+		joinColumns = { 
+			@JoinColumn(name = "translation_id", 
+			referencedColumnName = "id")}, 
+		inverseJoinColumns = {
+			@JoinColumn(name = "folder_id", 
+			referencedColumnName = "id")})
+	private List<Folder> folders;
+	
 	public Translation() {
 		super();
 		this.setDateAdded(new Date());
@@ -153,12 +168,12 @@ public abstract class Translation implements ITranslation, Serializable {
 		this.lang = lang;
 	}
 
-	public Folder getFolder() {
-		return folder;
+	public List<Folder> getFolders() {
+		return folders;
 	}
 
-	public void setFolder(Folder folder) {
-		this.folder = folder;
+	public void setFolders(List<Folder> folders) {
+		this.folders = folders;
 	}
 
 	@Override

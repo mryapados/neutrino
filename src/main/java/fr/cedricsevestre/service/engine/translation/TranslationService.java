@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.cedricsevestre.dao.engine.TranslationDao;
 import fr.cedricsevestre.dao.engine.TranslationProviderDao;
 import fr.cedricsevestre.entity.engine.IdProvider;
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.TranslationProvider;
@@ -50,10 +51,11 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 		}
 	}
 
-	public T identify(Integer folderId, String name, Integer langId) throws ServiceException {
+	public T identify(Folder folder, String name, Lang lang) throws ServiceException {
 		try {
-			System.out.println("identify " + name + " " + langId + " " + translationDao);
-			return translationDao.identify(folderId, name, langId);
+			System.out.println("identify " + name + " " + lang.getCode() + " " + translationDao);
+			if (folder == null) return translationDao.identify(name, lang);
+			else return translationDao.identify(folder, name, lang);
 		} catch (PersistenceException e) {
 			throw new ServiceException("erreur identify Base", e);
 		}
@@ -90,7 +92,6 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 		base.setLang(lang);
 		base.setTranslation(translation);
 		base.setName(base.getName());
-		base.setFolder(base.getFolder());
 		
 		return base;
 	}

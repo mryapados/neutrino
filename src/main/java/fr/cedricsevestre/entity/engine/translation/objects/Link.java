@@ -1,18 +1,17 @@
-package fr.cedricsevestre.entity.engine.translation;
+package fr.cedricsevestre.entity.engine.translation.objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 import fr.cedricsevestre.annotation.BOField;
 import fr.cedricsevestre.annotation.BOField.ValueType;
-import fr.cedricsevestre.entity.custom.Album.AlbumType;
+import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Entity
 @Table(name = "link")

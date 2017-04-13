@@ -181,6 +181,7 @@ p.debug:before{
 	position: fixed;
 	top: 30%;
 	right: 0;
+	z-index: 10000;
 }
 
 

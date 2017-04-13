@@ -65,7 +65,7 @@
 	
 	bModule.factory("BlockResource", function($resource, $backPath) {
 	  	var API_URI = '@back/block';  				
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {modelId: '@modelId', activeObjectId: '@activeObjectId', positionId: '@positionId'}, {
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {modelId: '@modelId', pageId: '@pageId', activeObjectId: '@activeObjectId', positionId: '@positionId'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},

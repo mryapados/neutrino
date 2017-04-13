@@ -124,7 +124,7 @@ public class BackOfficeControllerList extends BackOfficeController {
 			Folder folder = getBOFolder();
 			
 			fr.cedricsevestre.entity.engine.translation.objects.Page page = common.getPage(folder, BO_LIST_PAGE, lang);
-			Template block = templateService.identify(folder.getId(), BO_BLOCK_LIST, lang.getId());
+			Template block = templateService.identify(folder, BO_BLOCK_LIST, lang);
 
 			ModelAndView modelAndView = baseView(page, block, folder);
 

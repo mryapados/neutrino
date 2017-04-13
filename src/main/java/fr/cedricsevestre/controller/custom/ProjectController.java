@@ -43,7 +43,7 @@ public class ProjectController extends AbtractController {
 	private Translation getActiveObject(String projectName, Folder folder) throws ControllerException, ResourceNotFoundException{
 		try {
 			Locale locale = LocaleContextHolder.getLocale();
-			return projectService.identify(folder.getId(), projectName, common.getLang(locale.getLanguage()).getId());
+			return projectService.identify(folder, projectName, common.getLang(locale.getLanguage()));
 		} catch (ServiceException | UtilException e) {
 			throw new ControllerException(e);
 		}

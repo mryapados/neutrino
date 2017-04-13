@@ -3,22 +3,23 @@ var bModule = angular.module('backApp');
 
 bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagementService, TemplateService, BlockService, $backPath) {
 	BlockManagementService.init().then(function() {
-		const SCOPE_MODEL = 'MODEL';
+		const SCOPE_ACTIVEMODEL = 'ACTIVEMODEL';
+		const SCOPE_ACTIVEPAGE = 'ACTIVEPAGE';
 		const SCOPE_ACTIVEOBJECT = 'ACTIVEOBJECT';
 		
 		$scope.debug = false;
 		
-		BlockService.getBlocksForModelPosition($scope.modelId, $scope.activeObjectId, $scope.positionId).then(function(data) {
+		$scope.folder = BlockManagementService.getFolder();
+		$scope.page = BlockManagementService.getPage();
+		$scope.activeObject = BlockManagementService.getActiveObject();
+		
+		BlockService.getBlocksForModelPosition($scope.modelId, $scope.page.id, $scope.activeObjectId, $scope.positionId).then(function(data) {
 			$scope.blocks = data;
 		});
 		
 		TemplateService.getTemplate($scope.modelId).then(function(data) {
 			$scope.model = data;
 		});
-		
-		$scope.folder = BlockManagementService.getFolder();
-		$scope.page = BlockManagementService.getPage();
-		$scope.activeObject = BlockManagementService.getActiveObject();
 		
 		var activeObjectId = $scope.activeObject == null ? '' : $scope.activeObject.id;
 		$scope.getParsedBlock = function(block) {
@@ -30,7 +31,8 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 	    	
 			var setMapBlock = function(choice) {
 				var scopeChoice = null;
-				if (choice == SCOPE_MODEL) scopeChoice = $scope.modelId;
+				if (choice == SCOPE_ACTIVEMODEL) scopeChoice = $scope.modelId;
+				else if (choice == SCOPE_ACTIVEPAGE) scopeChoice = $scope.page.id;
 				else if (choice == SCOPE_ACTIVEOBJECT) scopeChoice = activeObjectId;
 				
 				console.log(scopeChoice);
@@ -44,28 +46,37 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 				});
 			}
 	    	
-	    	if ($scope.activeObject == null){
-	    		setMapBlock(SCOPE_MODEL);
-	    	} else {
-				var instance = $uibModal.open({
-					templateUrl: $backPath.URL_TEMPLATE_MODAL_CHOICE_SCOPE,
-					size: 'sm',
-					controller: function ( $scope, $uibModalInstance ) {
-		
-						$scope.scopeActiveObject = function() {
-							$uibModalInstance.close(SCOPE_ACTIVEOBJECT);
-						};	
-						$scope.scopeModel = function() {
-							$uibModalInstance.close(SCOPE_MODEL);
-						};	
-						
-					}, 
-				});
-				instance.result.then(function(choice) {
-					setMapBlock(choice);
-				});
-	    	}
-
+			var activeObjectNull = $scope.activeObject == null;
+			var instance = $uibModal.open({
+				templateUrl: $backPath.URL_TEMPLATE_MODAL_CHOICE_SCOPE,
+				size: 'sm',
+				resolve: {
+		            buttons: function(){
+		            	return {activeModel : true, activePage : true, activeObject : !activeObjectNull};
+		            },
+		            nbCol: function(){
+		            	return activeObjectNull == null ? 2 : 3;
+		            },
+				},
+				controller: function ( $scope, $uibModalInstance, buttons, nbCol ) {
+					$scope.buttons = buttons;
+					$scope.nbCol = nbCol;
+					
+					$scope.scopeActiveModel = function() {
+						$uibModalInstance.close(SCOPE_ACTIVEMODEL);
+					};	
+					$scope.scopeActivePage = function() {
+						$uibModalInstance.close(SCOPE_ACTIVEPAGE);
+					};	
+					$scope.scopeActiveObject = function() {
+						$uibModalInstance.close(SCOPE_ACTIVEOBJECT);
+					};	
+					
+				}, 
+			});
+			instance.result.then(function(choice) {
+				setMapBlock(choice);
+			});
 
 	    }); 
 		

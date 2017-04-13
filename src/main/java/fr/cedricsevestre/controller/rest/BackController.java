@@ -329,9 +329,10 @@ public class BackController extends AbtractController {
 	//Model : Page ou PageBlock
 	//ActiveObject : ActiveObject
 	//Position : Position
-	@RequestMapping(value = "/block", method = RequestMethod.GET, params={"modelId", "activeObjectId", "positionId"})
+	@RequestMapping(value = "/block", method = RequestMethod.GET, params={"modelId", "pageId", "activeObjectId", "positionId"})
 	public @ResponseBody List<BlockDto> getBlocksForPosition(
 			@RequestParam(value = "modelId", required = true) Integer modelId, 
+			@RequestParam(value = "pageId", required = true) Integer pageId, 
 			@RequestParam(value = "activeObjectId", required = true) Integer activeObjectId, 
 			@RequestParam(value = "positionId", required = true) Integer positionId) throws ControllerException, ResourceNotFoundException {
 		
@@ -339,14 +340,13 @@ public class BackController extends AbtractController {
 			List<BlockDto> blockDtos = new ArrayList<>();
 			
 			List<Translation> models = new ArrayList<>();
-			Template template = templateService.findOne(modelId);
-			models.add(template);
-	
+			models.add(templateService.findOne(modelId));
+			models.add(pageService.findOne(pageId));
 			if (activeObjectId != null){
 				models.add(tObjectService.findOne(activeObjectId));
 			}
 	
-			Position pos = positionService.findOneForModelsWithMaps(models, positionId);
+			Position pos = positionService.findOneForObjectsWithMaps(models, positionId);
 	
 			if (pos != null){
 				List<MapTemplate> mapTemplates;

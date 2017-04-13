@@ -23,8 +23,8 @@ import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 import fr.cedricsevestre.annotation.BOField;
 import fr.cedricsevestre.annotation.BOField.ValueType;
-import fr.cedricsevestre.entity.engine.translation.Link;
 import fr.cedricsevestre.entity.engine.translation.Translation;
+import fr.cedricsevestre.entity.engine.translation.objects.Link;
 
 @Entity
 @Table(name = "resume")
@@ -65,7 +65,7 @@ public class Resume extends Translation {
 	
 	@BOField(type = ValueType.COLLECTION, ofType = ValueType.TOBJECT)
 	@ElementCollection(fetch = FetchType.LAZY)
-	@CollectionTable(name="curiculum_vitae_links", joinColumns=@JoinColumn(name="link_id"))
+	@CollectionTable(name="resume_links", joinColumns=@JoinColumn(name="link_id"))
 	@Column(name = "links")
 	private List<Link> links;
 

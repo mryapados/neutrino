@@ -55,12 +55,15 @@ public class TemplateService extends TranslationService<Template>{
 	@Autowired
 	private CacheService cacheService;
 	
-	
-	
-	
-	public Template identifyWithAllExceptData(Integer folderId, String name, Integer langId) throws ServiceException {
+
+	public Template identifyWithAllExceptData(Folder folder, String name, Lang lang) throws ServiceException {
 		try {
-			return templateDao.identifyWithAllExceptData(folderId, name, langId);
+			if (folder == null) {
+				return templateDao.identifyWithAllExceptData(name, lang);
+			}
+			else {
+				return templateDao.identifyWithAllExceptData(folder, name, lang);
+			}
 		} catch (PersistenceException e) {
 			throw new ServiceException("erreur findByNameWithAllExceptData Template", e);
 		}

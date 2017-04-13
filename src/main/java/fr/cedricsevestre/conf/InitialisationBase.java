@@ -29,8 +29,8 @@ import fr.cedricsevestre.entity.engine.independant.objects.NType;
 import fr.cedricsevestre.entity.engine.independant.objects.NType.ValueType;
 import fr.cedricsevestre.entity.engine.independant.objects.Position;
 import fr.cedricsevestre.entity.engine.translation.Lang;
-import fr.cedricsevestre.entity.engine.translation.Link;
 import fr.cedricsevestre.entity.engine.translation.Translation;
+import fr.cedricsevestre.entity.engine.translation.objects.Link;
 import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
@@ -109,7 +109,7 @@ public class InitialisationBase {
 	private FolderService folderService;
 
 	
-	Map<String, Folder> folders;
+	Map<String, Folder> mapfolders;
 	
 	public void run() throws ServiceException, InstantiationException, IllegalAccessException {
 		logger.debug("init");
@@ -268,7 +268,7 @@ public class InitialisationBase {
 	public void initFolders() throws ServiceException{
 		logger.debug("init initFolders");
 		
-		folders = new HashMap<>();
+		mapfolders = new HashMap<>();
 
 		List<String> serverNames = null;
 		Folder folder = null;
@@ -280,7 +280,7 @@ public class InitialisationBase {
 		folder.setServerName(serverNames);
 		folder.setPath("pages/");
 		folderService.save(folder);
-		folders.put(folder.getName(), folder);
+		mapfolders.put(folder.getName(), folder);
 	}
 	
 	
@@ -292,7 +292,7 @@ public class InitialisationBase {
 		homeEN.setName("home");
 		homeEN.setContext("home");
 		homeEN.setDescription("home description en");
-		homeEN.setModel(templateService.identifyWithAllExceptData(null, "home", langEN.getId()));
+		homeEN.setModel(templateService.identifyWithAllExceptData(null, "home", langEN));
 		pageService.save(homeEN);
 		
 		Page homeFr = pageService.translate(homeEN, langFR);
@@ -305,7 +305,7 @@ public class InitialisationBase {
 		projectEN.setName("project");
 		projectEN.setContext("project");
 		projectEN.setDescription("project description en");
-		projectEN.setModel(templateService.identifyWithAllExceptData(null, "homeProject", langEN.getId()));
+		projectEN.setModel(templateService.identifyWithAllExceptData(null, "homeProject", langEN));
 		pageService.save(projectEN);
 		
 		Page projectFr = pageService.translate(projectEN, langFR);
@@ -318,7 +318,7 @@ public class InitialisationBase {
 		articleEN.setName("article");
 		articleEN.setContext("article");
 		articleEN.setDescription("article description en");
-		articleEN.setModel(templateService.identifyWithAllExceptData(null, "homeArticle", langEN.getId()));
+		articleEN.setModel(templateService.identifyWithAllExceptData(null, "homeArticle", langEN));
 		pageService.save(articleEN);
 		
 		Page articleFr = pageService.translate(articleEN, langFR);
@@ -674,7 +674,7 @@ public class InitialisationBase {
 	public MapTemplate addMapTemplate(Translation model, String block, String position, Integer ordered) throws ServiceException{
 		MapTemplate mapTemplate = new MapTemplate();
 		mapTemplate.setModel(model);
-		mapTemplate.setBlock(templateService.identify(null, block, model.getLang().getId()));
+		mapTemplate.setBlock(templateService.identify(null, block, model.getLang()));
 
 		mapTemplate.setPosition(positionService.findByName(position));
 		mapTemplate.setOrdered(ordered);
@@ -691,12 +691,12 @@ public class InitialisationBase {
 		
 
 		
-		Translation homeProject_EN = templateService.identify(null, "homeProject", langEN.getId());
-		Translation article_EN = templateService.identify(null, "article", langEN.getId());
-		Translation article2_EN = templateService.identify(null, "article2", langEN.getId());
-		Translation testproject_EN = projectService.identify(folders.get("front").getId(), "testproject", langEN.getId());
-		Translation testproject_FR = projectService.identify(folders.get("front").getId(), "testproject", langFR.getId());
-		Translation home_EN = templateService.identify(null, "home", langEN.getId());
+		Translation homeProject_EN = templateService.identify(null, "homeProject", langEN);
+		Translation article_EN = templateService.identify(null, "article", langEN);
+		Translation article2_EN = templateService.identify(null, "article2", langEN);
+		Translation testproject_EN = projectService.identify(mapfolders.get("front"), "testproject", langEN);
+		Translation testproject_FR = projectService.identify(mapfolders.get("front"), "testproject", langFR);
+		Translation home_EN = templateService.identify(null, "home", langEN);
 		
 		
 		mapTemplates.add(addMapTemplate(homeProject_EN,"headerProject", "header", 10));
@@ -751,6 +751,8 @@ public class InitialisationBase {
 	// FRONT DATAS
 	public void initProject() throws ServiceException, InstantiationException, IllegalAccessException{
 		logger.debug("init project");
+		List<Folder> folders = new ArrayList<>();
+		folders.add(mapfolders.get("front"));
 		
 		String name = "";
 		Calendar c = Calendar.getInstance();
@@ -762,7 +764,7 @@ public class InitialisationBase {
 		projectEN.setDateUpdated(c.getTime());
 		projectEN.setName(name + "");
 		projectEN.setDescription(name + " description en");
-		projectEN.setFolder(folders.get("front"));
+		projectEN.setFolders(folders);
 		projectService.save(projectEN);
 		
 		Project projectFR = projectService.translate(projectEN, langFR);
@@ -770,7 +772,7 @@ public class InitialisationBase {
 		projectFR.setDateAdded(c.getTime());
 		projectFR.setDateUpdated(c.getTime());
 		projectFR.setDescription(name + " description fr");
-		projectFR.setFolder(folders.get("front"));
+		projectFR.setFolders(folders);
 		projectService.save(projectFR);
 	
 		Integer max = 100;
@@ -813,8 +815,8 @@ public class InitialisationBase {
 		
 		
 		
-		Project ProjectEN = projectService.identify(folders.get("front").getId(), "testproject", langEN.getId());
-		Project ProjectFR = projectService.identify(folders.get("front").getId(), "testproject", langFR.getId());
+		Project ProjectEN = projectService.identify(mapfolders.get("front"), "testproject", langEN);
+		Project ProjectFR = projectService.identify(mapfolders.get("front"), "testproject", langFR);
 				
 		Album albumEN = albumService.translate(new Album(), langEN);
 		name = "testAlbum";
@@ -943,8 +945,8 @@ public class InitialisationBase {
 //		file.setPath("/media");
 //		fileService.save(file);
 		
-		Album AlbumEN = albumService.identify(null, "testalbum", langEN.getId());
-		Album AlbumFR = albumService.identify(null, "testalbum", langFR.getId());
+		Album AlbumEN = albumService.identify(null, "testalbum", langEN);
+		Album AlbumFR = albumService.identify(null, "testalbum", langFR);
 		
 		Media media = new Media();
 		media.setName("testfile");
@@ -1004,7 +1006,7 @@ public class InitialisationBase {
 	public void initTags2() throws ServiceException, InstantiationException, IllegalAccessException{
 		logger.debug("init tags2");
 		
-		Media file = mediaService.identify(null, "testfile", langEN.getId());
+		Media file = mediaService.identify(null, "testfile", langEN);
 	
 		
 		Tag tag = new Tag();
@@ -1050,7 +1052,7 @@ public class InitialisationBase {
 	public void initNDatas() throws ServiceException{
 		logger.debug("init nDatas");
 		
-		Template template = templateService.identify(null, "article", langEN.getId());
+		Template template = templateService.identify(null, "article", langEN);
 		
 		NData nData = new NData();
 		nData.setvVarchar255("data article title");
@@ -1093,7 +1095,7 @@ public class InitialisationBase {
 		
 		nData = new NData();
 		
-		Album testalbum_EN = albumService.identify(null, "testalbum", langEN.getId());
+		Album testalbum_EN = albumService.identify(null, "testalbum", langEN);
 		
 		nData.setvTObject(testalbum_EN);
 		nData.setVarType(ValueType.TOBJECT);
@@ -1228,8 +1230,15 @@ public class InitialisationBase {
 		countPosition.put(position, count);
 		return count;
 	}
+	
+	
 
 	public Map<Lang, Translation> mkPage(Folder folder, String name, String context, Map<Lang, Translation> models) throws ServiceException{
+		List<Folder> folders = new ArrayList<>();
+		folders.add(folder);
+		return mkPage(folders, name, context, models);
+	}
+	public Map<Lang, Translation> mkPage(List<Folder> folders, String name, String context, Map<Lang, Translation> models) throws ServiceException{
 		Map<Lang, Translation> map = new HashMap<>();
 		Page first = null;
 		for (Lang lang : langs) {
@@ -1240,7 +1249,7 @@ public class InitialisationBase {
 				page.setDescription(name + " Page description " + lang.getCode());
 				page.setContext(context);
 				page.setModel((Template) models.get(lang));
-				page.setFolder(folder);
+				page.setFolders(folders);
 				pageService.save(page);
 				first = page;
 			} else {
@@ -1251,7 +1260,7 @@ public class InitialisationBase {
 				System.out.println("MODEL !!! " + page.getModel().getName());
 				
 				
-				
+				page.setFolders(folders);
 				page.setName(name);
 				page.setDescription(name + " Page description " + lang.getCode());
 				pageService.save(page);
@@ -1261,10 +1270,21 @@ public class InitialisationBase {
 		return map;
 	}
 
+	
 	public Map<Lang, Translation> mkModel(Folder folder, String name) throws ServiceException{
-		return mkModel(folder, name, name + "/" + name);
+		List<Folder> folders = new ArrayList<>();
+		folders.add(folder);
+		return mkModel(folders, name);
+	}
+	public Map<Lang, Translation> mkModel(List<Folder> folders, String name) throws ServiceException{
+		return mkModel(folders, name, name + "/" + name);
 	}
 	public Map<Lang, Translation> mkModel(Folder folder, String name, String path) throws ServiceException{
+		List<Folder> folders = new ArrayList<>();
+		folders.add(folder);
+		return mkModel(folders, name, path);
+	}
+	public Map<Lang, Translation> mkModel(List<Folder> folders, String name, String path) throws ServiceException{
 		Map<Lang, Translation> map = new HashMap<>();
 		Template first = null;
 		for (Lang lang : langs) {
@@ -1277,11 +1297,12 @@ public class InitialisationBase {
 				template.setMetaDescription("MetaDescription");
 				template.setPath(path);
 				template.setKind(Template.TemplateKind.PAGE);
-				template.setFolder(folder);
+				template.setFolders(folders);
 				templateService.save(template);
 				first = template;
 			} else {
 				template = templateService.translate(first, lang);
+				template.setFolders(folders);
 				template.setName(name);
 				template.setDescription(name + " Model description " + lang.getCode());
 				templateService.save(template);
@@ -1292,13 +1313,33 @@ public class InitialisationBase {
 
 	}
 	
+	
+
+
+	
+	
 	public Map<Lang, Translation> mkPageBlock(Folder folder, String name) throws ServiceException{
-		return mkPageBlock(folder, name, name + "/" + name, null);
+		List<Folder> folders = new ArrayList<>();
+		folders.add(folder);
+		return mkPageBlock(folders, name);
 	}
 	public Map<Lang, Translation> mkPageBlock(Folder folder, String name, String path) throws ServiceException{
-		return mkPageBlock(folder, name, path, null);
+		List<Folder> folders = new ArrayList<>();
+		folders.add(folder);
+		return mkPageBlock(folders, name, path);
 	}
 	public Map<Lang, Translation> mkPageBlock(Folder folder, String name, String path, NSchema nSchema) throws ServiceException{
+		List<Folder> folders = new ArrayList<>();
+		folders.add(folder);
+		return mkPageBlock(folders, name, path, nSchema);
+	}
+	public Map<Lang, Translation> mkPageBlock(List<Folder> folders, String name) throws ServiceException{
+		return mkPageBlock(folders, name, name + "/" + name, null);
+	}
+	public Map<Lang, Translation> mkPageBlock(List<Folder> folders, String name, String path) throws ServiceException{
+		return mkPageBlock(folders, name, path, null);
+	}
+	public Map<Lang, Translation> mkPageBlock(List<Folder> folders, String name, String path, NSchema nSchema) throws ServiceException{
 		Map<Lang, Translation> map = new HashMap<>();
 		Template first = null;
 		for (Lang lang : langs) {
@@ -1310,11 +1351,12 @@ public class InitialisationBase {
 				template.setPath(path);
 				template.setKind(Template.TemplateKind.PAGEBLOCK);
 				template.setSchema(nSchema);
-				template.setFolder(folder);
+				template.setFolders(folders);
 				templateService.save(template);
 				first = template;
 			} else {
 				template = templateService.translate(first, lang);
+				template.setFolders(folders);
 				template.setName(name);
 				template.setDescription(name + " PageBlock description " + lang.getCode());
 				templateService.save(template);
@@ -1324,13 +1366,29 @@ public class InitialisationBase {
 		return map;
 	}
 	
+	
 	public Map<Lang, Translation> mkBlock(Folder folder, String name) throws ServiceException{
-		return mkBlock(folder, name, name + "/" + name, null);
+		List<Folder> folders = new ArrayList<>();
+		folders.add(folder);
+		return mkBlock(folders, name);
 	}
 	public Map<Lang, Translation> mkBlock(Folder folder, String name, String path) throws ServiceException{
-		return mkBlock(folder, name, path, null);
+		List<Folder> folders = new ArrayList<>();
+		folders.add(folder);
+		return mkBlock(folders, name, path);
 	}
 	public Map<Lang, Translation> mkBlock(Folder folder, String name, String path, NSchema nSchema) throws ServiceException{
+		List<Folder> folders = new ArrayList<>();
+		folders.add(folder);
+		return mkBlock(folders, name, path, nSchema);
+	}
+	public Map<Lang, Translation> mkBlock(List<Folder> folders, String name) throws ServiceException{
+		return mkBlock(folders, name, name + "/" + name, null);
+	}
+	public Map<Lang, Translation> mkBlock(List<Folder> folders, String name, String path) throws ServiceException{
+		return mkBlock(folders, name, path, null);
+	}
+	public Map<Lang, Translation> mkBlock(List<Folder> folders, String name, String path, NSchema nSchema) throws ServiceException{
 		Map<Lang, Translation> map = new HashMap<>();
 		Template first = null;
 		for (Lang lang : langs) {
@@ -1342,10 +1400,11 @@ public class InitialisationBase {
 				template.setPath(path);
 				template.setKind(Template.TemplateKind.BLOCK);
 				template.setSchema(nSchema);
-				template.setFolder(folder);
+				template.setFolders(folders);
 				first = template;
 			} else {
 				template = templateService.translate(first, lang);
+				template.setFolders(folders);
 				template.setName(name);
 				template.setDescription(name + " Block description " + lang.getCode());
 				
@@ -1372,17 +1431,23 @@ public class InitialisationBase {
 			link.setTitle(title);
 			link.setUrl(url);
 			link.setPicto(picto);
+			link.setFolders(new ArrayList<>());
 			linkService.save(link);
 			return link;
 	}
 	
 	public void generateMenu(Folder folder, Map<Lang, Translation> models, Position position) throws ServiceException{
+		List<Folder> folders = new ArrayList<>();
+		folders.add(folder);
+		generateMenu(folders, models, position);
+	}
+	public void generateMenu(List<Folder> folders, Map<Lang, Translation> models, Position position) throws ServiceException{
 		Map<String, NType> columns = new HashMap<>();
 		columns.put("title", new NType(NType.ValueType.VARCHAR50));
 		columns.put("links", new NType(NType.ValueType.COLLECTION, NType.ValueType.TOBJECT));
-		Map<Lang, Translation> bMenuFree = mkBlock(folder, "@bo_block_menu_free", "header/menu/headerFree", mkNSchema(columns, ScopeType.ONE));
+		Map<Lang, Translation> bMenuFree = mkBlock(folders, "@bo_block_menu_free", "header/menu/headerFree", mkNSchema(columns, ScopeType.ONE));
 		
-		Map<Lang, Translation> bMenuObjects = mkBlock(folder, "@bo_block_menu_objects", "header/menu/headerObjects");
+		Map<Lang, Translation> bMenuObjects = mkBlock(folders, "@bo_block_menu_objects", "header/menu/headerObjects");
 		
 		
 		
@@ -1538,8 +1603,8 @@ public class InitialisationBase {
 		folder.setServerName(serverNames);
 		folder.setPath("back/");
 		folderService.save(folder);
-		folders.put(folder.getName(), folder);
-						
+		mapfolders.put(folder.getName(), folder);
+		
 		Map<Lang, Translation> mlogin = mkModel(folder, "login", "login/login");
 		Map<Lang, Translation> pgLogin = mkPage(folder, "login", "static", mlogin);
 				
@@ -1616,16 +1681,30 @@ public class InitialisationBase {
 	@SuppressWarnings("unused")
 	private void initCv() throws ServiceException{
 		//Folder
-		Folder folder = new Folder();
-		folder.setName("samuel");
+		List<Folder> fldsResume = new ArrayList<>();
+		List<Folder> fldsNull = null;
+		
+		Folder fldSamuel = new Folder();
+		fldSamuel.setName("samuel");
 		List<String> serverNames = new ArrayList<>();
 		serverNames.add("localhost");
 		serverNames.add("127.0.0.1");
 		serverNames.add("samuel");
-		folder.setServerName(serverNames);
-		folder.setPath("resume/samuel/");
-		folderService.save(folder);
-		folders.put(folder.getName(), folder);
+		fldSamuel.setServerName(serverNames);
+		fldSamuel.setPath("resume/samuel/");
+		folderService.save(fldSamuel);
+		mapfolders.put(fldSamuel.getName(), fldSamuel);
+		fldsResume.add(fldSamuel);
+		
+		Folder fldSurzilGeek = new Folder();
+		fldSurzilGeek.setName("surzilgeek");
+		serverNames = new ArrayList<>();
+		serverNames.add("surzilgeek");
+		fldSurzilGeek.setServerName(serverNames);
+		fldSurzilGeek.setPath("resume/surzilgeek/");
+		folderService.save(fldSurzilGeek);
+		mapfolders.put(fldSurzilGeek.getName(), fldSurzilGeek);
+		fldsResume.add(fldSurzilGeek);
 
 		
 		// Positions
@@ -1638,23 +1717,34 @@ public class InitialisationBase {
 		Position pFooter = addPosition(mapPosition, "resume_footer");
 		
 		// Models
-		Map<Lang, Translation> mDefault = mkModel(folder, "resume_model_default", "default/default");
+		Map<Lang, Translation> mDefault = mkModel(fldsResume, "resume_model_default", "default/default");
+
+		// Pages
+		
+		// Pages communes aux deux modèles
+		Map<Lang, Translation> pgPortfolio = mkPage(fldsResume, "portfolio", "default", mDefault);
+		Map<Lang, Translation> pgContact = mkPage(fldsResume, "contact", "default", mDefault);
+		
+		// Pages dédiés à l'un ou l'autre
+		Map<Lang, Translation> pgSkills = mkPage(fldSurzilGeek, "skills", "default", mDefault);
+		Map<Lang, Translation> pgFeedBack = mkPage(fldSamuel, "feedback", "default", mDefault);
+		
 
 		
-		// Pages
-		Map<Lang, Translation> pgDefault = mkPage(folder, "resume_page_default", "default", mDefault);
+		// PageBlocks
+		Map<Lang, Translation> pbHeader = mkPageBlock(fldsResume, "resume_pageblock_header", "header/header");
 		
 		// PageBlocks
-		Map<Lang, Translation> pbHeader = mkPageBlock(folder, "resume_pageblock_header", "header/header");
-		
-		// PageBlocks
-		Map<Lang, Translation> pbFooter = mkPageBlock(folder, "resume_pageblock_footer", "footer/footer");
+		Map<Lang, Translation> pbFooter = mkPageBlock(fldsResume, "resume_pageblock_footer", "footer/footer");
 				
 		// Blocks
-		generateMenu(folder, pbHeader, pheaderMenu);
+		generateMenu(fldSurzilGeek, pbHeader, pheaderMenu);
 		
 
+
+		
 		// Set MapTemplate
+		Map<Lang, MapTemplate> mtHeaderPgPortfolio = addMapTemplate(pgPortfolio, pbHeader, pHeader);
 
 	
 	}

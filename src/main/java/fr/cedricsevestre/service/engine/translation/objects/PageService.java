@@ -1,5 +1,6 @@
 package fr.cedricsevestre.service.engine.translation.objects;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import fr.cedricsevestre.annotation.BOService;
 import fr.cedricsevestre.dao.engine.PageDao;
 import fr.cedricsevestre.dao.engine.TemplateDao;
 import fr.cedricsevestre.entity.engine.IdProvider;
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.TranslationProvider;
@@ -47,7 +49,6 @@ public class PageService extends TranslationService<Page>{
 		translated.setLang(lang);
 		translated.setTranslation(translation);
 		translated.setName(page.getName());
-		translated.setFolder(page.getFolder());
 		translated.setContext(page.getContext());
 		
 		Template pageModel = page.getModel();
@@ -59,7 +60,7 @@ public class PageService extends TranslationService<Page>{
 					translated.setModel((Template) translations.get(lang));
 				}
 			}
-		}
+		}		
 
 		return translated;
 	}

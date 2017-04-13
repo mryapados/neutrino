@@ -11,6 +11,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import fr.cedricsevestre.entity.engine.IdProvider;
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
+import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Repository
@@ -22,8 +24,11 @@ public interface TranslationDao<T extends Translation> extends BaseDao<T> {
 	@Query("SELECT t FROM #{#entityName} t WHERE t.name =:name")
 	T findByName(@Param("name") String name);
 
-	@Query("SELECT t FROM #{#entityName} t WHERE (t.folder IS NULL OR t.folder.id =:folderId) AND (t.name =:name AND t.lang.id =:langId)")
-	T identify(@Param("folderId") Integer folderId, @Param("name") String name, @Param("langId") Integer langId);
+	 
+	@Query("SELECT t FROM #{#entityName} t WHERE (t.folders IS EMPTY OR :folder IN elements(t.folders)) AND (t.name =:name AND t.lang =:lang)")
+	T identify(@Param("folder") Folder folder, @Param("name") String name, @Param("lang") Lang lang);
 	
+	@Query("SELECT t FROM #{#entityName} t WHERE (t.folders IS EMPTY) AND (t.name =:name AND t.lang =:lang)")
+	T identify(@Param("name") String name, @Param("lang") Lang lang);
 	
 }

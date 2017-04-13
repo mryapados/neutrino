@@ -70,8 +70,8 @@ public class Common {
 	
 	public static final String BASE_WEBINF = "/WEB-INF/";
 	
-	public static final String BO_URL = "bo/";
-	public static final String BO_FILE_URL = "file/";
+	public static final String BO_URL = "@bo/";
+	public static final String BO_FILE_URL = "@file/";
 	
 	@Deprecated
 	public static final String CUSTOM_ENTITY_PACKAGE = "fr.cedricsevestre.entity.custom";
@@ -139,7 +139,7 @@ public class Common {
 				pages = new HashMap<>();
 			}
 			if (!pages.containsKey(pageNameLong)) {
-				Page page = pageService.identify(folder.getId(), pageName, lang.getId());
+				Page page = pageService.identify(folder, pageName, lang);
 				if (page != null)
 					pages.put(pageNameLong, page);
 			}

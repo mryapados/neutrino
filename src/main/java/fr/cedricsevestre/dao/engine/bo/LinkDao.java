@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import fr.cedricsevestre.dao.engine.TranslationDao;
 import fr.cedricsevestre.entity.custom.Album;
-import fr.cedricsevestre.entity.engine.translation.Link;
 import fr.cedricsevestre.entity.engine.translation.Translation;
+import fr.cedricsevestre.entity.engine.translation.objects.Link;
 
 @Repository
 public interface LinkDao extends TranslationDao<Link> {

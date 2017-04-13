@@ -7,10 +7,15 @@
     </div>
 	<div class="modal-body">
 		<div class="row">
-			<div class="col-xs-6 text-center">
-				<button data-ng-click="scopeModel()" class="btn btn-primary btn-small">{{'block-management.choice.scope.model' | translate}}</button>
+			{{classCol}}nbCol
+		
+			<div class="text-center" data-ng-class="{{classCol}}">
+				<button data-ng-click="scopeActiveModel()" class="btn btn-primary btn-small">{{'block-management.choice.scope.activeModel' | translate}}</button>
 			</div>
-			<div class="col-xs-6 text-center">
+			<div class="text-center" data-ng-class="{{classCol}}">
+				<button data-ng-click="scopeActivePage()" class="btn btn-primary btn-small">{{'block-management.choice.scope.activePage' | translate}}</button>
+			</div>
+			<div class="text-center" data-ng-class="{{classCol}}">
 				<button data-ng-click="scopeActiveObject()" class="btn btn-primary btn-small">{{'block-management.choice.scope.activeObject' | translate}}</button>
 			</div>
 		</div>
