@@ -287,18 +287,22 @@ public class InitialisationBase {
 	
 	public void initPages() throws ServiceException{
 		logger.debug("init templates");		
+		List<Folder> folders = new ArrayList<>();
+		folders.add(mapfolders.get("front"));
 		
 		Page homeEN = pageService.translate(new Page(), langEN);
 		homeEN.setName("home");
 		homeEN.setContext("home");
 		homeEN.setDescription("home description en");
 		homeEN.setModel(templateService.identifyWithAllExceptData(null, "home", langEN));
+		homeEN.setFolders(folders);
 		pageService.save(homeEN);
 		
-		Page homeFr = pageService.translate(homeEN, langFR);
-		homeFr.setName("home");
-		homeFr.setDescription("home description fr");
-		pageService.save(homeFr);
+		Page homeFR = pageService.translate(homeEN, langFR);
+		homeFR.setName("home");
+		homeFR.setDescription("home description fr");
+		homeEN.setFolders(folders);
+		pageService.save(homeFR);
 		
 		
 		Page projectEN = pageService.translate(new Page(), langEN);
@@ -1722,12 +1726,15 @@ public class InitialisationBase {
 		// Pages
 		
 		// Pages communes aux deux modèles
+		Map<Lang, Translation> pgHome = mkPage(fldsResume, "home", "default", mDefault);
+		Map<Lang, Translation> pgResume = mkPage(fldsResume, "resume", "default", mDefault);
 		Map<Lang, Translation> pgPortfolio = mkPage(fldsResume, "portfolio", "default", mDefault);
 		Map<Lang, Translation> pgContact = mkPage(fldsResume, "contact", "default", mDefault);
-		
+		Map<Lang, Translation> pgFeedBack = mkPage(fldSamuel, "feedback", "default", mDefault);
+		Map<Lang, Translation> pgBlog = mkPage(fldsResume, "blog", "default", mDefault);
+
 		// Pages dédiés à l'un ou l'autre
 		Map<Lang, Translation> pgSkills = mkPage(fldSurzilGeek, "skills", "default", mDefault);
-		Map<Lang, Translation> pgFeedBack = mkPage(fldSamuel, "feedback", "default", mDefault);
 		
 
 		

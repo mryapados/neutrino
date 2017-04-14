@@ -19,6 +19,18 @@
        <to>/@file/</to>
     </rule>
 
+	<!-- With keywords -->
+    <rule>
+       <from>^/@([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+).html$</from>
+       <to>/page/page?pg=$2</to>
+    </rule>
+    
+    <!-- Without keywords -->
+    <rule>
+       <from>^/([a-zA-Z0-9_\-]+).html$</from>
+       <to>/@page/page?pg=$1</to>
+    </rule>
+
 
 	<!-- With keywords -->
     <rule>
@@ -31,7 +43,7 @@
     </rule>
     <rule>
        <from>^/([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+).html$</from>
-       <to>/page/page?pg=$2</to>
+       <to>/category/category?p=$2</to>
     </rule>
 
 	<!-- Without keywords -->
@@ -45,7 +57,7 @@
     </rule>
     <rule>
        <from>^/([a-zA-Z0-9_\-]+).html$</from>
-       <to>/page/page?pg=$1</to>
+       <to>/category/category?p=$1</to>
     </rule>
 
 

@@ -12,8 +12,16 @@ public class NType implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public enum ValueType{
-		INTEGER, FLOAT, DOUBLE, VARCHAR50, VARCHAR255, TEXT, DATETIME, IMAGE, FILE, HTML, TOBJECT, NTOBJECT, OBJECT, COLLECTION
+	public enum ValueType {
+		NULL, 
+		BOOLEAN, INTEGER, FLOAT, DOUBLE, 
+		PASSWORD, VARCHAR50, VARCHAR255, TEXT, HTML,
+		DATETIME, DATE, TIME, 
+		IMAGE, FILE, URL, 
+		COLOR, 
+		TOBJECT, NTOBJECT, OBJECT, 
+		COLLECTION,
+		ENUM
 	}
 	
 	@Column(name = "type")

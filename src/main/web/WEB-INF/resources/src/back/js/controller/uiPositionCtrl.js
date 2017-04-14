@@ -47,6 +47,7 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 			}
 	    	
 			var activeObjectNull = $scope.activeObject == null;
+			console.log(activeObjectNull);
 			var instance = $uibModal.open({
 				templateUrl: $backPath.URL_TEMPLATE_MODAL_CHOICE_SCOPE,
 				size: 'sm',
@@ -55,12 +56,12 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 		            	return {activeModel : true, activePage : true, activeObject : !activeObjectNull};
 		            },
 		            nbCol: function(){
-		            	return activeObjectNull == null ? 2 : 3;
+		            	return activeObjectNull ? 2 : 3
 		            },
 				},
 				controller: function ( $scope, $uibModalInstance, buttons, nbCol ) {
 					$scope.buttons = buttons;
-					$scope.nbCol = nbCol;
+					$scope.classCol = 'col-xs-' + (12 / nbCol);
 					
 					$scope.scopeActiveModel = function() {
 						$uibModalInstance.close(SCOPE_ACTIVEMODEL);
