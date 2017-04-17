@@ -26,6 +26,7 @@ import fr.cedricsevestre.entity.engine.independant.objects.NSchema;
 import fr.cedricsevestre.entity.engine.independant.objects.NSchema.ScopeType;
 import fr.cedricsevestre.entity.engine.independant.objects.Position;
 import fr.cedricsevestre.entity.engine.independant.objects.User;
+import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
@@ -136,7 +137,7 @@ public class Block extends TagSupport implements IIncludeJSP {
 				for (MapTemplate mapTemplate : mapTemplates) {
 					Template activeBlock = mapTemplate.getBlock();
 					
-					ModelMap modelMap = templateControllerExecutor.execute(activeBlock.getController(), model, activeObject, activeBlock, pageContext);
+					ModelMap modelMap = templateControllerExecutor.execute(activeBlock.getController(), model, activeObject, activeBlock, folder, page.getLang(), pageContext);
 					if (modelMap != null){
 						for (Map.Entry<String, Object> entry : modelMap.entrySet()) {
 							pageContext.setAttribute(entry.getKey(), entry.getValue(), PageContext.REQUEST_SCOPE);

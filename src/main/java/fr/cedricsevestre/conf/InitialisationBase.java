@@ -15,6 +15,8 @@ import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.custom.Album.AlbumType;
+import fr.cedricsevestre.entity.custom.Category;
+import fr.cedricsevestre.entity.custom.Icon;
 import fr.cedricsevestre.entity.custom.Media;
 import fr.cedricsevestre.entity.custom.Media.FileType;
 import fr.cedricsevestre.entity.custom.Member;
@@ -35,6 +37,8 @@ import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.AlbumService;
+import fr.cedricsevestre.service.custom.CategoryService;
+import fr.cedricsevestre.service.custom.IconService;
 import fr.cedricsevestre.service.custom.MarkerService;
 import fr.cedricsevestre.service.custom.MediaService;
 import fr.cedricsevestre.service.custom.MemberService;
@@ -104,6 +108,14 @@ public class InitialisationBase {
 	
 	@Autowired
 	private PageService pageService;
+	
+	
+	@Autowired
+	private CategoryService categoryService;
+	
+	@Autowired
+	private IconService iconService;
+	
 	
 	@Autowired
 	private FolderService folderService;
@@ -1237,38 +1249,42 @@ public class InitialisationBase {
 	
 	
 
-	public Map<Lang, Translation> mkPage(Folder folder, String name, String context, Map<Lang, Translation> models) throws ServiceException{
+	public Map<Lang, Translation> mkPage(Page base, Folder folder, String name, String context, Map<Lang, Translation> models) throws ServiceException{
 		List<Folder> folders = new ArrayList<>();
 		folders.add(folder);
-		return mkPage(folders, name, context, models);
+		return mkPage(base, folders, name, context, models);
 	}
-	public Map<Lang, Translation> mkPage(List<Folder> folders, String name, String context, Map<Lang, Translation> models) throws ServiceException{
+	public Map<Lang, Translation> mkPage(Page base, List<Folder> folders, String name, String context, Map<Lang, Translation> models) throws ServiceException{
 		Map<Lang, Translation> map = new HashMap<>();
 		Page first = null;
 		for (Lang lang : langs) {
 			Page page = null;
 			if (first == null){
-				page = pageService.translate(new Page(), lang);
+				page = pageService.translate(base, lang);
 				page.setName(name);
 				page.setDescription(name + " Page description " + lang.getCode());
 				page.setContext(context);
 				page.setModel((Template) models.get(lang));
 				page.setFolders(folders);
-				pageService.save(page);
 				first = page;
 			} else {
 				page = pageService.translate(first, lang);
-				
-				
-				
-				System.out.println("MODEL !!! " + page.getModel().getName());
-				
-				
 				page.setFolders(folders);
 				page.setName(name);
 				page.setDescription(name + " Page description " + lang.getCode());
-				pageService.save(page);
 			}
+			
+			if (base instanceof Category){
+				Category cat = (Category) page;
+				cat.setMenuColor(((Category) base).getMenuColor());
+				cat.setTitle(((Category) base).getTitle());
+				cat.setIcon(((Category) base).getIcon());
+				//page = cat;
+			} else {
+				
+			}
+			
+			pageService.save(page);
 			map.put(lang, page);
 		}
 		return map;
@@ -1420,6 +1436,12 @@ public class InitialisationBase {
 		return map;
 	}
 
+	
+	public Icon mkIcon(Icon icon) throws ServiceException{
+		return iconService.save(icon);
+	}
+	
+	
 	public NSchema mkNSchema(Map<String, NType> columns, NSchema.ScopeType scopeType) throws ServiceException{
 		NSchema nSchema = new NSchema();
 		nSchema.setColumns(columns);
@@ -1610,7 +1632,7 @@ public class InitialisationBase {
 		mapfolders.put(folder.getName(), folder);
 		
 		Map<Lang, Translation> mlogin = mkModel(folder, "login", "login/login");
-		Map<Lang, Translation> pgLogin = mkPage(folder, "login", "static", mlogin);
+		Map<Lang, Translation> pgLogin = mkPage(new Page(), folder, "login", "static", mlogin);
 				
 		// Positions
 		Map<String, Position> mapPosition = new HashMap<>();
@@ -1630,12 +1652,12 @@ public class InitialisationBase {
 		Map<Lang, Translation> mFileSingle = mkModel(folder, "@bo_model_file_single", "file/single");
 		
 		// Pages
-		Map<Lang, Translation> pgHome = mkPage(folder, "@bo_page_home", "home", mHome);
-		Map<Lang, Translation> pgList = mkPage(folder, "@bo_page_list", "default", mList);
-		Map<Lang, Translation> pgView = mkPage(folder, "@bo_page_view", "default", mView);
-		Map<Lang, Translation> pgEdit = mkPage(folder, "@bo_page_edit", "default", mEdit);
-		Map<Lang, Translation> pgFile = mkPage(folder, "@bo_page_file", "default", mFile);
-		Map<Lang, Translation> pgFileSingle = mkPage(folder, "@bo_page_file_single", "default", mFileSingle);
+		Map<Lang, Translation> pgHome = mkPage(new Page(), folder, "@bo_page_home", "home", mHome);
+		Map<Lang, Translation> pgList = mkPage(new Page(), folder, "@bo_page_list", "default", mList);
+		Map<Lang, Translation> pgView = mkPage(new Page(), folder, "@bo_page_view", "default", mView);
+		Map<Lang, Translation> pgEdit = mkPage(new Page(), folder, "@bo_page_edit", "default", mEdit);
+		Map<Lang, Translation> pgFile = mkPage(new Page(), folder, "@bo_page_file", "default", mFile);
+		Map<Lang, Translation> pgFileSingle = mkPage(new Page(), folder, "@bo_page_file_single", "default", mFileSingle);
 		
 		// PageBlocks
 		Map<Lang, Translation> pbHeader = mkPageBlock(folder, "@bo_pageblock_header", "header/header");
@@ -1710,7 +1732,20 @@ public class InitialisationBase {
 		mapfolders.put(fldSurzilGeek.getName(), fldSurzilGeek);
 		fldsResume.add(fldSurzilGeek);
 
-		
+		// Icons
+		Icon iHome = mkIcon(new Icon("home", "flaticon-insignia", "fa fa-hand-peace-o", ""));
+		Icon iResume = mkIcon(new Icon("resume", "flaticon-graduation61", "", ""));
+		Icon iAboutMe = mkIcon(new Icon("aboutme", "", "fa fa-user-secret", ""));
+		Icon iSkills = mkIcon(new Icon("skills", "", "fa fa-sliders", ""));
+		Icon iExperiences = mkIcon(new Icon("experience", "", "fa fa-briefcase", ""));
+		Icon iEducation = mkIcon(new Icon("education", "", "fa fa-leanpub", ""));
+		Icon iPortfolio = mkIcon(new Icon("portfolio", "flaticon-book-bag2", "fa fa-picture-o", ""));
+		Icon iContact = mkIcon(new Icon("contact", "flaticon-placeholders4", "fa fa-volume-control-phone", ""));
+		Icon iFeedBack = mkIcon(new Icon("feedback", "flaticon-earphones18", "", ""));
+		Icon iBlog = mkIcon(new Icon("blog", "flaticon-pens15", "fa fa-file-text-o", ""));
+		Icon iSave = mkIcon(new Icon("save", "", "fa fa-floppy-o", ""));
+
+
 		// Positions
 		Map<String, Position> mapPosition = new HashMap<>();
 		Position pHeader = addPosition(mapPosition, "resume_header");
@@ -1726,15 +1761,21 @@ public class InitialisationBase {
 		// Pages
 		
 		// Pages communes aux deux modèles
-		Map<Lang, Translation> pgHome = mkPage(fldsResume, "home", "default", mDefault);
-		Map<Lang, Translation> pgResume = mkPage(fldsResume, "resume", "default", mDefault);
-		Map<Lang, Translation> pgPortfolio = mkPage(fldsResume, "portfolio", "default", mDefault);
-		Map<Lang, Translation> pgContact = mkPage(fldsResume, "contact", "default", mDefault);
-		Map<Lang, Translation> pgFeedBack = mkPage(fldSamuel, "feedback", "default", mDefault);
-		Map<Lang, Translation> pgBlog = mkPage(fldsResume, "blog", "default", mDefault);
+		Map<Lang, Translation> pgHome = mkPage(new Category(null, "Home", iHome), fldsResume, "home", "default", mDefault);
+		Map<Lang, Translation> pgPortfolio = mkPage(new Category(null, "Portfolio", iPortfolio), fldsResume, "portfolio", "default", mDefault);
+		Map<Lang, Translation> pgContact = mkPage(new Category(null, "Contact", iContact), fldsResume, "contact", "default", mDefault);
+		Map<Lang, Translation> pgBlog = mkPage(new Category(null, "Blog", iBlog), fldsResume, "blog", "default", mDefault);
 
 		// Pages dédiés à l'un ou l'autre
-		Map<Lang, Translation> pgSkills = mkPage(fldSurzilGeek, "skills", "default", mDefault);
+		Map<Lang, Translation> pgResume = mkPage(new Category(null, "Resume", iResume), fldSamuel, "resume", "default", mDefault);
+		Map<Lang, Translation> pgFeedBack = mkPage(new Category(null, "Feedback", iFeedBack), fldSamuel, "feedback", "default", mDefault);
+		
+		Map<Lang, Translation> pgAboutMe = mkPage(new Category(null, "About me", iAboutMe), fldSurzilGeek, "aboutme", "default", mDefault);
+		Map<Lang, Translation> pgSkills = mkPage(new Category(null, "Skills", iSkills), fldSurzilGeek, "skills", "default", mDefault);
+		Map<Lang, Translation> pgExperiences = mkPage(new Category(null, "Experiences", iExperiences), fldSurzilGeek, "experiences", "default", mDefault);
+		Map<Lang, Translation> pgEducation = mkPage(new Category(null, "Education", iEducation), fldSurzilGeek, "education", "default", mDefault);
+		Map<Lang, Translation> pgResumePdf = mkPage(new Category(null, "My resume PDF", iSave), fldSurzilGeek, "resumepdf", "default", mDefault);
+		
 		
 
 		
@@ -1745,6 +1786,12 @@ public class InitialisationBase {
 		Map<Lang, Translation> pbFooter = mkPageBlock(fldsResume, "resume_pageblock_footer", "footer/footer");
 				
 		// Blocks
+		Map<Lang, Translation> bMenuObjects = mkBlock(fldsResume, "resume_block_nav", "nav/nav");
+		
+		
+		
+		
+		
 		generateMenu(fldSurzilGeek, pbHeader, pheaderMenu);
 		
 
@@ -1752,7 +1799,7 @@ public class InitialisationBase {
 		
 		// Set MapTemplate
 		Map<Lang, MapTemplate> mtHeaderPgPortfolio = addMapTemplate(pgPortfolio, pbHeader, pHeader);
-
+		Map<Lang, MapTemplate> mtNavPgPortfolio = addMapTemplate(pgPortfolio, bMenuObjects, pNav);
 	
 	}
 	

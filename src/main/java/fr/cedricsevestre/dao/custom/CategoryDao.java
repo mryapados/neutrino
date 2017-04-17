@@ -14,9 +14,15 @@ import fr.cedricsevestre.entity.custom.Category;
 import fr.cedricsevestre.entity.custom.Media;
 import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.engine.IdProvider;
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
+import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
+import fr.cedricsevestre.entity.engine.translation.objects.Template;
 
 @Repository
 public interface CategoryDao extends TranslationDao<Category> {
 
+	@Query("SELECT t FROM Category t WHERE (t.folders IS EMPTY OR :folder IN elements(t.folders)) AND t.lang =:lang")
+	List<Category> findAllForFolderAndLang(@Param("folder") Folder folder, @Param("lang") Lang lang);
+	
 }

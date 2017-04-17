@@ -54,7 +54,9 @@ public class Import extends ImportSupport implements IIncludeJSP {
 			return SKIP_BODY;
 		}
 		
-		url = "/WEB-INF" + url;
+		if (url.indexOf("/") == 0) {
+			url = "/WEB-INF" + url;
+		}
 		return super.doStartTag();
 	}
 	

@@ -29,7 +29,7 @@ import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 @Entity
 @Table(name = "notranslation")
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name="object_type")
+//@DiscriminatorColumn(name="object_type")
 public abstract class NoTranslation implements IdProvider, Serializable {
 
 	private static final long serialVersionUID = 1L;

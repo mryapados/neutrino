@@ -106,7 +106,36 @@
 	        <rtexprvalue>true</rtexprvalue>
 	    </attribute>
 	</tag>
-	
+	<tag>
+	    <name>bind</name>
+	    <tag-class>fr.cedricsevestre.taglib.Bind</tag-class>
+	    <body-content>scriptless</body-content>
+	    <attribute>
+	        <name>var</name>
+	        <required>false</required>
+	        <rtexprvalue>false</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	        <name>scope</name>
+	        <required>false</required>
+	        <rtexprvalue>false</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	        <name>type</name>
+	        <required>true</required>
+	        <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	        <name>beanId</name>
+	        <required>true</required>
+	        <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	        <name>field</name>
+	        <required>true</required>
+	        <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	</tag>
 	<tag>
 		<name>discrimin</name>
 		<tag-class>fr.cedricsevestre.taglib.Discrimin</tag-class>

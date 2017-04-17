@@ -196,7 +196,7 @@ public class BackController extends AbtractController {
 				if (activeObject == null) throw new ResourceNotFoundException("activeObject id " + activeObjectId + " not found !");
 			}
 			
-			ModelMap modelMap = templateControllerExecutor.execute(block.getController(), mapTemplate.getModel(), activeObject, block, null);	
+			ModelMap modelMap = templateControllerExecutor.execute(block.getController(), mapTemplate.getModel(), activeObject, block, folder, page.getLang(),  null);	
 			Map<String, Object> nDatas = nDataService.getNDatas(mapTemplate);
 			
 			modelAndView = baseView(page, block, activeObject, folder);

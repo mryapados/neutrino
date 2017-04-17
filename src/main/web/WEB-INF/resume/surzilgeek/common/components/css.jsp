@@ -13,6 +13,8 @@
 <link href="<c:url value='/resources/src/resume/surzilgeek/css/main.css'/>" rel="stylesheet" type="text/css"/>
 <link href="<c:url value='/resources/src/resume/surzilgeek/css/responsive.css'/>" rel="stylesheet" type="text/css"/>
 
+<link href="<c:url value='/resources/src/resume/surzilgeek/css/custom.css'/>" rel="stylesheet" type="text/css"/>
+
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Sacramento" rel="stylesheet">
 

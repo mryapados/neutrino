@@ -37,7 +37,7 @@
 			<div class="alert alert-danger"><strong>Error !</strong> ${fieldError}</div>
 		</c:if>
 	</c:when>
-	<c:when test="${finalFieldType eq 'VARCHAR50'}">
+	<c:when test="${finalFieldType eq 'VARCHAR50' || finalFieldType eq 'COLOR'}">
 		<c:choose>
 			<c:when test="${not empty finalField.enumDatas}">
 				<c:set var="fieldError"><form:errors path="${finalField.name}"/></c:set>

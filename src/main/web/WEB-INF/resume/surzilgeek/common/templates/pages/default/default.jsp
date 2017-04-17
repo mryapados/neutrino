@@ -33,6 +33,7 @@
 <my:body>
 
     <div class="main-wrapper home-one">
+    
         <div id="navigation" class="menu-one">
             <div class="navbar navbar-fixed-top">
                 <div class="navbar-header">
@@ -46,47 +47,13 @@
                         <a href="index.html"><img class="img-responsive" src="<c:url value='/resources/src/resume/surzilgeek/images/logo.png'/>" alt="Image" ></a> 
                     </div> 
                 </div>
-                               
+
                 <nav id="mainmenu" class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">          
-                        <li  class="scroll current dropdown"><a href="#home-banner">
-                            <span><i class="fa fa-hand-peace-o" aria-hidden="true"></i>Home</span></a>
-                        </li>               
-                        <li class="scroll"><a href="#about">
-                            <span><i class="fa fa-user-secret" aria-hidden="true"></i>About me</span></a>
-                        </li>               
-                        <li class="scroll"><a href="#skill">
-                            <span><i class="fa fa-sliders" aria-hidden="true"></i>Skills</span></a>
-                         </li>     
-                        <li class="scroll"><a href="#exprience">
-                            <span><i class="fa fa-briefcase" aria-hidden="true"></i>Experience</span></a>
-                        </li>               
-                        <li class="scroll"><a href="#education">
-                            <span><i class="fa fa-leanpub" aria-hidden="true"></i>Education</span></a>
-                        </li>               
-                        <li class="scroll"><a href="#portfolio">
-                            <span><i class="fa fa-picture-o" aria-hidden="true"></i>Portfolio</span></a>
-                        </li>                              
-                        <li class="scroll"><a href="#contact">
-                            <span><i class="fa fa-volume-control-phone" aria-hidden="true"></i>Contact</span></a>
-                        </li>               
-                        <li class="scroll"><a href="#blog">
-                            <span><i class="fa fa-file-text-o" aria-hidden="true"></i>Blog</span></a>
-                        </li>
-                        <li class="scroll"><a href="#profile">
-                            <span><i class="fa fa-floppy-o" aria-hidden="true"></i>My Resume.pdf</span></a>
-                        </li>               
-                        <li>
-                            <ul class="social list-inline">
-                                <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fa fa-dribbble" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fa fa-behance" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fa fa-github-alt" aria-hidden="true"></i></a></li>
-                            </ul>
-                        </li>                                          
-                    </ul>
+                	<ul class="nav navbar-nav">
+                		<my:block position="resume_nav" /> 
+                	</ul>
+                
+
                 </nav>
             </div><!-- navbar -->                                
         </div><!-- navigation -->
