@@ -15,6 +15,8 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
+import fr.cedricsevestre.annotation.BOField;
+import fr.cedricsevestre.annotation.BOField.ValueType;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 
@@ -31,11 +33,13 @@ public class Page extends Translation {
 
 	private static final long serialVersionUID = 1L;
 	
+	@BOField(type = ValueType.VARCHAR50)
 	@NotNull
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "context")
 	private String context;
 	
+	@BOField(type = ValueType.TOBJECT)
 	@OneToOne
 	@JoinColumn(name="model")
 	private Template model;

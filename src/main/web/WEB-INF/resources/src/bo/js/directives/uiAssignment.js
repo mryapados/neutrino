@@ -186,7 +186,7 @@
 
 				      			//Récupère la liste des objets avec leur nom via une requête au serveur
 				      			if (ids.length > 0){
-						      		$http.get($frontPath.URL_SERVER_REST + 'bo/objects/' + type, {params:{'id': ids}}).then(function(data) {
+						      		$http.get($frontPath.URL_SERVER_REST + 'bo/list/objects/' + type, {params:{'id': ids}}).then(function(data) {
 						      			$scope[modelText] = data.data;
 						      			
 									})

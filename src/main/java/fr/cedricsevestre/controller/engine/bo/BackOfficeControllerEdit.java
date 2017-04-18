@@ -113,6 +113,7 @@ public class BackOfficeControllerEdit extends BackOfficeController {
 	public ModelAndView save(@RequestParam(ATTR_TYPE) String type, @RequestParam(ATTR_ID) Integer id, @Valid @ModelAttribute(ATTR_OBJECTEDIT) IdProvider data, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) throws ControllerException, ResourceNotFoundException {
 		ModelAndView modelAndView = null;
 		if (result.hasErrors()) {
+			System.err.println(result.getAllErrors());
 			modelAndView = edit(type, id, null, true);
 		} else{
 			try {

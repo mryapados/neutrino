@@ -7,6 +7,7 @@ import javax.persistence.PersistenceException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -51,9 +52,10 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 		}
 	}
 
+	@Cacheable(value="identify")
 	public T identify(Folder folder, String name, Lang lang) throws ServiceException {
 		try {
-			System.out.println("identify " + name + " " + lang.getCode() + " " + translationDao);
+			System.out.println("ZZZZ identify " + name + " " + lang.getCode() + " " + translationDao);
 			if (folder == null) return translationDao.identify(name, lang);
 			else return translationDao.identify(folder, name, lang);
 		} catch (PersistenceException e) {

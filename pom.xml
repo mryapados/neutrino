@@ -56,6 +56,14 @@
 			<artifactId>spring-context</artifactId>
 			<version>${springframework.version}</version>
 		</dependency>
+		
+		<!-- Support for Ehcache and others -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
@@ -87,6 +95,13 @@
 	        <artifactId>spring-security-taglibs</artifactId>
 	        <version>${springsecurity.version}</version>
 	    </dependency>
+    
+    
+    
+    
+    
+    
+    
     
 <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
    <dependency>
@@ -205,6 +220,13 @@
 			<artifactId>jsoup</artifactId>
 			<version>1.7.2</version>
 		</dependency> 
+
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>2.9.0</version>
+		</dependency>
+
 
 	</dependencies>
 

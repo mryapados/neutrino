@@ -7,6 +7,7 @@ import javax.persistence.PersistenceException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -41,6 +42,7 @@ public abstract class NoTranslationService<T extends NoTranslation> extends Base
 		}
 	}
 	
+	@Cacheable(value="identify")
 	public T identify(Integer folderId, String name) throws ServiceException {
 		try {
 			System.out.println("identify " + name + " " + noTranslationDao);

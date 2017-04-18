@@ -11,8 +11,8 @@
     </rule>
     
     <rule>
-       <from>^/bo/([a-zA-Z0-9_\-]+)/$</from>
-       <to>/@bo/$1/</to>
+       <from>^/bo/(.*)$</from>
+       <to>/@bo/$1</to>
     </rule>
     <rule>
        <from>^/file/$</from>

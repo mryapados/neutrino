@@ -119,7 +119,7 @@ public class TemplateService extends TranslationService<Template>{
 		return path.toString();
 	}
 	
-	@Cacheable
+	@Cacheable(value="templateService")
 	public Boolean checkJSPExist(String webInfFolder, String pathContext, Template template) throws ServiceException{
 		String path = pathJSP(true, pathContext, template, true);
 		Boolean jspExist = cacheService.jspPathExist(path);

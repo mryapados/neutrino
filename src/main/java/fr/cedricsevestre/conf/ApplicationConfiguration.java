@@ -8,6 +8,10 @@ import javax.servlet.jsp.PageContext;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
+import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +21,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.FormatterRegistry;
@@ -40,6 +45,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.cedricsevestre.controller.engine.IdProviderConverter;
@@ -53,6 +59,7 @@ import fr.cedricsevestre.taglib.Head;
 @EnableTransactionManagement
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableSpringDataWebSupport
+@EnableCaching
 public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 	
 	@Autowired
@@ -60,6 +67,21 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 	
 	@Autowired
     private IdProviderConverter idProviderConverter;
+	
+	
+	@Bean
+	public CacheManager cacheManager() {
+		return new EhCacheCacheManager(ehCacheCacheManager().getObject());
+	}
+
+	@Bean
+	public EhCacheManagerFactoryBean ehCacheCacheManager() {
+		EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
+		cmfb.setConfigLocation(new ClassPathResource("ehcache.xml"));
+		cmfb.setShared(true);
+		return cmfb;
+	}
+	
 	
     @Bean
     public MultipartResolver multipartResolver() {

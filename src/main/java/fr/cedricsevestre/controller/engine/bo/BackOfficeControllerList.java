@@ -91,6 +91,8 @@ public class BackOfficeControllerList extends BackOfficeController {
 	@Autowired
 	private TemplateService templateService;
 
+	protected static final String BO_OBJECTS = "objects/";
+	
 	@RequestMapping(value = BO_LIST_URL, method = RequestMethod.GET)
 	public ModelAndView list(@ModelAttribute("type") String type, Pageable pageRequest) throws ControllerException, ResourceNotFoundException {
 
@@ -126,7 +128,7 @@ public class BackOfficeControllerList extends BackOfficeController {
 			fr.cedricsevestre.entity.engine.translation.objects.Page page = common.getPage(folder, BO_LIST_PAGE, lang);
 			Template block = templateService.identify(folder, BO_BLOCK_LIST, lang);
 
-			ModelAndView modelAndView = baseView(page, block, folder);
+			ModelAndView modelAndView = baseView(page, block, null, folder);
 
 			modelAndView.addObject("page", page);
 			modelAndView.addObject("activeBlock", block);
@@ -167,7 +169,7 @@ public class BackOfficeControllerList extends BackOfficeController {
 		}
 	}
 
-	@RequestMapping(value = "/objects/{type}", method = RequestMethod.GET)
+	@RequestMapping(value = BO_LIST_URL + BO_OBJECTS + "{type}", method = RequestMethod.GET)
 	public @ResponseBody List<IdProviderDto> getObjects(@PathVariable(value = "type") String type, @RequestParam("id") Integer[] ids) throws ControllerException, ResourceNotFoundException {
 		try {
 			Class<?> object;
