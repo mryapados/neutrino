@@ -28,11 +28,13 @@ public class NField implements Serializable {
 	private String groupName;
 	private List<String> enumDatas;
 	private Field field;
+	private String defaultValue;
+	
 	
 	private String reverseJoin;
 	private Boolean reverseIsCollection;
 	
-	public NField(Field field, ValueType type, ValueType ofType, String name, Class<?> clazz, String className, String ofClassName, boolean inList, boolean inView, boolean editable, SortType sortBy, int sortPriority, boolean defaultField, int displayOrder, String tabName, String groupName, List<String> enumDatas) {
+	public NField(Field field, ValueType type, ValueType ofType, String name, Class<?> clazz, String className, String ofClassName, boolean inList, boolean inView, boolean editable, SortType sortBy, int sortPriority, boolean defaultField, int displayOrder, String tabName, String groupName, List<String> enumDatas, String defaultValue) {
 		super();
 		
 		this.field = field;
@@ -52,7 +54,8 @@ public class NField implements Serializable {
 		this.tabName = tabName;
 		this.groupName = groupName;
 		this.enumDatas = enumDatas;
-
+		this.defaultValue = defaultValue;
+		
 		this.reverseJoin = null;
 		this.reverseIsCollection = true;
 	}
@@ -153,6 +156,14 @@ public class NField implements Serializable {
 	public void setEnumDatas(List<String> enumDatas) {
 		this.enumDatas = enumDatas;
 	}
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+
 	public String getReverseJoin() {
 		return reverseJoin;
 	}
@@ -181,9 +192,10 @@ public class NField implements Serializable {
 				+ className + ", ofClassName=" + ofClassName + ", inList=" + inList + ", inView=" + inView
 				+ ", editable=" + editable + ", sortBy=" + sortBy + ", sortPriority=" + sortPriority + ", defaultField="
 				+ defaultField + ", displayOrder=" + displayOrder + ", tabName=" + tabName + ", groupName=" + groupName
-				+ ", enumDatas=" + enumDatas + ", field=" + field + ", reverseJoin=" + reverseJoin
-				+ ", reverseIsCollection=" + reverseIsCollection + "]";
+				+ ", enumDatas=" + enumDatas + ", field=" + field + ", defaultValue=" + defaultValue + ", reverseJoin="
+				+ reverseJoin + ", reverseIsCollection=" + reverseIsCollection + "]";
 	}
-	
+
+
 	
 }

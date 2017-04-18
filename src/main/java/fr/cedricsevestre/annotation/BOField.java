@@ -49,4 +49,6 @@ public @interface BOField {
 		NULL
 	}
 	Class<? extends Enum<?>> ofEnum() default Default.class;
+	
+	String defaultValue() default "";
 }

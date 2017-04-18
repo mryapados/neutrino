@@ -102,8 +102,12 @@ public class BackOfficeControllerList extends BackOfficeController {
 			
 			Class<?> object = entityLocator.getEntity(type).getClass();
 			modelAndView.addObject("objectType", object.getSimpleName());
-			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
-		
+			if (Translation.class.isAssignableFrom(object)){
+				modelAndView.addObject("objectBaseType", Translation.class.getSimpleName());
+			} else if (NoTranslation.class.isAssignableFrom(object)){
+				modelAndView.addObject("objectBaseType", NoTranslation.class.getSimpleName());
+			}
+			
 			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest);
 
 			modelAndView.addObject("objectDatas", tDatas.getObjectDatas());
@@ -142,8 +146,13 @@ public class BackOfficeControllerList extends BackOfficeController {
 			
 			Class<?> recipientObject = entityLocator.getEntity(many ? nField.getOfClassName() : nField.getClassName()).getClass();
 			modelAndView.addObject("objectType", recipientObject.getSimpleName());
-			modelAndView.addObject("objectBaseType", recipientObject.getSuperclass().getSimpleName());
-					
+
+			if (Translation.class.isAssignableFrom(recipientObject.getClass())){
+				modelAndView.addObject("objectBaseType", Translation.class.getSimpleName());
+			} else if (NoTranslation.class.isAssignableFrom(recipientObject.getClass())){
+				modelAndView.addObject("objectBaseType", NoTranslation.class.getSimpleName());
+			}
+		
 			String recipientField = nField.getReverseJoin();
 			NDatas<IdProvider> tDatas = null;
 			if (recipientField != null){

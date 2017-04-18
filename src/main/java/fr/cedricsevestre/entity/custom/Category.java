@@ -13,6 +13,7 @@ import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
@@ -38,6 +39,11 @@ public class Category extends Page {
 
 	private static final long serialVersionUID = 1L;
 	
+	@NotNull
+	@BOField(type = ValueType.INTEGER, defaultValue = "9999", editable = false)
+	@Column(name = "ordered")
+	private Integer ordered;
+	
 	@BOField(type = ValueType.COLOR)
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "menu_color")
@@ -48,20 +54,29 @@ public class Category extends Page {
 	@Column(name = "title")
 	private String title;
 	
+	@BOField(type = ValueType.BOOLEAN)
+	@Column(name = "inmenu")
+	private Boolean inMenu;
+	
 	@BOField(type = ValueType.NTOBJECT)
 	@JoinColumn(name="icon_id")
 	@OneToOne
 	private Icon icon;
 	
+	
+	
+	
 	public Category() {
 		super();
 	}
 
-	public Category(String menuColor, String title, Icon icon) {
+	public Category(String menuColor, String title, Icon icon, Boolean inMenu, Integer ordered) {
 		super();
 		this.menuColor = menuColor;
 		this.title = title;
 		this.icon = icon;
+		this.ordered = ordered;
+		this.inMenu = inMenu;
 	}
 	
 	public String getMenuColor() {
@@ -86,6 +101,22 @@ public class Category extends Page {
 
 	public void setIcon(Icon icon) {
 		this.icon = icon;
+	}
+
+	public Integer getOrdered() {
+		return ordered;
+	}
+
+	public void setOrdered(Integer ordered) {
+		this.ordered = ordered;
+	}
+
+	public Boolean getInMenu() {
+		return inMenu;
+	}
+
+	public void setInMenu(Boolean inMenu) {
+		this.inMenu = inMenu;
 	}
 
 	

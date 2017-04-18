@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
+import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ControllerException;
 import fr.cedricsevestre.exception.ResourceNotFoundException;
@@ -27,15 +28,17 @@ public class BackOfficeControllerView extends BackOfficeController {
 			System.out.println("		Superclass = " + object.getSuperclass());
 			
 			modelAndView.addObject("objectType", object.getSimpleName());
-			modelAndView.addObject("objectBaseType", object.getSuperclass().getSimpleName());
 			
 			NData<IdProvider> tData = backOfficeService.findOne(object, id);
 			modelAndView.addObject("fields", tData.getFields());
 			modelAndView.addObject("objectView", tData.getObjectData());
 			modelAndView.addObject("objectName", tData.getObjectData().getName());
-			if (object.getSuperclass().equals(Translation.class)){
+			if (Translation.class.isAssignableFrom(object)){
 				Translation translation = (Translation) tData.getObjectData();
 				modelAndView.addObject("objectLang", translation.getLang());
+				modelAndView.addObject("objectBaseType", Translation.class.getSimpleName());
+			} else if (NoTranslation.class.isAssignableFrom(object)){
+				modelAndView.addObject("objectBaseType", NoTranslation.class.getSimpleName());
 			}
 
 			return modelAndView;

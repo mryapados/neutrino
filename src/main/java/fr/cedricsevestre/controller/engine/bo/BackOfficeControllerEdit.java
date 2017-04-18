@@ -138,7 +138,12 @@ public class BackOfficeControllerEdit extends BackOfficeController {
 			Class<?> object = entityLocator.getEntity(type).getClass();
 
 			modelAndView.addObject(ATTR_OBJECTTYPE, object.getSimpleName());
-			modelAndView.addObject(ATTR_OBJECTBASETYPE, object.getSuperclass().getSimpleName());
+
+			if (Translation.class.isAssignableFrom(object)){
+				modelAndView.addObject(ATTR_OBJECTBASETYPE, Translation.class.getSimpleName());
+			} else if (NoTranslation.class.isAssignableFrom(object)){
+				modelAndView.addObject(ATTR_OBJECTBASETYPE, NoTranslation.class.getSimpleName());
+			}
 
 			NData<IdProvider> tData;
 			if (id == null) {

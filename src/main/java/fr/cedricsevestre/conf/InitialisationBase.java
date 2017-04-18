@@ -1279,6 +1279,7 @@ public class InitialisationBase {
 				cat.setMenuColor(((Category) base).getMenuColor());
 				cat.setTitle(((Category) base).getTitle());
 				cat.setIcon(((Category) base).getIcon());
+				cat.setOrdered(((Category) base).getOrdered());
 				//page = cat;
 			} else {
 				
@@ -1761,20 +1762,20 @@ public class InitialisationBase {
 		// Pages
 		
 		// Pages communes aux deux modèles
-		Map<Lang, Translation> pgHome = mkPage(new Category("#1abc9c", "Home", iHome), fldsResume, "home", "default", mDefault);
-		Map<Lang, Translation> pgPortfolio = mkPage(new Category("#9b59b6", "Portfolio", iPortfolio), fldsResume, "portfolio", "default", mDefault);
-		Map<Lang, Translation> pgContact = mkPage(new Category("#e67e22", "Contact", iContact), fldsResume, "contact", "default", mDefault);
-		Map<Lang, Translation> pgBlog = mkPage(new Category("#d9a81d", "Blog", iBlog), fldsResume, "blog", "default", mDefault);
+		Map<Lang, Translation> pgHome = mkPage(new Category("#1abc9c", "Home", iHome, true, 10), fldsResume, "home", "default", mDefault);
+		Map<Lang, Translation> pgPortfolio = mkPage(new Category("#9b59b6", "Portfolio", iPortfolio, true, 40), fldsResume, "portfolio", "default", mDefault);
+		Map<Lang, Translation> pgContact = mkPage(new Category("#e67e22", "Contact", iContact, true, 30), fldsResume, "contact", "default", mDefault);
+		Map<Lang, Translation> pgBlog = mkPage(new Category("#d9a81d", "Blog", iBlog, true, 70), fldsResume, "blog", "default", mDefault);
 
 		// Pages dédiés à l'un ou l'autre
-		Map<Lang, Translation> pgResume = mkPage(new Category("#3498db", "Resume", iResume), fldSamuel, "resume", "default", mDefault);
-		Map<Lang, Translation> pgFeedBack = mkPage(new Category("#e74c3c", "Feedback", iFeedBack), fldSamuel, "feedback", "default", mDefault);
+		Map<Lang, Translation> pgResume = mkPage(new Category("#3498db", "Resume", iResume, true, 20), fldSamuel, "resume", "default", mDefault);
+		Map<Lang, Translation> pgFeedBack = mkPage(new Category("#e74c3c", "Feedback", iFeedBack, true, 50), fldSamuel, "feedback", "default", mDefault);
 		
-		Map<Lang, Translation> pgAboutMe = mkPage(new Category(null, "About me", iAboutMe), fldSurzilGeek, "aboutme", "default", mDefault);
-		Map<Lang, Translation> pgSkills = mkPage(new Category(null, "Skills", iSkills), fldSurzilGeek, "skills", "default", mDefault);
-		Map<Lang, Translation> pgExperiences = mkPage(new Category(null, "Experiences", iExperiences), fldSurzilGeek, "experiences", "default", mDefault);
-		Map<Lang, Translation> pgEducation = mkPage(new Category(null, "Education", iEducation), fldSurzilGeek, "education", "default", mDefault);
-		Map<Lang, Translation> pgResumePdf = mkPage(new Category(null, "My resume PDF", iSave), fldSurzilGeek, "resumepdf", "default", mDefault);
+		Map<Lang, Translation> pgAboutMe = mkPage(new Category(null, "About me", iAboutMe, true, 12), fldSurzilGeek, "aboutme", "default", mDefault);
+		Map<Lang, Translation> pgSkills = mkPage(new Category(null, "Skills", iSkills, true, 14), fldSurzilGeek, "skills", "default", mDefault);
+		Map<Lang, Translation> pgExperiences = mkPage(new Category(null, "Experiences", iExperiences, true, 16), fldSurzilGeek, "experiences", "default", mDefault);
+		Map<Lang, Translation> pgEducation = mkPage(new Category(null, "Education", iEducation, true, 18), fldSurzilGeek, "education", "default", mDefault);
+		Map<Lang, Translation> pgResumePdf = mkPage(new Category(null, "My resume PDF", iSave, true, 60), fldSurzilGeek, "resumepdf", "default", mDefault);
 		
 		
 

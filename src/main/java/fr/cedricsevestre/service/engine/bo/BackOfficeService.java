@@ -298,7 +298,7 @@ public class BackOfficeService { //implements IBackOfficeService{
 	    	className = clazz.getSimpleName();
 	    }
 	    
-		NField nField = new NField(field, nType.type(), nType.ofType(), field.getName(), clazz, className, ofClassName, nType.inList(), nType.inView(), nType.editable(), nType.sortBy(), nType.sortPriority(), nType.defaultField(), nType.displayOrder(), nType.tabName(), nType.groupName(), enumDatas);
+		NField nField = new NField(field, nType.type(), nType.ofType(), field.getName(), clazz, className, ofClassName, nType.inList(), nType.inView(), nType.editable(), nType.sortBy(), nType.sortPriority(), nType.defaultField(), nType.displayOrder(), nType.tabName(), nType.groupName(), enumDatas, nType.defaultValue());
 	
 		String reverseJoin = null;
 		Boolean reverseIsCollection = null;

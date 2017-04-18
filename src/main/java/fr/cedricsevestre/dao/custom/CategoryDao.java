@@ -22,7 +22,7 @@ import fr.cedricsevestre.entity.engine.translation.objects.Template;
 @Repository
 public interface CategoryDao extends TranslationDao<Category> {
 
-	@Query("SELECT t FROM Category t WHERE (t.folders IS EMPTY OR :folder IN elements(t.folders)) AND t.lang =:lang")
+	@Query("SELECT t FROM Category t WHERE (t.folders IS EMPTY OR :folder IN elements(t.folders)) AND t.lang =:lang AND t.inMenu = true ORDER BY ordered")
 	List<Category> findAllForFolderAndLang(@Param("folder") Folder folder, @Param("lang") Lang lang);
 	
 }
