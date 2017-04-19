@@ -1,6 +1,7 @@
 package fr.cedricsevestre.entity.custom;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -10,6 +11,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
@@ -31,9 +34,10 @@ import fr.cedricsevestre.entity.engine.translation.objects.Link;
 
 @NamedEntityGraphs({
 	@NamedEntityGraph(
-		name = "CurriculumVitae.allJoins", 
+		name = "Resume.allJoins", 
 		attributeNodes = { 
-			@NamedAttributeNode("links")
+			@NamedAttributeNode("links"),
+			@NamedAttributeNode("experiences")			
 		})
 })
 
@@ -64,12 +68,26 @@ public class Resume extends Translation {
 	private String downloadableFile;
 	
 	@BOField(type = ValueType.COLLECTION, ofType = ValueType.TOBJECT)
+	@OneToMany(mappedBy = "resume")
+	private Set<Experience> experiences;
+
+	@BOField(type = ValueType.COLLECTION, ofType = ValueType.TOBJECT)
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name="resume_links", joinColumns=@JoinColumn(name="link_id"))
 	@Column(name = "links")
 	private List<Link> links;
 
+	public Resume() {
+		
+	}
 	
+	public Resume(String firstName, String lastName, String mail) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.mail = mail;
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -110,6 +128,14 @@ public class Resume extends Translation {
 		this.downloadableFile = downloadableFile;
 	}
 
+	public Set<Experience> getExperiences() {
+		return experiences;
+	}
+
+	public void setExperiences(Set<Experience> experiences) {
+		this.experiences = experiences;
+	}
+
 	public List<Link> getLinks() {
 		return links;
 	}
@@ -117,7 +143,6 @@ public class Resume extends Translation {
 	public void setLinks(List<Link> links) {
 		this.links = links;
 	}
-	
-	
+
 	
 }

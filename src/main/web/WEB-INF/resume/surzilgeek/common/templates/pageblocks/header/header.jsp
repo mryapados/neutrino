@@ -5,18 +5,13 @@
 
 <my:init test="${!initialized}" />
 
-<div id="home-banner" class="home-banner-one">
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-9">
-				<div class="banner-content">
-					<div class="banner-info">
-						<h1>Hello, I am</h1>
-						<h2>Surzil Geek</h2>
-						<h3>Web Developer</h3>
-					</div>
-				</div>
-			</div>
-		</div><!-- row -->
-	</div><!-- container -->
-</div><!-- home-banner -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="section-title">
+                <h1>${activePage.title}</h1>
+            </div>  
+        </div>
+    </div><!-- row -->
+</div><!-- container -->

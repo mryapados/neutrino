@@ -108,6 +108,9 @@ public class BackOfficeControllerList extends BackOfficeController {
 				modelAndView.addObject("objectBaseType", NoTranslation.class.getSimpleName());
 			}
 			
+			modelAndView.addObject("boResources", backOfficeService.getResources(object));
+			
+			
 			NDatas<IdProvider> tDatas = backOfficeService.findAll(object, pageRequest);
 
 			modelAndView.addObject("objectDatas", tDatas.getObjectDatas());

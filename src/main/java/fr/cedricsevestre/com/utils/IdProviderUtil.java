@@ -3,6 +3,8 @@ package fr.cedricsevestre.com.utils;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.jsp.JspTagException;
 
@@ -80,8 +82,30 @@ public class IdProviderUtil {
 	}
 	
 	
-	
-	
+	private IdProvider copyFields(IdProvider entity, IdProvider newEntity, Class<?> clazz) throws IllegalAccessException {
+	    List<Field> fields = new ArrayList<>();
+	    for (Field field : clazz.getDeclaredFields()) {
+	        fields.add(field);
+	    }
+	    for (Field field : fields) {
+	        field.setAccessible(true);
+	        field.set(newEntity, field.get(entity));
+	    }
+	    return newEntity;
+	}
+	public IdProvider copy(IdProvider entity) throws IllegalAccessException, InstantiationException {
+	    Class<?> clazz = entity.getClass();
+	    IdProvider newEntity = (IdProvider) entity.getClass().newInstance();
+
+	    while (clazz != null) {
+	        copyFields(entity, newEntity, clazz);
+	        clazz = clazz.getSuperclass();
+	    }
+
+	    return newEntity;
+	}
+
+
 	
 	
 	

@@ -1,99 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
-<%@ taglib prefix="my" uri="/WEB-INF/taglibs/neutrino.tld" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="my" uri="/WEB-INF/taglibs/neutrino.tld"%>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 
-<%-- 
-	Objets disponibles :  
-	language : Scope Request, String , en / fr / es / ..., objet fourni par le controller, provient d'un cookie.
-
-	TO DO...
---%>
-
-<%-- init : Obligatoire dans le JSP contenant le Doctype --%>
 <my:init test="${!initialized}"/>
-
-<!DOCTYPE html>
-<html lang="${language}">
-<!--[if IE 9]>
-<html class="ie9" lang="${language}">    <![endif]-->
-<!--[if IE 8]>
-<html class="ie8" lang="${language}">    <![endif]-->
-<my:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name=viewport content="width=device-width, initial-scale=1">
-	
-	<meta name="description" content="Gridus vCard HTML Template is the professional responsive personal website template, based on the latest Bootstrap 3">
-	<meta name="keywords" content="to do">
-	<meta name="author" content="Cédric Sevestre">
-	
-	<title><spring:message code="project.pages.home.title" arguments="${project}" /></title>
-</my:head>
-<my:body>
-
-    <div class="main-wrapper home-one">
-        <div id="navigation" class="menu-one">
-            <div class="navbar navbar-fixed-top">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <div class="navbar-brand logo">
-                        <a href="index.html"><img class="img-responsive" src="<c:url value='/resources/src/resume/surzilgeek/images/logo.png'/>" alt="Image" ></a> 
-                    </div> 
-                </div>
-                               
-                <nav id="mainmenu" class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">          
-                        <li  class="scroll current dropdown"><a href="#home-banner">
-                            <span><i class="fa fa-hand-peace-o" aria-hidden="true"></i>Home</span></a>
-                        </li>               
-                        <li class="scroll"><a href="#about">
-                            <span><i class="fa fa-user-secret" aria-hidden="true"></i>About me</span></a>
-                        </li>               
-                        <li class="scroll"><a href="#skill">
-                            <span><i class="fa fa-sliders" aria-hidden="true"></i>Skills</span></a>
-                         </li>     
-                        <li class="scroll"><a href="#exprience">
-                            <span><i class="fa fa-briefcase" aria-hidden="true"></i>Experience</span></a>
-                        </li>               
-                        <li class="scroll"><a href="#education">
-                            <span><i class="fa fa-leanpub" aria-hidden="true"></i>Education</span></a>
-                        </li>               
-                        <li class="scroll"><a href="#portfolio">
-                            <span><i class="fa fa-picture-o" aria-hidden="true"></i>Portfolio</span></a>
-                        </li>                              
-                        <li class="scroll"><a href="#contact">
-                            <span><i class="fa fa-volume-control-phone" aria-hidden="true"></i>Contact</span></a>
-                        </li>               
-                        <li class="scroll"><a href="#blog">
-                            <span><i class="fa fa-file-text-o" aria-hidden="true"></i>Blog</span></a>
-                        </li>
-                        <li class="scroll"><a href="#profile">
-                            <span><i class="fa fa-floppy-o" aria-hidden="true"></i>My Resume.pdf</span></a>
-                        </li>               
-                        <li>
-                            <ul class="social list-inline">
-                                <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fa fa-dribbble" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fa fa-behance" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fa fa-github-alt" aria-hidden="true"></i></a></li>
-                            </ul>
-                        </li>                                          
-                    </ul>
-                </nav>
-            </div><!-- navbar -->                                
-        </div><!-- navigation -->
-
-		<div id="header">
-			<my:block position="resume_header" />
-		</div>
 
         <div id="about" class="about-section section-padding">
             <div class="container">
@@ -944,13 +854,6 @@
                     </div>
                 </div><!-- row -->
             </div><!-- container -->
-        </div><!-- profile section -->
-
-        <div id="footer">
-        	<my:block position="resume_footer" />
-        </div><!-- footer -->
-    </div><!-- main wrapper -->
-
-
-</my:body>
-</html>
+        </div><!-- profile section -->		
+                                                            
+                   

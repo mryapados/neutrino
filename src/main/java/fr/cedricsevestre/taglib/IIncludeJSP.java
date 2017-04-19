@@ -9,7 +9,7 @@ public interface IIncludeJSP {
 		ACTIVEOBJECT("activeObject"),
 		BLOCKPREVIEW("blockPreview"),
 		FOLDER("folder"),
-		PAGE("page"),
+		ACTIVEPAGE("activePage"),
 		PARENTPAGEBLOCK("parentPageBlock"),
 		SURFER("surfer")
 		;

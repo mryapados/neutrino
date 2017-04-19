@@ -38,7 +38,7 @@ public class Body extends TagSupport {
 	private static final String BLOCKPREVIEW = "blockPreview";
 	private static final String FOLDER = "folder";
 	private static final String SURFER = "surfer";
-	private static final String PAGE = "page";
+	private static final String ACTIVEPAGE = "activePage";
 	private static final String ACTIVEOBJECT = "activeObject";
 	private static final String NENGINESCRIPT = "NEngineScript";
 	
@@ -57,7 +57,7 @@ public class Body extends TagSupport {
 				User surfer = (User) pageContext.getAttribute(SURFER, PageContext.REQUEST_SCOPE);
 				if (surfer.getRole().equals(User.ROLE_ADMIN)){
 					Folder folder = (Folder) pageContext.getAttribute(FOLDER, PageContext.REQUEST_SCOPE);
-					Page page = (Page) pageContext.getAttribute(PAGE, PageContext.REQUEST_SCOPE);
+					Page page = (Page) pageContext.getAttribute(ACTIVEPAGE, PageContext.REQUEST_SCOPE);
 					Translation activeObject = (Translation) pageContext.getAttribute(ACTIVEOBJECT, PageContext.REQUEST_SCOPE);
 					String initObjects = folder.getId() + ", " + page.getId();
 					if (activeObject != null) initObjects += ", " + activeObject.getId();

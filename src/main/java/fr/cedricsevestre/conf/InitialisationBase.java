@@ -2,6 +2,8 @@ package fr.cedricsevestre.conf;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -17,10 +19,13 @@ import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.custom.Album.AlbumType;
 import fr.cedricsevestre.entity.custom.Category;
 import fr.cedricsevestre.entity.custom.Icon;
+import fr.cedricsevestre.entity.custom.Job;
+import fr.cedricsevestre.entity.custom.Experience;
 import fr.cedricsevestre.entity.custom.Media;
 import fr.cedricsevestre.entity.custom.Media.FileType;
 import fr.cedricsevestre.entity.custom.Member;
 import fr.cedricsevestre.entity.custom.Project;
+import fr.cedricsevestre.entity.custom.Resume;
 import fr.cedricsevestre.entity.custom.Tag;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
@@ -38,11 +43,13 @@ import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.AlbumService;
 import fr.cedricsevestre.service.custom.CategoryService;
+import fr.cedricsevestre.service.custom.ExperienceService;
 import fr.cedricsevestre.service.custom.IconService;
 import fr.cedricsevestre.service.custom.MarkerService;
 import fr.cedricsevestre.service.custom.MediaService;
 import fr.cedricsevestre.service.custom.MemberService;
 import fr.cedricsevestre.service.custom.ProjectService;
+import fr.cedricsevestre.service.custom.ResumeService;
 import fr.cedricsevestre.service.custom.TagService;
 import fr.cedricsevestre.service.engine.bo.LinkService;
 import fr.cedricsevestre.service.engine.independant.objects.FolderService;
@@ -52,6 +59,7 @@ import fr.cedricsevestre.service.engine.independant.objects.NSchemaService;
 import fr.cedricsevestre.service.engine.independant.objects.PositionService;
 import fr.cedricsevestre.service.engine.independant.objects.StorageService;
 import fr.cedricsevestre.service.engine.translation.LangService;
+import fr.cedricsevestre.service.engine.translation.TObjectService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 
@@ -109,6 +117,8 @@ public class InitialisationBase {
 	@Autowired
 	private PageService pageService;
 	
+	@Autowired
+	private ResumeService resumeService;
 	
 	@Autowired
 	private CategoryService categoryService;
@@ -120,6 +130,12 @@ public class InitialisationBase {
 	@Autowired
 	private FolderService folderService;
 
+	@Autowired
+	private TObjectService tObjectService;
+	
+
+	@Autowired
+	private ExperienceService experienceService;
 	
 	Map<String, Folder> mapfolders;
 	
@@ -1280,6 +1296,8 @@ public class InitialisationBase {
 				cat.setTitle(((Category) base).getTitle());
 				cat.setIcon(((Category) base).getIcon());
 				cat.setOrdered(((Category) base).getOrdered());
+				cat.setInMenu(((Category) base).getInMenu());
+				cat.setDescription(((Category) base).getDescription());
 				//page = cat;
 			} else {
 				
@@ -1441,7 +1459,9 @@ public class InitialisationBase {
 	public Icon mkIcon(Icon icon) throws ServiceException{
 		return iconService.save(icon);
 	}
-	
+	public Resume mkResume(Resume resume) throws ServiceException{
+		return resumeService.save(resume);
+	}
 	
 	public NSchema mkNSchema(Map<String, NType> columns, NSchema.ScopeType scopeType) throws ServiceException{
 		NSchema nSchema = new NSchema();
@@ -1705,8 +1725,97 @@ public class InitialisationBase {
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public Map<Lang, Translation> mkExperience(Experience base, Folder folder, String name, String context, Map<Lang, Translation> jobs, Map<Lang, Translation> resumes) throws ServiceException{
+		List<Folder> folders = new ArrayList<>();
+		folders.add(folder);
+		return mkExperience(base, folders, name, jobs, resumes);
+	}
+	public Map<Lang, Translation> mkExperience(Experience base, List<Folder> folders, String name, Map<Lang, Translation> jobs, Map<Lang, Translation> resumes) throws ServiceException{
+		Map<Lang, Translation> map = new HashMap<>();
+		Experience first = null;
+		for (Lang lang : langs) {
+			Experience experience = null;
+			if (first == null){
+				experience = experienceService.translate(base, lang);
+				experience.setName(name);
+				experience.setDescription(name + " Page description " + lang.getCode());
+				experience.setFolders(folders);
+				experience.setJob((Job) jobs.get(lang));
+				experience.setResume((Resume) resumes.get(lang));
+				first = experience;
+			} else {
+				experience = experienceService.translate(first, lang);
+				experience.setFolders(folders);
+				experience.setName(name);
+				experience.setDescription(name + " Page description " + lang.getCode());
+				experience.setJob((Job) jobs.get(lang));
+				experience.setResume((Resume) resumes.get(lang));
+			}
+						
+			tObjectService.save(experience);
+			map.put(lang, experience);
+		}
+		return map;
+	}
+	
+	
+	public Map<Lang, Translation> mkTranslation(Translation base, Folder folder, String name, String context) throws ServiceException{
+		List<Folder> folders = new ArrayList<>();
+		folders.add(folder);
+		return mkTranslation(base, folders, name);
+	}
+	public Map<Lang, Translation> mkTranslation(Translation base, List<Folder> folders, String name) throws ServiceException{
+		Map<Lang, Translation> map = new HashMap<>();
+		Translation first = null;
+		for (Lang lang : langs) {
+			Translation translation = null;
+			if (first == null){
+				translation = tObjectService.translate(base, lang);
+				translation.setName(name);
+				translation.setDescription(name + " Page description " + lang.getCode());
+				translation.setFolders(folders);
+				first = translation;
+			} else {
+				translation = tObjectService.translate(first, lang);
+				translation.setFolders(folders);
+				translation.setName(name);
+				translation.setDescription(name + " Page description " + lang.getCode());
+			}
+						
+			tObjectService.save(translation);
+			map.put(lang, translation);
+		}
+		return map;
+	}
+	
+	
+	private Date mkDate(int year, int month, int day){
+		Calendar calendar = GregorianCalendar.getInstance();
+		calendar.set(year, month, day);
+		return calendar.getTime();
+	}
+	
 	@SuppressWarnings("unused")
 	private void initCv() throws ServiceException{
+		
+		
+		
 		//Folder
 		List<Folder> fldsResume = new ArrayList<>();
 		List<Folder> fldsNull = null;
@@ -1733,6 +1842,24 @@ public class InitialisationBase {
 		mapfolders.put(fldSurzilGeek.getName(), fldSurzilGeek);
 		fldsResume.add(fldSurzilGeek);
 
+		// Resumes
+		Map<Lang, Translation> rCS = mkTranslation(new Resume("Cédric", "Sevestre", "info@cedric-sevestre.com"), fldsResume, "cedricsevestre");
+		Map<Lang, Translation> rJP = mkTranslation(new Resume("Justine", "Puiffe", "justinepuiffe@gmail.com"), fldsResume, "justinepuiffe");
+
+		// Jobs
+		Map<Lang, Translation> jWebDesigner = mkTranslation(new Job("Web Designer"), fldsResume, "webdesigner");
+		Map<Lang, Translation> jDevelopper = mkTranslation(new Job("Developper"), fldsResume, "developper");
+
+		// Experiences
+		mkExperience(new Experience("Senior Graphic Designer", "MyCompany", mkDate(2012, 07, 12), null), fldsResume, "expCS2", jWebDesigner, rCS);
+		mkExperience(new Experience("Former Graphic Designer", "MyCompany", mkDate(2011, 07, 10), mkDate(2012, 06, 25)), fldsResume, "expCS1", jDevelopper, rCS);
+		
+		mkExperience(new Experience("Senior Graphic Designer", "MyCompany", mkDate(2012, 07, 12), null), fldsResume, "expJP2", jWebDesigner, rJP);
+		mkExperience(new Experience("Former Graphic Designer", "MyCompany", mkDate(2011, 07, 10), mkDate(2012, 06, 25)), fldsResume, "expJP1", jDevelopper, rJP);
+		
+		
+		
+		
 		// Icons
 		Icon iHome = mkIcon(new Icon("home", "flaticon-insignia", "fa fa-hand-peace-o", ""));
 		Icon iResume = mkIcon(new Icon("resume", "flaticon-graduation61", "", ""));
@@ -1757,52 +1884,83 @@ public class InitialisationBase {
 		Position pFooter = addPosition(mapPosition, "resume_footer");
 		
 		// Models
+		Map<Lang, Translation> mHome = mkModel(fldsResume, "resume_model_home", "default/default");
 		Map<Lang, Translation> mDefault = mkModel(fldsResume, "resume_model_default", "default/default");
 
 		// Pages
 		
 		// Pages communes aux deux modèles
-		Map<Lang, Translation> pgHome = mkPage(new Category("#1abc9c", "Home", iHome, true, 10), fldsResume, "home", "default", mDefault);
-		Map<Lang, Translation> pgPortfolio = mkPage(new Category("#9b59b6", "Portfolio", iPortfolio, true, 40), fldsResume, "portfolio", "default", mDefault);
-		Map<Lang, Translation> pgContact = mkPage(new Category("#e67e22", "Contact", iContact, true, 30), fldsResume, "contact", "default", mDefault);
-		Map<Lang, Translation> pgBlog = mkPage(new Category("#d9a81d", "Blog", iBlog, true, 70), fldsResume, "blog", "default", mDefault);
+		Map<Lang, Translation> pgPortfolio = mkPage(new Category("#9b59b6", "Portfolio", iPortfolio, true, 40), fldsResume, "portfolio", "portfolio", mDefault);
+		Map<Lang, Translation> pgContact = mkPage(new Category("#e67e22", "Contact", iContact, true, 30), fldsResume, "contact", "contact", mDefault);
+		Map<Lang, Translation> pgBlog = mkPage(new Category("#d9a81d", "Blog", iBlog, true, 70), fldsResume, "blog", "blog", mDefault);
 
 		// Pages dédiés à l'un ou l'autre
-		Map<Lang, Translation> pgResume = mkPage(new Category("#3498db", "Resume", iResume, true, 20), fldSamuel, "resume", "default", mDefault);
-		Map<Lang, Translation> pgFeedBack = mkPage(new Category("#e74c3c", "Feedback", iFeedBack, true, 50), fldSamuel, "feedback", "default", mDefault);
+		Map<Lang, Translation> pgHomeSamuel = mkPage(new Category("#1abc9c", "Home", iHome, true, 10), fldSamuel, "home", "home", mHome);
+		Map<Lang, Translation> pgResume = mkPage(new Category("#3498db", "Resume", iResume, true, 20), fldSamuel, "resume", "resume", mDefault);
+		Map<Lang, Translation> pgFeedBack = mkPage(new Category("#e74c3c", "Feedback", iFeedBack, true, 50), fldSamuel, "feedback", "feedback", mDefault);
 		
-		Map<Lang, Translation> pgAboutMe = mkPage(new Category(null, "About me", iAboutMe, true, 12), fldSurzilGeek, "aboutme", "default", mDefault);
-		Map<Lang, Translation> pgSkills = mkPage(new Category(null, "Skills", iSkills, true, 14), fldSurzilGeek, "skills", "default", mDefault);
-		Map<Lang, Translation> pgExperiences = mkPage(new Category(null, "Experiences", iExperiences, true, 16), fldSurzilGeek, "experiences", "default", mDefault);
-		Map<Lang, Translation> pgEducation = mkPage(new Category(null, "Education", iEducation, true, 18), fldSurzilGeek, "education", "default", mDefault);
-		Map<Lang, Translation> pgResumePdf = mkPage(new Category(null, "My resume PDF", iSave, true, 60), fldSurzilGeek, "resumepdf", "default", mDefault);
+		Map<Lang, Translation> pgHomeSurzilGeek = mkPage(new Category("#1abc9c", "Home", iHome, true, 10), fldSurzilGeek, "home", "home", mHome);
+		Map<Lang, Translation> pgAboutMe = mkPage(putCategoryAboutMe(new Category(null, "About me", iAboutMe, true, 12)), fldSurzilGeek, "aboutme", "aboutme", mDefault);
+		Map<Lang, Translation> pgSkills = mkPage(new Category(null, "Skills", iSkills, true, 14), fldSurzilGeek, "skills", "skills", mDefault);
+		Map<Lang, Translation> pgExperiences = mkPage(new Category(null, "Experiences", iExperiences, true, 16), fldSurzilGeek, "experiences", "experiences", mDefault);
+		Map<Lang, Translation> pgEducation = mkPage(new Category(null, "Education", iEducation, true, 18), fldSurzilGeek, "education", "education", mDefault);
+		Map<Lang, Translation> pgResumePdf = mkPage(new Category(null, "My resume PDF", iSave, true, 60), fldSurzilGeek, "resumepdf", "resumepdf", mDefault);
 		
 		
 
 		
 		// PageBlocks
 		Map<Lang, Translation> pbHeader = mkPageBlock(fldsResume, "resume_pageblock_header", "header/header");
-		
-		// PageBlocks
 		Map<Lang, Translation> pbFooter = mkPageBlock(fldsResume, "resume_pageblock_footer", "footer/footer");
 				
 		// Blocks
-		Map<Lang, Translation> bMenuObjects = mkBlock(fldsResume, "resume_block_nav", "nav/nav");
+		Map<Lang, Translation> bNav = mkBlock(fldsResume, "resume_block_nav", "nav/nav");
+		Map<Lang, Translation> bAboutMe = mkBlock(fldsResume, "resume_block_aboutme", "aboutme/aboutme");
 		
-		
-		
-		
-		
-		generateMenu(fldSurzilGeek, pbHeader, pheaderMenu);
+		Map<Lang, Translation> bListPage = mkBlock(fldSurzilGeek, "resume_block_listpage", "listpage/listpage");
 		
 
 
 		
 		// Set MapTemplate
-		Map<Lang, MapTemplate> mtHeaderPgPortfolio = addMapTemplate(pgPortfolio, pbHeader, pHeader);
-		Map<Lang, MapTemplate> mtNavPgPortfolio = addMapTemplate(pgPortfolio, bMenuObjects, pNav);
+		
+		// Header on model Home and Default - All pages model
+		Map<Lang, MapTemplate> mtHeaderMHome = addMapTemplate(mHome, pbHeader, pHeader);
+		Map<Lang, MapTemplate> mtHeaderMDefault = addMapTemplate(mDefault, pbHeader, pHeader);
+		
+		// Footer on model Home and Default - All pages model
+		Map<Lang, MapTemplate> mtFooterMHome = addMapTemplate(mHome, pbFooter, pFooter);
+		Map<Lang, MapTemplate> mtFooterMDefault = addMapTemplate(mDefault, pbFooter, pFooter);
+		
+		// Nav on model Home and Default and pb Header - All pages model
+		Map<Lang, MapTemplate> mtNavMHome = addMapTemplate(mHome, bNav, pNav);
+		Map<Lang, MapTemplate> mtNavMDefault = addMapTemplate(mDefault, bNav, pNav);
+		Map<Lang, MapTemplate> mtNavpbHeader = addMapTemplate(pbHeader, bNav, pNav);
+		
+		// Listpage on page Home for folder SurzilGeek only
+		Map<Lang, MapTemplate> mtPgHomeSurzilGeek = addMapTemplate(mHome, bListPage, pArticle);
+		
+		// AboutMe on page AboutMe
+		Map<Lang, MapTemplate> mtAboutmePgAboutMe = addMapTemplate(pgAboutMe, bAboutMe, pArticle);
 	
 	}
+	
+	private Page putCategoryAboutMe(Page page){
+		String description = "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>";
+		page.setDescription(description);
+		return page;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

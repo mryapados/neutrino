@@ -43,9 +43,12 @@ import org.springframework.web.util.HtmlUtils;
 
 import fr.cedricsevestre.annotation.BOField;
 import fr.cedricsevestre.annotation.BOField.SortType;
+import fr.cedricsevestre.annotation.BOResource;
+import fr.cedricsevestre.annotation.BOResources;
 import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.bean.NDatas;
 import fr.cedricsevestre.bean.NField;
+import fr.cedricsevestre.bean.NResource;
 import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
@@ -372,7 +375,20 @@ public class BackOfficeService { //implements IBackOfficeService{
 		return nfTabsGroupsFields;
 	}
 
-
+	private NResource mkNResourceFromBOResource(BOResource nResource){
+		return new NResource(nResource.type(), nResource.value());
+	}
+	public List<NResource> getResources(Class<?> entity) throws ServiceException{
+		List<NResource> list = new ArrayList<>();
+		BOResources resources = entity.getAnnotation(BOResources.class);
+		if (resources != null){
+			BOResource[] value = resources.value();
+			for (BOResource boResource : value) {
+				list.add(mkNResourceFromBOResource(boResource));
+			}
+		}
+		return list;
+	}
 
 	public NDatas<IdProvider> findAll(Class<?> entity, Pageable pageable) throws ServiceException{		
 		return findAll(entity, pageable, null);

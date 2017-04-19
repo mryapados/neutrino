@@ -17,6 +17,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.cedricsevestre.com.utils.IdProviderUtil;
 import fr.cedricsevestre.dao.engine.TranslationDao;
 import fr.cedricsevestre.dao.engine.TranslationProviderDao;
 import fr.cedricsevestre.entity.engine.IdProvider;
@@ -41,6 +42,10 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 	@Autowired
 	protected TranslationProviderDao translationProviderDao;
 
+
+	@Autowired
+	protected IdProviderUtil idProviderUtil;
+	
 	@Deprecated
 	public T findByName(String name) throws ServiceException {
 		try {
@@ -97,5 +102,7 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 		
 		return base;
 	}
+	
+
 
 }

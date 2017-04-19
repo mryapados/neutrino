@@ -10,6 +10,9 @@
 <c:set var="finalMaxElement" value="3" />
 
 <c:choose>
+	<c:when test="${finalFieldType eq 'ICON'}">
+		<span><i class="<c:out value='${finalObject}'/>" aria-hidden="true"></i><span><c:out value="${finalObject}"/></span></span>
+	</c:when>
 	<c:when test="${finalFieldType eq 'PASSWORD'}">
 		<c:out value="********"/>
 	</c:when>

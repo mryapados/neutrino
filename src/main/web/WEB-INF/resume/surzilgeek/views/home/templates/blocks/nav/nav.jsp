@@ -5,6 +5,7 @@
 
 <my:init test="${!initialized}"/>
 
+<%-- En HomePage, les liens du nav sont des ancres --%>
 <c:forEach items="${categories}" var="category" varStatus="status">
 	<my:bind var="categoryName" type="Category" beanId="${category.id}" field="name" />
 	<my:bind var="categoryTitle" type="Category" beanId="${category.id}" field="title" />
@@ -14,8 +15,7 @@
 		</c:if>
 	</c:set>
 	<li class="scroll${status.first ? ' current dropdown' : ''}">
-		<c:url var="url" value='/${categoryName}.html' />
-		<a href="${url}"><span>${icon}${categoryTitle}</span></a>
+		<a href="#${categoryName}${categoryName eq 'home' ? '-banner' : ''}"><span>${icon}${categoryTitle}</span></a>
 	</li>
 </c:forEach>
          

@@ -91,6 +91,7 @@ public class BackOfficeControllerEdit extends BackOfficeController {
 	protected static final String REDIRECT_TYPE = "type";
 	protected static final String REDIRECT_ID = "id";
 	
+	protected static final String ATTR_BORESOURCES = "boResources";
 	protected static final String ATTR_OBJECTTYPE = "objectType";
 	protected static final String ATTR_OBJECTBASETYPE = "objectBaseType";
 	protected static final String ATTR_OBJECTLANG = "objectLang";
@@ -144,6 +145,8 @@ public class BackOfficeControllerEdit extends BackOfficeController {
 			} else if (NoTranslation.class.isAssignableFrom(object)){
 				modelAndView.addObject(ATTR_OBJECTBASETYPE, NoTranslation.class.getSimpleName());
 			}
+			
+			modelAndView.addObject(ATTR_BORESOURCES, backOfficeService.getResources(object));
 
 			NData<IdProvider> tData;
 			if (id == null) {

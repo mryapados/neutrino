@@ -64,7 +64,7 @@ public class Import extends ImportSupport implements IIncludeJSP {
 		try {
 			
 			Folder folder = (Folder) pageContext.getAttribute(Attributes.FOLDER.toString(), PageContext.REQUEST_SCOPE);
-			Page page = (Page) pageContext.getAttribute(Attributes.PAGE.toString(), PageContext.REQUEST_SCOPE);
+			Page page = (Page) pageContext.getAttribute(Attributes.ACTIVEPAGE.toString(), PageContext.REQUEST_SCOPE);
 			
 			
 			Template target = templateService.identify(folder, template, page.getLang());

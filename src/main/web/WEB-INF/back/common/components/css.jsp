@@ -12,3 +12,9 @@
 
 <link href="<c:url value='/style/back.css'/>" rel="stylesheet">
 <link href="<c:url value='/resources/src/bo/css/ui-file.css'/>" rel="stylesheet">
+
+<c:forEach items="${boResources}" var="boResource" varStatus="status">
+	<c:if test="${boResource.type eq 'CSS'}">
+		<link href="<c:url value='${boResource.value}'/>" rel="stylesheet">
+	</c:if>
+</c:forEach>

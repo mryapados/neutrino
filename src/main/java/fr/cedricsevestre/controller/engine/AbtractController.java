@@ -98,7 +98,7 @@ public abstract class AbtractController {
 		try {
 			String pathModelAndView = templateService.getPathJSP(false, folder, page.getContext(), template, false);
 			ModelAndView modelAndView = new ModelAndView(pathModelAndView);
-			modelAndView.addObject("page", page);
+			modelAndView.addObject("activePage", page);
 			modelAndView.addObject("activeObject", activeObject);
 			modelAndView.addObject("applicationFolder", common.getApplicationFolder());
 			modelAndView.addObject("template", template);

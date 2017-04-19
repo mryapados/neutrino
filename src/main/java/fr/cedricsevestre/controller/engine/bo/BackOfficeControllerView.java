@@ -40,6 +40,8 @@ public class BackOfficeControllerView extends BackOfficeController {
 			} else if (NoTranslation.class.isAssignableFrom(object)){
 				modelAndView.addObject("objectBaseType", NoTranslation.class.getSimpleName());
 			}
+			
+			modelAndView.addObject("boResources", backOfficeService.getResources(object));
 
 			return modelAndView;
 		} catch (ServiceException e) {

@@ -18,7 +18,8 @@ public @interface BOField {
 		COLOR, 
 		TOBJECT, NTOBJECT, OBJECT, 
 		COLLECTION,
-		ENUM
+		ENUM,
+		ICON
 	}
 	public enum SortType {
 		NULL, ASC, DESC
