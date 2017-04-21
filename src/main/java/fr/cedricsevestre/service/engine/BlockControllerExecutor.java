@@ -123,17 +123,22 @@ public class BlockControllerExecutor {
             		BlockMapping blockMapping = method.getAnnotation(BlockMapping.class);
         	    	if (blockMapping != null){
         	    		logger.debug("blockMapping found on method '" +  method.getName() + "'");
-        	    		String blockControllerName = blockMapping.blockControllerName().toUpperCase();
-        	    		if (blockControllers.containsKey(blockControllerName)){
-        	    			logger.warn("Ambiguous block controller name '" + blockControllerName + "' found !");
-        	    		}
-        	    		String key = blockControllerName.toUpperCase();
-        				List<Class<?>> classes = new ArrayList<>();
-        	    		Parameter[] parameters = method.getParameters();
-        	    		for (Parameter parameter : parameters) {
-        	    			classes.add(parameter.getType());
+        	    		
+        	    		String[] blockControllerNames = blockMapping.value();
+        	    		for (String blockControllerName : blockControllerNames) {
+        	    			blockControllerName = blockControllerName.toUpperCase();
+            	    		if (blockControllers.containsKey(blockControllerName)){
+            	    			logger.warn("Ambiguous block controller name '" + blockControllerName + "' found !");
+            	    		}
+            	    		String key = blockControllerName.toUpperCase();
+            				List<Class<?>> classes = new ArrayList<>();
+            	    		Parameter[] parameters = method.getParameters();
+            	    		for (Parameter parameter : parameters) {
+            	    			classes.add(parameter.getType());
+    						}
+            	    		blockControllers.put(key, new BlockControllerBean(bean.getValue(), method, classes));
 						}
-        	    		blockControllers.put(key, new BlockControllerBean(bean.getValue(), method, classes));
+
         	    	}
         	    	
             	}

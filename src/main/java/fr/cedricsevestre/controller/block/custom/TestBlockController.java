@@ -15,7 +15,7 @@ import fr.cedricsevestre.entity.engine.translation.objects.Template;
 @Component
 public class TestBlockController {
 
-	@BlockMapping(blockControllerName = "@bo_block_list")
+	@BlockMapping(value = "@bo_block_list")
 	public ModelMap testage(Translation model, Translation activeObject, Template template, PageContext pageContext){
 		System.out.println("JE SUIS DANS TESTAGE !!!! template = " + template.getName() + " - objectType = " + pageContext.getAttribute("objectType", PageContext.REQUEST_SCOPE));
 		

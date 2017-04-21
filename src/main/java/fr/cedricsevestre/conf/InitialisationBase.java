@@ -1843,8 +1843,8 @@ public class InitialisationBase {
 		fldsResume.add(fldSurzilGeek);
 
 		// Resumes
-		Map<Lang, Translation> rCS = mkTranslation(new Resume("Cédric", "Sevestre", "info@cedric-sevestre.com"), fldsResume, "cedricsevestre");
-		Map<Lang, Translation> rJP = mkTranslation(new Resume("Justine", "Puiffe", "justinepuiffe@gmail.com"), fldsResume, "justinepuiffe");
+		Map<Lang, Translation> rCS = mkTranslation(new Resume("Cédric", "Sevestre", "Developper JAVA JEE", "info@cedric-sevestre.com", "+33 07 68 61 62 54", mkDate(1984, 7, 21), "903 Chemin de la croix des Banquets 84300 Cavaillon"), fldsResume, "cedricsevestre");
+		Map<Lang, Translation> rJP = mkTranslation(new Resume("Justine", "Puiffe", "Project Manager", "justinepuiffe@gmail.com", "+33 06 16 03 08 84", mkDate(1990, 0, 30), "903 Chemin de la croix des Banquets 84300 Cavaillon"), fldsResume, "justinepuiffe");
 
 		// Jobs
 		Map<Lang, Translation> jWebDesigner = mkTranslation(new Job("Web Designer"), fldsResume, "webdesigner");
@@ -1883,6 +1883,8 @@ public class InitialisationBase {
 		Position pArticle = addPosition(mapPosition, "resume_article");
 		Position pFooter = addPosition(mapPosition, "resume_footer");
 		
+		Position pAboutMe = addPosition(mapPosition, "resume_aboutMe");
+		
 		// Models
 		Map<Lang, Translation> mHome = mkModel(fldsResume, "resume_model_home", "default/default");
 		Map<Lang, Translation> mDefault = mkModel(fldsResume, "resume_model_default", "default/default");
@@ -1904,7 +1906,7 @@ public class InitialisationBase {
 		Map<Lang, Translation> pgSkills = mkPage(new Category(null, "Skills", iSkills, true, 14), fldSurzilGeek, "skills", "skills", mDefault);
 		Map<Lang, Translation> pgExperiences = mkPage(new Category(null, "Experiences", iExperiences, true, 16), fldSurzilGeek, "experiences", "experiences", mDefault);
 		Map<Lang, Translation> pgEducation = mkPage(new Category(null, "Education", iEducation, true, 18), fldSurzilGeek, "education", "education", mDefault);
-		Map<Lang, Translation> pgResumePdf = mkPage(new Category(null, "My resume PDF", iSave, true, 60), fldSurzilGeek, "resumepdf", "resumepdf", mDefault);
+		Map<Lang, Translation> pgResumeSurzilGeek = mkPage(new Category(null, "My resume PDF", iSave, true, 60), fldSurzilGeek, "resume", "resume", mDefault);
 		
 		
 
@@ -1912,15 +1914,21 @@ public class InitialisationBase {
 		// PageBlocks
 		Map<Lang, Translation> pbHeader = mkPageBlock(fldsResume, "resume_pageblock_header", "header/header");
 		Map<Lang, Translation> pbFooter = mkPageBlock(fldsResume, "resume_pageblock_footer", "footer/footer");
-				
+		Map<Lang, Translation> pbListPage = mkPageBlock(fldSurzilGeek, "resume_pageblock_listpage", "listpage/listpage");
+		Map<Lang, Translation> pbAboutMe = mkPageBlock(fldsResume, "resume_pageblock_aboutme", "aboutme/aboutme");
+		
+		
 		// Blocks
 		Map<Lang, Translation> bNav = mkBlock(fldsResume, "resume_block_nav", "nav/nav");
-		Map<Lang, Translation> bAboutMe = mkBlock(fldsResume, "resume_block_aboutme", "aboutme/aboutme");
-		
-		Map<Lang, Translation> bListPage = mkBlock(fldSurzilGeek, "resume_block_listpage", "listpage/listpage");
-		
+		Map<Lang, Translation> bSkills = mkBlock(fldsResume, "resume_block_skills", "skills/skills");
+		Map<Lang, Translation> bExperiences = mkBlock(fldsResume, "resume_block_experiences", "experience/experience");
+		Map<Lang, Translation> bEducation = mkBlock(fldsResume, "resume_block_education", "education/education");
+		Map<Lang, Translation> bPortfolio = mkBlock(fldsResume, "resume_block_portfolio", "portfolio/portfolio");
+		Map<Lang, Translation> bContact = mkBlock(fldsResume, "resume_block_contact", "contact/contact");
+		Map<Lang, Translation> bBlog = mkBlock(fldsResume, "resume_block_blog", "blog/blog");
+		Map<Lang, Translation> bResume = mkBlock(fldsResume, "resume_block_resume", "resume/resume");
 
-
+		Map<Lang, Translation> bAchievement = mkBlock(fldSurzilGeek, "resume_block_achievement", "achievement/achievement");
 		
 		// Set MapTemplate
 		
@@ -1938,11 +1946,21 @@ public class InitialisationBase {
 		Map<Lang, MapTemplate> mtNavpbHeader = addMapTemplate(pbHeader, bNav, pNav);
 		
 		// Listpage on page Home for folder SurzilGeek only
-		Map<Lang, MapTemplate> mtPgHomeSurzilGeek = addMapTemplate(mHome, bListPage, pArticle);
+		Map<Lang, MapTemplate> mtPgHomeSurzilGeek = addMapTemplate(mHome, pbListPage, pArticle);
 		
-		// AboutMe on page AboutMe
-		Map<Lang, MapTemplate> mtAboutmePgAboutMe = addMapTemplate(pgAboutMe, bAboutMe, pArticle);
-	
+		// blocks on pages
+		Map<Lang, MapTemplate> mtAboutmePgAboutMe = addMapTemplate(pgAboutMe, pbAboutMe, pArticle);
+		Map<Lang, MapTemplate> mtAchievementPgAboutMe = addMapTemplate(pgAboutMe, bAchievement, pAboutMe);
+		
+		Map<Lang, MapTemplate> mtSkillsPgSkills = addMapTemplate(pgSkills, bSkills, pArticle);
+		Map<Lang, MapTemplate> mtExperiencesPgExperiences = addMapTemplate(pgExperiences, bExperiences, pArticle);
+		Map<Lang, MapTemplate> mtEducationPgEducation = addMapTemplate(pgEducation, bEducation, pArticle);
+		Map<Lang, MapTemplate> mtPortfolioPgPortfolio = addMapTemplate(pgPortfolio, bPortfolio, pArticle);
+		Map<Lang, MapTemplate> mtContactPgContact = addMapTemplate(pgContact, bContact, pArticle);
+		Map<Lang, MapTemplate> mtBlogPgBlog = addMapTemplate(pgBlog, bBlog, pArticle);
+		Map<Lang, MapTemplate> mtResumePgResume = addMapTemplate(pgResumeSurzilGeek, bResume, pArticle);
+		
+		
 	}
 	
 	private Page putCategoryAboutMe(Page page){

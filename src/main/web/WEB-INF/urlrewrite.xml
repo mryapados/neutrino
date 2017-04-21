@@ -14,10 +14,7 @@
        <from>^/bo/(.*)$</from>
        <to>/@bo/$1</to>
     </rule>
-    <rule>
-       <from>^/file/$</from>
-       <to>/@file/</to>
-    </rule>
+    
 
 	<!-- With keywords -->
     <rule>

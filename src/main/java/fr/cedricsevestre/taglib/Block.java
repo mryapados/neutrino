@@ -31,10 +31,14 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateKind;
+import fr.cedricsevestre.exception.ResourceNotFoundException;
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.exception.UtilException;
 import fr.cedricsevestre.service.engine.BlockControllerExecutor;
 import fr.cedricsevestre.service.engine.independant.objects.NDataService;
 import fr.cedricsevestre.service.engine.independant.objects.PositionService;
+import fr.cedricsevestre.service.engine.translation.TObjectService;
+import fr.cedricsevestre.service.engine.translation.objects.PageService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 
 @Component
@@ -44,6 +48,12 @@ public class Block extends TagSupport implements IIncludeJSP {
 	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(Block.class);
 
+	private static Common common;
+	@Autowired
+	public void Common(Common common) {
+		Block.common = common;
+	}
+	
 	private static PositionService positionService;
 	@Autowired
 	public void PositionService(PositionService positionService) {
@@ -67,9 +77,25 @@ public class Block extends TagSupport implements IIncludeJSP {
 	public void TemplateControllerExecutor(BlockControllerExecutor templateControllerExecutor) {
 		Block.templateControllerExecutor = templateControllerExecutor;
 	}
+	
+	private static PageService pageService;
+	@Autowired
+	public void PageService(PageService pageService) {
+		Block.pageService = pageService;
+	}
+	
+	private static TObjectService tObjectService;
+	@Autowired
+	public void TObjectService(TObjectService tObjectService) {
+		Block.tObjectService = tObjectService;
+	}
 		
-	private String position = null;
-
+	private String position;
+	private String page;
+	private String activeObject;
+	private int pageId;
+	private int activeObjectId;
+	
 	public int doStartTag() throws JspException {
 		logger.debug("Enter in doStartTag()");
 		JspWriter out = pageContext.getOut();
@@ -118,12 +144,21 @@ public class Block extends TagSupport implements IIncludeJSP {
 			List<Translation> models = new ArrayList<>();
 			Translation model = (Template) pageContext.getAttribute(Attributes.PARENTPAGEBLOCK.toString(), PageContext.REQUEST_SCOPE);
 			Page page = (Page) pageContext.getAttribute(Attributes.ACTIVEPAGE.toString(), PageContext.REQUEST_SCOPE);
+			Lang lang = page.getLang();
+			
+			if (this.pageId != 0) page = pageService.findOne(this.pageId);
+			else if (this.page != null) page = common.getPage(folder, this.page, lang);
+
 			if (model == null) model = page.getModel();
 			models.add(model);
 			
 			models.add(page);
 
-			Translation activeObject = (Translation) pageContext.getAttribute(Attributes.ACTIVEOBJECT.toString(), PageContext.REQUEST_SCOPE);
+			Translation activeObject;
+			if (this.activeObjectId != 0) activeObject = tObjectService.findOne(this.activeObjectId);
+			else if (this.activeObject != null) activeObject = tObjectService.identify(folder, this.activeObject, lang);
+			else activeObject = (Translation) pageContext.getAttribute(Attributes.ACTIVEOBJECT.toString(), PageContext.REQUEST_SCOPE);
+			
 			if (activeObject != null){
 				models.add(activeObject);
 			}
@@ -137,7 +172,7 @@ public class Block extends TagSupport implements IIncludeJSP {
 				for (MapTemplate mapTemplate : mapTemplates) {
 					Template activeBlock = mapTemplate.getBlock();
 					
-					ModelMap modelMap = templateControllerExecutor.execute(activeBlock.getController(), model, activeObject, activeBlock, folder, page.getLang(), pageContext);
+					ModelMap modelMap = templateControllerExecutor.execute(activeBlock.getController(), model, activeObject, activeBlock, folder, lang, pageContext);
 					if (modelMap != null){
 						for (Map.Entry<String, Object> entry : modelMap.entrySet()) {
 							pageContext.setAttribute(entry.getKey(), entry.getValue(), PageContext.REQUEST_SCOPE);
@@ -198,6 +233,24 @@ public class Block extends TagSupport implements IIncludeJSP {
 				logger.error("Erreur Block " + ex.getMessage());
 				ex.printStackTrace();
 			}
+		} catch (UtilException e) {
+			logger.error("Erreur Block " + e.getMessage());
+			e.printStackTrace();
+			try {
+				out.println("<p class=\"bg-danger\">" + e.getMessage() + "</p>");
+			} catch (IOException ex) {
+				logger.error("Erreur Block " + ex.getMessage());
+				ex.printStackTrace();
+			}
+		} catch (ResourceNotFoundException e) {
+			logger.error("Erreur Block " + e.getMessage());
+			e.printStackTrace();
+			try {
+				out.println("<p class=\"bg-danger\">" + e.getMessage() + "</p>");
+			} catch (IOException ex) {
+				logger.error("Erreur Block " + ex.getMessage());
+				ex.printStackTrace();
+			}
 		}
 		
 		
@@ -210,5 +263,41 @@ public class Block extends TagSupport implements IIncludeJSP {
 	public String getPosition() {
 		return (position);
 	}
+
+	public String getPage() {
+		return page;
+	}
+
+	public void setPage(String page) {
+		this.page = page;
+	}
+
+	public String getActiveObject() {
+		return activeObject;
+	}
+
+	public void setActiveObject(String activeObject) {
+		this.activeObject = activeObject;
+	}
+
+	public int getPageId() {
+		return pageId;
+	}
+
+	public void setPageId(int pageId) {
+		this.pageId = pageId;
+	}
+
+	public int getActiveObjectId() {
+		return activeObjectId;
+	}
+
+	public void setActiveObjectId(int activeObjectId) {
+		this.activeObjectId = activeObjectId;
+	}
+
+
+	
+	
 
 }

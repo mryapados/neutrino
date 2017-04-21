@@ -17,12 +17,12 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import fr.cedricsevestre.com.utils.EntityLocator;
 import fr.cedricsevestre.com.utils.IdProviderUtil;
+import fr.cedricsevestre.com.utils.ServiceLocator;
 import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
-import fr.cedricsevestre.service.engine.EntityLocator;
-import fr.cedricsevestre.service.engine.ServiceLocator;
 import fr.cedricsevestre.service.engine.notranslation.NoTranslationService;
 import fr.cedricsevestre.service.engine.translation.TranslationService;
 

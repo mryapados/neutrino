@@ -1,7 +1,9 @@
 package fr.cedricsevestre.conf;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.servlet.jsp.PageContext;
@@ -12,6 +14,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -48,8 +51,11 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import fr.cedricsevestre.argumentresolver.engine.ServerNameHandlerMethodArgumentResolver;
 import fr.cedricsevestre.controller.engine.IdProviderConverter;
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.service.engine.independant.objects.FolderService;
 import fr.cedricsevestre.taglib.Head;
 
 @Configuration
@@ -68,7 +74,12 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 	@Autowired
     private IdProviderConverter idProviderConverter;
 	
+    @Autowired
+    private ApplicationContext context;
 	
+    @Autowired
+    private FolderService folderService;
+    
 	@Bean
 	public CacheManager cacheManager() {
 		return new EhCacheCacheManager(ehCacheCacheManager().getObject());
@@ -129,13 +140,16 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 		interceptor.setParamName("language");
 		registry.addInterceptor(interceptor);
 
+		
+		
+		
 		//ServerNameInterceptor serverNameInterceptor = new ServerNameInterceptor();
 		//registry.addInterceptor(serverNameInterceptor);
 	}
 	
-
+	
 	@Bean
-	public ServerNameHandlerMethodArgumentResolver serverNameHandlerMethodArgumentResolver() {
+	public HandlerMethodArgumentResolver serverNameHandlerMethodArgumentResolver() {
 		return new ServerNameHandlerMethodArgumentResolver();
 	}
 	

@@ -28,7 +28,7 @@ public class BOBlockController {
 	@Autowired
 	private BackOfficeService backOfficeService;
 	
-	@BlockMapping(blockControllerName = "@bo_block_menu_objects")
+	@BlockMapping(value = "@bo_block_menu_objects")
 	public ModelMap boBlockMenuObjects(){
 		logger.debug("Enter in 'boBlockMenuObjects'");
 		ModelMap modelMap = new ModelMap();

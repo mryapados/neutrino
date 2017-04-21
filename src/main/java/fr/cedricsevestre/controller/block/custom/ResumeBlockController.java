@@ -32,7 +32,7 @@ public class ResumeBlockController {
 	
 	
 	
-	@BlockMapping(blockControllerName = "@bo_block_list")
+	@BlockMapping(value = "@bo_block_list")
 	public ModelMap testage(Translation model, Translation activeObject, Template template, PageContext pageContext){
 		System.out.println("JE SUIS DANS TESTAGE !!!! template = " + template.getName() + " - objectType = " + pageContext.getAttribute("objectType", PageContext.REQUEST_SCOPE));
 		
@@ -46,10 +46,8 @@ public class ResumeBlockController {
 	}
 	
 	
-	@BlockMapping(blockControllerName = "resume_block_nav")
-	public ModelMap nav(Translation model, Translation activeObject, Template template, Folder folder, Lang lang) throws ControllerException{
-		System.out.println("BLOCK CONTROLLER - resume_block_nav");
-		
+	@BlockMapping({"resume_block_nav", "resume_block_listpage"})
+	public ModelMap nav(Translation model, Translation activeObject, Template template, Folder folder, Lang lang) throws ControllerException{	
 		try {
 			ModelMap modelMap = new ModelMap();
 			modelMap.addAttribute("categories", categoryService.findAllForFolderAndLang(folder, lang));

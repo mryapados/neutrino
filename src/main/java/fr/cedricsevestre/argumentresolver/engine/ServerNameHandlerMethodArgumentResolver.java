@@ -1,4 +1,4 @@
-package fr.cedricsevestre.conf;
+package fr.cedricsevestre.argumentresolver.engine;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,7 +31,7 @@ public final class ServerNameHandlerMethodArgumentResolver implements HandlerMet
                                   ModelAndViewContainer modelAndViewContainer,
                                   NativeWebRequest nativeWebRequest,
                                   WebDataBinderFactory webDataBinderFactory) throws Exception {
-		System.out.println("Enter in resolveArgument");
+		System.out.println("Enter in ServerNameHandlerMethodArgumentResolver");
     	String serverName = nativeWebRequest.getParameter("servername");
 		if (serverName == null || serverName.equals("")){
 			HttpServletRequest httpServletRequest = (HttpServletRequest) nativeWebRequest.getNativeRequest();

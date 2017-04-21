@@ -16,8 +16,6 @@ import org.springframework.stereotype.Component;
 import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
-import fr.cedricsevestre.service.engine.EntityLocator;
-import fr.cedricsevestre.service.engine.ServiceLocator;
 import fr.cedricsevestre.service.engine.notranslation.NoTranslationService;
 import fr.cedricsevestre.service.engine.translation.TranslationService;
 import fr.cedricsevestre.taglib.Bind;

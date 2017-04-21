@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.Mapping;
 @Mapping
 public @interface BlockMapping {
 
-	String blockControllerName();
+	String[] value();
 	
 }
 

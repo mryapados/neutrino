@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import fr.cedricsevestre.com.utils.EntityLocator;
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.controller.engine.AbtractController;
 import fr.cedricsevestre.entity.engine.IdProvider;
@@ -26,7 +27,6 @@ import fr.cedricsevestre.exception.ControllerException;
 import fr.cedricsevestre.exception.ResourceNotFoundException;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.exception.UtilException;
-import fr.cedricsevestre.service.engine.EntityLocator;
 import fr.cedricsevestre.service.engine.bo.BackOfficeService;
 import fr.cedricsevestre.service.engine.translation.LangService;
 

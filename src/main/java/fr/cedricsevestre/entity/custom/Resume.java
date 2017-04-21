@@ -1,5 +1,6 @@
 package fr.cedricsevestre.entity.custom;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -55,11 +56,31 @@ public class Resume extends Translation {
 	@Column(name = "last_name")
 	private String lastName;
 
+	@BOField(type = ValueType.VARCHAR255)
+	@NotNull
+	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
+	@Column(name = "function")
+	private String function;
+	
 	@BOField(type = ValueType.VARCHAR50)
 	@NotNull
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
-	@Column(name = "mail")
-	private String mail;
+	@Column(name = "email")
+	private String email;
+	
+	@BOField(type = ValueType.VARCHAR50)
+	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
+	@Column(name = "phone")
+	private String phone;
+	
+	@BOField(type = ValueType.DATE)
+	@Column(name = "dateofbirth")
+	private Date dateOfBirth;
+	
+	@BOField(type = ValueType.VARCHAR255)
+	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
+	@Column(name = "address")
+	private String address;
 	
 	@BOField(type = ValueType.FILE)
 	private String picture;
@@ -81,11 +102,15 @@ public class Resume extends Translation {
 		
 	}
 	
-	public Resume(String firstName, String lastName, String mail) {
+	public Resume(String firstName, String lastName, String function, String email, String phone, Date dateOfBirth, String address) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.mail = mail;
+		this.function = function;
+		this.email = email;
+		this.phone = phone;
+		this.dateOfBirth = dateOfBirth;
+		this.address = address;
 	}
 
 	public String getFirstName() {
@@ -104,12 +129,20 @@ public class Resume extends Translation {
 		this.lastName = lastName;
 	}
 
-	public String getMail() {
-		return mail;
+	public String getFunction() {
+		return function;
 	}
 
-	public void setMail(String mail) {
-		this.mail = mail;
+	public void setFunction(String function) {
+		this.function = function;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPicture() {
@@ -144,5 +177,28 @@ public class Resume extends Translation {
 		this.links = links;
 	}
 
-	
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 }

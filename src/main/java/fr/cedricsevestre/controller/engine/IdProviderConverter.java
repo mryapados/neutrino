@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
+import fr.cedricsevestre.com.utils.EntityLocator;
 import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.exception.ResourceNotFoundException;
-import fr.cedricsevestre.service.engine.EntityLocator;
 
 @Component
 public class IdProviderConverter implements Converter <String, IdProvider> {

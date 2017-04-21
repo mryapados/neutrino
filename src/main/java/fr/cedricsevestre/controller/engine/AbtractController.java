@@ -32,8 +32,21 @@ import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 
 @Controller
 @Scope("prototype")
-@SessionAttributes( value="blockPreview", types={Boolean.class} )
+@SessionAttributes( value = AbtractController.ATTR_BLOCKPREVIEW, types={Boolean.class} )
 public abstract class AbtractController {
+	
+	protected static final String ATTR_BLOCKPREVIEW = "blockPreview";
+	
+	protected static final String ATTR_ACTIVELANG = "activeLang";
+	protected static final String ATTR_ACTIVEPAGE = "activePage";
+	protected static final String ATTR_ACTIVEOBJECT = "activeObject";
+	protected static final String ATTR_APPLICATIONFOLDER = "applicationFolder";
+	protected static final String ATTR_TEMPLATE = "template";
+	protected static final String ATTR_INITIALIZED = "initialized";
+	protected static final String ATTR_FOLDER = "folder";
+	protected static final String ATTR_LANGUAGE = "language";
+
+	
 	
 	@Autowired
 	private UserService userService;
@@ -69,7 +82,7 @@ public abstract class AbtractController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		return authentication != null && !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();
 	}
-	@ModelAttribute("blockPreview")
+	@ModelAttribute(ATTR_BLOCKPREVIEW)
 	public Boolean addBlockPreviewToSessionScope() throws ServiceException {
 		System.out.println("Enter in addBlockPreviewToSessionScope()");
 		return false;
@@ -98,18 +111,19 @@ public abstract class AbtractController {
 		try {
 			String pathModelAndView = templateService.getPathJSP(false, folder, page.getContext(), template, false);
 			ModelAndView modelAndView = new ModelAndView(pathModelAndView);
-			modelAndView.addObject("activePage", page);
-			modelAndView.addObject("activeObject", activeObject);
-			modelAndView.addObject("applicationFolder", common.getApplicationFolder());
-			modelAndView.addObject("template", template);
-			modelAndView.addObject("initialized", false);
-			modelAndView.addObject("folder", folder);
+			modelAndView.addObject(ATTR_ACTIVEPAGE, page);
+			modelAndView.addObject(ATTR_ACTIVEOBJECT, activeObject);
+			modelAndView.addObject(ATTR_APPLICATIONFOLDER, common.getApplicationFolder());
+			modelAndView.addObject(ATTR_TEMPLATE, template);
+			modelAndView.addObject(ATTR_INITIALIZED, false);
+			modelAndView.addObject(ATTR_FOLDER, folder);
 			Locale locale = LocaleContextHolder.getLocale();
-			modelAndView.addObject("language", locale.getLanguage());
+			modelAndView.addObject(ATTR_LANGUAGE, locale.getLanguage());
+			modelAndView.addObject(ATTR_ACTIVELANG, common.getLang(locale.getLanguage()));
 			return modelAndView;
 		} catch (JSPNotFoundException e) {
 			throw new ResourceNotFoundException(e);
-		} catch (ServiceException e) {
+		} catch (ServiceException | UtilException e) {
 			throw new ControllerException(e);
 		}
 	}
