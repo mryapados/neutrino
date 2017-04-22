@@ -9,11 +9,11 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-9">
-				<div class="banner-content">
+				<div class="banner-content" style="background-image:url(${resumeBannerUrl});">
 					<div class="banner-info">
-						<h1>Hello, I am</h1>
-						<h2>Surzil Geek</h2>
-						<h3>Web Developer</h3>
+						<h1><s:message code="resume.hello" text="Nick Name:" /></h1>
+						<h2>${resumeFirstName} ${resumeLastName}</h2>
+						<h3>${resumeFunction}</h3>
 					</div>
 				</div>
 			</div>

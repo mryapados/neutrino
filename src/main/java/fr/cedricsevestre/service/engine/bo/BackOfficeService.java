@@ -590,7 +590,7 @@ public class BackOfficeService { //implements IBackOfficeService{
 		
 		result = persistData(entity, result);
 
-		persistReverse(data, entity, nFields, origin);
+		//persistReverse(data, entity, nFields, origin);
 		
 		return result;
 	}

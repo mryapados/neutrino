@@ -12,6 +12,9 @@ import org.springframework.ui.ModelMap;
 import fr.cedricsevestre.annotation.BlockController;
 import fr.cedricsevestre.annotation.BlockMapping;
 import fr.cedricsevestre.entity.custom.Category;
+import fr.cedricsevestre.entity.custom.Resume;
+import fr.cedricsevestre.entity.custom.Skill;
+import fr.cedricsevestre.entity.custom.Skill.SkillKind;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
@@ -20,6 +23,7 @@ import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ControllerException;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.CategoryService;
+import fr.cedricsevestre.service.custom.SkillService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
 
 @BlockController
@@ -30,10 +34,11 @@ public class ResumeBlockController {
 	@Autowired
 	private CategoryService categoryService;
 	
-	
+	@Autowired
+	private SkillService skillService;
 	
 	@BlockMapping(value = "@bo_block_list")
-	public ModelMap testage(Translation model, Translation activeObject, Template template, PageContext pageContext){
+	public ModelMap testage(Page page, Translation model, Translation activeObject, Template template, PageContext pageContext){
 		System.out.println("JE SUIS DANS TESTAGE !!!! template = " + template.getName() + " - objectType = " + pageContext.getAttribute("objectType", PageContext.REQUEST_SCOPE));
 		
 		
@@ -47,7 +52,7 @@ public class ResumeBlockController {
 	
 	
 	@BlockMapping({"resume_block_nav", "resume_block_listpage"})
-	public ModelMap nav(Translation model, Translation activeObject, Template template, Folder folder, Lang lang) throws ControllerException{	
+	public ModelMap navs(Translation model, Translation activeObject, Template template, Folder folder, Lang lang) throws ControllerException{	
 		try {
 			ModelMap modelMap = new ModelMap();
 			modelMap.addAttribute("categories", categoryService.findAllForFolderAndLang(folder, lang));
@@ -56,6 +61,33 @@ public class ResumeBlockController {
 			throw new ControllerException(e);
 		}
 
+	}
+	
+	
+	
+	@BlockMapping("resume_block_skillsProgressBar")
+	public ModelMap skillsProgressBar(Folder folder, Lang lang, PageContext pageContext) throws ControllerException{	
+		try {
+			ModelMap modelMap = new ModelMap();
+			Resume resume = (Resume) pageContext.getAttribute("activeResume", PageContext.REQUEST_SCOPE);
+			if (resume != null)	modelMap.addAttribute("skills", skillService.findAllKindForReumeAdFolderAndLang(resume, SkillKind.PROGRESSBAR, folder, lang));
+			return modelMap;
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
+		}
+
+	}
+	
+	@BlockMapping("resume_block_skillsChart")
+	public ModelMap skillsChart(Folder folder, Lang lang, PageContext pageContext) throws ControllerException{	
+		try {
+			ModelMap modelMap = new ModelMap();
+			Resume resume = (Resume) pageContext.getAttribute("activeResume", PageContext.REQUEST_SCOPE);
+			if (resume != null)	modelMap.addAttribute("skills", skillService.findAllKindForReumeAdFolderAndLang(resume, SkillKind.CHART, folder, lang));
+			return modelMap;
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
+		}
 	}
 	
 	

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import fr.cedricsevestre.com.utils.IdProviderUtil;
 import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.custom.Album.AlbumType;
 import fr.cedricsevestre.entity.custom.Category;
@@ -26,6 +27,8 @@ import fr.cedricsevestre.entity.custom.Media.FileType;
 import fr.cedricsevestre.entity.custom.Member;
 import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.custom.Resume;
+import fr.cedricsevestre.entity.custom.Skill;
+import fr.cedricsevestre.entity.custom.Skill.SkillKind;
 import fr.cedricsevestre.entity.custom.Tag;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
@@ -50,6 +53,7 @@ import fr.cedricsevestre.service.custom.MediaService;
 import fr.cedricsevestre.service.custom.MemberService;
 import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.custom.ResumeService;
+import fr.cedricsevestre.service.custom.SkillService;
 import fr.cedricsevestre.service.custom.TagService;
 import fr.cedricsevestre.service.engine.bo.LinkService;
 import fr.cedricsevestre.service.engine.independant.objects.FolderService;
@@ -133,7 +137,14 @@ public class InitialisationBase {
 	@Autowired
 	private TObjectService tObjectService;
 	
+	
 
+	@Autowired
+	private IdProviderUtil idProviderUtil;
+
+	@Autowired
+	private SkillService skillService;
+	
 	@Autowired
 	private ExperienceService experienceService;
 	
@@ -321,15 +332,15 @@ public class InitialisationBase {
 		Page homeEN = pageService.translate(new Page(), langEN);
 		homeEN.setName("home");
 		homeEN.setContext("home");
-		homeEN.setDescription("home description en");
+		homeEN.setDescription("home jj description en");
 		homeEN.setModel(templateService.identifyWithAllExceptData(null, "home", langEN));
 		homeEN.setFolders(folders);
 		pageService.save(homeEN);
-		
+
 		Page homeFR = pageService.translate(homeEN, langFR);
 		homeFR.setName("home");
-		homeFR.setDescription("home description fr");
-		homeEN.setFolders(folders);
+		homeFR.setDescription("home jjk description fr");
+		homeFR.setFolders(folders);
 		pageService.save(homeFR);
 		
 		
@@ -1775,6 +1786,38 @@ public class InitialisationBase {
 	}
 	
 	
+	public Map<Lang, Translation> mkSkill(Skill base, Folder folder, String name, String context, Map<Lang, Translation> resumes) throws ServiceException{
+		List<Folder> folders = new ArrayList<>();
+		folders.add(folder);
+		return mkSkill(base, folders, name, resumes);
+	}
+	public Map<Lang, Translation> mkSkill(Skill base, List<Folder> folders, String name, Map<Lang, Translation> resumes) throws ServiceException{
+		Map<Lang, Translation> map = new HashMap<>();
+		Skill first = null;
+		for (Lang lang : langs) {
+			Skill skill = null;
+			if (first == null){
+				skill = skillService.translate(base, lang);
+				skill.setName(name);
+				skill.setDescription(name + " Page description " + lang.getCode());
+				skill.setFolders(folders);
+				skill.setResume((Resume) resumes.get(lang));
+				first = skill;
+			} else {
+				skill = skillService.translate(first, lang);
+				skill.setFolders(folders);
+				skill.setName(name);
+				skill.setDescription(name + " Page description " + lang.getCode());
+				skill.setResume((Resume) resumes.get(lang));
+			}
+						
+			tObjectService.save(skill);
+			map.put(lang, skill);
+		}
+		return map;
+	}
+	
+	
 	public Map<Lang, Translation> mkTranslation(Translation base, Folder folder, String name, String context) throws ServiceException{
 		List<Folder> folders = new ArrayList<>();
 		folders.add(folder);
@@ -1850,12 +1893,34 @@ public class InitialisationBase {
 		Map<Lang, Translation> jWebDesigner = mkTranslation(new Job("Web Designer"), fldsResume, "webdesigner");
 		Map<Lang, Translation> jDevelopper = mkTranslation(new Job("Developper"), fldsResume, "developper");
 
-		// Experiences
-		mkExperience(new Experience("Senior Graphic Designer", "MyCompany", mkDate(2012, 07, 12), null), fldsResume, "expCS2", jWebDesigner, rCS);
-		mkExperience(new Experience("Former Graphic Designer", "MyCompany", mkDate(2011, 07, 10), mkDate(2012, 06, 25)), fldsResume, "expCS1", jDevelopper, rCS);
+		// Skill
+		Map<Lang, Translation> skPhotoshopCS = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Photoshop", 80, "#f4bf00"), fldsResume, "photoshop", rCS);
+		Map<Lang, Translation> skIllustratorCS = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Illustrator", 75, "#f26522"), fldsResume, "illustrator", rCS);
+		Map<Lang, Translation> skPHPCS = mkSkill(new Skill(SkillKind.PROGRESSBAR,"PHP", 20, "#b90162"), fldsResume, "php", rCS);
+		Map<Lang, Translation> skJoomlaCS = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Joomla", 35, "#ed1c24"), fldsResume, "joomla", rCS);
+		Map<Lang, Translation> skHtml5Css3CS = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Html 5 & CSS 3", 0, "#3c70b4"), fldsResume, "html5css3", rCS);
+		Map<Lang, Translation> skWordpressCS = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Wordpress", 90, "#87c05e"), fldsResume, "wordpress", rCS);
+		Map<Lang, Translation> skLangEnglishCS = mkSkill(new Skill(SkillKind.CHART,"English", 100, "#f7941d"), fldsResume, "english", rCS);
+		Map<Lang, Translation> skLangGermanCS = mkSkill(new Skill(SkillKind.CHART,"German", 60, "#f7941d"), fldsResume, "german", rCS);
+		Map<Lang, Translation> skLangSpanishCS = mkSkill(new Skill(SkillKind.CHART,"Spanish", 80, "#f7941d"), fldsResume, "spanish", rCS);
+		Map<Lang, Translation> skLangFrenchCS = mkSkill(new Skill(SkillKind.CHART,"French", 30, "#f7941d"), fldsResume, "french", rCS);
 		
-		mkExperience(new Experience("Senior Graphic Designer", "MyCompany", mkDate(2012, 07, 12), null), fldsResume, "expJP2", jWebDesigner, rJP);
-		mkExperience(new Experience("Former Graphic Designer", "MyCompany", mkDate(2011, 07, 10), mkDate(2012, 06, 25)), fldsResume, "expJP1", jDevelopper, rJP);
+		Map<Lang, Translation> skPhotoshopJP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Photoshop", 80, "#f4bf00"), fldsResume, "photoshop", rJP);
+		Map<Lang, Translation> skIllustratorJP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Illustrator", 75, "#f26522"), fldsResume, "illustrator", rJP);
+		Map<Lang, Translation> skPHPJP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"PHP", 20, "#b90162"), fldsResume, "php", rJP);
+		Map<Lang, Translation> skJoomlaJP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Joomla", 35, "#ed1c24"), fldsResume, "joomla", rJP);
+		Map<Lang, Translation> skHtml5Css3JP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Html 5 & CSS 3", 0, "#3c70b4"), fldsResume, "html5css3", rJP);
+		Map<Lang, Translation> skWordpressJP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Wordpress", 90, "#87c05e"), fldsResume, "wordpress", rJP);
+		Map<Lang, Translation> skLangEnglishJP = mkSkill(new Skill(SkillKind.CHART,"English", 100, "#f7941d"), fldsResume, "english", rJP);
+		Map<Lang, Translation> skLangGermanJP = mkSkill(new Skill(SkillKind.CHART,"German", 100, "#f7941d"), fldsResume, "german", rJP);
+		Map<Lang, Translation> skLangSpanishJP = mkSkill(new Skill(SkillKind.CHART,"Spanish", 80, "#f7941d"), fldsResume, "spanish", rJP);
+		Map<Lang, Translation> skLangFrenchJP = mkSkill(new Skill(SkillKind.CHART,"French", 30, "#f7941d"), fldsResume, "french", rJP);
+		// Experiences
+		Map<Lang, Translation> expCS2 = mkExperience(new Experience("Senior Graphic Designer", "MyCompany", mkDate(2012, 07, 12), null), fldsResume, "expCS2", jWebDesigner, rCS);
+		Map<Lang, Translation> expCS1 = mkExperience(new Experience("Former Graphic Designer", "MyCompany", mkDate(2011, 07, 10), mkDate(2012, 06, 25)), fldsResume, "expCS1", jDevelopper, rCS);
+		
+		Map<Lang, Translation> expJP2 = mkExperience(new Experience("Senior Graphic Designer", "MyCompany", mkDate(2012, 07, 12), null), fldsResume, "expJP2", jWebDesigner, rJP);
+		Map<Lang, Translation> expJP1 = mkExperience(new Experience("Former Graphic Designer", "MyCompany", mkDate(2011, 07, 10), mkDate(2012, 06, 25)), fldsResume, "expJP1", jDevelopper, rJP);
 		
 		
 		
@@ -1884,6 +1949,7 @@ public class InitialisationBase {
 		Position pFooter = addPosition(mapPosition, "resume_footer");
 		
 		Position pAboutMe = addPosition(mapPosition, "resume_aboutMe");
+		Position pSkills = addPosition(mapPosition, "resume_skills");
 		
 		// Models
 		Map<Lang, Translation> mHome = mkModel(fldsResume, "resume_model_home", "default/default");
@@ -1916,11 +1982,10 @@ public class InitialisationBase {
 		Map<Lang, Translation> pbFooter = mkPageBlock(fldsResume, "resume_pageblock_footer", "footer/footer");
 		Map<Lang, Translation> pbListPage = mkPageBlock(fldSurzilGeek, "resume_pageblock_listpage", "listpage/listpage");
 		Map<Lang, Translation> pbAboutMe = mkPageBlock(fldsResume, "resume_pageblock_aboutme", "aboutme/aboutme");
-		
+		Map<Lang, Translation> pbSkills = mkPageBlock(fldsResume, "resume_pageblock_skills", "skills/skills");
 		
 		// Blocks
 		Map<Lang, Translation> bNav = mkBlock(fldsResume, "resume_block_nav", "nav/nav");
-		Map<Lang, Translation> bSkills = mkBlock(fldsResume, "resume_block_skills", "skills/skills");
 		Map<Lang, Translation> bExperiences = mkBlock(fldsResume, "resume_block_experiences", "experience/experience");
 		Map<Lang, Translation> bEducation = mkBlock(fldsResume, "resume_block_education", "education/education");
 		Map<Lang, Translation> bPortfolio = mkBlock(fldsResume, "resume_block_portfolio", "portfolio/portfolio");
@@ -1929,6 +1994,8 @@ public class InitialisationBase {
 		Map<Lang, Translation> bResume = mkBlock(fldsResume, "resume_block_resume", "resume/resume");
 
 		Map<Lang, Translation> bAchievement = mkBlock(fldSurzilGeek, "resume_block_achievement", "achievement/achievement");
+		Map<Lang, Translation> bSkillsProgressBar = mkBlock(fldSurzilGeek, "resume_block_skillsProgressBar", "skills/progressBar/progressBar");
+		Map<Lang, Translation> bSkillsChart = mkBlock(fldSurzilGeek, "resume_block_skillsChart", "skills/chart/chart");
 		
 		// Set MapTemplate
 		
@@ -1952,7 +2019,10 @@ public class InitialisationBase {
 		Map<Lang, MapTemplate> mtAboutmePgAboutMe = addMapTemplate(pgAboutMe, pbAboutMe, pArticle);
 		Map<Lang, MapTemplate> mtAchievementPgAboutMe = addMapTemplate(pgAboutMe, bAchievement, pAboutMe);
 		
-		Map<Lang, MapTemplate> mtSkillsPgSkills = addMapTemplate(pgSkills, bSkills, pArticle);
+		Map<Lang, MapTemplate> mtSkillsPgSkills = addMapTemplate(pgSkills, pbSkills, pArticle);
+		Map<Lang, MapTemplate> mtSkillsProgressBarPgSkills = addMapTemplate(pgSkills, bSkillsProgressBar, pSkills);
+		Map<Lang, MapTemplate> mtSkillsChartPgSkills = addMapTemplate(pgSkills, bSkillsChart, pSkills);
+		
 		Map<Lang, MapTemplate> mtExperiencesPgExperiences = addMapTemplate(pgExperiences, bExperiences, pArticle);
 		Map<Lang, MapTemplate> mtEducationPgEducation = addMapTemplate(pgEducation, bEducation, pArticle);
 		Map<Lang, MapTemplate> mtPortfolioPgPortfolio = addMapTemplate(pgPortfolio, bPortfolio, pArticle);

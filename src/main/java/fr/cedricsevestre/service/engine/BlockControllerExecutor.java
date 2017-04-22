@@ -27,6 +27,7 @@ import fr.cedricsevestre.annotation.BlockMapping;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
+import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.bo.BackOfficeService;
@@ -63,7 +64,7 @@ public class BlockControllerExecutor {
     private ApplicationContext context;
     private Map<String, BlockControllerBean> blockControllers;
     
-    public ModelMap execute(String controllerName, Translation model, Translation activeObject, Template block, Folder folder, Lang lang, PageContext pageContext) throws ServiceException{
+    public ModelMap execute(String controllerName, Page page, Translation model, Translation activeObject, Template block, Folder folder, Lang lang, PageContext pageContext) throws ServiceException{
     	logger.debug("Enter in 'execute'");	
     	
     	if (controllerName == null) return null;
@@ -76,7 +77,7 @@ public class BlockControllerExecutor {
         }
 
 		try {
-			Object paramsObj[] = mkParameters(blockControllerBean.getParameters(), model, activeObject, block, folder, lang, pageContext);
+			Object paramsObj[] = mkParameters(blockControllerBean.getParameters(), page, model, activeObject, block, folder, lang, pageContext);
 			return (ModelMap) blockControllerBean.getMethod().invoke(blockControllerBean.getObject(), paramsObj);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			throw new ServiceException("Error execute", e);//TODO TemplateControllerException
@@ -84,12 +85,14 @@ public class BlockControllerExecutor {
         
     }
     
-    private Object[] mkParameters(List<Class<?>> parameters, Translation model, Translation activeObject, Template block, Folder folder, Lang lang, PageContext pageContext){
+    private Object[] mkParameters(List<Class<?>> parameters, Page page, Translation model, Translation activeObject, Template block, Folder folder, Lang lang, PageContext pageContext){
     	logger.debug("Enter in 'mkParameters'");	
     	Boolean firstTranslation = true;
 		List<Object> objects = new ArrayList<>();
 		for (Class<?> parameter : parameters) {
-			if (firstTranslation && parameter == Translation.class){
+			if (parameter == Page.class){
+				objects.add(page);
+			} else if (firstTranslation && parameter == Translation.class){
 				objects.add(model);
 				firstTranslation = false;
 			} else if (!firstTranslation && parameter == Translation.class){

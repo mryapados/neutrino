@@ -172,7 +172,7 @@ public class Block extends TagSupport implements IIncludeJSP {
 				for (MapTemplate mapTemplate : mapTemplates) {
 					Template activeBlock = mapTemplate.getBlock();
 					
-					ModelMap modelMap = templateControllerExecutor.execute(activeBlock.getController(), model, activeObject, activeBlock, folder, lang, pageContext);
+					ModelMap modelMap = templateControllerExecutor.execute(activeBlock.getController(), page, model, activeObject, activeBlock, folder, lang, pageContext);
 					if (modelMap != null){
 						for (Map.Entry<String, Object> entry : modelMap.entrySet()) {
 							pageContext.setAttribute(entry.getKey(), entry.getValue(), PageContext.REQUEST_SCOPE);

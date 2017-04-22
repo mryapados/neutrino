@@ -9,7 +9,7 @@
 <div class="container">
 	<div class="footer">
 		<p>
-			&copy; 2017 <a href="#">Surzil Geek.</a> All Rights Reserved
+			&copy; 2017 <a href="#">{resumeFirstName} ${resumeLastName}.</a> All Rights Reserved
 		</p>
 	</div>
 </div><!-- contaner -->

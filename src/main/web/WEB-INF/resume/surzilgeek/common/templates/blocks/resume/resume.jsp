@@ -14,10 +14,10 @@
                                 <img class="img-responsive" src="<c:url value='/resources/src/resume/surzilgeek/images/profile.jpg'/>" alt="Image">
                             </div>
                             <div class="profile-info">
-                                <h1>Surzil Geek</h1>
-                                <h4>Web Developer</h4>
+                                <h1>${resumeFirstName} ${resumeLastName}</h1>
+                                <h4>${resumeFunction}</h4>
                                 <address>
-                                    <p>Address: 123 West 12th Street, Suite 456 New York, NY 123456 <br> Phone: +012 345 678 910 <br> <a href="#">Email: itsme@surzilegeek.com</a></p>
+                                    <p>${resumeAddress}<br> Phone: ${resumePhone} <br> <a href="#">Email: ${resumeEmail}</a></p>
                                 </address>
                             </div><!-- profile info -->
                             <div class="career-objective">
@@ -28,7 +28,7 @@
                                     <h3>Career Objective</h3>
                                </div> 
                                 <div class="sub-content">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                                    <p>${resumeDescription}</p>
                                 </div>
                             </div><!-- career objective -->
                             <hr>

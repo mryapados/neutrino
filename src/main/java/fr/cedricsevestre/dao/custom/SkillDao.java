@@ -11,18 +11,24 @@ import org.springframework.stereotype.Repository;
 
 import fr.cedricsevestre.dao.engine.TranslationDao;
 import fr.cedricsevestre.entity.custom.Category;
+import fr.cedricsevestre.entity.custom.Experience;
+import fr.cedricsevestre.entity.custom.Job;
 import fr.cedricsevestre.entity.custom.Media;
 import fr.cedricsevestre.entity.custom.Project;
+import fr.cedricsevestre.entity.custom.Resume;
+import fr.cedricsevestre.entity.custom.Skill;
+import fr.cedricsevestre.entity.custom.Skill.SkillKind;
 import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
-import fr.cedricsevestre.entity.engine.translation.objects.Template;
 
 @Repository
-public interface CategoryDao extends TranslationDao<Category> {
+public interface SkillDao extends TranslationDao<Skill> {
 
-	@Query("SELECT c FROM Category c WHERE (c.folders IS EMPTY OR :folder IN elements(c.folders)) AND c.lang =:lang AND c.inMenu = true ORDER BY ordered")
-	List<Category> findAllForFolderAndLang(@Param("folder") Folder folder, @Param("lang") Lang lang);
+	@Query("SELECT s FROM Skill s WHERE (s.folders IS EMPTY OR :folder IN elements(s.folders)) AND s.lang =:lang AND s.kind =:kind AND s.resume =:resume ORDER BY ordered")
+	List<Skill> findAllKindForReumeAdFolderAndLang(@Param("resume") Resume resume, @Param("kind") SkillKind kind, @Param("folder") Folder folder, @Param("lang") Lang lang);
+	
+	
 	
 }

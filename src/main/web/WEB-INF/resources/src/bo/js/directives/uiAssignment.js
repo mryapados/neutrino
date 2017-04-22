@@ -156,7 +156,7 @@
 				      			if (!max) max = objects.length;
 				      			else if (objects.length < max) max = objects.length;
 				      			for(var i = 0; i < max; i++) {
-				      				files.push($frontPath.URL_FILES_FOLDER + objects[i]);
+				      				files.push($frontPath.URL_BASE + objects[i]);
 				      			}
 				      		}
 				      		$scope[modelText] = files;
@@ -493,7 +493,7 @@
 	});
 	
 
-	fModule.controller('UiFileAssignmentModalCtrl', function ($rootScope, $scope, $uibModalInstance, values, urlInfos, kind, disablePreChecked) {
+	fModule.controller('UiFileAssignmentModalCtrl', function ($rootScope, $scope, $uibModalInstance, values, urlInfos, kind, disablePreChecked, $frontPath) {
 		
 
 		
@@ -508,7 +508,7 @@
 			for(var i = 0; i < data.length; i++) {
 				var item = data[i].model;
 				if (item.type == 'file'){
-					$scope.values.push(item.fullPath());
+					$scope.values.push($frontPath.URL_FILES + item.fullPath());
 				}
 			}
 			if ($scope.templateForm){

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.common.Common.TypeBase;
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 
 @Component
 @Scope(value = "singleton")
@@ -22,10 +23,12 @@ public class Init extends TagSupport {
 	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(Init.class);
 	
+	private static final String FOLDER = "folder";
+	
 	private static Common common;
 	@Autowired
 	public void Common(Common common) {
-		this.common = common;
+		Init.common = common;
 	}
 	
 	private Boolean test = null;
@@ -36,6 +39,11 @@ public class Init extends TagSupport {
 			JspWriter out = pageContext.getOut();
 			try {
 				pageContext.include(common.getBasePath(true, null, TypeBase.ADMIN) + "components/init.jsp");
+				
+				Folder folder = (Folder) pageContext.getAttribute(FOLDER, PageContext.REQUEST_SCOPE);
+				pageContext.include(common.getBasePath(true, folder, TypeBase.COMMON) + "components/init.jsp");
+				
+				
 				pageContext.setAttribute("initialized", true, PageContext.REQUEST_SCOPE);
 			} catch (IOException | ServletException e) {
 				try {

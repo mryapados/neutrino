@@ -7,19 +7,9 @@
 
 <my:init test="${!initialized}"/>
 
-<c:if test="${not empty activeResume}">
-	<my:bind var="resumeFirstName" type="Resume" beanId="${activeResume.id}" field="firstName" />
-	<my:bind var="resumeLastName" type="Resume" beanId="${activeResume.id}" field="lastName" />
-	<my:bind var="resumeFunction" type="Resume" beanId="${activeResume.id}" field="function" />
-	<my:bind var="resumeDescription" type="Resume" beanId="${activeResume.id}" field="description" />
-	<my:bind var="resumeEmail" type="Resume" beanId="${activeResume.id}" field="email" />
-	<my:bind var="resumePhone" type="Resume" beanId="${activeResume.id}" field="phone" />
-	<my:bind var="resumeDateOfBirth" type="Resume" beanId="${activeResume.id}" field="dateOfBirth" />
-	<s:message var="pattern" code="date.locale.format" text="MM-dd-yyyy" />
-	<fmt:formatDate var="formatedDate" pattern="${pattern}" value="${resumeDateOfBirth}" />
-	<my:bind var="resumeAddress" type="Resume" beanId="${activeResume.id}" field="address" />
-</c:if>
-
+<s:message var="pattern" code="date.locale.format" text="MM-dd-yyyy" scope="request" />
+<fmt:formatDate var="formatedDate" pattern="${pattern}" value="${resumeDateOfBirth}" scope="request" />
+	
 <div id="about" class="about-section section-padding">
     <div class="container">
         <div class="row">
@@ -42,8 +32,7 @@
                     <p><span><s:message code="resume.address" text="Address:" /></span> ${resumeAddress}</p>
                 </address>
                 
-                
-                
+
                 <my:block position="resume_aboutMe" />
                 
                 
