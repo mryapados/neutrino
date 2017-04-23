@@ -11,6 +11,10 @@
 	<fmt:formatNumber var="colRight" value="${skillsSize / 2}" maxFractionDigits="0" />
 	<c:set var="colLeft" value="${skillsSize - colRight}" />
 
+    <div class="text-info">
+        <h4><s:message code="skills.progressbar.info.title" text="Experience Skill" /></h4>
+        <p><s:message code="skills.progressbar.info.description" text="" /></p>
+    </div>
 	<div class="progress-content">
 		<div class="rating-bar bar-left">
 			<c:forEach var="i" begin="0" end="${colLeft - 1}">

@@ -4,28 +4,23 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 
 <my:init test="${!initialized}"/>
-            
-                    <div class="language-skill">
-                        <div class="text-info">
-                            <h4>Language skill</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-                        </div>
-                        <ul>
-                            <li class="chart" data-percent="100">
-                                <span class="percent"></span>
-                                <h5>German</h5>
-                            </li>
-                            <li class="chart" data-percent="90">
-                                <span class="percent percent1"></span>
-                                <h5>Spanish</h5>
-                            </li>
-                            <li class="chart" data-percent="100">
-                                <span class="percent percent2"></span>
-                                <h5>English</h5>
-                            </li>
-                            <li class="chart" data-percent="30">
-                                <span class="percent percent3"></span>
-                                <h5>Latin</h5>
-                            </li>                                    
-                        </ul>
-                    </div><!-- more skill -->
+
+<c:if test="${not empty skills}">
+	<div class="language-skill">
+		<div class="text-info">
+			<h4><s:message code="skills.chart.info.title" text="Language Skill" /></h4>
+		    <p><s:message code="skills.chart.info.description" text="" /></p>
+		</div>
+	    <ul>
+			<c:forEach items="${skills}" var="skill">
+				<my:bind var="skillTitle" type="Skill" beanId="${skill.id}" field="title" />
+				<my:bind var="skillPercent" type="Skill" beanId="${skill.id}" field="percent" />
+				
+		        <li class="chart" data-percent="${skillPercent}">
+		            <span style="background-color:${skill.color};" class="percent"></span>
+		            <h5>${skillTitle}</h5>
+		        </li>
+			</c:forEach>                         
+	    </ul>
+	</div><!-- more skill -->
+</c:if>

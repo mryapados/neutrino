@@ -69,7 +69,7 @@ public abstract class Translation implements ITranslation, Serializable {
 	private Date dateUpdated;
 	
 	@BOField(type = ValueType.HTML)
-	@SafeHtml(whitelistType = WhiteListType.BASIC)
+	@SafeHtml(whitelistType = WhiteListType.RELAXED)
 	@Column(name = "description")
 	private String description;
 

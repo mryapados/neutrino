@@ -11,11 +11,10 @@
                 <div class="row">
                     <div class="col-sm-8">
                         <div class="section-title">
-                            <h1>My Exprience</h1>
+                            <h1><s:message code="experience.title" text="My Exprience" /></h1>
                         </div>
                         <div class="text-info">
-                            <h4>15 Years Exprience</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+							${activePage.description}
                         </div>
                         <div class="exprience">
                             <div class="exprience-image">

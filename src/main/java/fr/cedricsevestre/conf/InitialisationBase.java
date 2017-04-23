@@ -1901,9 +1901,9 @@ public class InitialisationBase {
 		Map<Lang, Translation> skHtml5Css3CS = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Html 5 & CSS 3", 0, "#3c70b4"), fldsResume, "html5css3", rCS);
 		Map<Lang, Translation> skWordpressCS = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Wordpress", 90, "#87c05e"), fldsResume, "wordpress", rCS);
 		Map<Lang, Translation> skLangEnglishCS = mkSkill(new Skill(SkillKind.CHART,"English", 100, "#f7941d"), fldsResume, "english", rCS);
-		Map<Lang, Translation> skLangGermanCS = mkSkill(new Skill(SkillKind.CHART,"German", 60, "#f7941d"), fldsResume, "german", rCS);
-		Map<Lang, Translation> skLangSpanishCS = mkSkill(new Skill(SkillKind.CHART,"Spanish", 80, "#f7941d"), fldsResume, "spanish", rCS);
-		Map<Lang, Translation> skLangFrenchCS = mkSkill(new Skill(SkillKind.CHART,"French", 30, "#f7941d"), fldsResume, "french", rCS);
+		Map<Lang, Translation> skLangGermanCS = mkSkill(new Skill(SkillKind.CHART,"German", 60, "#f26522"), fldsResume, "german", rCS);
+		Map<Lang, Translation> skLangSpanishCS = mkSkill(new Skill(SkillKind.CHART,"Spanish", 80, "#3c70b4"), fldsResume, "spanish", rCS);
+		Map<Lang, Translation> skLangFrenchCS = mkSkill(new Skill(SkillKind.CHART,"French", 30, "#87c05e"), fldsResume, "french", rCS);
 		
 		Map<Lang, Translation> skPhotoshopJP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Photoshop", 80, "#f4bf00"), fldsResume, "photoshop", rJP);
 		Map<Lang, Translation> skIllustratorJP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Illustrator", 75, "#f26522"), fldsResume, "illustrator", rJP);
@@ -1912,9 +1912,9 @@ public class InitialisationBase {
 		Map<Lang, Translation> skHtml5Css3JP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Html 5 & CSS 3", 0, "#3c70b4"), fldsResume, "html5css3", rJP);
 		Map<Lang, Translation> skWordpressJP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Wordpress", 90, "#87c05e"), fldsResume, "wordpress", rJP);
 		Map<Lang, Translation> skLangEnglishJP = mkSkill(new Skill(SkillKind.CHART,"English", 100, "#f7941d"), fldsResume, "english", rJP);
-		Map<Lang, Translation> skLangGermanJP = mkSkill(new Skill(SkillKind.CHART,"German", 100, "#f7941d"), fldsResume, "german", rJP);
-		Map<Lang, Translation> skLangSpanishJP = mkSkill(new Skill(SkillKind.CHART,"Spanish", 80, "#f7941d"), fldsResume, "spanish", rJP);
-		Map<Lang, Translation> skLangFrenchJP = mkSkill(new Skill(SkillKind.CHART,"French", 30, "#f7941d"), fldsResume, "french", rJP);
+		Map<Lang, Translation> skLangGermanJP = mkSkill(new Skill(SkillKind.CHART,"German", 100, "#f26522"), fldsResume, "german", rJP);
+		Map<Lang, Translation> skLangSpanishJP = mkSkill(new Skill(SkillKind.CHART,"Spanish", 80, "#3c70b4"), fldsResume, "spanish", rJP);
+		Map<Lang, Translation> skLangFrenchJP = mkSkill(new Skill(SkillKind.CHART,"French", 30, "#87c05e"), fldsResume, "french", rJP);
 		// Experiences
 		Map<Lang, Translation> expCS2 = mkExperience(new Experience("Senior Graphic Designer", "MyCompany", mkDate(2012, 07, 12), null), fldsResume, "expCS2", jWebDesigner, rCS);
 		Map<Lang, Translation> expCS1 = mkExperience(new Experience("Former Graphic Designer", "MyCompany", mkDate(2011, 07, 10), mkDate(2012, 06, 25)), fldsResume, "expCS1", jDevelopper, rCS);
@@ -1970,7 +1970,7 @@ public class InitialisationBase {
 		Map<Lang, Translation> pgHomeSurzilGeek = mkPage(new Category("#1abc9c", "Home", iHome, true, 10), fldSurzilGeek, "home", "home", mHome);
 		Map<Lang, Translation> pgAboutMe = mkPage(putCategoryAboutMe(new Category(null, "About me", iAboutMe, true, 12)), fldSurzilGeek, "aboutme", "aboutme", mDefault);
 		Map<Lang, Translation> pgSkills = mkPage(new Category(null, "Skills", iSkills, true, 14), fldSurzilGeek, "skills", "skills", mDefault);
-		Map<Lang, Translation> pgExperiences = mkPage(new Category(null, "Experiences", iExperiences, true, 16), fldSurzilGeek, "experiences", "experiences", mDefault);
+		Map<Lang, Translation> pgExperiences = mkPage(putCategoryExperience(new Category(null, "Experiences", iExperiences, true, 16)), fldSurzilGeek, "experiences", "experiences", mDefault);
 		Map<Lang, Translation> pgEducation = mkPage(new Category(null, "Education", iEducation, true, 18), fldSurzilGeek, "education", "education", mDefault);
 		Map<Lang, Translation> pgResumeSurzilGeek = mkPage(new Category(null, "My resume PDF", iSave, true, 60), fldSurzilGeek, "resume", "resume", mDefault);
 		
@@ -2039,7 +2039,11 @@ public class InitialisationBase {
 		return page;
 	}
 	
-	
+	private Page putCategoryExperience(Page page){
+		String description = "<h4>15 Years Exprience</h4><p>Lorem ipsum, tempor incididunt ut labore. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>";
+		page.setDescription(description);
+		return page;
+	}
 	
 	
 	

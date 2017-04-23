@@ -13,16 +13,10 @@
                 <div class="section-content">
                     <div class="section-title">
                         <h1><s:message code="skills.title" text="My Skills" /></h1>
-                    </div>
-                    <div class="text-info">
-                        <h4><s:message code="skills.info.title" text="Experience Skill" /></h4>
                         <p>${activePage.description}</p>
                     </div>
 
-
 					<my:block position="resume_skills" />
-
-
                 </div>                                             
             </div>
         </div><!-- row -->
