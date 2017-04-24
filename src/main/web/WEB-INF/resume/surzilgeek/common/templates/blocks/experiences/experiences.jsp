@@ -36,7 +36,7 @@
 		    <h3><c:out value="${experienceTitle}"/></h3>
 		    <h5>${formatedStartDate} - ${formatedEndDate}</h5>
 		    <div>
-		    	<c:out value="${experienceChapo}"/>
+		    	<c:out value="${experienceChapo}" escapeXml="false" />
 		    </div>
 		</div>                            
     </div>

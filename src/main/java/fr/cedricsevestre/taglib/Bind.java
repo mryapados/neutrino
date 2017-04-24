@@ -36,7 +36,7 @@ public class Bind extends TagSupport {
 	private static IdProviderUtil idProviderUtil;
 	@Autowired
 	public void IdProviderUtil(IdProviderUtil idProviderUtil) {
-		this.idProviderUtil = idProviderUtil;
+		Bind.idProviderUtil = idProviderUtil;
 	}
 
 	private String var;                 

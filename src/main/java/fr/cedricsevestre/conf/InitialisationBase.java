@@ -19,6 +19,7 @@ import fr.cedricsevestre.com.utils.IdProviderUtil;
 import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.custom.Album.AlbumType;
 import fr.cedricsevestre.entity.custom.Category;
+import fr.cedricsevestre.entity.custom.Education;
 import fr.cedricsevestre.entity.custom.Icon;
 import fr.cedricsevestre.entity.custom.Job;
 import fr.cedricsevestre.entity.custom.Experience;
@@ -46,6 +47,7 @@ import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.AlbumService;
 import fr.cedricsevestre.service.custom.CategoryService;
+import fr.cedricsevestre.service.custom.EducationService;
 import fr.cedricsevestre.service.custom.ExperienceService;
 import fr.cedricsevestre.service.custom.IconService;
 import fr.cedricsevestre.service.custom.MarkerService;
@@ -147,6 +149,9 @@ public class InitialisationBase {
 	
 	@Autowired
 	private ExperienceService experienceService;
+	
+	@Autowired
+	private EducationService educationService;
 	
 	Map<String, Folder> mapfolders;
 	
@@ -1748,10 +1753,37 @@ public class InitialisationBase {
 	
 	
 	
-	
-	
-	
-	
+	public Map<Lang, Translation> mkEducation(Education base, Folder folder, String name, String context, Map<Lang, Translation> resumes) throws ServiceException{
+		List<Folder> folders = new ArrayList<>();
+		folders.add(folder);
+		return mkEducation(base, folders, name, resumes);
+	}
+	public Map<Lang, Translation> mkEducation(Education base, List<Folder> folders, String name, Map<Lang, Translation> resumes) throws ServiceException{
+		Map<Lang, Translation> map = new HashMap<>();
+		Education first = null;
+		for (Lang lang : langs) {
+			Education education = null;
+			if (first == null){
+				education = educationService.translate(base, lang);
+				education.setName(name);
+				education.setDescription(name + " Education description " + lang.getCode());
+				education.setFolders(folders);
+				education.setResume((Resume) resumes.get(lang));
+				first = education;
+			} else {
+				education = educationService.translate(first, lang);
+				education.setFolders(folders);
+				education.setName(name);
+				education.setDescription(name + " Education description " + lang.getCode());
+				education.setResume((Resume) resumes.get(lang));
+			}
+						
+			tObjectService.save(education);
+			map.put(lang, education);
+		}
+		return map;
+	}
+
 	public Map<Lang, Translation> mkExperience(Experience base, Folder folder, String name, String context, Map<Lang, Translation> jobs, Map<Lang, Translation> resumes) throws ServiceException{
 		List<Folder> folders = new ArrayList<>();
 		folders.add(folder);
@@ -1915,15 +1947,22 @@ public class InitialisationBase {
 		Map<Lang, Translation> skLangGermanJP = mkSkill(new Skill(SkillKind.CHART,"German", 100, "#f26522"), fldsResume, "german", rJP);
 		Map<Lang, Translation> skLangSpanishJP = mkSkill(new Skill(SkillKind.CHART,"Spanish", 80, "#3c70b4"), fldsResume, "spanish", rJP);
 		Map<Lang, Translation> skLangFrenchJP = mkSkill(new Skill(SkillKind.CHART,"French", 30, "#87c05e"), fldsResume, "french", rJP);
+		
 		// Experiences
-		Map<Lang, Translation> expCS2 = mkExperience(new Experience("Senior Graphic Designer", "MyCompany", mkDate(2012, 07, 12), null), fldsResume, "expCS2", jWebDesigner, rCS);
-		Map<Lang, Translation> expCS1 = mkExperience(new Experience("Former Graphic Designer", "MyCompany", mkDate(2011, 07, 10), mkDate(2012, 06, 25)), fldsResume, "expCS1", jDevelopper, rCS);
+		Map<Lang, Translation> expCS2 = mkExperience(putExperienceX(new Experience("Senior Graphic Designer", "MyCompany", mkDate(2012, 07, 12), null), "2.png"), fldsResume, "expCS2", jWebDesigner, rCS);
+		Map<Lang, Translation> expCS1 = mkExperience(putExperienceX(new Experience("Former Graphic Designer", "MyCompany", mkDate(2011, 07, 10), mkDate(2012, 06, 25)), "1.png"), fldsResume, "expCS1", jDevelopper, rCS);
 		
-		Map<Lang, Translation> expJP2 = mkExperience(new Experience("Senior Graphic Designer", "MyCompany", mkDate(2012, 07, 12), null), fldsResume, "expJP2", jWebDesigner, rJP);
-		Map<Lang, Translation> expJP1 = mkExperience(new Experience("Former Graphic Designer", "MyCompany", mkDate(2011, 07, 10), mkDate(2012, 06, 25)), fldsResume, "expJP1", jDevelopper, rJP);
+		Map<Lang, Translation> expJP2 = mkExperience(putExperienceX(new Experience("Senior Graphic Designer", "MyCompany", mkDate(2012, 07, 12), null), "2.png"), fldsResume, "expJP2", jWebDesigner, rJP);
+		Map<Lang, Translation> expJP1 = mkExperience(putExperienceX(new Experience("Former Graphic Designer", "MyCompany", mkDate(2011, 07, 10), mkDate(2012, 06, 25)), "1.png"), fldsResume, "expJP1", jDevelopper, rJP);
+
+		// Education
+		Map<Lang, Translation> edCS1 = mkEducation(putEducationX(new Education("Bachelor of Art", "Montana State University", 2010), "1.png"), fldsResume, "edCS1", rCS);
+		Map<Lang, Translation> edCS2 = mkEducation(putEducationX(new Education("University of Bristol", "Cincinnati Christian University", 2007), "2.png"), fldsResume, "edCS2", rCS);
+		Map<Lang, Translation> edCS3 = mkEducation(putEducationX(new Education("this is a test", "Montana State University", 2005), "3.png"), fldsResume, "edCS3", rCS);
 		
-		
-		
+		Map<Lang, Translation> edJP1 = mkEducation(putEducationX(new Education("Bachelor of Art", "Montana State University", 2010), "1.png"), fldsResume, "edJP1", rJP);
+		Map<Lang, Translation> edJP2 = mkEducation(putEducationX(new Education("University of Bristol", "Cincinnati Christian University", 2007), "2.png"), fldsResume, "edJP2", rJP);
+		Map<Lang, Translation> edJP3 = mkEducation(putEducationX(new Education("this is a test", "Montana State University", 2005), "3.png"), fldsResume, "edJP3", rJP);
 		
 		// Icons
 		Icon iHome = mkIcon(new Icon("home", "flaticon-insignia", "fa fa-hand-peace-o", ""));
@@ -1951,6 +1990,7 @@ public class InitialisationBase {
 		Position pAboutMe = addPosition(mapPosition, "resume_aboutMe");
 		Position pSkills = addPosition(mapPosition, "resume_skills");
 		Position pExperiences = addPosition(mapPosition, "resume_experiences");
+		Position pEducation = addPosition(mapPosition, "resume_educations");
 		
 		// Models
 		Map<Lang, Translation> mHome = mkModel(fldsResume, "resume_model_home", "default/default");
@@ -1970,9 +2010,9 @@ public class InitialisationBase {
 		
 		Map<Lang, Translation> pgHomeSurzilGeek = mkPage(new Category("#1abc9c", "Home", iHome, true, 10), fldSurzilGeek, "home", "home", mHome);
 		Map<Lang, Translation> pgAboutMe = mkPage(putCategoryAboutMe(new Category(null, "About me", iAboutMe, true, 12)), fldSurzilGeek, "aboutme", "aboutme", mDefault);
-		Map<Lang, Translation> pgSkills = mkPage(new Category(null, "Skills", iSkills, true, 14), fldSurzilGeek, "skills", "skills", mDefault);
+		Map<Lang, Translation> pgSkills = mkPage(putCategorySkills(new Category(null, "Skills", iSkills, true, 14)), fldSurzilGeek, "skills", "skills", mDefault);
 		Map<Lang, Translation> pgExperiences = mkPage(putCategoryExperience(new Category(null, "Experiences", iExperiences, true, 16)), fldSurzilGeek, "experiences", "experiences", mDefault);
-		Map<Lang, Translation> pgEducation = mkPage(new Category(null, "Education", iEducation, true, 18), fldSurzilGeek, "education", "education", mDefault);
+		Map<Lang, Translation> pgEducations = mkPage(putCategoryEducation(new Category(null, "Education", iEducation, true, 18)), fldSurzilGeek, "education", "education", mDefault);
 		Map<Lang, Translation> pgResumeSurzilGeek = mkPage(new Category(null, "My resume PDF", iSave, true, 60), fldSurzilGeek, "resume", "resume", mDefault);
 		
 		
@@ -1985,22 +2025,23 @@ public class InitialisationBase {
 		Map<Lang, Translation> pbAboutMe = mkPageBlock(fldsResume, "resume_pageblock_aboutme", "aboutme/aboutme");
 		Map<Lang, Translation> pbSkills = mkPageBlock(fldsResume, "resume_pageblock_skills", "skills/skills");
 		Map<Lang, Translation> pbExperiences = mkPageBlock(fldsResume, "resume_pageblock_experiences", "experiences/experiences");
-		
+		Map<Lang, Translation> pbEducations = mkPageBlock(fldsResume, "resume_pageblock_educations", "educations/educations");
+		Map<Lang, Translation> pbPortfolio = mkPageBlock(fldsResume, "resume_pageblock_portfolio", "portfolio/portfolio");
+		Map<Lang, Translation> pbContact = mkPageBlock(fldsResume, "resume_pageblock_contact", "contact/contact");
+		Map<Lang, Translation> pbBlog = mkPageBlock(fldsResume, "resume_pageblock_blog", "blog/blog");
+		Map<Lang, Translation> pbResume = mkPageBlock(fldsResume, "resume_pageblock_resume", "resume/resume");
 		
 		// Blocks
 		Map<Lang, Translation> bNav = mkBlock(fldsResume, "resume_block_nav", "nav/nav");
 		
-		Map<Lang, Translation> bEducation = mkBlock(fldsResume, "resume_block_education", "education/education");
-		Map<Lang, Translation> bPortfolio = mkBlock(fldsResume, "resume_block_portfolio", "portfolio/portfolio");
-		Map<Lang, Translation> bContact = mkBlock(fldsResume, "resume_block_contact", "contact/contact");
-		Map<Lang, Translation> bBlog = mkBlock(fldsResume, "resume_block_blog", "blog/blog");
-		Map<Lang, Translation> bResume = mkBlock(fldsResume, "resume_block_resume", "resume/resume");
+
 
 		Map<Lang, Translation> bAchievement = mkBlock(fldSurzilGeek, "resume_block_achievement", "achievement/achievement");
 		Map<Lang, Translation> bSkillsProgressBar = mkBlock(fldSurzilGeek, "resume_block_skillsProgressBar", "skills/progressBar/progressBar");
 		Map<Lang, Translation> bSkillsChart = mkBlock(fldSurzilGeek, "resume_block_skillsChart", "skills/chart/chart");
-		
 		Map<Lang, Translation> bExperiences = mkBlock(fldSurzilGeek, "resume_block_experiences", "experiences/experiences");
+		Map<Lang, Translation> bEducations = mkBlock(fldSurzilGeek, "resume_block_educations", "educations/educations");
+		
 		
 		// Set MapTemplate
 		
@@ -2031,13 +2072,15 @@ public class InitialisationBase {
 		Map<Lang, MapTemplate> mtPbExperiencesPgExperiences = addMapTemplate(pgExperiences, pbExperiences, pArticle);
 		Map<Lang, MapTemplate> mtBExperiencesPgExperiences = addMapTemplate(pbExperiences, bExperiences, pExperiences);
 		
+		Map<Lang, MapTemplate> mtPbEducationsPgEducations = addMapTemplate(pgEducations, pbEducations, pArticle);
+		Map<Lang, MapTemplate> mtBEducationsPgEducations = addMapTemplate(pbEducations, bEducations, pEducation);
 		
 		
-		Map<Lang, MapTemplate> mtEducationPgEducation = addMapTemplate(pgEducation, bEducation, pArticle);
-		Map<Lang, MapTemplate> mtPortfolioPgPortfolio = addMapTemplate(pgPortfolio, bPortfolio, pArticle);
-		Map<Lang, MapTemplate> mtContactPgContact = addMapTemplate(pgContact, bContact, pArticle);
-		Map<Lang, MapTemplate> mtBlogPgBlog = addMapTemplate(pgBlog, bBlog, pArticle);
-		Map<Lang, MapTemplate> mtResumePgResume = addMapTemplate(pgResumeSurzilGeek, bResume, pArticle);
+		
+		Map<Lang, MapTemplate> mtPbPortfolioPgPortfolio = addMapTemplate(pgPortfolio, pbPortfolio, pArticle);
+		Map<Lang, MapTemplate> mtPbContactPgContact = addMapTemplate(pgContact, pbContact, pArticle);
+		Map<Lang, MapTemplate> mtPbBlogPgBlog = addMapTemplate(pgBlog, pbBlog, pArticle);
+		Map<Lang, MapTemplate> mtPbResumePgResume = addMapTemplate(pgResumeSurzilGeek, pbResume, pArticle);
 		
 		
 	}
@@ -2047,15 +2090,37 @@ public class InitialisationBase {
 		page.setDescription(description);
 		return page;
 	}
-	
 	private Page putCategoryExperience(Page page){
 		String description = "<h4>15 Years Exprience</h4><p>Lorem ipsum onsectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad onsectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad onsectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad , tempor incididunt ut labore. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>";
+		page.setDescription(description);
+		return page;
+	}
+	private Page putCategorySkills(Page page){
+		String description = "<h4>This is SKILLS !!!!!</h4><p>Lorem ipsum onsectetur adipisicing elitenim ad, tempor incididunt ut labore. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>";
+		page.setDescription(description);
+		return page;
+	}
+	private Page putCategoryEducation(Page page){
+		String description = "<h4>Just My Educational Background</h4><p>Lorem ipsum onsectetur adipisicing elit, sed do eiusmod tod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad onsectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad , tempor incididunt ut labore. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>";
 		page.setDescription(description);
 		return page;
 	}
 	
 	
 	
+	
+	private Experience putExperienceX(Experience exp, String img){
+		exp.setDescription("<h4>this is the title youpi !</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>");
+		exp.setChapo("<p>Lorem ipsum dolor sit ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>");
+		exp.setPicture("/files/resume/surzilgeek/experiences/" + img);
+		return exp;
+	}
+	private Education putEducationX(Education ed, String img){
+		ed.setDescription("<h4>this is the title youpi !</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>");
+		ed.setChapo("<p>Lorem ipsum dolor sit ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>");
+		ed.setPicture("/files/resume/surzilgeek/education/" + img);
+		return ed;
+	}
 	
 	
 	

@@ -23,6 +23,7 @@ import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ControllerException;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.CategoryService;
+import fr.cedricsevestre.service.custom.EducationService;
 import fr.cedricsevestre.service.custom.ExperienceService;
 import fr.cedricsevestre.service.custom.SkillService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
@@ -40,6 +41,9 @@ public class ResumeBlockController {
 	
 	@Autowired
 	private ExperienceService experienceService;
+	
+	@Autowired
+	private EducationService educationService;
 	
 	@BlockMapping(value = "@bo_block_list")
 	public ModelMap testage(Page page, Translation model, Translation activeObject, Template template, PageContext pageContext){
@@ -107,5 +111,16 @@ public class ResumeBlockController {
 		}
 	}
 	
+	@BlockMapping("resume_block_educations")
+	public ModelMap educations(Folder folder, Lang lang, PageContext pageContext) throws ControllerException{	
+		try {
+			ModelMap modelMap = new ModelMap();
+			Resume resume = (Resume) pageContext.getAttribute("activeResume", PageContext.REQUEST_SCOPE);
+			if (resume != null)	modelMap.addAttribute("educations", educationService.findAllForResumeAndFolderAndLang(resume, folder, lang));
+			return modelMap;
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
+		}
+	}
 	
 }
