@@ -7,8 +7,8 @@
 
 <my:init test="${!initialized}"/>
 
-<s:message var="pattern" code="date.locale.format" text="MM-dd-yyyy" scope="request" />
-<fmt:formatDate var="formatedDate" pattern="${pattern}" value="${resumeDateOfBirth}" scope="request" />
+<s:message var="pattern" code="date.locale.format" text="MM-dd-yyyy" />
+<fmt:formatDate var="formatedDate" pattern="${pattern}" value="${resumeDateOfBirth}" />
 	
 <div id="about" class="about-section section-padding">
     <div class="container">

@@ -4,6 +4,7 @@ import javax.servlet.jsp.JspException;
 
 public interface IIncludeJSP {
 	
+	@Deprecated
 	public enum Attributes {
 		ACTIVEBLOCK("activeBlock"),
 		ACTIVEOBJECT("activeObject"),

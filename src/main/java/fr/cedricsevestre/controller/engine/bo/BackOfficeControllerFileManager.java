@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import fr.cedricsevestre.bean.NFile;
-import fr.cedricsevestre.common.Common;
+import fr.cedricsevestre.com.utils.CommonUtil;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.exception.ControllerException;
 import fr.cedricsevestre.exception.ResourceNotFoundException;
@@ -25,7 +25,7 @@ import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.independant.objects.StorageService;
 
 @Controller
-@RequestMapping(value = Common.BO_URL + Common.BO_FILE_URL)
+@RequestMapping(value = CommonUtil.BO_URL + CommonUtil.BO_FILE_URL)
 public class BackOfficeControllerFileManager extends BackOfficeController {
 
 	private class ResultEncapsulator{

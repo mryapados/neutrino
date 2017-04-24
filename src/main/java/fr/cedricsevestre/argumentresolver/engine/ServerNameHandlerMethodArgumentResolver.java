@@ -11,7 +11,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import fr.cedricsevestre.common.Common;
+import fr.cedricsevestre.com.utils.CommonUtil;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 
 @Component
@@ -19,7 +19,7 @@ import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 public final class ServerNameHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver  {
 	
 	@Autowired
-	private Common common;
+	private CommonUtil common;
 
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {

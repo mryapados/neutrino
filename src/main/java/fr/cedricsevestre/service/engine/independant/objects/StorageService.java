@@ -33,7 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import fr.cedricsevestre.annotation.BOService;
 import fr.cedricsevestre.bean.NFile;
-import fr.cedricsevestre.common.Common;
+import fr.cedricsevestre.com.utils.CommonUtil;
 import fr.cedricsevestre.conf.ApplicationProperties;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.exception.StorageException;
@@ -48,7 +48,7 @@ public class StorageService implements IStorageService{
 	private Logger logger = Logger.getLogger(StorageService.class);
 	
 	@Autowired
-	protected Common common;
+	protected CommonUtil common;
 	
 	@Autowired
 	protected ApplicationProperties applicationProperties;

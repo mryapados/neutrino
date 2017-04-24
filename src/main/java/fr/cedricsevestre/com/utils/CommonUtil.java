@@ -1,4 +1,4 @@
-package fr.cedricsevestre.common;
+package fr.cedricsevestre.com.utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +22,7 @@ import fr.cedricsevestre.service.engine.translation.objects.PageService;
 
 @Component
 @Scope(value = "singleton")
-public class Common {	
+public class CommonUtil {	
 	private Map<String, Page> pages;
 	
 	private Map<String, Folder> foldersByName;
@@ -78,6 +78,14 @@ public class Common {
 	
 	@Deprecated
 	public static final String CUSTOM_SERVICE_PACKAGE = "fr.cedricsevestre.service.custom";
+	
+	
+	public void init(){
+		foldersByName = new HashMap<>();
+		foldersByServerName = new HashMap<>();
+		pages = new HashMap<>();
+		langs = new HashMap<>();
+	}
 	
 	public String getWebInfFolder() {
 		if (webInfFolder == null) {

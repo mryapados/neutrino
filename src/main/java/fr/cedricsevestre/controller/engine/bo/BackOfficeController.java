@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import fr.cedricsevestre.com.utils.CommonUtil;
 import fr.cedricsevestre.com.utils.EntityLocator;
-import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.controller.engine.AbtractController;
 import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
@@ -32,7 +32,7 @@ import fr.cedricsevestre.service.engine.translation.LangService;
 
 @Controller
 @Scope("prototype")
-@RequestMapping(value = Common.BO_URL)
+@RequestMapping(value = CommonUtil.BO_URL)
 @Secured({ "ROLE_WEBMASTER", "ROLE_ADMIN", "ROLE_BO" })
 public abstract class BackOfficeController extends AbtractController {
 	
@@ -79,7 +79,7 @@ public abstract class BackOfficeController extends AbtractController {
 	
 	protected Folder getBOFolder() throws ResourceNotFoundException, ControllerException{
 		try {
-			return common.getFolder(Common.BACK);
+			return common.getFolder(CommonUtil.BACK);
 		} catch (UtilException e) {
 			throw new ControllerException("Can't obtain BO folder", e);
 		}

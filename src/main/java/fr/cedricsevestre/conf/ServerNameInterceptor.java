@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import fr.cedricsevestre.common.Common;
+import fr.cedricsevestre.com.utils.CommonUtil;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 
 @Deprecated
@@ -16,7 +16,7 @@ import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 public class ServerNameInterceptor extends HandlerInterceptorAdapter {
 	
 	@Autowired
-	private Common common;
+	private CommonUtil common;
 	
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		System.out.println("ServerNameInterceptor: REQUEST Intercepted for URI: " + request.getRequestURI());

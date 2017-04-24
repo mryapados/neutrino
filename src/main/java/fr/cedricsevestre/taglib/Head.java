@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import fr.cedricsevestre.common.Common;
-import fr.cedricsevestre.common.Common.TypeBase;
+import fr.cedricsevestre.com.utils.CommonUtil;
+import fr.cedricsevestre.com.utils.CommonUtil.TypeBase;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.User;
 
@@ -28,10 +28,10 @@ public class Head extends TagSupport {
 	private static final String SURFER = "surfer";
 	private static final String APPLICATIONFOLDER = "applicationFolder";
 	
-	private static Common common;
+	private static CommonUtil commonUtil;
 	@Autowired
-	public void Common(Common common) {
-		Head.common = common;
+	public void Common(CommonUtil common) {
+		Head.commonUtil = common;
 	}
 	
 	public int doStartTag() {
@@ -55,7 +55,7 @@ public class Head extends TagSupport {
 		JspWriter out = pageContext.getOut();
 		try {
 			Folder folder = (Folder) pageContext.getAttribute(FOLDER, PageContext.REQUEST_SCOPE);
-			pageContext.include(common.getBasePath(true, folder, TypeBase.COMMON) + "components/css.jsp");
+			pageContext.include(commonUtil.getBasePath(true, folder, TypeBase.COMMON) + "components/css.jsp");
 			User surfer = (User) pageContext.getAttribute(SURFER, PageContext.REQUEST_SCOPE);
 			if (surfer.getRole().equals(User.ROLE_ADMIN)){
 				//TODO change applicationFolder to c:url

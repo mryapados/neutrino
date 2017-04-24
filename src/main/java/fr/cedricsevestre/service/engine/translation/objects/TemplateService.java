@@ -20,8 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.cedricsevestre.annotation.BOService;
-import fr.cedricsevestre.common.Common;
-import fr.cedricsevestre.common.Common.TypeBase;
+import fr.cedricsevestre.com.utils.CommonUtil;
+import fr.cedricsevestre.com.utils.CommonUtil.TypeBase;
 import fr.cedricsevestre.dao.engine.TemplateDao;
 import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.engine.IdProvider;
@@ -50,7 +50,7 @@ public class TemplateService extends TranslationService<Template>{
 	private TemplateDao templateDao;
 	
 	@Autowired
-	private Common common;
+	private CommonUtil common;
 	
 	@Autowired
 	private CacheService cacheService;
@@ -111,7 +111,7 @@ public class TemplateService extends TranslationService<Template>{
 	public String pathJSP(boolean webInf, String pathContext, Template template, boolean jsp) throws ServiceException{	
 		String pathBlock = pathType(template) + "/" + template.getPath();
 		StringBuilder path = new StringBuilder();
-		if (webInf) path.append(Common.BASE_WEBINF);
+		if (webInf) path.append(CommonUtil.BASE_WEBINF);
 		path.append(pathContext);
 		path.append("templates/");
 		path.append(pathBlock);

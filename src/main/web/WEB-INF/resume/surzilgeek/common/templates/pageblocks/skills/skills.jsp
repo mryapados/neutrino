@@ -4,8 +4,7 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 
 <my:init test="${!initialized}"/>
-            
-			
+
 <div id="skill" class="skill-section bg-color section-padding">
     <div class="container">
         <div class="row">
@@ -13,9 +12,8 @@
                 <div class="section-content">
                     <div class="section-title">
                         <h1><s:message code="skills.title" text="My Skills" /></h1>
-                        <p>${activePage.description}</p>
                     </div>
-
+					<div class="text-info">${activePage.description}</div>
 					<my:block position="resume_skills" />
                 </div>                                             
             </div>

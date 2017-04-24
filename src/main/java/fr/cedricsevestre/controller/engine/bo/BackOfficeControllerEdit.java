@@ -50,8 +50,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.bean.NDatas;
 import fr.cedricsevestre.bean.NField;
+import fr.cedricsevestre.com.utils.CommonUtil;
 import fr.cedricsevestre.com.utils.EntityLocator;
-import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.controller.engine.AbtractController;
 import fr.cedricsevestre.dto.engine.IdProviderDto;
 import fr.cedricsevestre.dto.engine.LangDto;
@@ -119,7 +119,7 @@ public class BackOfficeControllerEdit extends BackOfficeController {
 		} else{
 			try {
 				IdProvider idProvider = backOfficeService.saveData(data);
-				modelAndView = new ModelAndView(REDIRECT + Common.BO_URL + BO_VIEW_URL);
+				modelAndView = new ModelAndView(REDIRECT + CommonUtil.BO_URL + BO_VIEW_URL);
 				redirectAttributes.addAttribute(REDIRECT_TYPE, idProvider.getObjectType());
 				redirectAttributes.addAttribute(REDIRECT_ID, idProvider.getId());
 				
@@ -188,7 +188,7 @@ public class BackOfficeControllerEdit extends BackOfficeController {
 			if (lang == null) throw new ResourceNotFoundException(langCode + " Not found !");	
 			if (id == null) return edit(type, id, lang, false);
 			IdProvider added = copy(type, id, lang);
-			ModelAndView modelAndView = new ModelAndView(REDIRECT + Common.BO_URL + BO_EDIT_URL);
+			ModelAndView modelAndView = new ModelAndView(REDIRECT + CommonUtil.BO_URL + BO_EDIT_URL);
 			redirectAttributes.addAttribute(REDIRECT_TYPE, added.getObjectType());
 			redirectAttributes.addAttribute(REDIRECT_ID, added.getId());
 			return modelAndView;
@@ -201,7 +201,7 @@ public class BackOfficeControllerEdit extends BackOfficeController {
 	public ModelAndView add(@RequestParam(ATTR_TYPE) String type, @RequestParam(value = ATTR_ID, required = false) Integer id, HttpServletRequest request, RedirectAttributes redirectAttributes) throws ControllerException, ResourceNotFoundException   {
 		if (id == null) return edit(type, id, null, false);
 		IdProvider added = copy(type, id, null);
-		ModelAndView modelAndView = new ModelAndView(REDIRECT + Common.BO_URL + BO_EDIT_URL);
+		ModelAndView modelAndView = new ModelAndView(REDIRECT + CommonUtil.BO_URL + BO_EDIT_URL);
 		redirectAttributes.addAttribute(REDIRECT_TYPE, added.getObjectType());
 		redirectAttributes.addAttribute(REDIRECT_ID, added.getId());
 		return modelAndView;
@@ -222,7 +222,7 @@ public class BackOfficeControllerEdit extends BackOfficeController {
 					Translation translation = (Translation) backOfficeService.translate((Translation) data, lang);
 					translation = (Translation) backOfficeService.saveData(translation);
 					
-					modelAndView = new ModelAndView(REDIRECT + Common.BO_URL + BO_VIEW_URL);
+					modelAndView = new ModelAndView(REDIRECT + CommonUtil.BO_URL + BO_VIEW_URL);
 					redirectAttributes.addAttribute(REDIRECT_TYPE, translation.getObjectType());
 					redirectAttributes.addAttribute(REDIRECT_ID, translation.getId());
 					
@@ -246,7 +246,7 @@ public class BackOfficeControllerEdit extends BackOfficeController {
 			try {
 				IdProvider idProvider = backOfficeService.saveData(data);					
 				
-				modelAndView = new ModelAndView(REDIRECT + Common.BO_URL + BO_VIEW_URL);
+				modelAndView = new ModelAndView(REDIRECT + CommonUtil.BO_URL + BO_VIEW_URL);
 				redirectAttributes.addAttribute(REDIRECT_TYPE, idProvider.getObjectType());
 				redirectAttributes.addAttribute(REDIRECT_ID, idProvider.getId());
 				

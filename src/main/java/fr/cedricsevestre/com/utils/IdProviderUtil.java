@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
+import fr.cedricsevestre.constants.CacheConst;
 import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
@@ -67,9 +68,8 @@ public class IdProviderUtil {
 		}
 	}
 	
-	@Cacheable("idProviderFieldValue")
+	@Cacheable(CacheConst.IDPROVIDERFIEDDVALUE)
 	public Object getIdProviderFieldValue(String type, int beanId, String field) throws JspTagException{
-		System.out.println("JE SUIS RENTREEEEEEEEEEEEE");
 		try {
 			Class<?> clazz = entityLocator.getEntity(type).getClass();
 			Object object = getObject(clazz, beanId);

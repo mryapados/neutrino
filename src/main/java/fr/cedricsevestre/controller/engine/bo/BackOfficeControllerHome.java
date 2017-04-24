@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import fr.cedricsevestre.common.Common;
+import fr.cedricsevestre.com.utils.CommonUtil;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.exception.ControllerException;
 import fr.cedricsevestre.exception.ResourceNotFoundException;

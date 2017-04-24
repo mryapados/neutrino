@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.cedricsevestre.common.Common;
-import fr.cedricsevestre.common.Common.TypeBase;
+import fr.cedricsevestre.com.utils.CommonUtil;
+import fr.cedricsevestre.com.utils.CommonUtil.TypeBase;
 import fr.cedricsevestre.entity.custom.Member;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.User;
@@ -55,7 +55,7 @@ public abstract class AbtractController {
 	private TemplateService templateService;
 	
 	@Autowired
-	protected Common common;
+	protected CommonUtil common;
 	
 	@ModelAttribute("surfer")
 	public User addUserToScope() throws ServiceException {
@@ -107,7 +107,7 @@ public abstract class AbtractController {
 	}
 	
 	public ModelAndView baseView(Page page, Template template, Translation activeObject, Folder folder) throws ControllerException, ResourceNotFoundException {
-		if (Common.DEBUG) System.out.println(this.getClass() + " - baseview - page : " + page.getName());
+		if (CommonUtil.DEBUG) System.out.println(this.getClass() + " - baseview - page : " + page.getName());
 		try {
 			String pathModelAndView = templateService.getPathJSP(false, folder, page.getContext(), template, false);
 			ModelAndView modelAndView = new ModelAndView(pathModelAndView);

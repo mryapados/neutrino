@@ -14,10 +14,18 @@ import fr.cedricsevestre.entity.custom.Experience;
 import fr.cedricsevestre.entity.custom.Job;
 import fr.cedricsevestre.entity.custom.Media;
 import fr.cedricsevestre.entity.custom.Project;
+import fr.cedricsevestre.entity.custom.Resume;
+import fr.cedricsevestre.entity.custom.Skill;
+import fr.cedricsevestre.entity.custom.Skill.SkillKind;
 import fr.cedricsevestre.entity.engine.IdProvider;
+import fr.cedricsevestre.entity.engine.independant.objects.Folder;
+import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Repository
 public interface ExperienceDao extends TranslationDao<Experience> {
+
+	@Query("SELECT e FROM Experience e WHERE (e.folders IS EMPTY OR :folder IN elements(e.folders)) AND e.lang =:lang AND e.resume =:resume ORDER BY e.start DESC")
+	List<Experience> findAllForResumeAndFolderAndLang(@Param("resume") Resume resume, @Param("folder") Folder folder, @Param("lang") Lang lang);
 
 }

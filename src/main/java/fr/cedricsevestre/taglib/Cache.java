@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import fr.cedricsevestre.common.Common;
+import fr.cedricsevestre.com.utils.CommonUtil;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.exception.TagException;
@@ -33,9 +33,9 @@ public class Cache extends SimpleTagSupport implements Serializable  {
 	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(Cache.class);
 		
-	private static Common common;
+	private static CommonUtil common;
 	@Autowired
-	public void Common(Common common) {
+	public void Common(CommonUtil common) {
 		Cache.common = common;
 	}
 

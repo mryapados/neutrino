@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import fr.cedricsevestre.common.Common;
-import fr.cedricsevestre.common.Common.TypeBase;
+import fr.cedricsevestre.com.utils.CommonUtil;
+import fr.cedricsevestre.com.utils.CommonUtil.TypeBase;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.User;
 import fr.cedricsevestre.entity.engine.translation.Translation;
@@ -26,9 +26,9 @@ public class Body extends TagSupport {
 	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(Body.class);
 	
-	private static Common common;
+	private static CommonUtil common;
 	@Autowired
-	public void Common(Common common) {
+	public void Common(CommonUtil common) {
 		Body.common = common;
 	}
 	

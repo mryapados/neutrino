@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import fr.cedricsevestre.common.Common;
-import fr.cedricsevestre.common.Common.TypeBase;
+import fr.cedricsevestre.com.utils.CommonUtil;
+import fr.cedricsevestre.com.utils.CommonUtil.TypeBase;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 
 @Component
@@ -25,9 +25,9 @@ public class Init extends TagSupport {
 	
 	private static final String FOLDER = "folder";
 	
-	private static Common common;
+	private static CommonUtil common;
 	@Autowired
-	public void Common(Common common) {
+	public void Common(CommonUtil common) {
 		Init.common = common;
 	}
 	

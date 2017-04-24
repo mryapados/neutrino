@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.cedricsevestre.com.utils.IdProviderUtil;
+import fr.cedricsevestre.constants.CacheConst;
 import fr.cedricsevestre.dao.engine.TranslationDao;
 import fr.cedricsevestre.dao.engine.TranslationProviderDao;
 import fr.cedricsevestre.entity.engine.IdProvider;
@@ -57,7 +58,7 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 		}
 	}
 
-	@Cacheable(value="identify")
+	@Cacheable(CacheConst.IDENTIFY)
 	public T identify(Folder folder, String name, Lang lang) throws ServiceException {
 		try {
 			System.out.println("ZZZZ identify " + name + " " + lang.getCode() + " " + translationDao);

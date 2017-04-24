@@ -50,8 +50,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.bean.NDatas;
 import fr.cedricsevestre.bean.NField;
+import fr.cedricsevestre.com.utils.CommonUtil;
 import fr.cedricsevestre.com.utils.EntityLocator;
-import fr.cedricsevestre.common.Common;
 import fr.cedricsevestre.controller.engine.AbtractController;
 import fr.cedricsevestre.dto.engine.IdProviderDto;
 import fr.cedricsevestre.dto.engine.LangDto;
@@ -91,13 +91,13 @@ public class BackOfficeControllerRemove extends BackOfficeController {
 
 	@RequestMapping(value = BO_REMOVE_URL, method = RequestMethod.POST) 
 	public ModelAndView delete(@ModelAttribute("type") String type, @RequestParam("id") Integer id, RedirectAttributes redirectAttributes) throws ControllerException, ResourceNotFoundException {
-		ModelAndView modelAndView = new ModelAndView("redirect:/" + Common.BO_URL + BO_LIST_URL);
+		ModelAndView modelAndView = new ModelAndView("redirect:/" + CommonUtil.BO_URL + BO_LIST_URL);
 		redirectAttributes.addAttribute("type", type);
 		try {
 			delete(type,  new Integer[]{id});
 			redirectAttributes.addFlashAttribute("success", true);
 		} catch (ControllerException e) {
-			modelAndView = new ModelAndView("redirect:/" + Common.BO_URL + BO_VIEW_URL);
+			modelAndView = new ModelAndView("redirect:/" + CommonUtil.BO_URL + BO_VIEW_URL);
 			redirectAttributes.addAttribute("id", id);
 			redirectAttributes.addFlashAttribute("error", e);
 			redirectAttributes.addFlashAttribute("success", false);
@@ -107,7 +107,7 @@ public class BackOfficeControllerRemove extends BackOfficeController {
 	
 	@RequestMapping(value = BO_REMOVES_URL, method = RequestMethod.POST) 
 	public ModelAndView delete(@RequestParam("type") String type, @RequestParam("id") Integer[] ids, RedirectAttributes redirectAttributes) throws ResourceNotFoundException {
-		ModelAndView modelAndView = new ModelAndView("redirect:/" + Common.BO_URL + BO_LIST_URL);
+		ModelAndView modelAndView = new ModelAndView("redirect:/" + CommonUtil.BO_URL + BO_LIST_URL);
 		try {
 			delete(type, ids);
 			redirectAttributes.addFlashAttribute("success", true);

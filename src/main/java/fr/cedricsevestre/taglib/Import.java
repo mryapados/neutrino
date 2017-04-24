@@ -29,19 +29,7 @@ public class Import extends ImportSupport implements IIncludeJSP {
 	private static final long serialVersionUID = 1L;
 
 	private String template = null;
-	
-	private static TemplateService templateService;
-	@Autowired
-	public void TemplateService(TemplateService templateService) {
-		Import.templateService = templateService;
-	}
-
-	private static NDataService nDataService;
-	@Autowired
-	public void NDataService(NDataService nDataService) {
-		Import.nDataService = nDataService;
-	}
-	
+		
 	@Override
 	public void doCatch(Throwable t) throws Throwable {
 		t.printStackTrace();
@@ -61,53 +49,9 @@ public class Import extends ImportSupport implements IIncludeJSP {
 	}
 	
 	public void getJsp() throws JspException{
-		try {
-			
-			Folder folder = (Folder) pageContext.getAttribute(Attributes.FOLDER.toString(), PageContext.REQUEST_SCOPE);
-			Page page = (Page) pageContext.getAttribute(Attributes.ACTIVEPAGE.toString(), PageContext.REQUEST_SCOPE);
-			
-			
-			Template target = templateService.identify(folder, template, page.getLang());
-
-			NSchema nSchema =  target.getSchema();
-			List<NData> nDatas = null;
-			if (nSchema != null){
-				//pb lazy
-				//activeBlock ne contient pas datas qui n'est pas initialisé car lazy
-				//Il faut donc recharger le template en demandant explicitement les datas.
-				//Ou charger les datas directement, c'est la méthode choisie ici.
 		
-				//Get only for scope ALL
-				nDatas = nDataService.findAllForTemplate(target);
-				for (NData nData : nDatas) {
-					pageContext.setAttribute(nData.getPropertyName(), nDataService.getNDataValue(nData), PageContext.REQUEST_SCOPE);
-				}
-			}
-			
+		throw new JspException("Not implemented !");
 
-			String path = templateService.getPathJSP(true, folder, page.getContext(), target, true);
-			
-			if (target.getKind() == TemplateKind.BLOCK){
-				pageContext.setAttribute(Attributes.ACTIVEBLOCK.toString(), target, PageContext.REQUEST_SCOPE);
-				pageContext.include(path);
-				
-			} else if (target.getKind() == TemplateKind.PAGEBLOCK){
-				pageContext.setAttribute(Attributes.ACTIVEBLOCK.toString(), target, PageContext.REQUEST_SCOPE);
-				pageContext.setAttribute(Attributes.PARENTPAGEBLOCK.toString(), target, PageContext.REQUEST_SCOPE);
-				pageContext.include(path);
-				pageContext.removeAttribute(Attributes.PARENTPAGEBLOCK.toString());
-				
-			} else {
-				pageContext.include(path);
-			}
-
-		} catch (ServiceException e) {
-			throw new JspException(e);
-		} catch (ServletException e) {
-			throw new JspException(e);
-		} catch (IOException e) {
-			throw new JspException(e);
-		}
 	}
 	
 	public int doEndTag() throws JspException {		

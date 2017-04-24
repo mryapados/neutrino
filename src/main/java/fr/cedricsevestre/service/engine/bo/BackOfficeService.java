@@ -29,6 +29,7 @@ import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -49,8 +50,10 @@ import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.bean.NDatas;
 import fr.cedricsevestre.bean.NField;
 import fr.cedricsevestre.bean.NResource;
+import fr.cedricsevestre.com.utils.CommonUtil;
 import fr.cedricsevestre.com.utils.EntityLocator;
 import fr.cedricsevestre.com.utils.ServiceLocator;
+import fr.cedricsevestre.constants.CacheConst;
 import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
@@ -83,6 +86,9 @@ public class BackOfficeService { //implements IBackOfficeService{
 	
 	@Autowired
 	EntityLocator entityLocator;
+	
+	@Autowired
+	CommonUtil commonUtil;
 	
 	private Logger logger = Logger.getLogger(BackOfficeService.class);
 		
@@ -572,6 +578,7 @@ public class BackOfficeService { //implements IBackOfficeService{
 		}
 	}
 
+	@CacheEvict(value = {CacheConst.IDPROVIDERFIEDDVALUE, CacheConst.IDENTIFY}, allEntries = true)
 	public IdProvider saveData(IdProvider data) throws ServiceException{
 		IdProvider result = data;
 
@@ -591,6 +598,11 @@ public class BackOfficeService { //implements IBackOfficeService{
 		result = persistData(entity, result);
 
 		//persistReverse(data, entity, nFields, origin);
+		
+		
+		
+		commonUtil.init();
+		
 		
 		return result;
 	}

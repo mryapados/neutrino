@@ -45,6 +45,10 @@ public class Experience extends Translation {
 	@Column(name = "company_name")
 	private String companyName;
 	
+	@BOField(type = ValueType.HTML)
+	@Column(name = "chapo", columnDefinition="TEXT")
+	private String chapo;
+	
 	@NotNull
 	@BOField(type = ValueType.DATE)
 	@Column(name = "start")
@@ -53,6 +57,9 @@ public class Experience extends Translation {
 	@BOField(type = ValueType.DATE)
 	@Column(name = "end")
 	private Date end;
+	
+	@BOField(type = ValueType.FILE)
+	private String picture;
 	
 	@BOField(type = ValueType.TOBJECT)
 	@JoinColumn(name="job_id")
@@ -93,6 +100,14 @@ public class Experience extends Translation {
 		this.companyName = companyName;
 	}
 
+	public String getChapo() {
+		return chapo;
+	}
+
+	public void setChapo(String chapo) {
+		this.chapo = chapo;
+	}
+
 	public Date getStart() {
 		return start;
 	}
@@ -123,6 +138,14 @@ public class Experience extends Translation {
 
 	public void setResume(Resume resume) {
 		this.resume = resume;
+	}
+
+	public String getPicture() {
+		return picture;
+	}
+
+	public void setPicture(String picture) {
+		this.picture = picture;
 	}
 
 	

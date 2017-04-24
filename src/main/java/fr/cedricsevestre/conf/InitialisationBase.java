@@ -1950,6 +1950,7 @@ public class InitialisationBase {
 		
 		Position pAboutMe = addPosition(mapPosition, "resume_aboutMe");
 		Position pSkills = addPosition(mapPosition, "resume_skills");
+		Position pExperiences = addPosition(mapPosition, "resume_experiences");
 		
 		// Models
 		Map<Lang, Translation> mHome = mkModel(fldsResume, "resume_model_home", "default/default");
@@ -1983,10 +1984,12 @@ public class InitialisationBase {
 		Map<Lang, Translation> pbListPage = mkPageBlock(fldSurzilGeek, "resume_pageblock_listpage", "listpage/listpage");
 		Map<Lang, Translation> pbAboutMe = mkPageBlock(fldsResume, "resume_pageblock_aboutme", "aboutme/aboutme");
 		Map<Lang, Translation> pbSkills = mkPageBlock(fldsResume, "resume_pageblock_skills", "skills/skills");
+		Map<Lang, Translation> pbExperiences = mkPageBlock(fldsResume, "resume_pageblock_experiences", "experiences/experiences");
+		
 		
 		// Blocks
 		Map<Lang, Translation> bNav = mkBlock(fldsResume, "resume_block_nav", "nav/nav");
-		Map<Lang, Translation> bExperiences = mkBlock(fldsResume, "resume_block_experiences", "experience/experience");
+		
 		Map<Lang, Translation> bEducation = mkBlock(fldsResume, "resume_block_education", "education/education");
 		Map<Lang, Translation> bPortfolio = mkBlock(fldsResume, "resume_block_portfolio", "portfolio/portfolio");
 		Map<Lang, Translation> bContact = mkBlock(fldsResume, "resume_block_contact", "contact/contact");
@@ -1996,6 +1999,8 @@ public class InitialisationBase {
 		Map<Lang, Translation> bAchievement = mkBlock(fldSurzilGeek, "resume_block_achievement", "achievement/achievement");
 		Map<Lang, Translation> bSkillsProgressBar = mkBlock(fldSurzilGeek, "resume_block_skillsProgressBar", "skills/progressBar/progressBar");
 		Map<Lang, Translation> bSkillsChart = mkBlock(fldSurzilGeek, "resume_block_skillsChart", "skills/chart/chart");
+		
+		Map<Lang, Translation> bExperiences = mkBlock(fldSurzilGeek, "resume_block_experiences", "experiences/experiences");
 		
 		// Set MapTemplate
 		
@@ -2016,14 +2021,18 @@ public class InitialisationBase {
 		Map<Lang, MapTemplate> mtPgHomeSurzilGeek = addMapTemplate(mHome, pbListPage, pArticle);
 		
 		// blocks on pages
-		Map<Lang, MapTemplate> mtAboutmePgAboutMe = addMapTemplate(pgAboutMe, pbAboutMe, pArticle);
-		Map<Lang, MapTemplate> mtAchievementPgAboutMe = addMapTemplate(pgAboutMe, bAchievement, pAboutMe);
+		Map<Lang, MapTemplate> mtPbAboutmePgAboutMe = addMapTemplate(pgAboutMe, pbAboutMe, pArticle);
+		Map<Lang, MapTemplate> mtPbAchievementPgAboutMe = addMapTemplate(pbAboutMe, bAchievement, pAboutMe);
 		
-		Map<Lang, MapTemplate> mtSkillsPgSkills = addMapTemplate(pgSkills, pbSkills, pArticle);
-		Map<Lang, MapTemplate> mtSkillsProgressBarPgSkills = addMapTemplate(pgSkills, bSkillsProgressBar, pSkills);
-		Map<Lang, MapTemplate> mtSkillsChartPgSkills = addMapTemplate(pgSkills, bSkillsChart, pSkills);
+		Map<Lang, MapTemplate> mtPbSkillsPgSkills = addMapTemplate(pgSkills, pbSkills, pArticle);
+		Map<Lang, MapTemplate> mtBSkillsProgressBarPgSkills = addMapTemplate(pbSkills, bSkillsProgressBar, pSkills);
+		Map<Lang, MapTemplate> mtBSkillsChartPgSkills = addMapTemplate(pbSkills, bSkillsChart, pSkills);
 		
-		Map<Lang, MapTemplate> mtExperiencesPgExperiences = addMapTemplate(pgExperiences, bExperiences, pArticle);
+		Map<Lang, MapTemplate> mtPbExperiencesPgExperiences = addMapTemplate(pgExperiences, pbExperiences, pArticle);
+		Map<Lang, MapTemplate> mtBExperiencesPgExperiences = addMapTemplate(pbExperiences, bExperiences, pExperiences);
+		
+		
+		
 		Map<Lang, MapTemplate> mtEducationPgEducation = addMapTemplate(pgEducation, bEducation, pArticle);
 		Map<Lang, MapTemplate> mtPortfolioPgPortfolio = addMapTemplate(pgPortfolio, bPortfolio, pArticle);
 		Map<Lang, MapTemplate> mtContactPgContact = addMapTemplate(pgContact, bContact, pArticle);
@@ -2040,7 +2049,7 @@ public class InitialisationBase {
 	}
 	
 	private Page putCategoryExperience(Page page){
-		String description = "<h4>15 Years Exprience</h4><p>Lorem ipsum, tempor incididunt ut labore. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>";
+		String description = "<h4>15 Years Exprience</h4><p>Lorem ipsum onsectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad onsectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad onsectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad , tempor incididunt ut labore. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>";
 		page.setDescription(description);
 		return page;
 	}

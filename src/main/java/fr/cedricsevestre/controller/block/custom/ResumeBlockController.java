@@ -23,6 +23,7 @@ import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ControllerException;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.CategoryService;
+import fr.cedricsevestre.service.custom.ExperienceService;
 import fr.cedricsevestre.service.custom.SkillService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
 
@@ -36,6 +37,9 @@ public class ResumeBlockController {
 	
 	@Autowired
 	private SkillService skillService;
+	
+	@Autowired
+	private ExperienceService experienceService;
 	
 	@BlockMapping(value = "@bo_block_list")
 	public ModelMap testage(Page page, Translation model, Translation activeObject, Template template, PageContext pageContext){
@@ -70,7 +74,7 @@ public class ResumeBlockController {
 		try {
 			ModelMap modelMap = new ModelMap();
 			Resume resume = (Resume) pageContext.getAttribute("activeResume", PageContext.REQUEST_SCOPE);
-			if (resume != null)	modelMap.addAttribute("skills", skillService.findAllKindForReumeAdFolderAndLang(resume, SkillKind.PROGRESSBAR, folder, lang));
+			if (resume != null)	modelMap.addAttribute("skills", skillService.findAllKindForResumeAndFolderAndLang(resume, SkillKind.PROGRESSBAR, folder, lang));
 			return modelMap;
 		} catch (ServiceException e) {
 			throw new ControllerException(e);
@@ -83,7 +87,20 @@ public class ResumeBlockController {
 		try {
 			ModelMap modelMap = new ModelMap();
 			Resume resume = (Resume) pageContext.getAttribute("activeResume", PageContext.REQUEST_SCOPE);
-			if (resume != null)	modelMap.addAttribute("skills", skillService.findAllKindForReumeAdFolderAndLang(resume, SkillKind.CHART, folder, lang));
+			if (resume != null)	modelMap.addAttribute("skills", skillService.findAllKindForResumeAndFolderAndLang(resume, SkillKind.CHART, folder, lang));
+			return modelMap;
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
+		}
+	}
+	
+	
+	@BlockMapping("resume_block_experiences")
+	public ModelMap experiences(Folder folder, Lang lang, PageContext pageContext) throws ControllerException{	
+		try {
+			ModelMap modelMap = new ModelMap();
+			Resume resume = (Resume) pageContext.getAttribute("activeResume", PageContext.REQUEST_SCOPE);
+			if (resume != null)	modelMap.addAttribute("experiences", experienceService.findAllForResumeAndFolderAndLang(resume, folder, lang));
 			return modelMap;
 		} catch (ServiceException e) {
 			throw new ControllerException(e);

@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import fr.cedricsevestre.common.Common;
+import fr.cedricsevestre.com.utils.CommonUtil;
 
 @Component
 @Scope(value = "singleton")
@@ -19,14 +19,14 @@ public class Debug extends TagSupport  {
 	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(Debug.class);
 			
-	private static Common common;
+	private static CommonUtil commonUtil;
 	@Autowired
-	public void Common(Common common) {
-		Debug.common = common;
+	public void Common(CommonUtil common) {
+		Debug.commonUtil = common;
 	}
 	
 	public int doStartTag() {
-		if (common.DEBUG){
+		if (CommonUtil.DEBUG){
 			return EVAL_BODY_AGAIN;
 		} else {
 			return SKIP_BODY;

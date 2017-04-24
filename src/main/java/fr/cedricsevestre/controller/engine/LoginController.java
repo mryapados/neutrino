@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.cedricsevestre.common.Common;
+import fr.cedricsevestre.com.utils.CommonUtil;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.exception.ControllerException;
 import fr.cedricsevestre.exception.ResourceNotFoundException;
@@ -32,7 +32,7 @@ public class LoginController extends AbtractController {
 			try {
 				modelAndView = baseView(LOGINPAGE, null, folder);
 			} catch (ResourceNotFoundException e1) {
-				folder = common.getFolder(Common.BACK);
+				folder = common.getFolder(CommonUtil.BACK);
 				modelAndView = baseView(LOGINPAGE, null, folder);
 			}
 			return modelAndView;

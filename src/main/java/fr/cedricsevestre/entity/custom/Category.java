@@ -40,7 +40,7 @@ public class Category extends Page {
 	private static final long serialVersionUID = 1L;
 	
 	@NotNull
-	@BOField(type = ValueType.INTEGER, defaultValue = "9999", editable = false)
+	@BOField(type = ValueType.INTEGER, defaultValue = "9999")
 	@Column(name = "ordered")
 	private Integer ordered;
 	
@@ -63,11 +63,9 @@ public class Category extends Page {
 	@OneToOne
 	private Icon icon;
 	
-	
-	
-	
 	public Category() {
 		super();
+		this.ordered = 9999;
 	}
 
 	public Category(String menuColor, String title, Icon icon, Boolean inMenu, Integer ordered) {
