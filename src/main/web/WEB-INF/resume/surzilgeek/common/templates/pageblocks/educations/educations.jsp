@@ -11,7 +11,7 @@
             <div class="col-sm-8">
                 <div class="section-content">
 					<div class="section-title">
-						<h1><s:message code="education.title" text="Education" /></h1>
+						<h2><s:message code="education.title" text="Education" /></h2>
 					</div>
 					<div class="text-info">${activePage.description}</div>
 					<my:block position="resume_educations" />

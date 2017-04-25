@@ -15,13 +15,15 @@
         <div class="row">
             <div class="col-sm-8">
                 <div class="section-title">
-                    <h1>${resumeFirstName} ${resumeLastName}</h1>
-                    <h4>${resumeFunction}</h4>
+                    <h2>
+                    	${resumeFirstName} ${resumeLastName}
+                    	<span>${resumeFunction}</span>
+                    </h2>
                 </div>
                 <div class="about-info">
                     <p>${resumeDescription}</p>
                     <div class="signature">
-                        <h1>${resumeFirstName} ${resumeLastName}</h1>
+                        <p class="big">${resumeFirstName} ${resumeLastName}</p>
                     </div>
                 </div>
                 <address>

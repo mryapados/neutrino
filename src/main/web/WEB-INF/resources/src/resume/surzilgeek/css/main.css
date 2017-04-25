@@ -79,11 +79,15 @@ a:focus, button:focus, .btn:focus,
     margin-bottom: 60px;
 }
 
-.section-title h1 {
-    font-size: 56px;
+.section-title h1{
+	font-size: 72px;
 }
 
-.home-two .section-title h1 {
+.section-title h2{
+	font-size: 56px;
+}
+
+.home-two .section-title h2 {
     font-size: 50px;
     margin-top: 0;
 }
@@ -463,22 +467,26 @@ ul.sub-menu {
     background-size: contain;
 }
 
-.banner-info h1 {
+.banner-info h1 span.title {
     font-size: 48px;
     font-family: 'rookies-showtimesregular';
 }
 
-.banner-info h2 {
-    font-size: 128px;
+.banner-info h1 span.name {
+	display: block;
+    font-size: 92px;
     margin-top: 0;
     line-height: 92px;
     margin-left: -8px;
+    margin-top: 10px;
 }
 
-.banner-info h3 {
+.banner-info h1 span.function {
+	display: block;
     font-size: 16px;
     text-transform: uppercase;
     letter-spacing: 26px;
+    margin-top: 20px;
 }
 
 /* Home Two  */
@@ -528,9 +536,11 @@ ul.sub-menu {
     margin-bottom: 45px;
 }
 
-.about-section .section-title h4 {
-    margin-top: 0;
+.about-section .section-title h2 span {
+	display: block;
+    margin-top: 8px;
     line-height: 0;
+    font-size:0.33em;
 } 
 
 .about-info {
@@ -538,11 +548,15 @@ ul.sub-menu {
     line-height: 24px;
 }
 
-.about-info .signature h1 {
+.about-info .signature {
     font-weight: normal;
     margin-top: 20px;
     margin-bottom: 40px;
     font-family: 'Sacramento', cursive;    
+}
+
+.big{
+	font-size: 38px;
 }
 
 .about-section address {

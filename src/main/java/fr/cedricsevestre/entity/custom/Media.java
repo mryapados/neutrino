@@ -68,6 +68,9 @@ public class Media extends Translation {
 	@BOField(type = ValueType.FILE)
 	private String file;
 	
+	@BOField(type = ValueType.FILE)
+	private String alt;
+	
 	@BOField(type = ValueType.COLLECTION, ofType = ValueType.FILE)
 	@ElementCollection
 	@CollectionTable(name="media_files", joinColumns=@JoinColumn(name="idfile"))
@@ -162,6 +165,14 @@ public class Media extends Translation {
 
 	public void setFiles(Set<String> files) {
 		this.files = files;
+	}
+
+	public String getAlt() {
+		return alt;
+	}
+
+	public void setAlt(String alt) {
+		this.alt = alt;
 	}
 
 	

@@ -58,7 +58,7 @@ public class Experience extends Translation {
 	@Column(name = "end")
 	private Date end;
 	
-	@BOField(type = ValueType.FILE)
+	@BOField(type = ValueType.IMAGE)
 	private String picture;
 	
 	@BOField(type = ValueType.TOBJECT)

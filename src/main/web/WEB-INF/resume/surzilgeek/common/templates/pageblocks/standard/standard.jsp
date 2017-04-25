@@ -6,13 +6,10 @@
 
 <my:init test="${!initialized}"/>
 
-<div class="${activePage.name}-section section-padding">
+<div class="section-padding">
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-8">
-				<div class="section-title">
-					<h1><s:message code="experience.title" text="My Exprience" /></h1>
-				</div>
 				<div class="text-info">${activePage.description}</div>
 				<my:block position="resume_standard" />
 			</div>

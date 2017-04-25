@@ -2101,17 +2101,17 @@ public class InitialisationBase {
 		return page;
 	}
 	private Page putCategoryExperience(Page page){
-		String description = "<h4>15 Years Exprience</h4><p>Lorem ipsum onsectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad onsectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad onsectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad , tempor incididunt ut labore. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>";
+		String description = "<h3>15 Years Exprience</h3><p>Lorem ipsum onsectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad onsectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad onsectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad , tempor incididunt ut labore. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>";
 		page.setDescription(description);
 		return page;
 	}
 	private Page putCategorySkills(Page page){
-		String description = "<h4>This is SKILLS !!!!!</h4><p>Lorem ipsum onsectetur adipisicing elitenim ad, tempor incididunt ut labore. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>";
+		String description = "<h3>This is SKILLS !!!!!</h3><p>Lorem ipsum onsectetur adipisicing elitenim ad, tempor incididunt ut labore. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>";
 		page.setDescription(description);
 		return page;
 	}
 	private Page putCategoryEducation(Page page){
-		String description = "<h4>Just My Educational Background</h4><p>Lorem ipsum onsectetur adipisicing elit, sed do eiusmod tod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad onsectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad , tempor incididunt ut labore. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>";
+		String description = "<h3>Just My Educational Background</h3><p>Lorem ipsum onsectetur adipisicing elit, sed do eiusmod tod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad onsectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad , tempor incididunt ut labore. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>";
 		page.setDescription(description);
 		return page;
 	}
@@ -2120,13 +2120,13 @@ public class InitialisationBase {
 	
 	
 	private Experience putExperienceX(Experience exp, String img){
-		exp.setDescription("<h4>this is the title youpi !</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>");
+		exp.setDescription("<h3>this is the title youpi !</h3><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>");
 		exp.setChapo("<p>Lorem ipsum dolor sit ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>");
 		exp.setPicture("/files/resume/surzilgeek/experiences/" + img);
 		return exp;
 	}
 	private Education putEducationX(Education ed, String img){
-		ed.setDescription("<h4>this is the title youpi !</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>");
+		ed.setDescription("<h3>this is the title youpi !</h3><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>");
 		ed.setChapo("<p>Lorem ipsum dolor sit ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>");
 		ed.setPicture("/files/resume/surzilgeek/education/" + img);
 		return ed;

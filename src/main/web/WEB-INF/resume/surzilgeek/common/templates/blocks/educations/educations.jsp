@@ -17,7 +17,7 @@
 
     <div class="education">
         <c:if test="${not empty pictureUrl}">
-			<img class="img-responsive" src="${pictureUrl}" alt="Image">
+			<img class="img-responsive" src="${pictureUrl}" alt="">
         </c:if>
 		<div class="education-info">
 		    <h3>${educationYear} - <c:out value="${educationTitle}"/></h3>
