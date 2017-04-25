@@ -1980,6 +1980,10 @@ public class InitialisationBase {
 
 		// Positions
 		Map<String, Position> mapPosition = new HashMap<>();
+		
+		
+		Position pStandard = addPosition(mapPosition, "resume_standard");
+		
 		Position pHeader = addPosition(mapPosition, "resume_header");
 		Position pheaderMenu = addPosition(mapPosition, "resume_headerMenu");
 		Position pNav = addPosition(mapPosition, "resume_nav");
@@ -1991,6 +1995,8 @@ public class InitialisationBase {
 		Position pSkills = addPosition(mapPosition, "resume_skills");
 		Position pExperiences = addPosition(mapPosition, "resume_experiences");
 		Position pEducation = addPosition(mapPosition, "resume_educations");
+		
+		
 		
 		// Models
 		Map<Lang, Translation> mHome = mkModel(fldsResume, "resume_model_home", "default/default");
@@ -2019,6 +2025,9 @@ public class InitialisationBase {
 
 		
 		// PageBlocks
+		Map<Lang, Translation> pbStandard = mkPageBlock(fldsResume, "resume_pageblock_standard", "standard/standard");
+		
+		
 		Map<Lang, Translation> pbHeader = mkPageBlock(fldsResume, "resume_pageblock_header", "header/header");
 		Map<Lang, Translation> pbFooter = mkPageBlock(fldsResume, "resume_pageblock_footer", "footer/footer");
 		Map<Lang, Translation> pbListPage = mkPageBlock(fldSurzilGeek, "resume_pageblock_listpage", "listpage/listpage");
@@ -2031,11 +2040,12 @@ public class InitialisationBase {
 		Map<Lang, Translation> pbBlog = mkPageBlock(fldsResume, "resume_pageblock_blog", "blog/blog");
 		Map<Lang, Translation> pbResume = mkPageBlock(fldsResume, "resume_pageblock_resume", "resume/resume");
 		
+		
 		// Blocks
 		Map<Lang, Translation> bNav = mkBlock(fldsResume, "resume_block_nav", "nav/nav");
 		
 
-
+		
 		Map<Lang, Translation> bAchievement = mkBlock(fldSurzilGeek, "resume_block_achievement", "achievement/achievement");
 		Map<Lang, Translation> bSkillsProgressBar = mkBlock(fldSurzilGeek, "resume_block_skillsProgressBar", "skills/progressBar/progressBar");
 		Map<Lang, Translation> bSkillsChart = mkBlock(fldSurzilGeek, "resume_block_skillsChart", "skills/chart/chart");
