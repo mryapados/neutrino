@@ -15,12 +15,14 @@
 						<my:block position="resume_standard_header" />
 					</header>
 				</my:countBlock>
-				<my:countBlock position="resume_standard_article" var="count">
-					<article>
-						<div class="text-info">${activePage.description}</div>
+				
+				<article>
+					<div class="text-info">${activePage.description}</div>
+					<my:countBlock position="resume_standard_article" var="count">
 						<my:block position="resume_standard_article" />
-					</article>
-				</my:countBlock>
+					</my:countBlock>
+				</article>
+				
 				<my:countBlock position="resume_standard_footer" var="count">
 					<footer>
 						<my:block position="resume_standard_footer" />

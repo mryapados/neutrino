@@ -5,7 +5,7 @@
 
 <my:init test="${!initialized}"/>
 
-<section id="skill" class="skill-section bg-color section-padding">
+<section id="skill" class="skill-section section-padding">
     <div class="container">
         <div class="row">
             <div class="col-sm-8">

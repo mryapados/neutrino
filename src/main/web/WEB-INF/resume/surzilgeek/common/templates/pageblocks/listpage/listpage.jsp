@@ -8,7 +8,7 @@
 <c:forEach items="${categories}" var="category" varStatus="status">
 	<my:bind var="categoryName" type="Category" beanId="${category.id}" field="name" />
 	<c:set var="activePage" value="${category}" scope="request"/>
-	<div id="${categoryName}">
+	<div id="${categoryName}" class="${status.index % 2 == 0 ? 'bg-color' : ''}">
 		<my:block position="resume_main" />
 	</div>
 </c:forEach>

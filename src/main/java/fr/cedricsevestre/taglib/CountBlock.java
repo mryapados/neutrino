@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import fr.cedricsevestre.constants.AttributeConst;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.NData;
 import fr.cedricsevestre.entity.engine.independant.objects.NSchema;
@@ -37,7 +38,12 @@ public class CountBlock extends TagSupport {
 	private String var; // 'var' attribute
 	private int scope; // processed 'scope' attribute
 	private String position = null;
-			
+	
+	public CountBlock() {
+		super();
+		scope = PageContext.PAGE_SCOPE;
+	}
+
 	private static PositionService positionService;
 	@Autowired
 	public void PositionService(PositionService positionService) {
@@ -46,27 +52,28 @@ public class CountBlock extends TagSupport {
 	
 	public int doStartTag() throws JspException {	
 		try {
-		Folder folder = (Folder) pageContext.getAttribute(Attributes.FOLDER.toString(), PageContext.REQUEST_SCOPE);
-		List<Translation> models = new ArrayList<>();
-		Translation model = (Template) pageContext.getAttribute(Attributes.PARENTPAGEBLOCK.toString(), PageContext.REQUEST_SCOPE);
-		Page page = (Page) pageContext.getAttribute(Attributes.ACTIVEPAGE.toString(), PageContext.REQUEST_SCOPE);
-		if (model == null) model = page.getModel();
-		models.add(model);
-		
-		Translation activeObject = (Translation) pageContext.getAttribute(Attributes.ACTIVEOBJECT.toString(), PageContext.REQUEST_SCOPE);
-		if (activeObject != null){
-			models.add(activeObject);
-		}
-		
-		System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGG");
-		System.out.println(position);
-		System.out.println(model.getId());
-		Integer count = positionService.countByNameForModelsWithMaps(models, position);
-
-		if (var != null) pageContext.setAttribute(var, count, scope);
-		if (count == 0) return SKIP_BODY;
-		
-		return EVAL_BODY_AGAIN;
+			Boolean blockPreview = (Boolean) pageContext.getAttribute(AttributeConst.BLOCKPREVIEW, PageContext.REQUEST_SCOPE);
+			Folder folder = (Folder) pageContext.getAttribute(Attributes.FOLDER.toString(), PageContext.REQUEST_SCOPE);
+			List<Translation> models = new ArrayList<>();
+			Translation model = (Template) pageContext.getAttribute(Attributes.PARENTPAGEBLOCK.toString(), PageContext.REQUEST_SCOPE);
+			Page page = (Page) pageContext.getAttribute(Attributes.ACTIVEPAGE.toString(), PageContext.REQUEST_SCOPE);
+			if (model == null) model = page.getModel();
+			models.add(model);
+			
+			Translation activeObject = (Translation) pageContext.getAttribute(Attributes.ACTIVEOBJECT.toString(), PageContext.REQUEST_SCOPE);
+			if (activeObject != null){
+				models.add(activeObject);
+			}
+			
+			System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGG");
+			System.out.println(position);
+			System.out.println(model.getId());
+			Integer count = positionService.countByNameForModelsWithMaps(models, position);
+	
+			if (var != null) pageContext.setAttribute(var, count, scope);
+			if (count == 0 && !blockPreview) return SKIP_BODY;
+			
+			return EVAL_BODY_AGAIN;
 		
 		} catch (ServiceException e) {
 			throw new JspTagException(e);
@@ -81,7 +88,7 @@ public class CountBlock extends TagSupport {
 		this.scope = Util.getScope(scope);
 	}
 
-	public void setPisition(String position) {
+	public void setPosition(String position) {
 		this.position = position;
 	}
 	

@@ -5,7 +5,7 @@
 
 <my:init test="${!initialized}"/>
             
-        <div id="profile" class="profile-section  bg-color section-padding">
+        <div id="profile" class="profile-section section-padding">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-8">

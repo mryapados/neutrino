@@ -6,7 +6,7 @@
 <my:init test="${!initialized}"/>
             
 
-<section id="contact" class="contact-section bg-color section-padding">
+<section id="contact" class="contact-section section-padding">
     <div class="container">
         <div class="row">
             <div class="col-sm-8">
