@@ -9,6 +9,6 @@
 	<my:bind var="categoryName" type="Category" beanId="${category.id}" field="name" />
 	<c:set var="activePage" value="${category}" scope="request"/>
 	<div id="${categoryName}">
-		<my:block position="resume_article" />
+		<my:block position="resume_main" />
 	</div>
 </c:forEach>

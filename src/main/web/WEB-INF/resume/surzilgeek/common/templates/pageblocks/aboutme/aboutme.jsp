@@ -10,38 +10,36 @@
 <s:message var="pattern" code="date.locale.format" text="MM-dd-yyyy" />
 <fmt:formatDate var="formatedDate" pattern="${pattern}" value="${resumeDateOfBirth}" />
 	
-<div id="about" class="about-section section-padding">
+<section id="about" class="about-section section-padding">
     <div class="container">
         <div class="row">
             <div class="col-sm-8">
-                <div class="section-title">
+                <header class="section-title">
                     <h2>
                     	${resumeFirstName} ${resumeLastName}
                     	<span>${resumeFunction}</span>
                     </h2>
-                </div>
-                <div class="about-info">
-                    <p>${resumeDescription}</p>
-                    <div class="signature">
-                        <p class="big">${resumeFirstName} ${resumeLastName}</p>
-                    </div>
-                </div>
-                <address>
-                    <p><span><s:message code="resume.nickname" text="Nick Name:" /></span> ${resumeFirstName} ${resumeLastName}</p>
-                    <p><span><s:message code="resume.email" text="Email:" /></span> ${resumeEmail}</p>
-                    <p><span><s:message code="resume.phone" text="Phone:" /></span> ${resumePhone}</p>
-                    <p><span><s:message code="resume.dateofbirth" text="Date of Birth:" /></span> ${formatedDate}</p>
-                    <p><span><s:message code="resume.address" text="Address:" /></span> ${resumeAddress}</p>
-                </address>
-                
-
-                <my:block position="resume_aboutMe" />
-                
-                
+                </header>
+                <article>
+	                <div class="about-info">
+	                    <p>${resumeDescription}</p>
+	                    <div class="signature">
+	                        <p class="big">${resumeFirstName} ${resumeLastName}</p>
+	                    </div>
+	                </div>
+	                <address>
+	                    <p><span><s:message code="resume.nickname" text="Nick Name:" /></span> ${resumeFirstName} ${resumeLastName}</p>
+	                    <p><span><s:message code="resume.email" text="Email:" /></span> ${resumeEmail}</p>
+	                    <p><span><s:message code="resume.phone" text="Phone:" /></span> ${resumePhone}</p>
+	                    <p><span><s:message code="resume.dateofbirth" text="Date of Birth:" /></span> ${formatedDate}</p>
+	                    <p><span><s:message code="resume.address" text="Address:" /></span> ${resumeAddress}</p>
+	                </address>
+	                <my:block position="resume_aboutMe" />
+                </article>
             </div>
         </div><!-- row -->
     </div><!-- container -->
-</div><!-- about section -->         
+</section><!-- about section -->         
                         
 			
 					

@@ -5,16 +5,18 @@
 
 <my:init test="${!initialized}"/>
 
-<div id="exprience" class="exprience-section section-padding">
+<section id="exprience" class="exprience-section section-padding">
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-8">
-				<div class="section-title">
+				<header class="section-title">
 					<h2><s:message code="experience.title" text="My Exprience" /></h2>
-				</div>
-				<div class="text-info">${activePage.description}</div>
-				<my:block position="resume_experiences" />
+				</header>
+				<article>
+					<div class="text-info">${activePage.description}</div>
+					<my:block position="resume_experiences" />
+				</article>
 			</div>
 		</div><!-- row -->
 	</div><!-- container -->
-</div><!-- exprience section -->
+</section><!-- exprience section -->

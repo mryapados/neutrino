@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="my" uri="/WEB-INF/taglibs/neutrino.tld" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 
 <%-- 
 	Objets disponibles :  
@@ -28,7 +28,7 @@
 	<meta name="keywords" content="to do">
 	<meta name="author" content="Cédric Sevestre">
 	
-	<title><spring:message code="project.pages.home.title" arguments="${project}" /></title>
+	<title><s:message code="project.pages.home.title" arguments="${project}" /></title>
 </my:head>
 <my:body>
 
@@ -48,27 +48,25 @@
                     </div> 
                 </div>
 
-                <nav id="mainmenu" class="collapse navbar-collapse">
+                <nav role="navigation" aria-label="<s:message code='menu.main' text='Main menu' />" id="mainmenu" class="collapse navbar-collapse">
                 	<ul class="nav navbar-nav">
                 		<my:block position="resume_nav" /> 
                 	</ul>
-                
-
                 </nav>
             </div><!-- navbar -->                                
         </div><!-- navigation -->
 
-		<div id="header">
+		<header>
 			<my:block position="resume_header" />
-		</div>
+		</header>
 
-		<div id="article">
-			<my:block position="resume_article" />
-		</div>
+		<main>
+			<my:block position="resume_main" />
+		</main>
 
-        <div id="footer">
+        <footer>
         	<my:block position="resume_footer" />
-        </div><!-- footer -->
+        </footer><!-- footer -->
     </div><!-- main wrapper -->
 
 

@@ -5,19 +5,21 @@
 
 <my:init test="${!initialized}"/>
 
-<div id="skill" class="skill-section bg-color section-padding">
+<section id="skill" class="skill-section bg-color section-padding">
     <div class="container">
         <div class="row">
             <div class="col-sm-8">
                 <div class="section-content">
-                    <div class="section-title">
+                    <header class="section-title">
                         <h2><s:message code="skills.title" text="My Skills" /></h2>
-                    </div>
-					<div class="text-info">${activePage.description}</div>
-					<my:block position="resume_skills" />
+                    </header>
+                    <article>
+						<div class="text-info">${activePage.description}</div>
+						<my:block position="resume_skills" />
+					</article>
                 </div>                                             
             </div>
         </div><!-- row -->
     </div><!-- container -->
-</div><!-- skill section -->                         
+</section><!-- skill section -->                         
                    

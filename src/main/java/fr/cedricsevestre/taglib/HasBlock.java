@@ -23,6 +23,7 @@ import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.independant.objects.PositionService;
 import fr.cedricsevestre.taglib.IIncludeJSP.Attributes;
 
+
 @Component
 @Scope(value = "singleton")
 public class HasBlock extends TagSupport {

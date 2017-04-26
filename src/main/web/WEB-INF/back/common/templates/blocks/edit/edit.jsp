@@ -39,7 +39,7 @@
 		
 			<c:forEach var="tab" items="${fields}" varStatus="status">
 				<data-uib-tab index="${status.index}" heading="${not empty tab.key ? tab.key : 'data'}">
-		
+
 					<div class="container-fluid">
 						<div class="row info">
 							<div class="col-md-6 col-xs-12 text-left">
@@ -57,23 +57,19 @@
 							</ul>
 						</div>
 					</div>
-	
+					
 					<c:forEach var="group" items="${tab.value}">
-					<div class="panel-default">
-						<div class="panel-heading">
-							<h4 class="panel-title">
-								${not empty group.key ? group.key : 'data'}
-							</h4>
-						</div>
-						<table class="table table-striped" role="grid">
-							<tbody>
-								<c:forEach var="field" items="${group.value}">
-									
+						<fieldset class="panel-default">
+							<legend class="panel-heading panel-title">${not empty group.key ? group.key : 'data'}</legend>
+							<table class="table table-striped" role="grid">
+								<tbody>
+									<c:forEach var="field" items="${group.value}">
+										
 										<c:if test="${field.inView || field.editable}">
 											<tr>
 												<td class="col-md-3">
 													<s:message var="defaultMessage" code="bo.field.${field.name}" text="${field.name}" />
-													<s:message code="bo.${objectType}.field.${field.name}" text="${defaultMessage}" />
+													<label for="${field.name}"><s:message code="bo.${objectType}.field.${field.name}" text="${defaultMessage}" /></label>
 												</td>
 												<td>
 
@@ -110,15 +106,13 @@
 												</td>
 											</tr>
 										</c:if>
-
-
-									
-								</c:forEach>
-							</tbody>
-						</table>
-					</div>
+										
+									</c:forEach>
+								</tbody>
+							</table>
+						</fieldset>
 					</c:forEach>
-	
+					
 				</data-uib-tab>
 			</c:forEach>
 		

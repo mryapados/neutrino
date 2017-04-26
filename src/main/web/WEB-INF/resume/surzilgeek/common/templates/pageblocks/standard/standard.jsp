@@ -6,13 +6,27 @@
 
 <my:init test="${!initialized}"/>
 
-<div class="section-padding">
+<section class="section-padding">
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-8">
-				<div class="text-info">${activePage.description}</div>
-				<my:block position="resume_standard" />
+				<my:countBlock position="resume_standard_header" var="count">
+					<header>
+						<my:block position="resume_standard_header" />
+					</header>
+				</my:countBlock>
+				<my:countBlock position="resume_standard_article" var="count">
+					<article>
+						<div class="text-info">${activePage.description}</div>
+						<my:block position="resume_standard_article" />
+					</article>
+				</my:countBlock>
+				<my:countBlock position="resume_standard_footer" var="count">
+					<footer>
+						<my:block position="resume_standard_footer" />
+					</footer>
+				</my:countBlock>
 			</div>
 		</div><!-- row -->
 	</div><!-- container -->
-</div><!-- exprience section -->
+</section><!-- exprience section -->

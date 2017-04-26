@@ -1982,13 +1982,15 @@ public class InitialisationBase {
 		Map<String, Position> mapPosition = new HashMap<>();
 		
 		
-		Position pStandard = addPosition(mapPosition, "resume_standard");
+		Position pStandardHeader = addPosition(mapPosition, "resume_standard_header");
+		Position pStandardArticle = addPosition(mapPosition, "resume_standard_article");
+		Position pStandardFooter = addPosition(mapPosition, "resume_standard_footer");
 		
 		Position pHeader = addPosition(mapPosition, "resume_header");
 		Position pheaderMenu = addPosition(mapPosition, "resume_headerMenu");
 		Position pNav = addPosition(mapPosition, "resume_nav");
 		Position pAside = addPosition(mapPosition, "resume_aside");
-		Position pArticle = addPosition(mapPosition, "resume_article");
+		Position pMain = addPosition(mapPosition, "resume_main");
 		Position pFooter = addPosition(mapPosition, "resume_footer");
 		
 		Position pAboutMe = addPosition(mapPosition, "resume_aboutMe");
@@ -2069,28 +2071,28 @@ public class InitialisationBase {
 		Map<Lang, MapTemplate> mtNavpbHeader = addMapTemplate(pbHeader, bNav, pNav);
 		
 		// Listpage on page Home for folder SurzilGeek only
-		Map<Lang, MapTemplate> mtPgHomeSurzilGeek = addMapTemplate(mHome, pbListPage, pArticle);
+		Map<Lang, MapTemplate> mtPgHomeSurzilGeek = addMapTemplate(mHome, pbListPage, pMain);
 		
 		// blocks on pages
-		Map<Lang, MapTemplate> mtPbAboutmePgAboutMe = addMapTemplate(pgAboutMe, pbAboutMe, pArticle);
+		Map<Lang, MapTemplate> mtPbAboutmePgAboutMe = addMapTemplate(pgAboutMe, pbAboutMe, pMain);
 		Map<Lang, MapTemplate> mtPbAchievementPgAboutMe = addMapTemplate(pbAboutMe, bAchievement, pAboutMe);
 		
-		Map<Lang, MapTemplate> mtPbSkillsPgSkills = addMapTemplate(pgSkills, pbSkills, pArticle);
+		Map<Lang, MapTemplate> mtPbSkillsPgSkills = addMapTemplate(pgSkills, pbSkills, pMain);
 		Map<Lang, MapTemplate> mtBSkillsProgressBarPgSkills = addMapTemplate(pbSkills, bSkillsProgressBar, pSkills);
 		Map<Lang, MapTemplate> mtBSkillsChartPgSkills = addMapTemplate(pbSkills, bSkillsChart, pSkills);
 		
-		Map<Lang, MapTemplate> mtPbExperiencesPgExperiences = addMapTemplate(pgExperiences, pbExperiences, pArticle);
+		Map<Lang, MapTemplate> mtPbExperiencesPgExperiences = addMapTemplate(pgExperiences, pbExperiences, pMain);
 		Map<Lang, MapTemplate> mtBExperiencesPgExperiences = addMapTemplate(pbExperiences, bExperiences, pExperiences);
 		
-		Map<Lang, MapTemplate> mtPbEducationsPgEducations = addMapTemplate(pgEducations, pbEducations, pArticle);
+		Map<Lang, MapTemplate> mtPbEducationsPgEducations = addMapTemplate(pgEducations, pbEducations, pMain);
 		Map<Lang, MapTemplate> mtBEducationsPgEducations = addMapTemplate(pbEducations, bEducations, pEducation);
 		
 		
 		
-		Map<Lang, MapTemplate> mtPbPortfolioPgPortfolio = addMapTemplate(pgPortfolio, pbPortfolio, pArticle);
-		Map<Lang, MapTemplate> mtPbContactPgContact = addMapTemplate(pgContact, pbContact, pArticle);
-		Map<Lang, MapTemplate> mtPbBlogPgBlog = addMapTemplate(pgBlog, pbBlog, pArticle);
-		Map<Lang, MapTemplate> mtPbResumePgResume = addMapTemplate(pgResumeSurzilGeek, pbResume, pArticle);
+		Map<Lang, MapTemplate> mtPbPortfolioPgPortfolio = addMapTemplate(pgPortfolio, pbPortfolio, pMain);
+		Map<Lang, MapTemplate> mtPbContactPgContact = addMapTemplate(pgContact, pbContact, pMain);
+		Map<Lang, MapTemplate> mtPbBlogPgBlog = addMapTemplate(pgBlog, pbBlog, pMain);
+		Map<Lang, MapTemplate> mtPbResumePgResume = addMapTemplate(pgResumeSurzilGeek, pbResume, pMain);
 		
 		
 	}

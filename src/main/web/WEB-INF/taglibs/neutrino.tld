@@ -86,7 +86,27 @@
 			<name>scope</name>
 			<required>false</required>
 		</attribute>
-	</tag>	
+	</tag>
+	<tag>
+	    <name>countBlock</name>
+	    <tag-class>fr.cedricsevestre.taglib.CountBlock</tag-class>
+	    <body-content>JSP</body-content>
+	    <attribute>
+	        <name>position</name>
+	        <required>true</required>
+	        <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	        <name>var</name>
+	        <required>false</required>
+	        <rtexprvalue>false</rtexprvalue>
+	    </attribute>
+	    <attribute>
+	        <name>scope</name>
+	        <required>false</required>
+	        <rtexprvalue>false</rtexprvalue>
+	    </attribute>
+	</tag>
 	<tag>
 	    <name>import</name>
 	    <tag-class>fr.cedricsevestre.taglib.Import</tag-class>
