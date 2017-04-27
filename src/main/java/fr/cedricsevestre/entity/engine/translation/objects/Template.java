@@ -47,7 +47,7 @@ public class Template extends Translation {
 
 	// PAGE = Model ; Block = block ; PAGEBLOCK = Set of elements (idem PAGE)
 	public enum TemplateKind{
-		PAGE, BLOCK, PAGEBLOCK
+		PAGE, BLOCK, PAGEBLOCK, ELEMENT
 	}
 	
 	@BOField(type = ValueType.ENUM, ofEnum = TemplateKind.class, inList = false)

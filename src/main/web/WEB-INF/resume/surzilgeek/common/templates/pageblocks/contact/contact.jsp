@@ -15,7 +15,7 @@
                         <h2><s:message code="contact.title" text="Contact Me" /></h2>
                     </header>
                     <article>
-						<div class="text-info">${activePage.description}</div>
+						<div class="text-info"><c:out value="${activePage.description}" escapeXml="false" /></div>
 						<my:block position="resume_contact" />
 	                    <div class="address">
 	                        <ul>
@@ -45,6 +45,8 @@
 	                                    <i class="fa fa-external-link" aria-hidden="true"></i>
 	                                </div>
 	                                <h3>Social profiles</h3>
+	                                
+	                                
 	                                <ul class="social list-inline">
 	                                    <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
 	                                    <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>

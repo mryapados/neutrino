@@ -2008,14 +2008,28 @@ public class InitialisationBase {
 		Icon iSave = mkIcon(new Icon("save", "", "fa fa-floppy-o", ""));
 
 		Icon iFacebook = mkIcon(new Icon("facebook", "", "fa fa-facebook", ""));
-		
-		
+		Icon iTwitter = mkIcon(new Icon("twitter", "", "fa fa-twitter", ""));
+		Icon iGooglePlus = mkIcon(new Icon("googlePlus", "", "fa fa-google-plus", ""));
+		Icon iDribbble = mkIcon(new Icon("dribbble", "", "fa fa-dribbble", ""));
+		Icon iBehance = mkIcon(new Icon("behance", "", "fa fa-behance", ""));
+		Icon iGithubAlt = mkIcon(new Icon("github", "", "fa fa-github-alt", ""));
+
 		//SocialNetworks
 		Map<Lang, Translation> snFacebookCS = mkSocialNetwork(new SocialNetwork("Facebook", "http://myurl.com", iFacebook, 10), fldsResume, "snFacebookCS", rCS);
-		
-		
-		
-		
+		Map<Lang, Translation> snTwitterCS = mkSocialNetwork(new SocialNetwork("Twitter", "http://myurl.com", iTwitter, 10), fldsResume, "snTwitterCS", rCS);
+		Map<Lang, Translation> snGooglePlusCS = mkSocialNetwork(new SocialNetwork("GooglePlus", "http://myurl.com", iGooglePlus, 10), fldsResume, "snGooglePlusCS", rCS);
+		Map<Lang, Translation> snDribbbleCS = mkSocialNetwork(new SocialNetwork("Dribbble", "http://myurl.com", iDribbble, 10), fldsResume, "snDribbbleCS", rCS);
+		Map<Lang, Translation> snBehanceCS = mkSocialNetwork(new SocialNetwork("Behance", "http://myurl.com", iBehance, 10), fldsResume, "snBehanceCS", rCS);
+		Map<Lang, Translation> snGithubAltCS = mkSocialNetwork(new SocialNetwork("Github", "http://myurl.com", iGithubAlt, 10), fldsResume, "snGithubAltCS", rCS);
+	
+		Map<Lang, Translation> snFacebookJP = mkSocialNetwork(new SocialNetwork("Facebook", "http://myurl.com", iFacebook, 10), fldsResume, "snFacebookJP", rJP);
+		Map<Lang, Translation> snTwitterJP = mkSocialNetwork(new SocialNetwork("Twitter", "http://myurl.com", iTwitter, 10), fldsResume, "snTwitterJP", rJP);
+		Map<Lang, Translation> snGooglePlusJP = mkSocialNetwork(new SocialNetwork("GooglePlus", "http://myurl.com", iGooglePlus, 10), fldsResume, "snGooglePlusJP", rJP);
+		Map<Lang, Translation> snDribbbleJP = mkSocialNetwork(new SocialNetwork("Dribbble", "http://myurl.com", iDribbble, 10), fldsResume, "snDribbbleJP", rJP);
+		Map<Lang, Translation> snBehanceJP = mkSocialNetwork(new SocialNetwork("Behance", "http://myurl.com", iBehance, 10), fldsResume, "snBehanceJP", rJP);
+		Map<Lang, Translation> snGithubAltJP = mkSocialNetwork(new SocialNetwork("Github", "http://myurl.com", iGithubAlt, 10), fldsResume, "snGithubAltJP", rJP);
+			
+	
 
 		// Positions
 		Map<String, Position> mapPosition = new HashMap<>();
