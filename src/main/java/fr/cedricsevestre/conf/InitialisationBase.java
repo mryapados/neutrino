@@ -30,6 +30,7 @@ import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.custom.Resume;
 import fr.cedricsevestre.entity.custom.Skill;
 import fr.cedricsevestre.entity.custom.Skill.SkillKind;
+import fr.cedricsevestre.entity.custom.SocialNetwork;
 import fr.cedricsevestre.entity.custom.Tag;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
@@ -56,6 +57,7 @@ import fr.cedricsevestre.service.custom.MemberService;
 import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.custom.ResumeService;
 import fr.cedricsevestre.service.custom.SkillService;
+import fr.cedricsevestre.service.custom.SocialNetworkService;
 import fr.cedricsevestre.service.custom.TagService;
 import fr.cedricsevestre.service.engine.bo.LinkService;
 import fr.cedricsevestre.service.engine.independant.objects.FolderService;
@@ -152,6 +154,11 @@ public class InitialisationBase {
 	
 	@Autowired
 	private EducationService educationService;
+	
+	
+	
+	@Autowired
+	private SocialNetworkService socialNetworkService;
 	
 	Map<String, Folder> mapfolders;
 	
@@ -1745,15 +1752,38 @@ public class InitialisationBase {
 	
 	
 	
+	public Map<Lang, Translation> mkSocialNetwork(SocialNetwork base, Folder folder, String name, Map<Lang, Translation> resumes) throws ServiceException{
+		List<Folder> folders = new ArrayList<>();
+		folders.add(folder);
+		return mkSocialNetwork(base, folders, name, resumes);
+	}
+	public Map<Lang, Translation> mkSocialNetwork(SocialNetwork base, List<Folder> folders, String name, Map<Lang, Translation> resumes) throws ServiceException{
+		Map<Lang, Translation> map = new HashMap<>();
+		SocialNetwork first = null;
+		for (Lang lang : langs) {
+			SocialNetwork socialNetwork = null;
+			if (first == null){
+				socialNetwork = socialNetworkService.translate(base, lang);
+				socialNetwork.setName(name);
+				socialNetwork.setDescription(name + " Education description " + lang.getCode());
+				socialNetwork.setFolders(folders);
+				socialNetwork.setResume((Resume) resumes.get(lang));
+				first = socialNetwork;
+			} else {
+				socialNetwork = socialNetworkService.translate(first, lang);
+				socialNetwork.setFolders(folders);
+				socialNetwork.setName(name);
+				socialNetwork.setDescription(name + " Education description " + lang.getCode());
+				socialNetwork.setResume((Resume) resumes.get(lang));
+			}
+						
+			socialNetworkService.save(socialNetwork);
+			map.put(lang, socialNetwork);
+		}
+		return map;
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	public Map<Lang, Translation> mkEducation(Education base, Folder folder, String name, String context, Map<Lang, Translation> resumes) throws ServiceException{
+	public Map<Lang, Translation> mkEducation(Education base, Folder folder, String name, Map<Lang, Translation> resumes) throws ServiceException{
 		List<Folder> folders = new ArrayList<>();
 		folders.add(folder);
 		return mkEducation(base, folders, name, resumes);
@@ -1778,7 +1808,7 @@ public class InitialisationBase {
 				education.setResume((Resume) resumes.get(lang));
 			}
 						
-			tObjectService.save(education);
+			educationService.save(education);
 			map.put(lang, education);
 		}
 		return map;
@@ -1811,7 +1841,7 @@ public class InitialisationBase {
 				experience.setResume((Resume) resumes.get(lang));
 			}
 						
-			tObjectService.save(experience);
+			experienceService.save(experience);
 			map.put(lang, experience);
 		}
 		return map;
@@ -1843,7 +1873,7 @@ public class InitialisationBase {
 				skill.setResume((Resume) resumes.get(lang));
 			}
 						
-			tObjectService.save(skill);
+			skillService.save(skill);
 			map.put(lang, skill);
 		}
 		return map;
@@ -1977,6 +2007,15 @@ public class InitialisationBase {
 		Icon iBlog = mkIcon(new Icon("blog", "flaticon-pens15", "fa fa-file-text-o", ""));
 		Icon iSave = mkIcon(new Icon("save", "", "fa fa-floppy-o", ""));
 
+		Icon iFacebook = mkIcon(new Icon("facebook", "", "fa fa-facebook", ""));
+		
+		
+		//SocialNetworks
+		Map<Lang, Translation> snFacebookCS = mkSocialNetwork(new SocialNetwork("Facebook", "http://myurl.com", iFacebook, 10), fldsResume, "snFacebookCS", rCS);
+		
+		
+		
+		
 
 		// Positions
 		Map<String, Position> mapPosition = new HashMap<>();

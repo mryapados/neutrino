@@ -53,21 +53,18 @@ public class CountBlock extends TagSupport {
 	public int doStartTag() throws JspException {	
 		try {
 			Boolean blockPreview = (Boolean) pageContext.getAttribute(AttributeConst.BLOCKPREVIEW, PageContext.REQUEST_SCOPE);
-			Folder folder = (Folder) pageContext.getAttribute(Attributes.FOLDER.toString(), PageContext.REQUEST_SCOPE);
+			Folder folder = (Folder) pageContext.getAttribute(AttributeConst.FOLDER, PageContext.REQUEST_SCOPE);
 			List<Translation> models = new ArrayList<>();
-			Translation model = (Template) pageContext.getAttribute(Attributes.PARENTPAGEBLOCK.toString(), PageContext.REQUEST_SCOPE);
-			Page page = (Page) pageContext.getAttribute(Attributes.ACTIVEPAGE.toString(), PageContext.REQUEST_SCOPE);
+			Translation model = (Template) pageContext.getAttribute(AttributeConst.PARENTPAGEBLOCK, PageContext.REQUEST_SCOPE);
+			Page page = (Page) pageContext.getAttribute(AttributeConst.ACTIVEPAGE, PageContext.REQUEST_SCOPE);
 			if (model == null) model = page.getModel();
 			models.add(model);
 			
-			Translation activeObject = (Translation) pageContext.getAttribute(Attributes.ACTIVEOBJECT.toString(), PageContext.REQUEST_SCOPE);
+			Translation activeObject = (Translation) pageContext.getAttribute(AttributeConst.ACTIVEOBJECT, PageContext.REQUEST_SCOPE);
 			if (activeObject != null){
 				models.add(activeObject);
 			}
 			
-			System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGG");
-			System.out.println(position);
-			System.out.println(model.getId());
 			Integer count = positionService.countByNameForModelsWithMaps(models, position);
 	
 			if (var != null) pageContext.setAttribute(var, count, scope);

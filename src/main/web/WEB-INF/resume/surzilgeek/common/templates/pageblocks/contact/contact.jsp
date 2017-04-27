@@ -23,22 +23,22 @@
 	                                <div class="icons">
 	                                    <i class="fa fa-map-signs" aria-hidden="true"></i>
 	                                </div>
-	                                <h3>Address</h3>
-	                                <p>123 West 12th Street, Suite 456 New York, NY 123456</p>
+	                                <h3><s:message code="contact.address" text="Address" /></h3>
+	                                <p><c:out value="${resumeAddress}"/></p>
 	                            </li>
 	                            <li>
 	                                <div class="icons icons1">
 	                                    <i class="fa fa-phone" aria-hidden="true"></i>
 	                                </div>
-	                                <h3>Mobile number</h3>
-	                                <p>+012 345 678 910</p>
+	                                <h3><s:message code="contact.phone" text="Mobile number" /></h3>
+	                                <p><c:out value="${resumePhone}"/></p>
 	                            </li>
 	                            <li>
 	                                <div class="icons icons2">
 	                                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
 	                                </div>
-	                                <h3>Email address</h3>
-	                                <a href="#">itsme@surzilgeek.com</a>
+	                                <h3><s:message code="contact.email" text="Email address" /></h3>
+	                                <a href="mailto:<c:out value="${resumeEmail}"/>"><c:out value="${resumeEmail}"/></a>
 	                            </li>
 	                            <li>
 	                                <div class="icons icons3">
