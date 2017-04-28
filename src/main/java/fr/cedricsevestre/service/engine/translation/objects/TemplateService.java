@@ -105,16 +105,17 @@ public class TemplateService extends TranslationService<Template>{
 		if (template.getKind() == TemplateKind.BLOCK) return "blocks";
 		else if (template.getKind() == TemplateKind.PAGE) return "pages";
 		else if (template.getKind() == TemplateKind.PAGEBLOCK) return "pageblocks";
+		else if (template.getKind() == TemplateKind.ELEMENT) return "elements";
 		else throw new ServiceException("erreur pathType Template");
 	}
 	
 	public String pathJSP(boolean webInf, String pathContext, Template template, boolean jsp) throws ServiceException{	
-		String pathBlock = pathType(template) + "/" + template.getPath();
+		String pathType = pathType(template) + "/" + template.getPath();
 		StringBuilder path = new StringBuilder();
 		if (webInf) path.append(CommonUtil.BASE_WEBINF);
 		path.append(pathContext);
 		path.append("templates/");
-		path.append(pathBlock);
+		path.append(pathType);
 		if (jsp) path.append(".jsp");
 		return path.toString();
 	}

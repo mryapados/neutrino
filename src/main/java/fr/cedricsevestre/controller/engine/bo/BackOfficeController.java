@@ -31,7 +31,6 @@ import fr.cedricsevestre.service.engine.bo.BackOfficeService;
 import fr.cedricsevestre.service.engine.translation.LangService;
 
 @Controller
-@Scope("prototype")
 @RequestMapping(value = CommonUtil.BO_URL)
 @Secured({ "ROLE_WEBMASTER", "ROLE_ADMIN", "ROLE_BO" })
 public abstract class BackOfficeController extends AbtractController {

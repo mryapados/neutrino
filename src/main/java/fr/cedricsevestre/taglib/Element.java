@@ -36,7 +36,7 @@ import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateKind
 import fr.cedricsevestre.exception.ResourceNotFoundException;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.exception.UtilException;
-import fr.cedricsevestre.service.engine.BlockControllerExecutor;
+import fr.cedricsevestre.service.engine.TemplateControllerExecutor;
 import fr.cedricsevestre.service.engine.independant.objects.NDataService;
 import fr.cedricsevestre.service.engine.independant.objects.PositionService;
 import fr.cedricsevestre.service.engine.translation.TObjectService;
@@ -62,7 +62,7 @@ public class Element extends TagSupport implements IIncludeJSP {
 		Element.jspTagUtil = jspTagUtil;
 	}
 	
-	private String position;
+	private String template;
 	private String page;
 	private String activeObject;
 	private int pageId;
@@ -70,49 +70,21 @@ public class Element extends TagSupport implements IIncludeJSP {
 	
 	public int doStartTag() throws JspException {
 		logger.debug("Enter in doStartTag()");
-		JspWriter out = pageContext.getOut();
-		try {
-			Boolean blockPreview = (Boolean) pageContext.getAttribute(AttributeConst.BLOCKPREVIEW, PageContext.REQUEST_SCOPE);
-			if (blockPreview){
-				User surfer = (User) pageContext.getAttribute(AttributeConst.SURFER, PageContext.REQUEST_SCOPE);
-				if (surfer.getRole().equals(User.ROLE_ADMIN)){
-					Template model = (Template) pageContext.getAttribute(AttributeConst.ACTIVEBLOCK, PageContext.REQUEST_SCOPE);
-					Translation activeObject = (Translation) pageContext.getAttribute(AttributeConst.ACTIVEOBJECT, PageContext.REQUEST_SCOPE);
-					Page page = (Page) pageContext.getAttribute(AttributeConst.ACTIVEPAGE, PageContext.REQUEST_SCOPE);
-					if (model == null) model = page.getModel();
-					
-					String activeObjectId = "";
-					if (this.activeObjectId != 0) activeObjectId = String.valueOf(this.activeObjectId);
-					else if (activeObject != null) activeObjectId = activeObject.getId().toString();
-
-					Position pos = positionService.findByName(position);
-					out.println("<data-ui-position model-id=\"" + model.getId() + "\" active-object-id=\"" + activeObjectId + "\" position-id=\"" + pos.getId() + "\" />");
-				} else {
-					getJsp();
-				}
-			} else getJsp();
-		} catch (IOException | ServiceException e) {
-			try {
-				out.println("<p class=\"bg-danger\">" + e.getMessage() + "</p>");
-			} catch (IOException ex) {
-				logger.error("Erreur Block " + ex.getMessage());
-				ex.printStackTrace();
-			}
-		}
+		getJsp();
 		return EVAL_BODY_INCLUDE;
 	}
 	
 	public void getJsp() throws JspException{
 		logger.debug("Enter in getJsp()");
-		jspTagUtil.getJsp(pageContext, position, page, activeObject, pageId, activeObjectId);
+		jspTagUtil.getJspElement(pageContext, template, page, activeObject, pageId, activeObjectId);
 	}
 	
-	public void setPosition(String position) {
-		this.position = position;
+	public String getTemplate() {
+		return template;
 	}
 
-	public String getPosition() {
-		return (position);
+	public void setTemplate(String template) {
+		this.template = template;
 	}
 
 	public String getPage() {

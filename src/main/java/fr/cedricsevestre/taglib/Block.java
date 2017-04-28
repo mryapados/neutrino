@@ -36,7 +36,7 @@ import fr.cedricsevestre.entity.engine.translation.objects.Template.TemplateKind
 import fr.cedricsevestre.exception.ResourceNotFoundException;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.exception.UtilException;
-import fr.cedricsevestre.service.engine.BlockControllerExecutor;
+import fr.cedricsevestre.service.engine.TemplateControllerExecutor;
 import fr.cedricsevestre.service.engine.independant.objects.NDataService;
 import fr.cedricsevestre.service.engine.independant.objects.PositionService;
 import fr.cedricsevestre.service.engine.translation.TObjectService;
@@ -104,7 +104,7 @@ public class Block extends TagSupport implements IIncludeJSP {
 	
 	public void getJsp() throws JspException{
 		logger.debug("Enter in getJsp()");
-		jspTagUtil.getJsp(pageContext, position, page, activeObject, pageId, activeObjectId);
+		jspTagUtil.getJspBlock(pageContext, position, page, activeObject, pageId, activeObjectId);
 	}
 	
 	public void setPosition(String position) {

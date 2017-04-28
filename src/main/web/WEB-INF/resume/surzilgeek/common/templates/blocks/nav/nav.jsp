@@ -18,16 +18,8 @@
 		<a href="${url}"><span>${icon}${categoryTitle}</span></a>
 	</li>
 </c:forEach>
-         
 <li>
-    <ul class="social list-inline">
-        <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-        <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-        <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
-        <li><a href="#"><i class="fa fa-dribbble" aria-hidden="true"></i></a></li>
-        <li><a href="#"><i class="fa fa-behance" aria-hidden="true"></i></a></li>
-        <li><a href="#"><i class="fa fa-github-alt" aria-hidden="true"></i></a></li>
-    </ul>
+	<my:element template="resume_element_socialnetwork" />
 </li>      
                         
                         

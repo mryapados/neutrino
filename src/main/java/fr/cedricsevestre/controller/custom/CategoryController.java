@@ -23,7 +23,6 @@ import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.ResumeService;
 
 @Controller
-@Scope("prototype")
 @RequestMapping(value = CategoryController.CATEGORY_MAPPING)
 public class CategoryController extends AbtractController {
 	protected static final String CATEGORY_MAPPING = "/category";

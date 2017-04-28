@@ -1429,6 +1429,65 @@ public class InitialisationBase {
 	}
 	
 	
+	
+	
+	
+	
+	
+	public Map<Lang, Translation> mkElement(Folder folder, String name) throws ServiceException{
+		List<Folder> folders = new ArrayList<>();
+		folders.add(folder);
+		return mkElement(folders, name);
+	}
+	public Map<Lang, Translation> mkElement(Folder folder, String name, String path) throws ServiceException{
+		List<Folder> folders = new ArrayList<>();
+		folders.add(folder);
+		return mkElement(folders, name, path);
+	}
+	public Map<Lang, Translation> mkElement(Folder folder, String name, String path, NSchema nSchema) throws ServiceException{
+		List<Folder> folders = new ArrayList<>();
+		folders.add(folder);
+		return mkElement(folders, name, path, nSchema);
+	}
+	public Map<Lang, Translation> mkElement(List<Folder> folders, String name) throws ServiceException{
+		return mkElement(folders, name, name + "/" + name, null);
+	}
+	public Map<Lang, Translation> mkElement(List<Folder> folders, String name, String path) throws ServiceException{
+		return mkElement(folders, name, path, null);
+	}
+	public Map<Lang, Translation> mkElement(List<Folder> folders, String name, String path, NSchema nSchema) throws ServiceException{
+		Map<Lang, Translation> map = new HashMap<>();
+		Template first = null;
+		for (Lang lang : langs) {
+			Template template = null;
+			if (first == null){
+				template = templateService.translate(new Template(), lang);
+				template.setName(name);
+				template.setDescription(name + " Element description " + lang.getCode());
+				template.setPath(path);
+				template.setKind(Template.TemplateKind.ELEMENT);
+				template.setSchema(nSchema);
+				template.setFolders(folders);
+				first = template;
+			} else {
+				template = templateService.translate(first, lang);
+				template.setFolders(folders);
+				template.setName(name);
+				template.setDescription(name + " Element description " + lang.getCode());
+				
+			}
+			template.setController(name);
+			templateService.save(template);
+			map.put(lang, template);
+		}
+		return map;
+	}
+	
+	
+	
+	
+	
+	
 	public Map<Lang, Translation> mkBlock(Folder folder, String name) throws ServiceException{
 		List<Folder> folders = new ArrayList<>();
 		folders.add(folder);
@@ -2077,7 +2136,13 @@ public class InitialisationBase {
 		Map<Lang, Translation> pgResumeSurzilGeek = mkPage(new Category(null, "My resume PDF", iSave, true, 60), fldSurzilGeek, "resume", "resume", mDefault);
 		
 		
-
+		
+		
+		// Elements
+		Map<Lang, Translation> elSocialNetwork = mkElement(fldsResume, "resume_element_socialnetwork", "socialnetwork/socialnetwork");
+		
+		
+		
 		
 		// PageBlocks
 		Map<Lang, Translation> pbStandard = mkPageBlock(fldsResume, "resume_pageblock_standard", "standard/standard");
@@ -2099,13 +2164,14 @@ public class InitialisationBase {
 		// Blocks
 		Map<Lang, Translation> bNav = mkBlock(fldsResume, "resume_block_nav", "nav/nav");
 		
-
-		
 		Map<Lang, Translation> bAchievement = mkBlock(fldSurzilGeek, "resume_block_achievement", "achievement/achievement");
 		Map<Lang, Translation> bSkillsProgressBar = mkBlock(fldSurzilGeek, "resume_block_skillsProgressBar", "skills/progressBar/progressBar");
 		Map<Lang, Translation> bSkillsChart = mkBlock(fldSurzilGeek, "resume_block_skillsChart", "skills/chart/chart");
 		Map<Lang, Translation> bExperiences = mkBlock(fldSurzilGeek, "resume_block_experiences", "experiences/experiences");
 		Map<Lang, Translation> bEducations = mkBlock(fldSurzilGeek, "resume_block_educations", "educations/educations");
+		
+		
+		
 		
 		
 		// Set MapTemplate
@@ -2146,6 +2212,10 @@ public class InitialisationBase {
 		Map<Lang, MapTemplate> mtPbContactPgContact = addMapTemplate(pgContact, pbContact, pMain);
 		Map<Lang, MapTemplate> mtPbBlogPgBlog = addMapTemplate(pgBlog, pbBlog, pMain);
 		Map<Lang, MapTemplate> mtPbResumePgResume = addMapTemplate(pgResumeSurzilGeek, pbResume, pMain);
+		
+		
+
+		
 		
 		
 	}

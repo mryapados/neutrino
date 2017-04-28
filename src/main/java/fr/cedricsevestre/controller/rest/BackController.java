@@ -47,7 +47,7 @@ import fr.cedricsevestre.exception.FormException;
 import fr.cedricsevestre.exception.JSPNotFoundException;
 import fr.cedricsevestre.exception.ResourceNotFoundException;
 import fr.cedricsevestre.exception.ServiceException;
-import fr.cedricsevestre.service.engine.BlockControllerExecutor;
+import fr.cedricsevestre.service.engine.TemplateControllerExecutor;
 import fr.cedricsevestre.service.engine.independant.objects.FolderService;
 import fr.cedricsevestre.service.engine.independant.objects.MapTemplateService;
 import fr.cedricsevestre.service.engine.independant.objects.NDataService;
@@ -88,7 +88,7 @@ public class BackController extends AbtractController {
 	private NDataService nDataService;
 
 	@Autowired
-	private BlockControllerExecutor templateControllerExecutor ;
+	private TemplateControllerExecutor templateControllerExecutor ;
 	
 	
 	

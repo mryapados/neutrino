@@ -12,14 +12,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 
-import fr.cedricsevestre.annotation.BlockController;
+import fr.cedricsevestre.annotation.TemplateController;
 import fr.cedricsevestre.annotation.BlockMapping;
 import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.service.engine.bo.BackOfficeService;
 
-@BlockController
+@TemplateController
 @Component
 public class BOBlockController {
 	

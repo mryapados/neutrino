@@ -31,7 +31,6 @@ import fr.cedricsevestre.service.engine.independant.objects.UserService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 
 @Controller
-@Scope("prototype")
 @SessionAttributes( value = AbtractController.ATTR_BLOCKPREVIEW, types={Boolean.class} )
 public abstract class AbtractController {
 	

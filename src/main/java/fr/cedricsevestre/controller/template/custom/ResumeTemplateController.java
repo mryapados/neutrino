@@ -1,4 +1,4 @@
-package fr.cedricsevestre.controller.block.custom;
+package fr.cedricsevestre.controller.template.custom;
 
 import java.util.List;
 
@@ -9,12 +9,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 
-import fr.cedricsevestre.annotation.BlockController;
+import fr.cedricsevestre.annotation.TemplateController;
 import fr.cedricsevestre.annotation.BlockMapping;
+import fr.cedricsevestre.annotation.ElementMapping;
 import fr.cedricsevestre.entity.custom.Category;
 import fr.cedricsevestre.entity.custom.Resume;
 import fr.cedricsevestre.entity.custom.Skill;
 import fr.cedricsevestre.entity.custom.Skill.SkillKind;
+import fr.cedricsevestre.entity.custom.SocialNetwork;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
@@ -26,11 +28,12 @@ import fr.cedricsevestre.service.custom.CategoryService;
 import fr.cedricsevestre.service.custom.EducationService;
 import fr.cedricsevestre.service.custom.ExperienceService;
 import fr.cedricsevestre.service.custom.SkillService;
+import fr.cedricsevestre.service.custom.SocialNetworkService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
 
-@BlockController
+@TemplateController
 @Component
-public class ResumeBlockController {
+public class ResumeTemplateController {
 
 	
 	@Autowired
@@ -44,6 +47,9 @@ public class ResumeBlockController {
 	
 	@Autowired
 	private EducationService educationService;
+	
+	@Autowired
+	private SocialNetworkService socialNetworkService;
 	
 	@BlockMapping(value = "@bo_block_list")
 	public ModelMap testage(Page page, Translation model, Translation activeObject, Template template, PageContext pageContext){
@@ -87,7 +93,7 @@ public class ResumeBlockController {
 		}
 
 	}
-	
+
 	@BlockMapping("resume_block_skillsChart")
 	public ModelMap skillsChart(Folder folder, Lang lang, PageContext pageContext) throws ControllerException{	
 		try {
@@ -130,5 +136,28 @@ public class ResumeBlockController {
 			throw new ControllerException(e);
 		}
 	}
+	
+	
+	
+	
+	
+	@ElementMapping("resume_element_socialnetwork")
+	public ModelMap socialnetwork(Folder folder, Lang lang, PageContext pageContext) throws ControllerException{
+		try {
+			ModelMap modelMap = new ModelMap();
+			if (pageContext != null){
+				Resume resume = (Resume) pageContext.getAttribute("activeResume", PageContext.REQUEST_SCOPE);
+				if (resume != null)	modelMap.addAttribute("socialnetworks", socialNetworkService.findAllForResumeAndFolderAndLang(resume, folder, lang));
+			}
+			return modelMap;
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
+		}
+	}
+	
+	
+	
+	
+	
 	
 }

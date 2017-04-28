@@ -119,14 +119,27 @@ public class NDataService extends BaseService<NData>{
 		NSchema nSchema =  block.getSchema();
 		List<NData> nDatas = null;
 		if (nSchema != null){
-			//pb lazy
-			//block ne contient pas datas qui n'est pas initialisé car lazy
-			//Il faut donc recharger le template en demandant explicitement les datas.
-			//Ou charger les datas directement, c'est la méthode choisie ici.
 			if (nSchema.getScope() == ScopeType.ALL){
 				nDatas = findAllForTemplate(block);
 			} else if (nSchema.getScope() == ScopeType.ONE){
 				nDatas = findAllForMapTemplate(mapTemplate);
+			}
+			for (NData nData : nDatas) {
+				mapNDatas.put(nData.getPropertyName(), getNDataValue(nData));
+			}
+		}
+		return mapNDatas;
+	}
+	
+	public Map<String, Object> getNDatas(Template template) throws ServiceException{
+		Map<String, Object> mapNDatas = new HashMap<>(); 
+		NSchema nSchema =  template.getSchema();
+		List<NData> nDatas = null;
+		if (nSchema != null){
+			if (nSchema.getScope() == ScopeType.ALL){
+				nDatas = findAllForTemplate(template);
+			} else if (nSchema.getScope() == ScopeType.ONE){
+				throw new ServiceException("NDatas Scope ONE is for a mapTemplate");
 			}
 			for (NData nData : nDatas) {
 				mapNDatas.put(nData.getPropertyName(), getNDataValue(nData));
