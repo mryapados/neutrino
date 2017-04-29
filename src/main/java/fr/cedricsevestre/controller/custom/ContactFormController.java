@@ -48,7 +48,7 @@ public class ContactFormController extends AbtractController {
 	ContactService contactService;
 	
 	@RequestMapping(value = CONTACTFORM_SAVE_URL, method = RequestMethod.POST)
-	public @ResponseBody Contact save(@Valid @RequestBody Contact contact, BindingResult result) throws ControllerException, ResourceNotFoundException, FormException {
+	public @ResponseBody Contact save(@Valid @ModelAttribute Contact contact, BindingResult result, Folder folder) throws ControllerException, ResourceNotFoundException, FormException {
 		try {
 			if (result.hasErrors()){
 				List<String> errors = new ArrayList<>();
@@ -58,7 +58,7 @@ public class ContactFormController extends AbtractController {
 				}
 				throw new FormException("form errors", result.getAllErrors());			
 			}
-	
+			contact.setFolder(folder);
 			return contactService.save(contact);
 		} catch (ServiceException e) {
 			throw new ControllerException(e);

@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
@@ -43,6 +44,7 @@ public class Contact implements IdProvider, Serializable{
 
 	@BOField(type = ValueType.VARCHAR50, defaultField = true, sortBy = SortType.ASC, sortPriority = 200)
 	@NotNull
+	@NotEmpty
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "name")
 	private String name;
@@ -59,18 +61,21 @@ public class Contact implements IdProvider, Serializable{
 	
 	@BOField(type = ValueType.VARCHAR50)
 	@NotNull
+	@NotEmpty
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "email")
 	private String email;
 	
 	@BOField(type = ValueType.VARCHAR50)
 	@NotNull
+	@NotEmpty
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "subject")
 	private String subject;
 	
 	@BOField(type = ValueType.VARCHAR255)
 	@NotNull
+	@NotEmpty
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "message")
 	private String message;

@@ -13,6 +13,7 @@ import fr.cedricsevestre.annotation.TemplateController;
 import fr.cedricsevestre.annotation.BlockMapping;
 import fr.cedricsevestre.annotation.ElementMapping;
 import fr.cedricsevestre.entity.custom.Category;
+import fr.cedricsevestre.entity.custom.Contact;
 import fr.cedricsevestre.entity.custom.Resume;
 import fr.cedricsevestre.entity.custom.Skill;
 import fr.cedricsevestre.entity.custom.Skill.SkillKind;
@@ -148,6 +149,8 @@ public class ResumeTemplateController {
 			if (pageContext != null){
 				Resume resume = (Resume) pageContext.getAttribute("activeResume", PageContext.REQUEST_SCOPE);
 				if (resume != null)	modelMap.addAttribute("socialnetworks", socialNetworkService.findAllForResumeAndFolderAndLang(resume, folder, lang));
+				modelMap.addAttribute("contact", new Contact());
+			
 			}
 			return modelMap;
 		} catch (ServiceException e) {
