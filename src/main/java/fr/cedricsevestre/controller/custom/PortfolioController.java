@@ -19,24 +19,24 @@ import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.ResumeService;
 
 @Controller
-@RequestMapping(value = CategoryController.CATEGORY_MAPPING)
-public class CategoryController extends AbtractController {
-	protected static final String CATEGORY_MAPPING = "/category";
-	protected static final String CATEGORY_URL = "/category";
+@RequestMapping(value = PortfolioController.PORTFOLIO_MAPPING)
+public class PortfolioController extends AbtractController {
+	protected static final String PORTFOLIO_MAPPING = "/portfolio";
+	protected static final String PORTFOLIO_URL = "/portfolio";
 
 	protected static final String PARAM_RESUME = "resume";
 	
 	protected static final String ATTR_RESUME = "activeResume";
-	protected static final String ATTR_CATEGORY = "cat";
+	protected static final String ATTR_PORTFOLIO = "pf";
 		
 	@Autowired
 	ResumeService resumeService;
 	
-	@RequestMapping(value = CATEGORY_URL, method = RequestMethod.GET)
-	public ModelAndView view(@ModelAttribute(ATTR_CATEGORY) String category, Folder folder, HttpServletRequest request) throws ResourceNotFoundException, ControllerException {
+	@RequestMapping(value = PORTFOLIO_URL, method = RequestMethod.GET)
+	public ModelAndView view(@ModelAttribute(ATTR_PORTFOLIO) String portfolio, Folder folder, HttpServletRequest request) throws ResourceNotFoundException, ControllerException {
 		try {
 			String resumeName = request.getParameter(PARAM_RESUME);
-			ModelAndView modelAndView = baseView(category, null, folder);
+			ModelAndView modelAndView = baseView(portfolio, null, folder);
 			Lang lang = (Lang) modelAndView.getModel().get(ATTR_ACTIVELANG);
 			Resume resume = resumeService.identify(folder, resumeName, lang);
 			modelAndView.addObject(ATTR_RESUME, resume);

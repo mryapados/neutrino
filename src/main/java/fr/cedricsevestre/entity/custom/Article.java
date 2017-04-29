@@ -12,7 +12,7 @@ import fr.cedricsevestre.annotation.BOField.ValueType;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 
 @Entity
-@Table(name = "album")
+@Table(name = "article")
 public class Article extends Translation {
 
 	private static final long serialVersionUID = 1L;

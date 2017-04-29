@@ -68,7 +68,7 @@ public class Media extends Translation {
 	@BOField(type = ValueType.FILE)
 	private String file;
 	
-	@BOField(type = ValueType.FILE)
+	@BOField(type = ValueType.VARCHAR255)
 	private String alt;
 	
 	@BOField(type = ValueType.COLLECTION, ofType = ValueType.FILE)

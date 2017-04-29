@@ -28,13 +28,6 @@ import fr.cedricsevestre.entity.engine.translation.objects.Template;
 
 @Entity
 @Table(name = "category")
-//@NamedEntityGraphs({
-//	@NamedEntityGraph(
-//		name = "Project.allJoins", 
-//		attributeNodes = { 
-//			@NamedAttributeNode("albums")
-//		})
-//})
 public class Category extends Page {
 
 	private static final long serialVersionUID = 1L;

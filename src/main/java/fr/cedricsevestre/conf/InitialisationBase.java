@@ -26,6 +26,7 @@ import fr.cedricsevestre.entity.custom.Experience;
 import fr.cedricsevestre.entity.custom.Media;
 import fr.cedricsevestre.entity.custom.Media.FileType;
 import fr.cedricsevestre.entity.custom.Member;
+import fr.cedricsevestre.entity.custom.Portfolio;
 import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.custom.Resume;
 import fr.cedricsevestre.entity.custom.Skill;
@@ -54,6 +55,7 @@ import fr.cedricsevestre.service.custom.IconService;
 import fr.cedricsevestre.service.custom.MarkerService;
 import fr.cedricsevestre.service.custom.MediaService;
 import fr.cedricsevestre.service.custom.MemberService;
+import fr.cedricsevestre.service.custom.PortfolioService;
 import fr.cedricsevestre.service.custom.ProjectService;
 import fr.cedricsevestre.service.custom.ResumeService;
 import fr.cedricsevestre.service.custom.SkillService;
@@ -155,7 +157,8 @@ public class InitialisationBase {
 	@Autowired
 	private EducationService educationService;
 	
-	
+	@Autowired
+	private PortfolioService portfolioService;
 	
 	@Autowired
 	private SocialNetworkService socialNetworkService;
@@ -830,7 +833,7 @@ public class InitialisationBase {
 		projectFR.setFolders(folders);
 		projectService.save(projectFR);
 	
-		Integer max = 100;
+		Integer max = 5;
 		for (int i = 0; i < max; i++) {
 			projectEN =   projectService.translate(new Project(), langEN);
 			name = "generatedProject_" + i;
@@ -888,7 +891,7 @@ public class InitialisationBase {
 		albumFR.setAlbumType(AlbumType.DEFAULT);
 		albumService.save(albumFR);
 		
-		Integer max = 20;
+		Integer max = 5;
 		for (int i = 0; i < max; i++) {
 			albumEN =   albumService.translate(new Album(), langEN);
 			name = "generatedAlbum_" + i;
@@ -921,7 +924,7 @@ public class InitialisationBase {
 		tag.setDescription("description tag2");
 		tagService.save(tag);
 
-		Integer max = 30;
+		Integer max = 5;
 		for (int i = 0; i < max; i++) {
 			tag = new Tag();
 			tag.setName("testTag_" + i);
@@ -1937,7 +1940,42 @@ public class InitialisationBase {
 		}
 		return map;
 	}
-	
+
+
+	public Map<Lang, Translation> mkPortfolio(Portfolio base, Folder folder, String name, String context, Map<Lang, Translation> models, Map<Lang, Translation> resumes) throws ServiceException{
+		List<Folder> folders = new ArrayList<>();
+		folders.add(folder);
+		return mkPortfolio(base, folders, name, context, models, resumes);
+	}
+	public Map<Lang, Translation> mkPortfolio(Portfolio base, List<Folder> folders, String name, String context, Map<Lang, Translation> models, Map<Lang, Translation> resumes) throws ServiceException{
+		Map<Lang, Translation> map = new HashMap<>();
+		Portfolio first = null;
+		for (Lang lang : langs) {
+			Portfolio portfolio = null;
+			if (first == null){
+				portfolio = portfolioService.translate(base, lang);
+				portfolio.setName(name);
+				portfolio.setContext(context);
+				portfolio.setDescription(name + " Portfolio description " + lang.getCode());
+				portfolio.setFolders(folders);
+				portfolio.setModel((Template) models.get(lang));
+				portfolio.setResume((Resume) resumes.get(lang));
+				first = portfolio;
+			} else {
+				portfolio = portfolioService.translate(first, lang);
+				portfolio.setFolders(folders);
+				portfolio.setContext(context);
+				portfolio.setModel((Template) models.get(lang));
+				portfolio.setName(name);
+				portfolio.setDescription(name + " Portfolio description " + lang.getCode());
+				portfolio.setResume((Resume) resumes.get(lang));
+			}
+						
+			portfolioService.save(portfolio);
+			map.put(lang, portfolio);
+		}
+		return map;
+	}
 	
 	public Map<Lang, Translation> mkTranslation(Translation base, Folder folder, String name, String context) throws ServiceException{
 		List<Folder> folders = new ArrayList<>();
@@ -2109,13 +2147,15 @@ public class InitialisationBase {
 		Position pSkills = addPosition(mapPosition, "resume_skills");
 		Position pExperiences = addPosition(mapPosition, "resume_experiences");
 		Position pEducation = addPosition(mapPosition, "resume_educations");
-		
+		Position pPortfolio = addPosition(mapPosition, "resume_portfolios");
 		
 		
 		// Models
 		Map<Lang, Translation> mHome = mkModel(fldsResume, "resume_model_home", "default/default");
 		Map<Lang, Translation> mDefault = mkModel(fldsResume, "resume_model_default", "default/default");
+		Map<Lang, Translation> mPortfolio = mkModel(fldsResume, "resume_model_portfolio", "default/default");
 
+		
 		// Pages
 		
 		// Pages communes aux deux modèles
@@ -2135,7 +2175,24 @@ public class InitialisationBase {
 		Map<Lang, Translation> pgEducations = mkPage(putCategoryEducation(new Category(null, "Education", iEducation, true, 18)), fldSurzilGeek, "education", "education", mDefault);
 		Map<Lang, Translation> pgResumeSurzilGeek = mkPage(new Category(null, "My resume PDF", iSave, true, 60), fldSurzilGeek, "resume", "resume", mDefault);
 		
+		//Pages portfolio
+		Map<Lang, Translation> pgPfTest1CS = mkPortfolio(new Portfolio("Test1", "/files/resume/surzilgeek/portfolio/1.jpg" , 10), fldsResume, "pftest1", "portfolio", mPortfolio, rCS);
+		Map<Lang, Translation> pgPfTest2CS = mkPortfolio(new Portfolio("Test2", "/files/resume/surzilgeek/portfolio/2.jpg" , 20), fldsResume, "pftest2", "portfolio", mPortfolio, rCS);
+		Map<Lang, Translation> pgPfTest3CS = mkPortfolio(new Portfolio("Test3", "/files/resume/surzilgeek/portfolio/3.jpg" , 30), fldsResume, "pftest3", "portfolio", mPortfolio, rCS);
+		Map<Lang, Translation> pgPfTest4CS = mkPortfolio(new Portfolio("Test4", "/files/resume/surzilgeek/portfolio/4.jpg" , 40), fldsResume, "pftest4", "portfolio", mPortfolio, rCS);
+		Map<Lang, Translation> pgPfTest5CS = mkPortfolio(new Portfolio("Test5", "/files/resume/surzilgeek/portfolio/5.jpg" , 50), fldsResume, "pftest5", "portfolio", mPortfolio, rCS);
+		Map<Lang, Translation> pgPfTest6CS = mkPortfolio(new Portfolio("Test6", "/files/resume/surzilgeek/portfolio/6.jpg" , 60), fldsResume, "pftest6", "portfolio", mPortfolio, rCS);
+		Map<Lang, Translation> pgPfTest7CS = mkPortfolio(new Portfolio("Test7", "/files/resume/surzilgeek/portfolio/7.jpg" , 70), fldsResume, "pftest7", "portfolio", mPortfolio, rCS);
+		Map<Lang, Translation> pgPfTest8CS = mkPortfolio(new Portfolio("Test8", "/files/resume/surzilgeek/portfolio/8.jpg" , 80), fldsResume, "pftest8", "portfolio", mPortfolio, rCS);
 		
+		Map<Lang, Translation> pgPfTest1JP = mkPortfolio(new Portfolio("Test1", "/files/resume/surzilgeek/portfolio/1.jpg" , 10), fldsResume, "pftest1", "portfolio", mPortfolio, rJP);
+		Map<Lang, Translation> pgPfTest2JP = mkPortfolio(new Portfolio("Test2", "/files/resume/surzilgeek/portfolio/2.jpg" , 20), fldsResume, "pftest2", "portfolio", mPortfolio, rJP);
+		Map<Lang, Translation> pgPfTest3JP = mkPortfolio(new Portfolio("Test3", "/files/resume/surzilgeek/portfolio/3.jpg" , 30), fldsResume, "pftest3", "portfolio", mPortfolio, rJP);
+		Map<Lang, Translation> pgPfTest4JP = mkPortfolio(new Portfolio("Test4", "/files/resume/surzilgeek/portfolio/4.jpg" , 40), fldsResume, "pftest4", "portfolio", mPortfolio, rJP);
+		Map<Lang, Translation> pgPfTest5JP = mkPortfolio(new Portfolio("Test5", "/files/resume/surzilgeek/portfolio/5.jpg" , 50), fldsResume, "pftest5", "portfolio", mPortfolio, rJP);
+		Map<Lang, Translation> pgPfTest6JP = mkPortfolio(new Portfolio("Test6", "/files/resume/surzilgeek/portfolio/6.jpg" , 60), fldsResume, "pftest6", "portfolio", mPortfolio, rJP);
+		Map<Lang, Translation> pgPfTest7JP = mkPortfolio(new Portfolio("Test7", "/files/resume/surzilgeek/portfolio/7.jpg" , 70), fldsResume, "pftest7", "portfolio", mPortfolio, rJP);
+		Map<Lang, Translation> pgPfTest8JP = mkPortfolio(new Portfolio("Test8", "/files/resume/surzilgeek/portfolio/8.jpg" , 80), fldsResume, "pftest8", "portfolio", mPortfolio, rJP);
 		
 		
 		// Elements
@@ -2169,6 +2226,7 @@ public class InitialisationBase {
 		Map<Lang, Translation> bSkillsChart = mkBlock(fldSurzilGeek, "resume_block_skillsChart", "skills/chart/chart");
 		Map<Lang, Translation> bExperiences = mkBlock(fldSurzilGeek, "resume_block_experiences", "experiences/experiences");
 		Map<Lang, Translation> bEducations = mkBlock(fldSurzilGeek, "resume_block_educations", "educations/educations");
+		Map<Lang, Translation> bPortfolios = mkBlock(fldSurzilGeek, "resume_block_portfolios", "_portfolios/_portfolios");
 		
 		
 		
@@ -2205,10 +2263,13 @@ public class InitialisationBase {
 		
 		Map<Lang, MapTemplate> mtPbEducationsPgEducations = addMapTemplate(pgEducations, pbEducations, pMain);
 		Map<Lang, MapTemplate> mtBEducationsPgEducations = addMapTemplate(pbEducations, bEducations, pEducation);
-		
-		
-		
+
 		Map<Lang, MapTemplate> mtPbPortfolioPgPortfolio = addMapTemplate(pgPortfolio, pbPortfolio, pMain);
+		Map<Lang, MapTemplate> mtBPortfoliosPgPortfolios = addMapTemplate(pbPortfolio, bPortfolios, pPortfolio);
+
+		
+		
+		
 		Map<Lang, MapTemplate> mtPbContactPgContact = addMapTemplate(pgContact, pbContact, pMain);
 		Map<Lang, MapTemplate> mtPbBlogPgBlog = addMapTemplate(pgBlog, pbBlog, pMain);
 		Map<Lang, MapTemplate> mtPbResumePgResume = addMapTemplate(pgResumeSurzilGeek, pbResume, pMain);
