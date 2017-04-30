@@ -13,6 +13,7 @@ import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 import fr.cedricsevestre.annotation.BOField;
 import fr.cedricsevestre.annotation.BOField.ValueType;
+import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Page;
 
 @Entity
@@ -31,8 +32,12 @@ public class Portfolio extends Page {
 	@Column(name = "title")
 	private String title;
 	
+	@BOField(type = ValueType.HTML)
+	@Column(name = "chapo", columnDefinition="TEXT")
+	private String chapo;
+	
 	@BOField(type = ValueType.IMAGE)
-	private String image;
+	private String picture;
 	
 	@BOField(type = ValueType.TOBJECT)
 	//@NotNull
@@ -45,10 +50,10 @@ public class Portfolio extends Page {
 		this.ordered = 9999;
 	}
 
-	public Portfolio(String title, String image, Integer ordered) {
+	public Portfolio(String title, String picture, Integer ordered) {
 		super();
 		this.title = title;
-		this.image = image;
+		this.picture = picture;
 		this.ordered = ordered;
 	}
 
@@ -68,12 +73,20 @@ public class Portfolio extends Page {
 		this.title = title;
 	}
 
-	public String getImage() {
-		return image;
+	public String getChapo() {
+		return chapo;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public void setChapo(String chapo) {
+		this.chapo = chapo;
+	}
+
+	public String getPicture() {
+		return picture;
+	}
+
+	public void setPicture(String picture) {
+		this.picture = picture;
 	}
 
 	public Resume getResume() {
@@ -83,9 +96,5 @@ public class Portfolio extends Page {
 	public void setResume(Resume resume) {
 		this.resume = resume;
 	}
-
-
-	
-	
 	
 }

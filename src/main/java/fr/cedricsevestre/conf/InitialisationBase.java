@@ -12,6 +12,11 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -1972,7 +1977,7 @@ public class InitialisationBase {
 			}
 						
 			portfolioService.save(portfolio);
-			map.put(lang, portfolio);
+//			map.put(lang, portfolio);
 		}
 		return map;
 	}
@@ -2193,13 +2198,10 @@ public class InitialisationBase {
 		Map<Lang, Translation> pgPfTest6JP = mkPortfolio(new Portfolio("Test6", "/files/resume/surzilgeek/portfolio/6.jpg" , 60), fldsResume, "pftest6", "portfolio", mPortfolio, rJP);
 		Map<Lang, Translation> pgPfTest7JP = mkPortfolio(new Portfolio("Test7", "/files/resume/surzilgeek/portfolio/7.jpg" , 70), fldsResume, "pftest7", "portfolio", mPortfolio, rJP);
 		Map<Lang, Translation> pgPfTest8JP = mkPortfolio(new Portfolio("Test8", "/files/resume/surzilgeek/portfolio/8.jpg" , 80), fldsResume, "pftest8", "portfolio", mPortfolio, rJP);
-		
-		
+
 		// Elements
 		Map<Lang, Translation> elSocialNetwork = mkElement(fldsResume, "resume_element_socialnetwork", "socialnetwork/socialnetwork");
-		
-		
-		
+
 		
 		// PageBlocks
 		Map<Lang, Translation> pbStandard = mkPageBlock(fldsResume, "resume_pageblock_standard", "standard/standard");
@@ -2226,7 +2228,7 @@ public class InitialisationBase {
 		Map<Lang, Translation> bSkillsChart = mkBlock(fldSurzilGeek, "resume_block_skillsChart", "skills/chart/chart");
 		Map<Lang, Translation> bExperiences = mkBlock(fldSurzilGeek, "resume_block_experiences", "experiences/experiences");
 		Map<Lang, Translation> bEducations = mkBlock(fldSurzilGeek, "resume_block_educations", "educations/educations");
-		Map<Lang, Translation> bPortfolios = mkBlock(fldSurzilGeek, "resume_block_portfolios", "_portfolios/_portfolios");
+		Map<Lang, Translation> bPortfolios = mkBlock(fldSurzilGeek, "resume_block_portfolios", "portfolios/portfolios");
 		
 		
 		

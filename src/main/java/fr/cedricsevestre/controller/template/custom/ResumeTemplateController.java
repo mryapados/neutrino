@@ -1,10 +1,16 @@
 package fr.cedricsevestre.controller.template.custom;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.jsp.PageContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -14,6 +20,7 @@ import fr.cedricsevestre.annotation.BlockMapping;
 import fr.cedricsevestre.annotation.ElementMapping;
 import fr.cedricsevestre.entity.custom.Category;
 import fr.cedricsevestre.entity.custom.Contact;
+import fr.cedricsevestre.entity.custom.Portfolio;
 import fr.cedricsevestre.entity.custom.Resume;
 import fr.cedricsevestre.entity.custom.Skill;
 import fr.cedricsevestre.entity.custom.Skill.SkillKind;
@@ -28,6 +35,7 @@ import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.custom.CategoryService;
 import fr.cedricsevestre.service.custom.EducationService;
 import fr.cedricsevestre.service.custom.ExperienceService;
+import fr.cedricsevestre.service.custom.PortfolioService;
 import fr.cedricsevestre.service.custom.SkillService;
 import fr.cedricsevestre.service.custom.SocialNetworkService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
@@ -51,6 +59,9 @@ public class ResumeTemplateController {
 	
 	@Autowired
 	private SocialNetworkService socialNetworkService;
+	
+	@Autowired
+	private PortfolioService portfolioService;
 	
 	@BlockMapping(value = "@bo_block_list")
 	public ModelMap testage(Page page, Translation model, Translation activeObject, Template template, PageContext pageContext){
@@ -138,7 +149,24 @@ public class ResumeTemplateController {
 		}
 	}
 	
-	
+	@BlockMapping("resume_block_portfolios")
+	public ModelMap portfolios(Folder folder, Lang lang, PageContext pageContext) throws ControllerException{
+		try {
+			ModelMap modelMap = new ModelMap();
+			if (pageContext != null){
+				Resume resume = (Resume) pageContext.getAttribute("activeResume", PageContext.REQUEST_SCOPE);
+				
+				List<Order> orders = new ArrayList<>();
+				orders.add(new Order(Direction.DESC, "publishDate"));
+				
+				Pageable pageRequest = new PageRequest(0, 4, new Sort(orders));
+				if (resume != null)	modelMap.addAttribute("portfolios", portfolioService.findAllForResumeAndFolderAndLang(resume, folder, lang, pageRequest).getContent());
+			}
+			return modelMap;
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
+		}
+	}
 	
 	
 	

@@ -1,19 +1,11 @@
 package fr.cedricsevestre.service.engine.translation;
 
-import java.util.List;
-
 import javax.persistence.PersistenceException;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,15 +13,12 @@ import fr.cedricsevestre.com.utils.IdProviderUtil;
 import fr.cedricsevestre.constants.CacheConst;
 import fr.cedricsevestre.dao.engine.TranslationDao;
 import fr.cedricsevestre.dao.engine.TranslationProviderDao;
-import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.TranslationProvider;
-import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.BaseService;
-import fr.cedricsevestre.service.engine.IBOService;
 
 @Service
 @Scope(value = "singleton")
@@ -89,7 +78,7 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 
 	public T translate(T base, Lang lang) throws ServiceException {
 		boolean fromSomething = base.getId() != null;
-		if (fromSomething) base = translationDao.findOne(base.getId()); //Refresh object
+		if (fromSomething) base = translationDao.findOne(base.getId()); //Refresh object //TODO use servicelocator pour pas use translationdao qui join t TOUTES LES TABLES
 		
 		base.setId(null);
 
