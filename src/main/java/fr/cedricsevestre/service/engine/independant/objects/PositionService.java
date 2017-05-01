@@ -6,6 +6,7 @@ import javax.persistence.PersistenceException;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import fr.cedricsevestre.annotation.CustomService;
+import fr.cedricsevestre.constants.CacheConst;
 import fr.cedricsevestre.dao.engine.PositionDao;
 import fr.cedricsevestre.entity.custom.Tag;
 import fr.cedricsevestre.entity.engine.IdProvider;
@@ -51,7 +53,7 @@ public class PositionService extends BaseService<Position> implements IBOService
 		}
 	}
 	
-
+	@Cacheable(CacheConst.POSITION_MAPTEMPLATE)
 	public Position findByNameForModelsWithMaps(List<Translation> models, String positionName) throws ServiceException {
 		try {
 			return positionDao.findByNameForModelsWithMaps(models, positionName);

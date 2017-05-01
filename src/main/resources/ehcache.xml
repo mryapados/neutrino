@@ -22,7 +22,7 @@
 	</cache>
 	
 	
-	<cache name="identify"
+	<cache name="translationIdentify"
 		maxEntriesLocalHeap="10000"
 		maxEntriesLocalDisk="1000"
 		eternal="false"
@@ -33,7 +33,16 @@
 		<persistence strategy="localTempSwap" />
 	</cache>
 	
-	
+	<cache name="positionMapTemplate"
+		maxEntriesLocalHeap="10000"
+		maxEntriesLocalDisk="1000"
+		eternal="false"
+		diskSpoolBufferSizeMB="20"
+		timeToIdleSeconds="300" timeToLiveSeconds="600"
+		memoryStoreEvictionPolicy="LFU"
+		transactionalMode="off">
+		<persistence strategy="localTempSwap" />
+	</cache>
 	
 	
 </ehcache>

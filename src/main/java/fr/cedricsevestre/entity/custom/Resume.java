@@ -38,8 +38,6 @@ import fr.cedricsevestre.entity.engine.translation.objects.Link;
 		name = "Resume.allJoins", 
 		attributeNodes = { 
 			@NamedAttributeNode("links"),
-			@NamedAttributeNode("experiences"),
-			@NamedAttributeNode("skills")	
 		})
 })
 
@@ -91,15 +89,7 @@ public class Resume extends Translation {
 	
 	@BOField(type = ValueType.FILE)
 	private String downloadableFile;
-	
-	@BOField(type = ValueType.COLLECTION, ofType = ValueType.TOBJECT)
-	@OneToMany(mappedBy = "resume")
-	private Set<Experience> experiences;
 
-	@BOField(type = ValueType.COLLECTION, ofType = ValueType.TOBJECT)
-	@OneToMany(mappedBy = "resume")
-	private Set<Skill> skills;
-	
 	@BOField(type = ValueType.COLLECTION, ofType = ValueType.TOBJECT)
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name="resume_links", joinColumns=@JoinColumn(name="link_id"))
@@ -175,22 +165,6 @@ public class Resume extends Translation {
 
 	public void setDownloadableFile(String downloadableFile) {
 		this.downloadableFile = downloadableFile;
-	}
-
-	public Set<Experience> getExperiences() {
-		return experiences;
-	}
-
-	public void setExperiences(Set<Experience> experiences) {
-		this.experiences = experiences;
-	}
-	
-	public Set<Skill> getSkills() {
-		return skills;
-	}
-
-	public void setSkills(Set<Skill> skill) {
-		this.skills = skill;
 	}
 
 	public Set<Link> getLinks() {

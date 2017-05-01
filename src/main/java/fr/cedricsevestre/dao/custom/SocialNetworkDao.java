@@ -15,7 +15,7 @@ import fr.cedricsevestre.entity.engine.translation.Lang;
 @Repository
 public interface SocialNetworkDao extends TranslationDao<SocialNetwork> {
 	
-	@Query("SELECT e FROM SocialNetwork e WHERE (e.folders IS EMPTY OR :folder IN elements(e.folders)) AND e.lang =:lang AND e.resume =:resume ORDER BY e.ordered DESC")
-	List<SocialNetwork> findAllForResumeAndFolderAndLang(@Param("resume") Resume resume, @Param("folder") Folder folder, @Param("lang") Lang lang);
+	@Query("SELECT e FROM SocialNetwork e WHERE (e.folders IS EMPTY OR :folder IN elements(e.folders)) AND e.lang =:lang ORDER BY e.ordered DESC")
+	List<SocialNetwork> findAllForFolderAndLang(@Param("folder") Folder folder, @Param("lang") Lang lang);
 	
 }

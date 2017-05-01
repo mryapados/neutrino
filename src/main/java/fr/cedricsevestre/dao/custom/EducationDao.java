@@ -26,7 +26,7 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 @Repository
 public interface EducationDao extends TranslationDao<Education> {
 
-	@Query("SELECT e FROM Education e WHERE (e.folders IS EMPTY OR :folder IN elements(e.folders)) AND e.lang =:lang AND e.resume =:resume ORDER BY e.year DESC")
-	List<Education> findAllForResumeAndFolderAndLang(@Param("resume") Resume resume, @Param("folder") Folder folder, @Param("lang") Lang lang);
+	@Query("SELECT e FROM Education e WHERE (e.folders IS EMPTY OR :folder IN elements(e.folders)) AND e.lang =:lang ORDER BY e.year DESC")
+	List<Education> findAllForFolderAndLang(@Param("folder") Folder folder, @Param("lang") Lang lang);
 
 }

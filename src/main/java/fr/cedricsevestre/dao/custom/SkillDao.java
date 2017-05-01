@@ -26,9 +26,8 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 @Repository
 public interface SkillDao extends TranslationDao<Skill> {
 
-	@Query("SELECT s FROM Skill s WHERE (s.folders IS EMPTY OR :folder IN elements(s.folders)) AND s.lang =:lang AND s.kind =:kind AND s.resume =:resume ORDER BY s.ordered")
-	List<Skill> findAllKindForResumeAndFolderAndLang(@Param("resume") Resume resume, @Param("kind") SkillKind kind, @Param("folder") Folder folder, @Param("lang") Lang lang);
-	
+	@Query("SELECT s FROM Skill s WHERE (s.folders IS EMPTY OR :folder IN elements(s.folders)) AND s.lang =:lang AND s.kind =:kind ORDER BY s.ordered")
+	List<Skill> findAllKindForFolderAndLang(@Param("kind") SkillKind kind, @Param("folder") Folder folder, @Param("lang") Lang lang);
 	
 	
 }

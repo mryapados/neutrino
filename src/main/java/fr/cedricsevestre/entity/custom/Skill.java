@@ -52,12 +52,6 @@ public class Skill extends Translation {
 	@Column(name = "ordered")
 	private Integer ordered;
 	
-	@BOField(type = ValueType.TOBJECT)
-	//@NotNull
-	@ManyToOne
-	@JoinColumn(name="resume_id")
-	private Resume resume;
-	
 	
 	
 	public Skill() {
@@ -113,14 +107,6 @@ public class Skill extends Translation {
 		this.ordered = ordered;
 	}
 
-	public Resume getResume() {
-		return resume;
-	}
-
-	public void setResume(Resume resume) {
-		this.resume = resume;
-	}
-	
 	
 
 }

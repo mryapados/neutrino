@@ -192,7 +192,7 @@ public class BackOfficeControllerList extends BackOfficeController {
 			List<Integer> list = new ArrayList<>(Arrays.asList(ids));
 			
 			Specification<IdProvider> spec = IdProviderSpecification.idIn(list);
-			Page<IdProvider> datas = backOfficeService.getDatas(object, pageRequest, spec);
+			Page<IdProvider> datas = backOfficeService.getFullObjects(object, pageRequest, spec);
 			
 			List<IdProviderDto> idProviderDtos = new ArrayList<>();
 			for (IdProvider idProvider : datas) {

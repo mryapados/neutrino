@@ -125,7 +125,7 @@ public class BackOfficeControllerRemove extends BackOfficeController {
 			object = entityLocator.getEntity(type).getClass();
 			List<IdProvider> idProviders = new ArrayList<>();
 			for (Integer id : ids) {
-				IdProvider data = backOfficeService.getData(object, id);
+				IdProvider data = backOfficeService.getFullObject(object, id, null);
 				idProviders.add(data);
 			}
 			backOfficeService.removeDatas(idProviders);

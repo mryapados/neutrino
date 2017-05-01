@@ -47,7 +47,7 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 		}
 	}
 
-	@Cacheable(CacheConst.IDENTIFY)
+	@Cacheable(CacheConst.TRANSLATION_IDENTIFY)
 	public T identify(Folder folder, String name, Lang lang) throws ServiceException {
 		try {
 			System.out.println("ZZZZ identify " + name + " " + lang.getCode() + " " + translationDao);
@@ -78,7 +78,7 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 
 	public T translate(T base, Lang lang) throws ServiceException {
 		boolean fromSomething = base.getId() != null;
-		if (fromSomething) base = translationDao.findOne(base.getId()); //Refresh object //TODO use servicelocator pour pas use translationdao qui join t TOUTES LES TABLES
+		if (fromSomething) base = (T) idProviderUtil.getFullObject(base.getClass(), base.getId());
 		
 		base.setId(null);
 

@@ -52,6 +52,7 @@ import fr.cedricsevestre.bean.NField;
 import fr.cedricsevestre.bean.NResource;
 import fr.cedricsevestre.com.utils.CommonUtil;
 import fr.cedricsevestre.com.utils.EntityLocator;
+import fr.cedricsevestre.com.utils.IdProviderUtil;
 import fr.cedricsevestre.com.utils.ServiceLocator;
 import fr.cedricsevestre.constants.CacheConst;
 import fr.cedricsevestre.entity.custom.Album;
@@ -70,7 +71,7 @@ import fr.cedricsevestre.specification.engine.IdProviderSpecification;
 @Scope(value = "singleton")
 public class BackOfficeService { //implements IBackOfficeService{
 	
-	final private String ALLJOINS = ".allJoins";
+	
 	
 	@PersistenceContext
 	private EntityManager em;
@@ -79,16 +80,20 @@ public class BackOfficeService { //implements IBackOfficeService{
 	private TranslationService<Translation> translationService;
 	
 	@Autowired
-	TemplateService templateService;
+	private TemplateService templateService;
 	
 	@Autowired
-	ServiceLocator customServiceLocator;
+	private ServiceLocator customServiceLocator;
 	
 	@Autowired
-	EntityLocator entityLocator;
+	private EntityLocator entityLocator;
 	
 	@Autowired
-	CommonUtil commonUtil;
+	private CommonUtil commonUtil;
+	
+	@Autowired
+	private  IdProviderUtil idProviderUtil;
+	
 	
 	private Logger logger = Logger.getLogger(BackOfficeService.class);
 		
@@ -124,166 +129,7 @@ public class BackOfficeService { //implements IBackOfficeService{
 		return fields;
 	}
 	
-	public Page<IdProvider> getDatas(Class<?> entity, Pageable pageable) throws ServiceException{
-		return getDatas(entity, pageable, null);
-	}
-	public Page<IdProvider> getDatas(Class<?> entity, Pageable pageable, Specification<IdProvider> spec) throws ServiceException{
-		return getDatas(entity, pageable, spec, EntityGraphType.FETCH, entity.getSimpleName() + ALLJOINS);
-	}
 
-	private Page<IdProvider> getDatas(Class<?> entity, Pageable pageable, Specification<IdProvider> spec, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException{
-
-		try {
-
-			List<Class<?>> classes = new ArrayList<>();
-			if (spec != null) classes.add(Specification.class);
-			classes.add(Pageable.class);
-			if (entityGraphType != null) classes.add(EntityGraphType.class);
-			if (entityGraphName != null) classes.add(String.class);
-			Class<?> params[] = new Class<?>[classes.size()];
-			classes.toArray(params);
-			
-			List<Object> objects = new ArrayList<>();
-			if (spec != null) objects.add(spec);
-			objects.add(pageable);
-			if (entityGraphType != null) objects.add(entityGraphType);
-			if (entityGraphName != null) objects.add(entityGraphName);
-			Object paramsObj[] = new Object[objects.size()];
-			objects.toArray(paramsObj);
-			
-			String StringParamsObj = "";
-			for (Object object : paramsObj) {
-				StringParamsObj += object.getClass().getName() + " = " + object.toString() + "; ";
-			}
-			logger.debug("getDatas -> paramsObj " + StringParamsObj);	
-			
-			logger.debug("getDatas -> Look for " + entity.getSimpleName());			
-			Object service = customServiceLocator.getService(entity.getSimpleName());
-			logger.debug("getDatas -> Entity found " + entity.getSimpleName());		
-			logger.debug("getDatas -> Service found " + service.getClass().getSimpleName());		
-			
-			
-
-			
-			
-			
-			Class<?> clazz = Class.forName(service.getClass().getName());
-			Method findAll;
-			try {
-				findAll = clazz.getMethod("findAll", params);
-				
-				Parameter parameters[] = findAll.getParameters();
-				String parameterString = "";
-				for (Parameter parameter : parameters) {
-					parameterString += parameter.getName() + " = " + parameter.getType().getName() + "; ";
-				}
-				
-				logger.debug("getDatas -> findAll parameters : " + parameterString);			
-				
-				
-			} catch (NoSuchMethodException e) {
-				logger.error("getDatas -> NoSuchMethodException", e);
-				throw new ServiceException("Error getDatas", e);
-			}
-			
-			try {
-				return (Page<IdProvider>) findAll.invoke(service, paramsObj);
-			} catch (InvocationTargetException e) {
-				//e.printStackTrace();
-				if (entityGraphName == null) throw e;
-				return getDatas(entity, pageable, spec, null, null);
-			}
-			
-			
-		} catch (ClassNotFoundException e) {
-			logger.error("getDatas -> ClassNotFoundException", e);
-			throw new ServiceException("Error getDatas", e);
-		} catch (SecurityException e) {
-			logger.error("getDatas -> SecurityException", e);
-			throw new ServiceException("Error getDatas", e);
-		} catch (IllegalAccessException e) {
-			logger.error("getDatas -> IllegalAccessException", e);
-			throw new ServiceException("Error getDatas", e);
-		} catch (IllegalArgumentException e) {
-			logger.error("getDatas -> IllegalArgumentException", e);
-			throw new ServiceException("Error getDatas", e);
-		} catch (InvocationTargetException e) {
-			logger.error("getDatas -> InvocationTargetException", e);
-			throw new ServiceException("Error getDatas", e);
-		}
-	}
-	
-	public IdProvider getData(Class<?> entity, Integer id) throws ServiceException{
-		return getData(entity, id, null);
-	}
-	public IdProvider getData(Class<?> entity, Integer id, Specification<IdProvider> spec) throws ServiceException{
-		return getData(entity, id, spec, EntityGraphType.FETCH, entity.getSimpleName() + ALLJOINS);
-	}
-
-	private IdProvider getData(Class<?> entity, Integer id, Specification<IdProvider> spec, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException{
-				
-		try {
-			List<Class<?>> classes = new ArrayList<>();
-			classes.add(Specification.class);
-			if (entityGraphType != null) classes.add(EntityGraphType.class);
-			if (entityGraphName != null) classes.add(String.class);
-			Class<?> params[] = new Class<?>[classes.size()];
-			classes.toArray(params);
-			
-			List<Object> objects = new ArrayList<>();
-			Specification<IdProvider> specId = Specifications.where(spec).and(IdProviderSpecification.idEqualsTo(id));
-			
-			objects.add(specId);
-			if (entityGraphType != null) objects.add(entityGraphType);
-			if (entityGraphName != null) objects.add(entityGraphName);
-			Object paramsObj[] = new Object[objects.size()];
-			objects.toArray(paramsObj);
-						
-			String StringParamsObj = "";
-			for (Object object : paramsObj) {
-				StringParamsObj += object.getClass().getName() + " = " + object.toString() + "; ";
-			}
-			logger.debug("getDatas -> paramsObj " + StringParamsObj);	
-			
-			logger.debug("getDatas -> Look for " + entity.getSimpleName());			
-			Object service = customServiceLocator.getService(entity.getSimpleName());
-			logger.debug("getDatas -> Entity found " + entity.getSimpleName());		
-			logger.debug("getDatas -> Service found " + service.getClass().getSimpleName());
-			
-			Class<?> clazz = service.getClass();
-			Method findOne;
-			try {
-				findOne = clazz.getMethod("findOne", params);
-			} catch (NoSuchMethodException e) {
-				logger.error("getData -> NoSuchMethodException", e);
-				throw new ServiceException("Error getData", e);
-			}
-			
-			try {
-				return (IdProvider) findOne.invoke(service, paramsObj);
-			} catch (InvocationTargetException e) {
-				if (entityGraphName == null) throw e;
-				return getData(entity, id, spec, null, null);
-			}
-			
-		} catch (ClassNotFoundException e) {
-			logger.error("getData -> ClassNotFoundException", e);
-			throw new ServiceException("Error getList", e);
-		} catch (SecurityException e) {
-			logger.error("getData -> SecurityException", e);
-			throw new ServiceException("Error getList", e);
-		} catch (IllegalAccessException e) {
-			logger.error("getData -> IllegalAccessException", e);
-			throw new ServiceException("Error getList", e);
-		} catch (IllegalArgumentException e) {
-			logger.error("getData -> IllegalArgumentException", e);
-			throw new ServiceException("Error getList", e);
-		} catch (InvocationTargetException e) {
-			logger.error("getData -> InvocationTargetException", e);
-			throw new ServiceException("Error getList", e);
-		}
-	}
-	
 	private NField mkNFieldFromBOField(Field field, BOField nType){
 		List<String> enumDatas = null;
 		if (!nType.ofEnum().equals(BOField.Default.class)){
@@ -404,7 +250,7 @@ public class BackOfficeService { //implements IBackOfficeService{
 		List<Field> fields = getFields(entity);
 		List<NField> nFields = getNFields(fields);
 		pageable = transformPageRequest(nFields, pageable);
-		return new NDatas<IdProvider>(nFields, getDatas(entity, pageable, spec, EntityGraphType.FETCH, entity.getSimpleName() + ALLJOINS));
+		return new NDatas<IdProvider>(nFields, idProviderUtil.getFullObjects(entity, pageable, spec));
 	}
 	
 	
@@ -441,7 +287,7 @@ public class BackOfficeService { //implements IBackOfficeService{
 	public NData<IdProvider> findOne(Class<?> entity, Integer id, Specification<IdProvider> spec) throws ServiceException {
 		List<Field> fields = getFields(entity);
 		Map<String, Map<String, List<NField>>> nMapFields = getMapNField(fields);
-		return new NData<IdProvider>(nMapFields, getData(entity, id, spec));
+		return new NData<IdProvider>(nMapFields, idProviderUtil.getFullObject(entity, id, spec));
 	}
 	
 	
@@ -578,7 +424,7 @@ public class BackOfficeService { //implements IBackOfficeService{
 		}
 	}
 
-	@CacheEvict(value = {CacheConst.IDPROVIDERFIEDDVALUE, CacheConst.IDENTIFY}, allEntries = true)
+	@CacheEvict(value = {CacheConst.IDPROVIDERFIEDDVALUE, CacheConst.TRANSLATION_IDENTIFY}, allEntries = true)
 	public IdProvider saveData(IdProvider data) throws ServiceException{
 		IdProvider result = data;
 
@@ -589,7 +435,7 @@ public class BackOfficeService { //implements IBackOfficeService{
 		
 		IdProvider origin = null; 
 		if (data != null && data.getId() != null) {
-			origin = getData(entity, data.getId(), null);
+			origin = idProviderUtil.getFullObject(entity, data.getId(), null);
 			result = completeData(entity, result, nFields, origin);
 		}
 		
@@ -911,7 +757,7 @@ public class BackOfficeService { //implements IBackOfficeService{
     		} 
     	} else {
     		try {
-    			return getData(cls, id);
+    			return idProviderUtil.getFullObject(cls, id);
 			} catch (NumberFormatException e) {
 				throw new IllegalArgumentException("Can't parse " + identifier[1] + " !", e);
 			} catch (ServiceException e) {
@@ -981,6 +827,14 @@ public class BackOfficeService { //implements IBackOfficeService{
 		} catch (IllegalAccessException e) {
 			throw new IllegalArgumentException("todo", e);
 		}
+	}
+
+	public Page<IdProvider> getFullObjects(Class<?> object, Pageable pageRequest, Specification<IdProvider> spec) throws ServiceException {
+		return idProviderUtil.getFullObjects(object, pageRequest, spec);
+	}
+
+	public IdProvider getFullObject(Class<?> object, Integer id, Specification<IdProvider> spec) throws ServiceException {
+		return idProviderUtil.getFullObject(object, id, spec);
 	}
 	
 	

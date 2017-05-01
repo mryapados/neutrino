@@ -1309,7 +1309,7 @@ public class InitialisationBase {
 			if (first == null){
 				page = pageService.translate(base, lang);
 				page.setName(name);
-				page.setDescription(name + " Page description " + lang.getCode());
+				if (base.getDescription() == null) page.setDescription(name + " Page description " + lang.getCode());
 				page.setContext(context);
 				page.setModel((Template) models.get(lang));
 				page.setFolders(folders);
@@ -1329,7 +1329,9 @@ public class InitialisationBase {
 				cat.setOrdered(((Category) base).getOrdered());
 				cat.setInMenu(((Category) base).getInMenu());
 				cat.setDescription(((Category) base).getDescription());
-				//page = cat;
+			} else if (base instanceof Portfolio){
+				Portfolio port = (Portfolio) page;
+				port.setDescription(((Portfolio) base).getDescription());
 			} else {
 				
 			}
@@ -1819,12 +1821,12 @@ public class InitialisationBase {
 	
 	
 	
-	public Map<Lang, Translation> mkSocialNetwork(SocialNetwork base, Folder folder, String name, Map<Lang, Translation> resumes) throws ServiceException{
+	public Map<Lang, Translation> mkSocialNetwork(SocialNetwork base, Folder folder, String name) throws ServiceException{
 		List<Folder> folders = new ArrayList<>();
 		folders.add(folder);
-		return mkSocialNetwork(base, folders, name, resumes);
+		return mkSocialNetwork(base, folders, name);
 	}
-	public Map<Lang, Translation> mkSocialNetwork(SocialNetwork base, List<Folder> folders, String name, Map<Lang, Translation> resumes) throws ServiceException{
+	public Map<Lang, Translation> mkSocialNetwork(SocialNetwork base, List<Folder> folders, String name) throws ServiceException{
 		Map<Lang, Translation> map = new HashMap<>();
 		SocialNetwork first = null;
 		for (Lang lang : langs) {
@@ -1834,14 +1836,12 @@ public class InitialisationBase {
 				socialNetwork.setName(name);
 				socialNetwork.setDescription(name + " Education description " + lang.getCode());
 				socialNetwork.setFolders(folders);
-				socialNetwork.setResume((Resume) resumes.get(lang));
 				first = socialNetwork;
 			} else {
 				socialNetwork = socialNetworkService.translate(first, lang);
 				socialNetwork.setFolders(folders);
 				socialNetwork.setName(name);
 				socialNetwork.setDescription(name + " Education description " + lang.getCode());
-				socialNetwork.setResume((Resume) resumes.get(lang));
 			}
 						
 			socialNetworkService.save(socialNetwork);
@@ -1850,12 +1850,12 @@ public class InitialisationBase {
 		return map;
 	}
 	
-	public Map<Lang, Translation> mkEducation(Education base, Folder folder, String name, Map<Lang, Translation> resumes) throws ServiceException{
+	public Map<Lang, Translation> mkEducation(Education base, Folder folder, String name) throws ServiceException{
 		List<Folder> folders = new ArrayList<>();
 		folders.add(folder);
-		return mkEducation(base, folders, name, resumes);
+		return mkEducation(base, folders, name);
 	}
-	public Map<Lang, Translation> mkEducation(Education base, List<Folder> folders, String name, Map<Lang, Translation> resumes) throws ServiceException{
+	public Map<Lang, Translation> mkEducation(Education base, List<Folder> folders, String name) throws ServiceException{
 		Map<Lang, Translation> map = new HashMap<>();
 		Education first = null;
 		for (Lang lang : langs) {
@@ -1865,14 +1865,12 @@ public class InitialisationBase {
 				education.setName(name);
 				education.setDescription(name + " Education description " + lang.getCode());
 				education.setFolders(folders);
-				education.setResume((Resume) resumes.get(lang));
 				first = education;
 			} else {
 				education = educationService.translate(first, lang);
 				education.setFolders(folders);
 				education.setName(name);
 				education.setDescription(name + " Education description " + lang.getCode());
-				education.setResume((Resume) resumes.get(lang));
 			}
 						
 			educationService.save(education);
@@ -1881,12 +1879,12 @@ public class InitialisationBase {
 		return map;
 	}
 
-	public Map<Lang, Translation> mkExperience(Experience base, Folder folder, String name, String context, Map<Lang, Translation> jobs, Map<Lang, Translation> resumes) throws ServiceException{
+	public Map<Lang, Translation> mkExperience(Experience base, Folder folder, String name, String context, Map<Lang, Translation> jobs) throws ServiceException{
 		List<Folder> folders = new ArrayList<>();
 		folders.add(folder);
-		return mkExperience(base, folders, name, jobs, resumes);
+		return mkExperience(base, folders, name, jobs);
 	}
-	public Map<Lang, Translation> mkExperience(Experience base, List<Folder> folders, String name, Map<Lang, Translation> jobs, Map<Lang, Translation> resumes) throws ServiceException{
+	public Map<Lang, Translation> mkExperience(Experience base, List<Folder> folders, String name, Map<Lang, Translation> jobs) throws ServiceException{
 		Map<Lang, Translation> map = new HashMap<>();
 		Experience first = null;
 		for (Lang lang : langs) {
@@ -1897,7 +1895,6 @@ public class InitialisationBase {
 				experience.setDescription(name + " Page description " + lang.getCode());
 				experience.setFolders(folders);
 				experience.setJob((Job) jobs.get(lang));
-				experience.setResume((Resume) resumes.get(lang));
 				first = experience;
 			} else {
 				experience = experienceService.translate(first, lang);
@@ -1905,7 +1902,6 @@ public class InitialisationBase {
 				experience.setName(name);
 				experience.setDescription(name + " Page description " + lang.getCode());
 				experience.setJob((Job) jobs.get(lang));
-				experience.setResume((Resume) resumes.get(lang));
 			}
 						
 			experienceService.save(experience);
@@ -1915,12 +1911,12 @@ public class InitialisationBase {
 	}
 	
 	
-	public Map<Lang, Translation> mkSkill(Skill base, Folder folder, String name, String context, Map<Lang, Translation> resumes) throws ServiceException{
+	public Map<Lang, Translation> mkSkill(Skill base, Folder folder, String name) throws ServiceException{
 		List<Folder> folders = new ArrayList<>();
 		folders.add(folder);
-		return mkSkill(base, folders, name, resumes);
+		return mkSkill(base, folders, name);
 	}
-	public Map<Lang, Translation> mkSkill(Skill base, List<Folder> folders, String name, Map<Lang, Translation> resumes) throws ServiceException{
+	public Map<Lang, Translation> mkSkill(Skill base, List<Folder> folders, String name) throws ServiceException{
 		Map<Lang, Translation> map = new HashMap<>();
 		Skill first = null;
 		for (Lang lang : langs) {
@@ -1930,14 +1926,12 @@ public class InitialisationBase {
 				skill.setName(name);
 				skill.setDescription(name + " Page description " + lang.getCode());
 				skill.setFolders(folders);
-				skill.setResume((Resume) resumes.get(lang));
 				first = skill;
 			} else {
 				skill = skillService.translate(first, lang);
 				skill.setFolders(folders);
 				skill.setName(name);
 				skill.setDescription(name + " Page description " + lang.getCode());
-				skill.setResume((Resume) resumes.get(lang));
 			}
 						
 			skillService.save(skill);
@@ -1947,40 +1941,40 @@ public class InitialisationBase {
 	}
 
 
-	public Map<Lang, Translation> mkPortfolio(Portfolio base, Folder folder, String name, String context, Map<Lang, Translation> models, Map<Lang, Translation> resumes) throws ServiceException{
-		List<Folder> folders = new ArrayList<>();
-		folders.add(folder);
-		return mkPortfolio(base, folders, name, context, models, resumes);
-	}
-	public Map<Lang, Translation> mkPortfolio(Portfolio base, List<Folder> folders, String name, String context, Map<Lang, Translation> models, Map<Lang, Translation> resumes) throws ServiceException{
-		Map<Lang, Translation> map = new HashMap<>();
-		Portfolio first = null;
-		for (Lang lang : langs) {
-			Portfolio portfolio = null;
-			if (first == null){
-				portfolio = portfolioService.translate(base, lang);
-				portfolio.setName(name);
-				portfolio.setContext(context);
-				portfolio.setDescription(name + " Portfolio description " + lang.getCode());
-				portfolio.setFolders(folders);
-				portfolio.setModel((Template) models.get(lang));
-				portfolio.setResume((Resume) resumes.get(lang));
-				first = portfolio;
-			} else {
-				portfolio = portfolioService.translate(first, lang);
-				portfolio.setFolders(folders);
-				portfolio.setContext(context);
-				portfolio.setModel((Template) models.get(lang));
-				portfolio.setName(name);
-				portfolio.setDescription(name + " Portfolio description " + lang.getCode());
-				portfolio.setResume((Resume) resumes.get(lang));
-			}
-						
-			portfolioService.save(portfolio);
-//			map.put(lang, portfolio);
-		}
-		return map;
-	}
+//	public Map<Lang, Translation> mkPortfolio(Portfolio base, Folder folder, String name, String context, Map<Lang, Translation> models, Map<Lang, Translation> resumes) throws ServiceException{
+//		List<Folder> folders = new ArrayList<>();
+//		folders.add(folder);
+//		return mkPortfolio(base, folders, name, context, models, resumes);
+//	}
+//	public Map<Lang, Translation> mkPortfolio(Portfolio base, List<Folder> folders, String name, String context, Map<Lang, Translation> models, Map<Lang, Translation> resumes) throws ServiceException{
+//		Map<Lang, Translation> map = new HashMap<>();
+//		Portfolio first = null;
+//		for (Lang lang : langs) {
+//			Portfolio portfolio = null;
+//			if (first == null){
+//				portfolio = portfolioService.translate(base, lang);
+//				portfolio.setName(name);
+//				portfolio.setContext(context);
+//				portfolio.setDescription(name + " Portfolio description " + lang.getCode());
+//				portfolio.setFolders(folders);
+//				portfolio.setModel((Template) models.get(lang));
+//				portfolio.setResume((Resume) resumes.get(lang));
+//				first = portfolio;
+//			} else {
+//				portfolio = portfolioService.translate(first, lang);
+//				portfolio.setFolders(folders);
+//				portfolio.setContext(context);
+//				portfolio.setModel((Template) models.get(lang));
+//				portfolio.setName(name);
+//				portfolio.setDescription(name + " Portfolio description " + lang.getCode());
+//				portfolio.setResume((Resume) resumes.get(lang));
+//			}
+//						
+//			portfolioService.save(portfolio);
+////			map.put(lang, portfolio);
+//		}
+//		return map;
+//	}
 	
 	public Map<Lang, Translation> mkTranslation(Translation base, Folder folder, String name, String context) throws ServiceException{
 		List<Folder> folders = new ArrayList<>();
@@ -2058,43 +2052,26 @@ public class InitialisationBase {
 		Map<Lang, Translation> jDevelopper = mkTranslation(new Job("Developper"), fldsResume, "developper");
 
 		// Skill
-		Map<Lang, Translation> skPhotoshopCS = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Photoshop", 80, "#f4bf00"), fldsResume, "photoshop", rCS);
-		Map<Lang, Translation> skIllustratorCS = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Illustrator", 75, "#f26522"), fldsResume, "illustrator", rCS);
-		Map<Lang, Translation> skPHPCS = mkSkill(new Skill(SkillKind.PROGRESSBAR,"PHP", 20, "#b90162"), fldsResume, "php", rCS);
-		Map<Lang, Translation> skJoomlaCS = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Joomla", 35, "#ed1c24"), fldsResume, "joomla", rCS);
-		Map<Lang, Translation> skHtml5Css3CS = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Html 5 & CSS 3", 0, "#3c70b4"), fldsResume, "html5css3", rCS);
-		Map<Lang, Translation> skWordpressCS = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Wordpress", 90, "#87c05e"), fldsResume, "wordpress", rCS);
-		Map<Lang, Translation> skLangEnglishCS = mkSkill(new Skill(SkillKind.CHART,"English", 100, "#f7941d"), fldsResume, "english", rCS);
-		Map<Lang, Translation> skLangGermanCS = mkSkill(new Skill(SkillKind.CHART,"German", 60, "#f26522"), fldsResume, "german", rCS);
-		Map<Lang, Translation> skLangSpanishCS = mkSkill(new Skill(SkillKind.CHART,"Spanish", 80, "#3c70b4"), fldsResume, "spanish", rCS);
-		Map<Lang, Translation> skLangFrenchCS = mkSkill(new Skill(SkillKind.CHART,"French", 30, "#87c05e"), fldsResume, "french", rCS);
-		
-		Map<Lang, Translation> skPhotoshopJP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Photoshop", 80, "#f4bf00"), fldsResume, "photoshop", rJP);
-		Map<Lang, Translation> skIllustratorJP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Illustrator", 75, "#f26522"), fldsResume, "illustrator", rJP);
-		Map<Lang, Translation> skPHPJP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"PHP", 20, "#b90162"), fldsResume, "php", rJP);
-		Map<Lang, Translation> skJoomlaJP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Joomla", 35, "#ed1c24"), fldsResume, "joomla", rJP);
-		Map<Lang, Translation> skHtml5Css3JP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Html 5 & CSS 3", 0, "#3c70b4"), fldsResume, "html5css3", rJP);
-		Map<Lang, Translation> skWordpressJP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Wordpress", 90, "#87c05e"), fldsResume, "wordpress", rJP);
-		Map<Lang, Translation> skLangEnglishJP = mkSkill(new Skill(SkillKind.CHART,"English", 100, "#f7941d"), fldsResume, "english", rJP);
-		Map<Lang, Translation> skLangGermanJP = mkSkill(new Skill(SkillKind.CHART,"German", 100, "#f26522"), fldsResume, "german", rJP);
-		Map<Lang, Translation> skLangSpanishJP = mkSkill(new Skill(SkillKind.CHART,"Spanish", 80, "#3c70b4"), fldsResume, "spanish", rJP);
-		Map<Lang, Translation> skLangFrenchJP = mkSkill(new Skill(SkillKind.CHART,"French", 30, "#87c05e"), fldsResume, "french", rJP);
+		Map<Lang, Translation> skPhotoshopJP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Photoshop", 80, "#f4bf00"), fldsResume, "photoshop");
+		Map<Lang, Translation> skIllustratorJP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Illustrator", 75, "#f26522"), fldsResume, "illustrator");
+		Map<Lang, Translation> skPHPJP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"PHP", 20, "#b90162"), fldsResume, "php");
+		Map<Lang, Translation> skJoomlaJP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Joomla", 35, "#ed1c24"), fldsResume, "joomla");
+		Map<Lang, Translation> skHtml5Css3JP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Html 5 & CSS 3", 0, "#3c70b4"), fldsResume, "html5css3");
+		Map<Lang, Translation> skWordpressJP = mkSkill(new Skill(SkillKind.PROGRESSBAR,"Wordpress", 90, "#87c05e"), fldsResume, "wordpress");
+		Map<Lang, Translation> skLangEnglishJP = mkSkill(new Skill(SkillKind.CHART,"English", 100, "#f7941d"), fldsResume, "english");
+		Map<Lang, Translation> skLangGermanJP = mkSkill(new Skill(SkillKind.CHART,"German", 100, "#f26522"), fldsResume, "german");
+		Map<Lang, Translation> skLangSpanishJP = mkSkill(new Skill(SkillKind.CHART,"Spanish", 80, "#3c70b4"), fldsResume, "spanish");
+		Map<Lang, Translation> skLangFrenchJP = mkSkill(new Skill(SkillKind.CHART,"French", 30, "#87c05e"), fldsResume, "french");
 		
 		// Experiences
-		Map<Lang, Translation> expCS2 = mkExperience(putExperienceX(new Experience("Senior Graphic Designer", "MyCompany", mkDate(2012, 07, 12), null), "2.png"), fldsResume, "expCS2", jWebDesigner, rCS);
-		Map<Lang, Translation> expCS1 = mkExperience(putExperienceX(new Experience("Former Graphic Designer", "MyCompany", mkDate(2011, 07, 10), mkDate(2012, 06, 25)), "1.png"), fldsResume, "expCS1", jDevelopper, rCS);
-		
-		Map<Lang, Translation> expJP2 = mkExperience(putExperienceX(new Experience("Senior Graphic Designer", "MyCompany", mkDate(2012, 07, 12), null), "2.png"), fldsResume, "expJP2", jWebDesigner, rJP);
-		Map<Lang, Translation> expJP1 = mkExperience(putExperienceX(new Experience("Former Graphic Designer", "MyCompany", mkDate(2011, 07, 10), mkDate(2012, 06, 25)), "1.png"), fldsResume, "expJP1", jDevelopper, rJP);
+		Map<Lang, Translation> exp2 = mkExperience(putExperienceX(new Experience("Senior Graphic Designer", "MyCompany", mkDate(2012, 07, 12), null), "2.png"), fldsResume, "exp2", jWebDesigner);
+		Map<Lang, Translation> exp1 = mkExperience(putExperienceX(new Experience("Former Graphic Designer", "MyCompany", mkDate(2011, 07, 10), mkDate(2012, 06, 25)), "1.png"), fldsResume, "exp1", jDevelopper);
 
 		// Education
-		Map<Lang, Translation> edCS1 = mkEducation(putEducationX(new Education("Bachelor of Art", "Montana State University", 2010), "1.png"), fldsResume, "edCS1", rCS);
-		Map<Lang, Translation> edCS2 = mkEducation(putEducationX(new Education("University of Bristol", "Cincinnati Christian University", 2007), "2.png"), fldsResume, "edCS2", rCS);
-		Map<Lang, Translation> edCS3 = mkEducation(putEducationX(new Education("this is a test", "Montana State University", 2005), "3.png"), fldsResume, "edCS3", rCS);
+		Map<Lang, Translation> ed1 = mkEducation(putEducationX(new Education("Bachelor of Art", "Montana State University", 2010), "1.png"), fldsResume, "ed1");
+		Map<Lang, Translation> ed2 = mkEducation(putEducationX(new Education("University of Bristol", "Cincinnati Christian University", 2007), "2.png"), fldsResume, "ed2");
+		Map<Lang, Translation> ed3 = mkEducation(putEducationX(new Education("this is a test", "Montana State University", 2005), "3.png"), fldsResume, "ed3");
 		
-		Map<Lang, Translation> edJP1 = mkEducation(putEducationX(new Education("Bachelor of Art", "Montana State University", 2010), "1.png"), fldsResume, "edJP1", rJP);
-		Map<Lang, Translation> edJP2 = mkEducation(putEducationX(new Education("University of Bristol", "Cincinnati Christian University", 2007), "2.png"), fldsResume, "edJP2", rJP);
-		Map<Lang, Translation> edJP3 = mkEducation(putEducationX(new Education("this is a test", "Montana State University", 2005), "3.png"), fldsResume, "edJP3", rJP);
 		
 		// Icons
 		Icon iHome = mkIcon(new Icon("home", "flaticon-insignia", "fa fa-hand-peace-o", ""));
@@ -2117,20 +2094,14 @@ public class InitialisationBase {
 		Icon iGithubAlt = mkIcon(new Icon("github", "", "fa fa-github-alt", ""));
 
 		//SocialNetworks
-		Map<Lang, Translation> snFacebookCS = mkSocialNetwork(new SocialNetwork("Facebook", "http://myurl.com", iFacebook, 10), fldsResume, "snFacebookCS", rCS);
-		Map<Lang, Translation> snTwitterCS = mkSocialNetwork(new SocialNetwork("Twitter", "http://myurl.com", iTwitter, 10), fldsResume, "snTwitterCS", rCS);
-		Map<Lang, Translation> snGooglePlusCS = mkSocialNetwork(new SocialNetwork("GooglePlus", "http://myurl.com", iGooglePlus, 10), fldsResume, "snGooglePlusCS", rCS);
-		Map<Lang, Translation> snDribbbleCS = mkSocialNetwork(new SocialNetwork("Dribbble", "http://myurl.com", iDribbble, 10), fldsResume, "snDribbbleCS", rCS);
-		Map<Lang, Translation> snBehanceCS = mkSocialNetwork(new SocialNetwork("Behance", "http://myurl.com", iBehance, 10), fldsResume, "snBehanceCS", rCS);
-		Map<Lang, Translation> snGithubAltCS = mkSocialNetwork(new SocialNetwork("Github", "http://myurl.com", iGithubAlt, 10), fldsResume, "snGithubAltCS", rCS);
+		Map<Lang, Translation> snFacebook = mkSocialNetwork(new SocialNetwork("Facebook", "http://myurl.com", iFacebook, 10), fldsResume, "snFacebook");
+		Map<Lang, Translation> snTwitter = mkSocialNetwork(new SocialNetwork("Twitter", "http://myurl.com", iTwitter, 10), fldsResume, "snTwitter");
+		Map<Lang, Translation> snGooglePlus = mkSocialNetwork(new SocialNetwork("GooglePlus", "http://myurl.com", iGooglePlus, 10), fldsResume, "snGooglePlus");
+		Map<Lang, Translation> snDribbble = mkSocialNetwork(new SocialNetwork("Dribbble", "http://myurl.com", iDribbble, 10), fldsResume, "snDribbble");
+		Map<Lang, Translation> snBehance = mkSocialNetwork(new SocialNetwork("Behance", "http://myurl.com", iBehance, 10), fldsResume, "snBehance");
+		Map<Lang, Translation> snGithubAlt = mkSocialNetwork(new SocialNetwork("Github", "http://myurl.com", iGithubAlt, 10), fldsResume, "snGithubAlt");
 	
-		Map<Lang, Translation> snFacebookJP = mkSocialNetwork(new SocialNetwork("Facebook", "http://myurl.com", iFacebook, 10), fldsResume, "snFacebookJP", rJP);
-		Map<Lang, Translation> snTwitterJP = mkSocialNetwork(new SocialNetwork("Twitter", "http://myurl.com", iTwitter, 10), fldsResume, "snTwitterJP", rJP);
-		Map<Lang, Translation> snGooglePlusJP = mkSocialNetwork(new SocialNetwork("GooglePlus", "http://myurl.com", iGooglePlus, 10), fldsResume, "snGooglePlusJP", rJP);
-		Map<Lang, Translation> snDribbbleJP = mkSocialNetwork(new SocialNetwork("Dribbble", "http://myurl.com", iDribbble, 10), fldsResume, "snDribbbleJP", rJP);
-		Map<Lang, Translation> snBehanceJP = mkSocialNetwork(new SocialNetwork("Behance", "http://myurl.com", iBehance, 10), fldsResume, "snBehanceJP", rJP);
-		Map<Lang, Translation> snGithubAltJP = mkSocialNetwork(new SocialNetwork("Github", "http://myurl.com", iGithubAlt, 10), fldsResume, "snGithubAltJP", rJP);
-			
+
 	
 
 		// Positions
@@ -2159,7 +2130,7 @@ public class InitialisationBase {
 		Map<Lang, Translation> mHome = mkModel(fldsResume, "resume_model_home", "default/default");
 		Map<Lang, Translation> mDefault = mkModel(fldsResume, "resume_model_default", "default/default");
 		Map<Lang, Translation> mPortfolio = mkModel(fldsResume, "resume_model_portfolio", "default/default");
-
+		Map<Lang, Translation> mBlog = mkModel(fldsResume, "resume_model_blog", "default/default");
 		
 		// Pages
 		
@@ -2181,32 +2152,23 @@ public class InitialisationBase {
 		Map<Lang, Translation> pgResumeSurzilGeek = mkPage(new Category(null, "My resume PDF", iSave, true, 60), fldSurzilGeek, "resume", "resume", mDefault);
 		
 		//Pages portfolio
-		Map<Lang, Translation> pgPfTest1CS = mkPortfolio(new Portfolio("Test1", "/files/resume/surzilgeek/portfolio/1.jpg" , 10), fldsResume, "pftest1", "portfolio", mPortfolio, rCS);
-		Map<Lang, Translation> pgPfTest2CS = mkPortfolio(new Portfolio("Test2", "/files/resume/surzilgeek/portfolio/2.jpg" , 20), fldsResume, "pftest2", "portfolio", mPortfolio, rCS);
-		Map<Lang, Translation> pgPfTest3CS = mkPortfolio(new Portfolio("Test3", "/files/resume/surzilgeek/portfolio/3.jpg" , 30), fldsResume, "pftest3", "portfolio", mPortfolio, rCS);
-		Map<Lang, Translation> pgPfTest4CS = mkPortfolio(new Portfolio("Test4", "/files/resume/surzilgeek/portfolio/4.jpg" , 40), fldsResume, "pftest4", "portfolio", mPortfolio, rCS);
-		Map<Lang, Translation> pgPfTest5CS = mkPortfolio(new Portfolio("Test5", "/files/resume/surzilgeek/portfolio/5.jpg" , 50), fldsResume, "pftest5", "portfolio", mPortfolio, rCS);
-		Map<Lang, Translation> pgPfTest6CS = mkPortfolio(new Portfolio("Test6", "/files/resume/surzilgeek/portfolio/6.jpg" , 60), fldsResume, "pftest6", "portfolio", mPortfolio, rCS);
-		Map<Lang, Translation> pgPfTest7CS = mkPortfolio(new Portfolio("Test7", "/files/resume/surzilgeek/portfolio/7.jpg" , 70), fldsResume, "pftest7", "portfolio", mPortfolio, rCS);
-		Map<Lang, Translation> pgPfTest8CS = mkPortfolio(new Portfolio("Test8", "/files/resume/surzilgeek/portfolio/8.jpg" , 80), fldsResume, "pftest8", "portfolio", mPortfolio, rCS);
+		Map<Lang, Translation> pgPfTest01 = mkPage(putPortfolioX(new Portfolio("Test01", "/files/resume/surzilgeek/portfolio/01.jpg" , 10)), fldsResume, "pftest01", "portfolio", mPortfolio);
+		Map<Lang, Translation> pgPfTest02 = mkPage(putPortfolioX(new Portfolio("Test02", "/files/resume/surzilgeek/portfolio/02.jpg" , 20)), fldsResume, "pftest02", "portfolio", mPortfolio);
+		Map<Lang, Translation> pgPfTest03 = mkPage(putPortfolioX(new Portfolio("Test03", "/files/resume/surzilgeek/portfolio/03.jpg" , 30)), fldsResume, "pftest03", "portfolio", mPortfolio);
+		Map<Lang, Translation> pgPfTest04 = mkPage(putPortfolioX(new Portfolio("Test04", "/files/resume/surzilgeek/portfolio/04.jpg" , 40)), fldsResume, "pftest04", "portfolio", mPortfolio);
+		Map<Lang, Translation> pgPfTest05 = mkPage(putPortfolioX(new Portfolio("Test05", "/files/resume/surzilgeek/portfolio/05.jpg" , 50)), fldsResume, "pftest05", "portfolio", mPortfolio);
+		Map<Lang, Translation> pgPfTest06 = mkPage(putPortfolioX(new Portfolio("Test06", "/files/resume/surzilgeek/portfolio/06.jpg" , 60)), fldsResume, "pftest06", "portfolio", mPortfolio);
+		Map<Lang, Translation> pgPfTest07 = mkPage(putPortfolioX(new Portfolio("Test07", "/files/resume/surzilgeek/portfolio/07.jpg" , 70)), fldsResume, "pftest07", "portfolio", mPortfolio);
+		Map<Lang, Translation> pgPfTest08 = mkPage(putPortfolioX(new Portfolio("Test08", "/files/resume/surzilgeek/portfolio/08.jpg" , 80)), fldsResume, "pftest08", "portfolio", mPortfolio);
+		Map<Lang, Translation> pgPfTest09 = mkPage(putPortfolioX(new Portfolio("Test09", "/files/resume/surzilgeek/banner.jpg" , 90)), fldsResume, "pftest09", "portfolio", mPortfolio);
+		Map<Lang, Translation> pgPfTest10 = mkPage(putPortfolioX(new Portfolio("Test10", "/files/resume/surzilgeek/portfolio/10.png" , 100)), fldsResume, "pftest10", "portfolio", mPortfolio);
 		
-		Map<Lang, Translation> pgPfTest1JP = mkPortfolio(new Portfolio("Test1", "/files/resume/surzilgeek/portfolio/1.jpg" , 10), fldsResume, "pftest1", "portfolio", mPortfolio, rJP);
-		Map<Lang, Translation> pgPfTest2JP = mkPortfolio(new Portfolio("Test2", "/files/resume/surzilgeek/portfolio/2.jpg" , 20), fldsResume, "pftest2", "portfolio", mPortfolio, rJP);
-		Map<Lang, Translation> pgPfTest3JP = mkPortfolio(new Portfolio("Test3", "/files/resume/surzilgeek/portfolio/3.jpg" , 30), fldsResume, "pftest3", "portfolio", mPortfolio, rJP);
-		Map<Lang, Translation> pgPfTest4JP = mkPortfolio(new Portfolio("Test4", "/files/resume/surzilgeek/portfolio/4.jpg" , 40), fldsResume, "pftest4", "portfolio", mPortfolio, rJP);
-		Map<Lang, Translation> pgPfTest5JP = mkPortfolio(new Portfolio("Test5", "/files/resume/surzilgeek/portfolio/5.jpg" , 50), fldsResume, "pftest5", "portfolio", mPortfolio, rJP);
-		Map<Lang, Translation> pgPfTest6JP = mkPortfolio(new Portfolio("Test6", "/files/resume/surzilgeek/portfolio/6.jpg" , 60), fldsResume, "pftest6", "portfolio", mPortfolio, rJP);
-		Map<Lang, Translation> pgPfTest7JP = mkPortfolio(new Portfolio("Test7", "/files/resume/surzilgeek/portfolio/7.jpg" , 70), fldsResume, "pftest7", "portfolio", mPortfolio, rJP);
-		Map<Lang, Translation> pgPfTest8JP = mkPortfolio(new Portfolio("Test8", "/files/resume/surzilgeek/portfolio/8.jpg" , 80), fldsResume, "pftest8", "portfolio", mPortfolio, rJP);
+		
 
-		// Elements
 		Map<Lang, Translation> elSocialNetwork = mkElement(fldsResume, "resume_element_socialnetwork", "socialnetwork/socialnetwork");
 
 		
 		// PageBlocks
-		Map<Lang, Translation> pbStandard = mkPageBlock(fldsResume, "resume_pageblock_standard", "standard/standard");
-		
-		
 		Map<Lang, Translation> pbHeader = mkPageBlock(fldsResume, "resume_pageblock_header", "header/header");
 		Map<Lang, Translation> pbFooter = mkPageBlock(fldsResume, "resume_pageblock_footer", "footer/footer");
 		Map<Lang, Translation> pbListPage = mkPageBlock(fldSurzilGeek, "resume_pageblock_listpage", "listpage/listpage");
@@ -2220,7 +2182,15 @@ public class InitialisationBase {
 		Map<Lang, Translation> pbResume = mkPageBlock(fldsResume, "resume_pageblock_resume", "resume/resume");
 		
 		
+		Map<Lang, Translation> pbPortfolioTemplate = mkPageBlock(fldsResume, "resume_pageblock_portfolio_template", "standard/standard");
+		Map<Lang, Translation> pbBlogTemplate = mkPageBlock(fldsResume, "resume_pageblock_blog_template", "standard/standard");
+		
+		
 		// Blocks
+		Map<String, NType> columns = new HashMap<>();
+		columns.put("text", new NType(NType.ValueType.HTML));
+		Map<Lang, Translation> bParagraph = mkBlock(fldsResume, "resume_block_paragraph", "various/paragraph/paragraph", mkNSchema(columns, ScopeType.ONE));
+		
 		Map<Lang, Translation> bNav = mkBlock(fldsResume, "resume_block_nav", "nav/nav");
 		
 		Map<Lang, Translation> bAchievement = mkBlock(fldSurzilGeek, "resume_block_achievement", "achievement/achievement");
@@ -2228,26 +2198,47 @@ public class InitialisationBase {
 		Map<Lang, Translation> bSkillsChart = mkBlock(fldSurzilGeek, "resume_block_skillsChart", "skills/chart/chart");
 		Map<Lang, Translation> bExperiences = mkBlock(fldSurzilGeek, "resume_block_experiences", "experiences/experiences");
 		Map<Lang, Translation> bEducations = mkBlock(fldSurzilGeek, "resume_block_educations", "educations/educations");
-		Map<Lang, Translation> bPortfolios = mkBlock(fldSurzilGeek, "resume_block_portfolios", "portfolios/portfolios");
-		
-		
+		Map<Lang, Translation> bPortfolios = mkBlock(fldSurzilGeek, "resume_block_portfolios", "portfolio/list");
+		Map<Lang, Translation> bPortfolioPicture = mkBlock(fldSurzilGeek, "resume_block_portfolio_picture", "portfolio/picture");
 		
 		
 		
 		// Set MapTemplate
 		
-		// Header on model Home and Default - All pages model
-		Map<Lang, MapTemplate> mtHeaderMHome = addMapTemplate(mHome, pbHeader, pHeader);
-		Map<Lang, MapTemplate> mtHeaderMDefault = addMapTemplate(mDefault, pbHeader, pHeader);
+		// Header on model Home and Default and Portfolio - All pages model
+		Map<Lang, MapTemplate> mtPbHeaderMHome = addMapTemplate(mHome, pbHeader, pHeader);
+		Map<Lang, MapTemplate> mtPbHeaderMDefault = addMapTemplate(mDefault, pbHeader, pHeader);
+		Map<Lang, MapTemplate> mtPbHeaderMPortfolio = addMapTemplate(mPortfolio, pbHeader, pHeader);
 		
-		// Footer on model Home and Default - All pages model
-		Map<Lang, MapTemplate> mtFooterMHome = addMapTemplate(mHome, pbFooter, pFooter);
-		Map<Lang, MapTemplate> mtFooterMDefault = addMapTemplate(mDefault, pbFooter, pFooter);
+		// Footer on model Home and Default and Portfolio - All pages model
+		Map<Lang, MapTemplate> mtPbFooterMHome = addMapTemplate(mHome, pbFooter, pFooter);
+		Map<Lang, MapTemplate> mtPbFooterMDefault = addMapTemplate(mDefault, pbFooter, pFooter);
+		Map<Lang, MapTemplate> mtPbFooterMPortfolio = addMapTemplate(mPortfolio, pbFooter, pFooter);
 		
-		// Nav on model Home and Default and pb Header - All pages model
-		Map<Lang, MapTemplate> mtNavMHome = addMapTemplate(mHome, bNav, pNav);
-		Map<Lang, MapTemplate> mtNavMDefault = addMapTemplate(mDefault, bNav, pNav);
-		Map<Lang, MapTemplate> mtNavpbHeader = addMapTemplate(pbHeader, bNav, pNav);
+		// Nav on model Home and Default and pb Header and Portfolio - All pages model
+		Map<Lang, MapTemplate> mtBNavMHome = addMapTemplate(mHome, bNav, pNav);
+		Map<Lang, MapTemplate> mtBNavMDefault = addMapTemplate(mDefault, bNav, pNav);
+		Map<Lang, MapTemplate> mtBNavpbHeader = addMapTemplate(pbHeader, bNav, pNav);
+		Map<Lang, MapTemplate> mtBNavMPortfolio = addMapTemplate(mPortfolio, bNav, pNav);
+
+		// PortfolioTemplate on model Portfolio - All pages model
+		Map<Lang, MapTemplate> mtPBPortfolioTemplateMPortfolio = addMapTemplate(mPortfolio, pbPortfolioTemplate, pMain);
+		Map<Lang, MapTemplate> mtBPortfolioPicturePbPortfolioTemplate = addMapTemplate(pbPortfolioTemplate, bPortfolioPicture, pStandardHeader);
+		Map<Lang, MapTemplate> mtBParagraphPbPortfolioTemplate = addMapTemplate(pbPortfolioTemplate, bParagraph, pStandardArticle);
+		NData nData = new NData();
+		nData.setvHtml("<h2>Others portfolios</h2>");
+		nData.setVarType(ValueType.HTML);
+		nData.setPropertyName("paragraph");
+		nData.setMapTemplate(mtBParagraphPbPortfolioTemplate.get(langEN));
+		nDataService.save(nData);
+		Map<Lang, MapTemplate> mtBPortfoliosPbPortfolioTemplate = addMapTemplate(pbPortfolioTemplate, bPortfolios, pStandardArticle);
+		
+		
+		
+		
+		// BlogTemplate on model Blog - All pages model
+		Map<Lang, MapTemplate> mtBlogTemplateMBlog = addMapTemplate(mBlog, pbBlogTemplate, pMain);
+		
 		
 		// Listpage on page Home for folder SurzilGeek only
 		Map<Lang, MapTemplate> mtPgHomeSurzilGeek = addMapTemplate(mHome, pbListPage, pMain);
@@ -2319,7 +2310,11 @@ public class InitialisationBase {
 		ed.setPicture("/files/resume/surzilgeek/education/" + img);
 		return ed;
 	}
-	
+	private Portfolio putPortfolioX(Portfolio ed){
+		ed.setDescription("<h2>Lorem ipsum dolor sit amet</h2><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse pretium varius mauris, nec ornare lacus. Suspendisse potenti. Morbi non dignissim lectus. Vivamus ipsum leo, pulvinar id posuere a, ullamcorper eget ipsum. In eget mauris lorem. Phasellus dolor mauris, sagittis vitae mauris eu, dignissim blandit quam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut gravida sit amet elit quis tempus. Integer dictum est id tempus tempus. In quis pulvinar lorem.</p><p>Integer eleifend venenatis justo, ut pulvinar dolor scelerisque auctor. Suspendisse potenti. Sed ipsum felis, fermentum vel quam ac, congue eleifend enim. Quisque rhoncus, nisi at rhoncus mattis, magna eros dictum eros, quis viverra metus libero nec felis. Fusce accumsan vulputate ullamcorper. Etiam sodales tortor ac odio elementum ornare. Etiam a congue metus. Nulla sed dui fringilla, accumsan nunc a, fringilla tellus. Phasellus vel mi lobortis, pellentesque risus sit amet, consequat lacus. Phasellus ac mattis lectus, id commodo urna. Etiam quis aliquet ante. Vestibulum mattis sollicitudin diam ut facilisis. Pellentesque libero nunc, feugiat non commodo et, mattis eu nibh. Suspendisse consequat tristique sapien, non consequat sem imperdiet placerat. Nunc vitae ante erat.</p><h2>Integer a nunc sit amet mauris sollicitudin imperdiet</h2><p>Etiam lectus enim, faucibus eget augue vitae, tristique rutrum elit. Integer a nunc sit amet mauris sollicitudin imperdiet. Fusce venenatis, mauris id egestas pellentesque, dolor quam vehicula lorem, sit amet tempus metus nisi ultricies urna. Nunc porttitor erat vel nulla sagittis porta. Sed ac varius ligula. Donec interdum, metus sit amet aliquam faucibus, quam lectus maximus mi, nec vehicula libero nunc ac leo. Aliquam ornare eu diam eget consectetur. Ut non fermentum tortor. Sed varius massa at iaculis dignissim. Curabitur a varius libero. Proin ullamcorper nibh elementum neque feugiat, et tincidunt nulla laoreet. Nulla lacinia ullamcorper tellus vitae ullamcorper. Phasellus odio arcu, ullamcorper non porttitor sit amet, dictum quis leo. Suspendisse risus urna, vestibulum in suscipit vitae, tincidunt non leo.</p><p>Integer eget purus non tortor venenatis maximus. Vestibulum vitae tristique neque. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Pellentesque tempor fringilla nibh cursus consequat. Suspendisse id suscipit quam. Ut velit massa, facilisis mattis tellus id, mattis accumsan leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Maecenas non dui nisl. Aenean commodo malesuada velit in dictum. Proin commodo quis ipsum a euismod. Donec consectetur purus vitae dictum auctor. Praesent quis elementum velit, in dapibus velit.</p><p>Nam ac condimentum nisi, vel accumsan tortor. Mauris lacus orci, posuere in dictum quis, tristique non lacus. Ut non pellentesque nulla. Praesent vulputate tortor in velit accumsan, at faucibus risus auctor. Integer vitae tempor felis. Etiam interdum, velit eget rutrum molestie, lacus lorem tempor odio, quis placerat est ligula ac ex. Suspendisse sit amet ultricies sapien. Fusce consectetur non leo vel fermentum. Suspendisse fringilla neque scelerisque semper volutpat. In efficitur, mi at semper porttitor, elit arcu condimentum metus, quis tempus ipsum felis at eros. Duis aliquam auctor sem, non tristique dolor pellentesque ac. Phasellus et libero eget lacus viverra iaculis nec sit amet diam. Sed vel sodales metus. In ut felis lacus.</p>");
+		ed.setChapo("<p>Lorem ipsum dolor sit ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>");
+		return ed;
+	}
 	
 	
 	

@@ -65,6 +65,7 @@ public class Bind extends TagSupport {
 		} catch (IOException e) {
 			throw new JspTagException(e);
 		}
+		logger.debug("Finish doStartTag()");
 		return SKIP_BODY;
 	}
 

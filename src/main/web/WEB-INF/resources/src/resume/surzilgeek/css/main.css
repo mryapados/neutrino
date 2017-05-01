@@ -724,6 +724,14 @@ ul.sub-menu {
     text-transform: capitalize;
 }
 
+.chapo {
+	font-weight: bold;
+    font-size: 14px;
+    line-height: 24px;
+    color: #2d3038;
+    margin-bottom: 20px;
+}
+
 .text-info {
     font-size: 14px;
     line-height: 24px;

@@ -59,11 +59,7 @@ public class SocialNetwork extends Translation {
 	@JoinColumn(name="icon_id")
 	@OneToOne
 	private Icon icon;
-	
-	@BOField(type = ValueType.TOBJECT)
-	@ManyToOne
-	@JoinColumn(name="resume_id")
-	private Resume resume;
+
 	
 	public SocialNetwork() {
 		super();
@@ -118,14 +114,6 @@ public class SocialNetwork extends Translation {
 		this.icon = icon;
 	}
 
-	public Resume getResume() {
-		return resume;
-	}
-
-	public void setResume(Resume resume) {
-		this.resume = resume;
-	}
-	
 	
 	
 }

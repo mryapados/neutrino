@@ -263,18 +263,18 @@ public class BackOfficeControllerEdit extends BackOfficeController {
 			
 			Class<?> object = entityLocator.getEntity(type).getClass();
 			if (Translation.class.isAssignableFrom(object)) {
-				Translation base = (Translation) backOfficeService.getData(object, id);
+				Translation base = (Translation) backOfficeService.getFullObject(object, id, null);
 				if (lang == null) lang = base.getLang();
 				Translation translation = (Translation) backOfficeService.translate(base, lang);
 				translation.setName(translation.getName() + COPY);
 				return backOfficeService.saveData(translation);
 			} else if(NoTranslation.class.isAssignableFrom(object)){
-				NoTranslation noTranslation = (NoTranslation) backOfficeService.getData(object, id, null);
+				NoTranslation noTranslation = (NoTranslation) backOfficeService.getFullObject(object, id, null);
 				noTranslation.setId(null);
 				noTranslation.setName(noTranslation.getName() + COPY);
 				return backOfficeService.saveData(noTranslation);
 			} else {
-				IdProvider idProvider = backOfficeService.getData(object, id, null);
+				IdProvider idProvider = backOfficeService.getFullObject(object, id, null);
 				idProvider.setId(null);
 				return backOfficeService.saveData(idProvider);
 			}

@@ -66,11 +66,6 @@ public class Experience extends Translation {
 	@OneToOne
 	private Job job;
 	
-	@BOField(type = ValueType.TOBJECT)
-	//@NotNull
-	@ManyToOne
-	@JoinColumn(name="resume_id")
-	private Resume resume;
 
 	public Experience() {
 		
@@ -132,13 +127,6 @@ public class Experience extends Translation {
 		this.job = job;
 	}
 
-	public Resume getResume() {
-		return resume;
-	}
-
-	public void setResume(Resume resume) {
-		this.resume = resume;
-	}
 
 	public String getPicture() {
 		return picture;

@@ -10,6 +10,8 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-8">
+				<div class="chapo">${activePage.chapo}</div>
+			
 				<my:countBlock position="resume_standard_header" var="count">
 					<header>
 						<my:block position="resume_standard_header" />

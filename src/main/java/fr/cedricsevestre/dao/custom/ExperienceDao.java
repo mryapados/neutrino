@@ -25,7 +25,7 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 @Repository
 public interface ExperienceDao extends TranslationDao<Experience> {
 
-	@Query("SELECT e FROM Experience e WHERE (e.folders IS EMPTY OR :folder IN elements(e.folders)) AND e.lang =:lang AND e.resume =:resume ORDER BY e.start DESC")
-	List<Experience> findAllForResumeAndFolderAndLang(@Param("resume") Resume resume, @Param("folder") Folder folder, @Param("lang") Lang lang);
+	@Query("SELECT e FROM Experience e WHERE (e.folders IS EMPTY OR :folder IN elements(e.folders)) AND e.lang =:lang ORDER BY e.start DESC")
+	List<Experience> findAllForFolderAndLang(@Param("folder") Folder folder, @Param("lang") Lang lang);
 
 }

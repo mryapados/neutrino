@@ -6,6 +6,7 @@ import javax.persistence.PersistenceException;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.cedricsevestre.constants.CacheConst;
 import fr.cedricsevestre.dao.engine.MapTemplateDao;
 import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
 import fr.cedricsevestre.exception.ServiceException;
@@ -27,6 +29,7 @@ public class MapTemplateService extends BaseService<MapTemplate>{
 	@Autowired
 	private MapTemplateDao mapTemplateDao;
 
+	@CacheEvict(value = {CacheConst.POSITION_MAPTEMPLATE}, allEntries = true)
 	@Transactional
 	public MapTemplate saveAndOrder(MapTemplate mapTemplate) throws ServiceException {
 		logger.debug("appel de la methode save Map " + mapTemplate.getId());

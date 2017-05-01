@@ -33,9 +33,9 @@ public class SocialNetworkService extends TranslationService<SocialNetwork>{
 	@Autowired
 	private SocialNetworkDao dao;
 
-	public List<SocialNetwork> findAllForResumeAndFolderAndLang(Resume resume, Folder folder, Lang lang) throws ServiceException {
+	public List<SocialNetwork> findAllForFolderAndLang(Folder folder, Lang lang) throws ServiceException {
 		try {
-			return dao.findAllForResumeAndFolderAndLang(resume, folder, lang);
+			return dao.findAllForFolderAndLang(folder, lang);
 		} catch (PersistenceException e) {
 			throw new ServiceException("erreur findAllForResumeAndFolderAndLang Experience", e);
 		}

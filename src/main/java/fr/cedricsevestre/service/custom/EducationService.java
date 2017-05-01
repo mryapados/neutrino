@@ -33,11 +33,11 @@ public class EducationService extends TranslationService<Education>{
 	@Autowired
 	private EducationDao dao;
 
-	public List<Education> findAllForResumeAndFolderAndLang(Resume resume, Folder folder, Lang lang) throws ServiceException {
+	public List<Education> findAllForFolderAndLang(Folder folder, Lang lang) throws ServiceException {
 		try {
-			return dao.findAllForResumeAndFolderAndLang(resume, folder, lang);
+			return dao.findAllForFolderAndLang(folder, lang);
 		} catch (PersistenceException e) {
-			throw new ServiceException("erreur findAllForResumeAndFolderAndLang Education", e);
+			throw new ServiceException("erreur findAllForFolderAndLang Education", e);
 		}
 	}	
 	

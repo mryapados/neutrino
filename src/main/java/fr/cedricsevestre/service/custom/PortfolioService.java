@@ -30,9 +30,9 @@ public class PortfolioService extends TranslationService<Portfolio>{
 	@Autowired
 	private PortfolioDao dao;
 
-	public Page<Portfolio> findAllForResumeAndFolderAndLang(Resume resume, Folder folder, Lang lang, Pageable pageable) throws ServiceException {
+	public Page<Portfolio> findAllForFolderAndLang(Folder folder, Lang lang, Pageable pageable) throws ServiceException {
 		try {
-			return dao.findAllForResumeAndFolderAndLang(resume, folder, lang, pageable);
+			return dao.findAllForFolderAndLang(folder, lang, pageable);
 		} catch (PersistenceException e) {
 			throw new ServiceException("erreur findAllForResumeAndFolderAndLang Portfolio", e);
 		}

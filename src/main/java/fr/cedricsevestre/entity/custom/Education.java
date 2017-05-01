@@ -56,12 +56,7 @@ public class Education extends Translation {
 	
 	@BOField(type = ValueType.FILE)
 	private String picture;
-	
-	@BOField(type = ValueType.TOBJECT)
-	//@NotNull
-	@ManyToOne
-	@JoinColumn(name="resume_id")
-	private Resume resume;
+
 
 	public Education() {
 		
@@ -114,14 +109,5 @@ public class Education extends Translation {
 		this.picture = picture;
 	}
 
-	public Resume getResume() {
-		return resume;
-	}
-
-	public void setResume(Resume resume) {
-		this.resume = resume;
-	}
-
-	
 	
 }

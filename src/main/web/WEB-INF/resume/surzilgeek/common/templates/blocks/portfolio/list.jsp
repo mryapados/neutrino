@@ -16,27 +16,28 @@
 
 		<c:choose>
 			<c:when test="${not empty activeResume}">
-				<c:forEach items="${portfolios}" var="portfolio" varStatus="status">
-					<my:bind var="portfolioTitle" type="Portfolio" beanId="${portfolio.id}" field="title" />
-					<my:bind var="portfolioChapo" type="Portfolio" beanId="${portfolio.id}" field="chapo" />
-
-					<c:url var="pictureUrl" value="${portfolio.picture}" scope="request"/>
-
-					<div class="col-sm-6">
-						<div class="portfolio-item">
-							<img class="img-responsive" src="${pictureUrl}" alt="">
-			                <div class="portfolio-overlay">
-			                    <div class="portfolio-info">
-			                        <a href="<c:url value='/resources/src/resume/surzilgeek/images/portfolio/1.jpg'/>"><i class="fa fa-camera-retro" aria-hidden="true"></i></a>
-			                        <h3><c:out value="${portfolioTitle}"/></h3>
-								    <div>
-								    	<c:out value="${portfolioChapo}" escapeXml="false" />
-								    </div>
-			                    </div>
-			                </div>
-			            </div>
-			        </div>
-
+				<c:forEach items="${portfolios}" var="portfolio">
+					<c:if test="${portfolio.id ne activePage.id}"><%-- Si on est dans une page portfolio, on ne l'affiche pas dans la liste --%>
+						<my:bind var="portfolioTitle" type="Portfolio" beanId="${portfolio.id}" field="title" />
+						<my:bind var="portfolioChapo" type="Portfolio" beanId="${portfolio.id}" field="chapo" />
+	
+						<c:url var="pictureUrl" value="${portfolio.picture}" scope="request"/>
+	
+						<div class="col-sm-6">
+							<div class="portfolio-item">
+								<img class="img-responsive" src="${pictureUrl}" alt="">
+				                <div class="portfolio-overlay">
+				                    <div class="portfolio-info">
+				                        <a href="<c:url value='/resources/src/resume/surzilgeek/images/portfolio/1.jpg'/>"><i class="fa fa-camera-retro" aria-hidden="true"></i></a>
+				                        <h3><c:out value="${portfolioTitle}"/></h3>
+									    <div>
+									    	<c:out value="${portfolioChapo}" escapeXml="false" />
+									    </div>
+				                    </div>
+				                </div>
+				            </div>
+				        </div>
+					</c:if>
 				</c:forEach>  
 			</c:when>
 			<c:when test="${blockPreview}">

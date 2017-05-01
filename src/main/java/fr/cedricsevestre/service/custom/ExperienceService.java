@@ -31,11 +31,11 @@ public class ExperienceService extends TranslationService<Experience>{
 	@Autowired
 	private ExperienceDao dao;
 
-	public List<Experience> findAllForResumeAndFolderAndLang(Resume resume, Folder folder, Lang lang) throws ServiceException {
+	public List<Experience> findAllForFolderAndLang(Folder folder, Lang lang) throws ServiceException {
 		try {
-			return dao.findAllForResumeAndFolderAndLang(resume, folder, lang);
+			return dao.findAllForFolderAndLang(folder, lang);
 		} catch (PersistenceException e) {
-			throw new ServiceException("erreur findAllForResumeAndFolderAndLang Experience", e);
+			throw new ServiceException("erreur findAllAndFolderAndLang Experience", e);
 		}
 	}	
 	

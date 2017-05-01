@@ -39,12 +39,6 @@ public class Portfolio extends Page {
 	@BOField(type = ValueType.IMAGE)
 	private String picture;
 	
-	@BOField(type = ValueType.TOBJECT)
-	//@NotNull
-	@ManyToOne
-	@JoinColumn(name="resume_id")
-	private Resume resume;
-	
 	public Portfolio() {
 		super();
 		this.ordered = 9999;
@@ -89,12 +83,5 @@ public class Portfolio extends Page {
 		this.picture = picture;
 	}
 
-	public Resume getResume() {
-		return resume;
-	}
-
-	public void setResume(Resume resume) {
-		this.resume = resume;
-	}
 	
 }

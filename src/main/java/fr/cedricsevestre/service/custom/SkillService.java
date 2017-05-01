@@ -32,9 +32,9 @@ public class SkillService extends TranslationService<Skill>{
 	@Autowired
 	private SkillDao dao;
 
-	public List<Skill> findAllKindForResumeAndFolderAndLang(Resume resume, SkillKind kind, Folder folder, Lang lang) throws ServiceException {
+	public List<Skill> findAllKindForFolderAndLang(SkillKind kind, Folder folder, Lang lang) throws ServiceException {
 		try {
-			return dao.findAllKindForResumeAndFolderAndLang(resume, kind, folder, lang);
+			return dao.findAllKindForFolderAndLang(kind, folder, lang);
 		} catch (PersistenceException e) {
 			throw new ServiceException("erreur findAllKindForReumeAdFolderAndLang Skill", e);
 		}

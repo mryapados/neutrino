@@ -24,7 +24,6 @@ public interface PositionDao extends BaseDao<Position> {
 	@Query("SELECT p FROM Position p LEFT JOIN FETCH p.mapTemplates m WHERE (p.name =:position AND m.model =:model) ORDER BY m.ordered")
 	Position findByNameForModelWithMaps(@Param("model") Translation model, @Param("position") String positionName);
 	
-	@Deprecated
 	@Query("SELECT p FROM Position p LEFT JOIN FETCH p.mapTemplates m WHERE (p.name =:position AND m.model IN (:model)) ORDER BY m.ordered")
 	Position findByNameForModelsWithMaps(@Param("model") List<Translation> models, @Param("position") String positionName);
 	

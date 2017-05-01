@@ -25,7 +25,7 @@ import fr.cedricsevestre.entity.engine.translation.objects.Template;
 @Repository
 public interface PortfolioDao extends TranslationDao<Portfolio> {
 
-	@Query("SELECT e FROM Portfolio e WHERE (e.folders IS EMPTY OR :folder IN elements(e.folders)) AND e.lang =:lang AND e.resume =:resume ORDER BY e.ordered DESC")
-	Page<Portfolio> findAllForResumeAndFolderAndLang(@Param("resume") Resume resume, @Param("folder") Folder folder, @Param("lang") Lang lang, Pageable pageable);
+	@Query("SELECT e FROM Portfolio e WHERE (e.folders IS EMPTY OR :folder IN elements(e.folders)) AND e.lang =:lang ORDER BY e.ordered DESC")
+	Page<Portfolio> findAllForFolderAndLang(@Param("folder") Folder folder, @Param("lang") Lang lang, Pageable pageable);
 	
 }

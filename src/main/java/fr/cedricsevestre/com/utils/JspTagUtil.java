@@ -71,6 +71,76 @@ public class JspTagUtil {
 	@Autowired
 	private TemplateControllerExecutor templateControllerExecutor;
 	
+	
+
+	
+	private Folder getFolder(PageContext pageContext){
+		//Get folder from pageContext
+		return (Folder) pageContext.getAttribute(AttributeConst.FOLDER, PageContext.REQUEST_SCOPE);
+	}
+	private Lang getLang(PageContext pageContext){
+		//Get lang from page
+		return (Lang) pageContext.getAttribute(AttributeConst.ACTIVELANG, PageContext.REQUEST_SCOPE);
+	}
+	private Page getPage(PageContext pageContext, Folder folder, Lang lang, int pageId, String pageName) throws ServiceException, UtilException, ResourceNotFoundException{
+		//Get page from pageContext
+		Page page = (Page) pageContext.getAttribute(AttributeConst.ACTIVEPAGE, PageContext.REQUEST_SCOPE);
+		if (pageId != 0) page = pageService.findOne(pageId); //If pageId provided -> page is replace
+		else if (pageName != null) page = commonUtil.getPage(folder, pageName, lang); //If pageName provided -> page is replace
+		return page;
+	}
+//	private Template getParentModel(PageContext pageContext){
+//		//Get model from pageContext if PARENTPAGEBLOCK != null
+//		return (Template) pageContext.getAttribute(AttributeConst.PARENTPAGEBLOCK, PageContext.REQUEST_SCOPE);
+//	}
+//	private Translation getModel(PageContext pageContext, Page page){
+//		return page.getModel(); 
+//	}
+	private Translation getModel(PageContext pageContext, Page page){
+		//Get model from pageContext if PARENTPAGEBLOCK != null
+		Translation model = (Template) pageContext.getAttribute(AttributeConst.PARENTPAGEBLOCK, PageContext.REQUEST_SCOPE);
+		//If model == null (if not PARENTPAGEBLOCK) -> model become page model
+		if (model == null) model = page.getModel(); 
+		return model;
+	}
+	private Translation getActiveObject(PageContext pageContext, Folder folder, Lang lang, int activeObjectId, String activeObjectName) throws ServiceException{
+		Translation activeObject = (Translation) pageContext.getAttribute(AttributeConst.ACTIVEOBJECT, PageContext.REQUEST_SCOPE);
+		if (activeObjectId != 0) activeObject = tObjectService.findOne(activeObjectId); //If activeObjectId provided -> activeObject is replace
+		else if (activeObject != null) activeObject = tObjectService.identify(folder, activeObjectName, lang); //If activeObjectName provided -> activeObject is replace
+		return activeObject;
+	}
+	
+	
+	private void getJsp(PageContext pageContext, String activeTemplateName, MapTemplate mapTemplate, Template activeTemplate, Folder folder, Lang lang, Page page, Translation model, Translation activeObject) throws ServiceException, ServletException, IOException{
+		ModelMap modelMap = templateControllerExecutor.execute(activeTemplate.getController(), page, model, activeObject, activeTemplate, folder, lang, pageContext);
+		if (modelMap != null){
+			for (Map.Entry<String, Object> entry : modelMap.entrySet()) {
+				pageContext.setAttribute(entry.getKey(), entry.getValue(), PageContext.REQUEST_SCOPE);
+			}
+		}
+		System.out.println(activeTemplate.getName());
+		
+		Map<String, Object> nDatas;
+		if (mapTemplate == null) nDatas = nDataService.getNDatas(activeTemplate);
+		else nDatas = nDataService.getNDatas(mapTemplate);
+		pageContext.setAttribute(AttributeConst.NDATAS, nDatas, PageContext.REQUEST_SCOPE);
+
+		String path = templateService.getPathJSP(true, folder, page.getContext(), activeTemplate, true);
+
+		pageContext.setAttribute(activeTemplateName, activeTemplate, PageContext.REQUEST_SCOPE);
+		
+		if (activeTemplate.getKind() == TemplateKind.PAGEBLOCK){
+			pageContext.setAttribute(AttributeConst.PARENTPAGEBLOCK, activeTemplate, PageContext.REQUEST_SCOPE);
+			pageContext.include(path.toString());
+			pageContext.removeAttribute(AttributeConst.PARENTPAGEBLOCK);
+		} else {
+			pageContext.include(path.toString());
+		}
+		
+		//remove ndata attributes
+		pageContext.removeAttribute(AttributeConst.NDATAS, PageContext.REQUEST_SCOPE);
+	}
+	
 	/* Get blocks from container parentPageBlock if not null + activeObject if not null + page */
 	public void getJspBlock(PageContext pageContext, String position, String pageName, String activeObjectName, int pageId, int activeObjectId) throws JspException{
 		JspWriter out = pageContext.getOut();
@@ -119,67 +189,6 @@ public class JspTagUtil {
 		}
 
 	}
-
-	
-	private Folder getFolder(PageContext pageContext){
-		//Get folder from pageContext
-		return (Folder) pageContext.getAttribute(AttributeConst.FOLDER, PageContext.REQUEST_SCOPE);
-	}
-	private Lang getLang(PageContext pageContext){
-		//Get lang from page
-		return (Lang) pageContext.getAttribute(AttributeConst.ACTIVELANG, PageContext.REQUEST_SCOPE);
-	}
-	private Page getPage(PageContext pageContext, Folder folder, Lang lang, int pageId, String pageName) throws ServiceException, UtilException, ResourceNotFoundException{
-		//Get page from pageContext
-		Page page = (Page) pageContext.getAttribute(AttributeConst.ACTIVEPAGE, PageContext.REQUEST_SCOPE);
-		if (pageId != 0) page = pageService.findOne(pageId); //If pageId provided -> page is replace
-		else if (pageName != null) page = commonUtil.getPage(folder, pageName, lang); //If pageName provided -> page is replace
-		return page;
-	}
-	private Translation getModel(PageContext pageContext, Page page){
-		//Get model from pageContext if PARENTPAGEBLOCK != null
-		Translation model = (Template) pageContext.getAttribute(AttributeConst.PARENTPAGEBLOCK, PageContext.REQUEST_SCOPE);
-		//If model == null (if not PARENTPAGEBLOCK) -> model become page model
-		if (model == null) model = page.getModel(); 
-		return model;
-	}
-	private Translation getActiveObject(PageContext pageContext, Folder folder, Lang lang, int activeObjectId, String activeObjectName) throws ServiceException{
-		Translation activeObject = (Translation) pageContext.getAttribute(AttributeConst.ACTIVEOBJECT, PageContext.REQUEST_SCOPE);
-		if (activeObjectId != 0) activeObject = tObjectService.findOne(activeObjectId); //If activeObjectId provided -> activeObject is replace
-		else if (activeObject != null) activeObject = tObjectService.identify(folder, activeObjectName, lang); //If activeObjectName provided -> activeObject is replace
-		return activeObject;
-	}
-	
-	
-	private void getJsp(PageContext pageContext, String activeTemplateName, MapTemplate mapTemplate, Template activeTemplate, Folder folder, Lang lang, Page page, Translation model, Translation activeObject) throws ServiceException, ServletException, IOException{
-		ModelMap modelMap = templateControllerExecutor.execute(activeTemplate.getController(), page, model, activeObject, activeTemplate, folder, lang, pageContext);
-		if (modelMap != null){
-			for (Map.Entry<String, Object> entry : modelMap.entrySet()) {
-				pageContext.setAttribute(entry.getKey(), entry.getValue(), PageContext.REQUEST_SCOPE);
-			}
-		}
-					
-		Map<String, Object> nDatas;
-		if (mapTemplate == null) nDatas = nDataService.getNDatas(activeTemplate);
-		else nDatas = nDataService.getNDatas(mapTemplate);
-		pageContext.setAttribute(AttributeConst.NDATAS, nDatas, PageContext.REQUEST_SCOPE);
-
-		String path = templateService.getPathJSP(true, folder, page.getContext(), activeTemplate, true);
-
-		pageContext.setAttribute(activeTemplateName, activeTemplate, PageContext.REQUEST_SCOPE);
-		
-		if (activeTemplate.getKind() == TemplateKind.PAGEBLOCK){
-			pageContext.setAttribute(AttributeConst.PARENTPAGEBLOCK, activeTemplate, PageContext.REQUEST_SCOPE);
-			pageContext.include(path.toString());
-			pageContext.removeAttribute(AttributeConst.PARENTPAGEBLOCK);
-		} else {
-			pageContext.include(path.toString());
-		}
-		
-		//remove ndata attributes
-		pageContext.removeAttribute(AttributeConst.NDATAS, PageContext.REQUEST_SCOPE);
-	}
-	
 	
 	/* Get blocks from container parentPageBlock if not null + activeObject if not null + page */
 	public void getJspElement(PageContext pageContext, String templateName, String pageName, String activeObjectName, int pageId, int activeObjectId) throws JspException{
