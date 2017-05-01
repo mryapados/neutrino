@@ -70,6 +70,30 @@ a:focus, button:focus, .btn:focus,
     box-shadow: none !important;
 }
 
+
+#breadcrumb {
+    background-color: #2d3038;
+}
+
+#breadcrumb a {
+    color: #fff;
+}
+#breadcrumb a:hover {
+    color: #00aeef;
+}
+#breadcrumb ol {
+    margin:0;
+}
+
+.breadcrumb {
+    padding: 8px 0;
+    background-color: transparent;
+    border-radius: 0;
+}
+.breadcrumb>.active {
+    color: #a5a5a5;
+}
+
 .section-padding {
     padding-top: 80px;
     padding-bottom: 100px;
@@ -91,6 +115,9 @@ a:focus, button:focus, .btn:focus,
     font-size: 50px;
     margin-top: 0;
 }
+
+
+
 
 .bg-color {
     background-color: #f9f9f9;

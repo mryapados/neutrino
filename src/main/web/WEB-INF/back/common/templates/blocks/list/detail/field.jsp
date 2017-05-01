@@ -8,6 +8,7 @@
 
 
 <c:set var="finalMaxElement" value="3" />
+<c:set var="finalLength" value="200" />
 
 <c:choose>
 	<c:when test="${finalFieldType eq 'ICON'}">
@@ -15,6 +16,9 @@
 	</c:when>
 	<c:when test="${finalFieldType eq 'PASSWORD'}">
 		<c:out value="********"/>
+	</c:when>
+	<c:when test="${finalFieldType eq 'HTML'}">
+		<c:out value="${fn:substring(finalObject, 0, finalLength)}"/>
 	</c:when>
 	<c:when test="${finalFieldType eq 'DATETIME'}">
 		<fmt:formatDate value="${finalObject}"/>

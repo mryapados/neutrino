@@ -38,22 +38,22 @@ public class Page extends Translation {
 
 	private static final long serialVersionUID = 1L;
 	
-	@BOField(type = ValueType.VARCHAR255)
+	@BOField(type = ValueType.VARCHAR255, inList = false)
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "meta_description")
 	private String metaDescription;
 	
-	@BOField(type = ValueType.VARCHAR255)
+	@BOField(type = ValueType.VARCHAR255, inList = false)
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "meta_title")
 	private String metaTitle;
 	
-	@BOField(type = ValueType.VARCHAR255)
+	@BOField(type = ValueType.VARCHAR255, inList = false)
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "meta_keywords")
 	private String metaKeyWords;
 	
-	@BOField(type = ValueType.VARCHAR50)
+	@BOField(type = ValueType.VARCHAR50, inList = false)
 	@NotNull
 	@SafeHtml(whitelistType = WhiteListType.SIMPLE_TEXT)
 	@Column(name = "context")
@@ -67,7 +67,7 @@ public class Page extends Translation {
 	@BOField(type = ValueType.TOBJECT)
 	@OneToOne
 	@JoinColumn(name="parent_id")
-	private Translation parent;
+	private Page parent;
 	
 	@BOField(type = ValueType.DATETIME)
 	@Column(name = "publish_date")
@@ -78,7 +78,8 @@ public class Page extends Translation {
 	private Date archiveDate;
 	
 	public Page() {
-		
+		super();
+		this.setPublishDate(new Date());
 	}
 	
 	public Page(Integer id, String name, Date dateAdd, Date dateUpdated, String description, Lang lang, String context, Template model) {
@@ -127,11 +128,11 @@ public class Page extends Translation {
 		this.model = model;
 	}
 
-	public Translation getParent() {
+	public Page getParent() {
 		return parent;
 	}
 
-	public void setParent(Translation parent) {
+	public void setParent(Page parent) {
 		this.parent = parent;
 	}
 

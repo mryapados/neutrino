@@ -6,11 +6,14 @@
 <my:init test="${!initialized}" />
 
 
-<div class="container">
+<div class="container bg-color">
     <div class="row">
         <div class="col-sm-8">
             <div class="section-title">
-                <h1>${activePage.title}</h1>
+				<h1>
+					<span class="name">${resumeFirstName} ${resumeLastName}</span>
+				</h1>
+				<h2><span class="function">${resumeFunction}</span></h2>
             </div>  
         </div>
     </div><!-- row -->

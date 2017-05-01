@@ -64,7 +64,7 @@
 			<my:block position="resume_main" />
 		</main>
 
-        <footer>
+        <footer id="footer">
         	<my:block position="resume_footer" />
         </footer><!-- footer -->
     </div><!-- main wrapper -->

@@ -1,6 +1,7 @@
 package fr.cedricsevestre.controller.template.custom;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.jsp.PageContext;
@@ -32,6 +33,7 @@ import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ControllerException;
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.service.custom.ArticleService;
 import fr.cedricsevestre.service.custom.CategoryService;
 import fr.cedricsevestre.service.custom.EducationService;
 import fr.cedricsevestre.service.custom.ExperienceService;
@@ -62,14 +64,19 @@ public class ResumeTemplateController {
 	@Autowired
 	private PortfolioService portfolioService;
 	
+	@Autowired
+	private ArticleService articleService;
+	
 	protected static final String ATTR_CATEGORIES = "categories";
 	protected static final String ATTR_ACTIVERESUME = "activeResume";
 	protected static final String ATTR_SKILLS = "skills";
 	protected static final String ATTR_EXPERIENCES = "experiences";
 	protected static final String ATTR_EDUCATIONS = "educations";
 	protected static final int ATTR_PORTFOLIOS_MAXRESULT = 10;
+	protected static final int ATTR_ARTICLES_MAXRESULT = 10;
 	protected static final String ATTR_PUBLISHDATE = "publishDate";
 	protected static final String ATTR_PORTFOLIOS = "portfolios";
+	protected static final String ATTR_ARTICLES = "articles";
 	protected static final String ATTR_SOCIALNETWORK = "socialnetworks";
 	protected static final String ATTR_ACTIVEPAGE = "activePage";
 	
@@ -86,7 +93,7 @@ public class ResumeTemplateController {
 
 	}
 
-	@BlockMapping("resume_block_skillsProgressBar")
+	@BlockMapping("resume_block_skill_progressBar_list")
 	public ModelMap skillsProgressBar(Folder folder, Lang lang, PageContext pageContext) throws ControllerException{	
 		try {
 			ModelMap modelMap = new ModelMap();
@@ -101,7 +108,7 @@ public class ResumeTemplateController {
 
 	}
 
-	@BlockMapping("resume_block_skillsChart")
+	@BlockMapping("resume_block_skill_chart_list")
 	public ModelMap skillsChart(Folder folder, Lang lang, PageContext pageContext) throws ControllerException{	
 		try {
 			ModelMap modelMap = new ModelMap();
@@ -115,7 +122,7 @@ public class ResumeTemplateController {
 		}
 	}
 	
-	@BlockMapping("resume_block_experiences")
+	@BlockMapping("resume_block_experience_list")
 	public ModelMap experiences(Folder folder, Lang lang, PageContext pageContext) throws ControllerException{	
 		try {
 			ModelMap modelMap = new ModelMap();
@@ -129,7 +136,7 @@ public class ResumeTemplateController {
 		}
 	}
 	
-	@BlockMapping("resume_block_educations")
+	@BlockMapping("resume_block_education_list")
 	public ModelMap educations(Folder folder, Lang lang, PageContext pageContext) throws ControllerException{
 		try {
 			ModelMap modelMap = new ModelMap();
@@ -143,7 +150,7 @@ public class ResumeTemplateController {
 		}
 	}
 	
-	@BlockMapping("resume_block_portfolios")
+	@BlockMapping("resume_block_portfolio_list")
 	public ModelMap portfolios(Folder folder, Lang lang, PageContext pageContext) throws ControllerException{
 		try {
 			ModelMap modelMap = new ModelMap();
@@ -155,6 +162,25 @@ public class ResumeTemplateController {
 				
 				Pageable pageRequest = new PageRequest(0, ATTR_PORTFOLIOS_MAXRESULT, new Sort(orders));
 				if (resume != null)	modelMap.addAttribute(ATTR_PORTFOLIOS, portfolioService.findAllForFolderAndLang(folder, lang, pageRequest).getContent());
+			}
+			return modelMap;
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
+		}
+	}
+	
+	@BlockMapping("resume_block_blog_list")
+	public ModelMap articles(Folder folder, Lang lang, PageContext pageContext) throws ControllerException{
+		try {
+			ModelMap modelMap = new ModelMap();
+			if (pageContext != null){
+				Resume resume = (Resume) pageContext.getAttribute(ATTR_ACTIVERESUME, PageContext.REQUEST_SCOPE);
+
+				List<Order> orders = new ArrayList<>();
+				orders.add(new Order(Direction.DESC, ATTR_PUBLISHDATE));
+				
+				Pageable pageRequest = new PageRequest(0, ATTR_ARTICLES_MAXRESULT, new Sort(orders));
+				if (resume != null)	modelMap.addAttribute(ATTR_ARTICLES, articleService.findAllForFolderAndLang(folder, lang, pageRequest).getContent());
 			}
 			return modelMap;
 		} catch (ServiceException e) {
@@ -178,7 +204,21 @@ public class ResumeTemplateController {
 		}
 	}
 	
-	
+	@BlockMapping("resume_block_breadbrumb")
+	public ModelMap breadcrumb(Folder folder, Lang lang, PageContext pageContext) throws ControllerException{
+		ModelMap modelMap = new ModelMap();
+		List<Page> pages = new ArrayList<>();
+		Page page = (Page) pageContext.getAttribute(ATTR_ACTIVEPAGE, PageContext.REQUEST_SCOPE);
+		pages.add(page);
+		while (true) {
+			page = page.getParent();
+			if (page != null) pages.add(page);
+			else break;
+        }
+		Collections.reverse(pages);
+		modelMap.addAttribute("breadcrumbPages", pages);
+		return modelMap;
+	}
 	
 	
 	

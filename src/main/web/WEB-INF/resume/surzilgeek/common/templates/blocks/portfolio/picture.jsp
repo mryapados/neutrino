@@ -5,9 +5,7 @@
 
 <my:init test="${!initialized}"/>
 
-
 <c:url var="activePagePicture" value='${activePage.picture}'/>
-
 <div class="row">
 	<div class="col-md-12">
 		<div class="thumbnail">

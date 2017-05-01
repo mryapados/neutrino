@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 import fr.cedricsevestre.com.utils.IdProviderUtil;
 import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.custom.Album.AlbumType;
+import fr.cedricsevestre.entity.custom.Article;
 import fr.cedricsevestre.entity.custom.Category;
 import fr.cedricsevestre.entity.custom.Education;
 import fr.cedricsevestre.entity.custom.Icon;
@@ -1296,12 +1297,12 @@ public class InitialisationBase {
 	
 	
 
-	public Map<Lang, Translation> mkPage(Page base, Folder folder, String name, String context, Map<Lang, Translation> models) throws ServiceException{
+	public Map<Lang, Translation> mkPage(Page base, Folder folder, String name, String context, Map<Lang, Translation> models, Map<Lang, Translation> parents) throws ServiceException{
 		List<Folder> folders = new ArrayList<>();
 		folders.add(folder);
-		return mkPage(base, folders, name, context, models);
+		return mkPage(base, folders, name, context, models, parents);
 	}
-	public Map<Lang, Translation> mkPage(Page base, List<Folder> folders, String name, String context, Map<Lang, Translation> models) throws ServiceException{
+	public Map<Lang, Translation> mkPage(Page base, List<Folder> folders, String name, String context, Map<Lang, Translation> models, Map<Lang, Translation> parents) throws ServiceException{
 		Map<Lang, Translation> map = new HashMap<>();
 		Page first = null;
 		for (Lang lang : langs) {
@@ -1313,12 +1314,14 @@ public class InitialisationBase {
 				page.setContext(context);
 				page.setModel((Template) models.get(lang));
 				page.setFolders(folders);
+				if (parents != null) page.setParent((Page) parents.get(lang));
 				first = page;
 			} else {
 				page = pageService.translate(first, lang);
 				page.setFolders(folders);
 				page.setName(name);
-				page.setDescription(name + " Page description " + lang.getCode());
+				if (base.getDescription() == null) page.setDescription(name + " Page description " + lang.getCode());
+				if (parents != null) page.setParent((Page) parents.get(lang));
 			}
 			
 			if (base instanceof Category){
@@ -1745,7 +1748,7 @@ public class InitialisationBase {
 		mapfolders.put(folder.getName(), folder);
 		
 		Map<Lang, Translation> mlogin = mkModel(folder, "login", "login/login");
-		Map<Lang, Translation> pgLogin = mkPage(new Page(), folder, "login", "static", mlogin);
+		Map<Lang, Translation> pgLogin = mkPage(new Page(), folder, "login", "static", mlogin, null);
 				
 		// Positions
 		Map<String, Position> mapPosition = new HashMap<>();
@@ -1765,12 +1768,12 @@ public class InitialisationBase {
 		Map<Lang, Translation> mFileSingle = mkModel(folder, "@bo_model_file_single", "file/single");
 		
 		// Pages
-		Map<Lang, Translation> pgHome = mkPage(new Page(), folder, "@bo_page_home", "home", mHome);
-		Map<Lang, Translation> pgList = mkPage(new Page(), folder, "@bo_page_list", "default", mList);
-		Map<Lang, Translation> pgView = mkPage(new Page(), folder, "@bo_page_view", "default", mView);
-		Map<Lang, Translation> pgEdit = mkPage(new Page(), folder, "@bo_page_edit", "default", mEdit);
-		Map<Lang, Translation> pgFile = mkPage(new Page(), folder, "@bo_page_file", "default", mFile);
-		Map<Lang, Translation> pgFileSingle = mkPage(new Page(), folder, "@bo_page_file_single", "default", mFileSingle);
+		Map<Lang, Translation> pgHome = mkPage(new Page(), folder, "@bo_page_home", "home", mHome, null);
+		Map<Lang, Translation> pgList = mkPage(new Page(), folder, "@bo_page_list", "default", mList, pgHome);
+		Map<Lang, Translation> pgView = mkPage(new Page(), folder, "@bo_page_view", "default", mView, pgHome);
+		Map<Lang, Translation> pgEdit = mkPage(new Page(), folder, "@bo_page_edit", "default", mEdit, pgHome);
+		Map<Lang, Translation> pgFile = mkPage(new Page(), folder, "@bo_page_file", "default", mFile, pgHome);
+		Map<Lang, Translation> pgFileSingle = mkPage(new Page(), folder, "@bo_page_file_single", "default", mFileSingle, null);
 		
 		// PageBlocks
 		Map<Lang, Translation> pbHeader = mkPageBlock(folder, "@bo_pageblock_header", "header/header");
@@ -2124,46 +2127,57 @@ public class InitialisationBase {
 		Position pExperiences = addPosition(mapPosition, "resume_experiences");
 		Position pEducation = addPosition(mapPosition, "resume_educations");
 		Position pPortfolio = addPosition(mapPosition, "resume_portfolios");
-		
+		Position pBlog = addPosition(mapPosition, "resume_articles");
 		
 		// Models
 		Map<Lang, Translation> mHome = mkModel(fldsResume, "resume_model_home", "default/default");
 		Map<Lang, Translation> mDefault = mkModel(fldsResume, "resume_model_default", "default/default");
 		Map<Lang, Translation> mPortfolio = mkModel(fldsResume, "resume_model_portfolio", "default/default");
-		Map<Lang, Translation> mBlog = mkModel(fldsResume, "resume_model_blog", "default/default");
+		Map<Lang, Translation> mArticle = mkModel(fldsResume, "resume_model_blog", "default/default");
 		
 		// Pages
-		
-		// Pages communes aux deux modèles
-		Map<Lang, Translation> pgPortfolio = mkPage(new Category("#9b59b6", "Portfolio", iPortfolio, true, 40), fldsResume, "portfolio", "portfolio", mDefault);
-		Map<Lang, Translation> pgContact = mkPage(new Category("#e67e22", "Contact", iContact, true, 30), fldsResume, "contact", "contact", mDefault);
-		Map<Lang, Translation> pgBlog = mkPage(new Category("#d9a81d", "Blog", iBlog, true, 70), fldsResume, "blog", "blog", mDefault);
+		Map<Lang, Translation> pgHome = mkPage(new Category("#1abc9c", "Home", iHome, true, 10), fldsResume, "home", "home", mHome, null);
+
 
 		// Pages dédiés à l'un ou l'autre
-		Map<Lang, Translation> pgHomeSamuel = mkPage(new Category("#1abc9c", "Home", iHome, true, 10), fldSamuel, "home", "home", mHome);
-		Map<Lang, Translation> pgResume = mkPage(new Category("#3498db", "Resume", iResume, true, 20), fldSamuel, "resume", "resume", mDefault);
-		Map<Lang, Translation> pgFeedBack = mkPage(new Category("#e74c3c", "Feedback", iFeedBack, true, 50), fldSamuel, "feedback", "feedback", mDefault);
+		Map<Lang, Translation> pgResume = mkPage(new Category("#3498db", "Resume", iResume, true, 20), fldSamuel, "resume", "resume", mDefault, pgHome);
+		Map<Lang, Translation> pgFeedBack = mkPage(new Category("#e74c3c", "Feedback", iFeedBack, true, 50), fldSamuel, "feedback", "feedback", mDefault, pgHome);
 		
-		Map<Lang, Translation> pgHomeSurzilGeek = mkPage(new Category("#1abc9c", "Home", iHome, true, 10), fldSurzilGeek, "home", "home", mHome);
-		Map<Lang, Translation> pgAboutMe = mkPage(putCategoryAboutMe(new Category(null, "About me", iAboutMe, true, 12)), fldSurzilGeek, "aboutme", "aboutme", mDefault);
-		Map<Lang, Translation> pgSkills = mkPage(putCategorySkills(new Category(null, "Skills", iSkills, true, 14)), fldSurzilGeek, "skills", "skills", mDefault);
-		Map<Lang, Translation> pgExperiences = mkPage(putCategoryExperience(new Category(null, "Experiences", iExperiences, true, 16)), fldSurzilGeek, "experiences", "experiences", mDefault);
-		Map<Lang, Translation> pgEducations = mkPage(putCategoryEducation(new Category(null, "Education", iEducation, true, 18)), fldSurzilGeek, "education", "education", mDefault);
-		Map<Lang, Translation> pgResumeSurzilGeek = mkPage(new Category(null, "My resume PDF", iSave, true, 60), fldSurzilGeek, "resume", "resume", mDefault);
+		// Pages communes aux deux modèles
+		Map<Lang, Translation> pgPortfolio = mkPage(new Category("#9b59b6", "Portfolio", iPortfolio, true, 40), fldsResume, "portfolio", "portfolio", mDefault, pgHome);
+		Map<Lang, Translation> pgContact = mkPage(new Category("#e67e22", "Contact", iContact, true, 30), fldsResume, "contact", "contact", mDefault, pgHome);
+		Map<Lang, Translation> pgBlog = mkPage(new Category("#d9a81d", "Blog", iBlog, true, 60), fldsResume, "blog", "blog", mDefault, pgHome);
+		
+		Map<Lang, Translation> pgAboutMe = mkPage(putCategoryAboutMe(new Category(null, "About me", iAboutMe, true, 12)), fldSurzilGeek, "aboutme", "aboutme", mDefault, pgHome);
+		Map<Lang, Translation> pgSkills = mkPage(putCategorySkills(new Category(null, "Skills", iSkills, true, 14)), fldSurzilGeek, "skills", "skills", mDefault, pgHome);
+		Map<Lang, Translation> pgExperiences = mkPage(putCategoryExperience(new Category(null, "Experiences", iExperiences, true, 16)), fldSurzilGeek, "experiences", "experiences", mDefault, pgHome);
+		Map<Lang, Translation> pgEducations = mkPage(putCategoryEducation(new Category(null, "Education", iEducation, true, 18)), fldSurzilGeek, "education", "education", mDefault, pgHome);
+		Map<Lang, Translation> pgResumeSurzilGeek = mkPage(new Category(null, "My resume PDF", iSave, true, 70), fldSurzilGeek, "resume", "resume", mDefault, pgHome);
+		
+		
 		
 		//Pages portfolio
-		Map<Lang, Translation> pgPfTest01 = mkPage(putPortfolioX(new Portfolio("Test01", "/files/resume/surzilgeek/portfolio/01.jpg" , 10)), fldsResume, "pftest01", "portfolio", mPortfolio);
-		Map<Lang, Translation> pgPfTest02 = mkPage(putPortfolioX(new Portfolio("Test02", "/files/resume/surzilgeek/portfolio/02.jpg" , 20)), fldsResume, "pftest02", "portfolio", mPortfolio);
-		Map<Lang, Translation> pgPfTest03 = mkPage(putPortfolioX(new Portfolio("Test03", "/files/resume/surzilgeek/portfolio/03.jpg" , 30)), fldsResume, "pftest03", "portfolio", mPortfolio);
-		Map<Lang, Translation> pgPfTest04 = mkPage(putPortfolioX(new Portfolio("Test04", "/files/resume/surzilgeek/portfolio/04.jpg" , 40)), fldsResume, "pftest04", "portfolio", mPortfolio);
-		Map<Lang, Translation> pgPfTest05 = mkPage(putPortfolioX(new Portfolio("Test05", "/files/resume/surzilgeek/portfolio/05.jpg" , 50)), fldsResume, "pftest05", "portfolio", mPortfolio);
-		Map<Lang, Translation> pgPfTest06 = mkPage(putPortfolioX(new Portfolio("Test06", "/files/resume/surzilgeek/portfolio/06.jpg" , 60)), fldsResume, "pftest06", "portfolio", mPortfolio);
-		Map<Lang, Translation> pgPfTest07 = mkPage(putPortfolioX(new Portfolio("Test07", "/files/resume/surzilgeek/portfolio/07.jpg" , 70)), fldsResume, "pftest07", "portfolio", mPortfolio);
-		Map<Lang, Translation> pgPfTest08 = mkPage(putPortfolioX(new Portfolio("Test08", "/files/resume/surzilgeek/portfolio/08.jpg" , 80)), fldsResume, "pftest08", "portfolio", mPortfolio);
-		Map<Lang, Translation> pgPfTest09 = mkPage(putPortfolioX(new Portfolio("Test09", "/files/resume/surzilgeek/banner.jpg" , 90)), fldsResume, "pftest09", "portfolio", mPortfolio);
-		Map<Lang, Translation> pgPfTest10 = mkPage(putPortfolioX(new Portfolio("Test10", "/files/resume/surzilgeek/portfolio/10.png" , 100)), fldsResume, "pftest10", "portfolio", mPortfolio);
+		Map<Lang, Translation> pgPfTest01 = mkPage(putPortfolioX(new Portfolio("Test01", "/files/resume/surzilgeek/portfolio/01.jpg" , 10)), fldsResume, "pftest01", "portfolio", mPortfolio, pgHome);
+		Map<Lang, Translation> pgPfTest02 = mkPage(putPortfolioX(new Portfolio("Test02", "/files/resume/surzilgeek/portfolio/02.jpg" , 20)), fldsResume, "pftest02", "portfolio", mPortfolio, pgHome);
+		Map<Lang, Translation> pgPfTest03 = mkPage(putPortfolioX(new Portfolio("Test03", "/files/resume/surzilgeek/portfolio/03.jpg" , 30)), fldsResume, "pftest03", "portfolio", mPortfolio, pgHome);
+		Map<Lang, Translation> pgPfTest04 = mkPage(putPortfolioX(new Portfolio("Test04", "/files/resume/surzilgeek/portfolio/04.jpg" , 40)), fldsResume, "pftest04", "portfolio", mPortfolio, pgHome);
+		Map<Lang, Translation> pgPfTest05 = mkPage(putPortfolioX(new Portfolio("Test05", "/files/resume/surzilgeek/portfolio/05.jpg" , 50)), fldsResume, "pftest05", "portfolio", mPortfolio, pgHome);
+		Map<Lang, Translation> pgPfTest06 = mkPage(putPortfolioX(new Portfolio("Test06", "/files/resume/surzilgeek/portfolio/06.jpg" , 60)), fldsResume, "pftest06", "portfolio", mPortfolio, pgHome);
+		Map<Lang, Translation> pgPfTest07 = mkPage(putPortfolioX(new Portfolio("Test07", "/files/resume/surzilgeek/portfolio/07.jpg" , 70)), fldsResume, "pftest07", "portfolio", mPortfolio, pgHome);
+		Map<Lang, Translation> pgPfTest08 = mkPage(putPortfolioX(new Portfolio("Test08", "/files/resume/surzilgeek/portfolio/08.jpg" , 80)), fldsResume, "pftest08", "portfolio", mPortfolio, pgHome);
+		Map<Lang, Translation> pgPfTest09 = mkPage(putPortfolioX(new Portfolio("Test09", "/files/resume/surzilgeek/banner.jpg" , 90)), fldsResume, "pftest09", "portfolio", mPortfolio, pgPfTest08);
+		Map<Lang, Translation> pgPfTest10 = mkPage(putPortfolioX(new Portfolio("Test10", "/files/resume/surzilgeek/portfolio/10.png" , 100)), fldsResume, "pftest10", "portfolio", mPortfolio, pgPfTest09);
 		
-		
+		//Pages articles
+		Map<Lang, Translation> pgAtTest01 = mkPage(putArticleX(new Article("Test01", "/files/resume/surzilgeek/article/01.jpg" , 10)), fldsResume, "attest01", "article", mArticle, pgHome);
+		Map<Lang, Translation> pgAtTest02 = mkPage(putArticleX(new Article("Test02", "/files/resume/surzilgeek/article/02.jpg" , 20)), fldsResume, "attest02", "article", mArticle, pgHome);
+		Map<Lang, Translation> pgAtTest03 = mkPage(putArticleX(new Article("Test03", "/files/resume/surzilgeek/article/03.jpg" , 30)), fldsResume, "attest03", "article", mArticle, pgHome);
+		Map<Lang, Translation> pgAtTest04 = mkPage(putArticleX(new Article("Test04", "/files/resume/surzilgeek/article/04.jpg" , 40)), fldsResume, "attest04", "article", mArticle, pgHome);
+		Map<Lang, Translation> pgAtTest05 = mkPage(putArticleX(new Article("Test05", "/files/resume/surzilgeek/article/05.jpg" , 50)), fldsResume, "attest05", "article", mArticle, pgHome);
+		Map<Lang, Translation> pgAtTest06 = mkPage(putArticleX(new Article("Test06", "/files/resume/surzilgeek/article/06.jpg" , 60)), fldsResume, "attest06", "article", mArticle, pgHome);
+		Map<Lang, Translation> pgAtTest07 = mkPage(putArticleX(new Article("Test07", "/files/resume/surzilgeek/article/07.jpg" , 70)), fldsResume, "attest07", "article", mArticle, pgAtTest06);
+		Map<Lang, Translation> pgAtTest08 = mkPage(putArticleX(new Article("Test08", "/files/resume/surzilgeek/article/08.jpg" , 80)), fldsResume, "attest08", "article", mArticle, pgAtTest07);
+
 
 		Map<Lang, Translation> elSocialNetwork = mkElement(fldsResume, "resume_element_socialnetwork", "socialnetwork/socialnetwork");
 
@@ -2191,16 +2205,20 @@ public class InitialisationBase {
 		columns.put("text", new NType(NType.ValueType.HTML));
 		Map<Lang, Translation> bParagraph = mkBlock(fldsResume, "resume_block_paragraph", "various/paragraph/paragraph", mkNSchema(columns, ScopeType.ONE));
 		
+		Map<Lang, Translation> bBreadbrumb = mkBlock(fldsResume, "resume_block_breadbrumb", "various/breadcrumb/breadcrumb");
+		
+		
+		
 		Map<Lang, Translation> bNav = mkBlock(fldsResume, "resume_block_nav", "nav/nav");
 		
 		Map<Lang, Translation> bAchievement = mkBlock(fldSurzilGeek, "resume_block_achievement", "achievement/achievement");
-		Map<Lang, Translation> bSkillsProgressBar = mkBlock(fldSurzilGeek, "resume_block_skillsProgressBar", "skills/progressBar/progressBar");
-		Map<Lang, Translation> bSkillsChart = mkBlock(fldSurzilGeek, "resume_block_skillsChart", "skills/chart/chart");
-		Map<Lang, Translation> bExperiences = mkBlock(fldSurzilGeek, "resume_block_experiences", "experiences/experiences");
-		Map<Lang, Translation> bEducations = mkBlock(fldSurzilGeek, "resume_block_educations", "educations/educations");
-		Map<Lang, Translation> bPortfolios = mkBlock(fldSurzilGeek, "resume_block_portfolios", "portfolio/list");
+		Map<Lang, Translation> bSkillsProgressBar = mkBlock(fldSurzilGeek, "resume_block_skill_progressBar_list", "skill/progressBar/list");
+		Map<Lang, Translation> bSkillsChart = mkBlock(fldSurzilGeek, "resume_block_skill_chart_list", "skill/chart/list");
+		Map<Lang, Translation> bExperiences = mkBlock(fldSurzilGeek, "resume_block_experience_list", "experience/list");
+		Map<Lang, Translation> bEducations = mkBlock(fldSurzilGeek, "resume_block_education_list", "education/list");
+		Map<Lang, Translation> bPortfolios = mkBlock(fldSurzilGeek, "resume_block_portfolio_list", "portfolio/list");
 		Map<Lang, Translation> bPortfolioPicture = mkBlock(fldSurzilGeek, "resume_block_portfolio_picture", "portfolio/picture");
-		
+		Map<Lang, Translation> bBlogs = mkBlock(fldSurzilGeek, "resume_block_blog_list", "blog/list");
 		
 		
 		// Set MapTemplate
@@ -2209,18 +2227,26 @@ public class InitialisationBase {
 		Map<Lang, MapTemplate> mtPbHeaderMHome = addMapTemplate(mHome, pbHeader, pHeader);
 		Map<Lang, MapTemplate> mtPbHeaderMDefault = addMapTemplate(mDefault, pbHeader, pHeader);
 		Map<Lang, MapTemplate> mtPbHeaderMPortfolio = addMapTemplate(mPortfolio, pbHeader, pHeader);
+		Map<Lang, MapTemplate> mtPbHeaderMArticle = addMapTemplate(mArticle, pbHeader, pHeader);
 		
 		// Footer on model Home and Default and Portfolio - All pages model
 		Map<Lang, MapTemplate> mtPbFooterMHome = addMapTemplate(mHome, pbFooter, pFooter);
 		Map<Lang, MapTemplate> mtPbFooterMDefault = addMapTemplate(mDefault, pbFooter, pFooter);
 		Map<Lang, MapTemplate> mtPbFooterMPortfolio = addMapTemplate(mPortfolio, pbFooter, pFooter);
+		Map<Lang, MapTemplate> mtPbFooterMArticle = addMapTemplate(mArticle, pbFooter, pFooter);
 		
-		// Nav on model Home and Default and pb Header and Portfolio - All pages model
+		// Nav on model Home and Default and pb Header and Portfolio and Blog - All pages model
 		Map<Lang, MapTemplate> mtBNavMHome = addMapTemplate(mHome, bNav, pNav);
 		Map<Lang, MapTemplate> mtBNavMDefault = addMapTemplate(mDefault, bNav, pNav);
 		Map<Lang, MapTemplate> mtBNavpbHeader = addMapTemplate(pbHeader, bNav, pNav);
 		Map<Lang, MapTemplate> mtBNavMPortfolio = addMapTemplate(mPortfolio, bNav, pNav);
-
+		Map<Lang, MapTemplate> mtBNavMArticle = addMapTemplate(mArticle, bNav, pNav);
+		
+		// Breadcrumb on model Default and Portfolio - All pages model
+		Map<Lang, MapTemplate> mtBBreadcrumbMDefault = addMapTemplate(mDefault, bBreadbrumb, pHeader);
+		Map<Lang, MapTemplate> mtBBreadcrumbMPortfolio = addMapTemplate(mPortfolio, bBreadbrumb, pHeader);
+		Map<Lang, MapTemplate> mtBBreadcrumbMArticle = addMapTemplate(mArticle, bBreadbrumb, pHeader);
+		
 		// PortfolioTemplate on model Portfolio - All pages model
 		Map<Lang, MapTemplate> mtPBPortfolioTemplateMPortfolio = addMapTemplate(mPortfolio, pbPortfolioTemplate, pMain);
 		Map<Lang, MapTemplate> mtBPortfolioPicturePbPortfolioTemplate = addMapTemplate(pbPortfolioTemplate, bPortfolioPicture, pStandardHeader);
@@ -2237,7 +2263,7 @@ public class InitialisationBase {
 		
 		
 		// BlogTemplate on model Blog - All pages model
-		Map<Lang, MapTemplate> mtBlogTemplateMBlog = addMapTemplate(mBlog, pbBlogTemplate, pMain);
+		Map<Lang, MapTemplate> mtBlogTemplateMBlog = addMapTemplate(mArticle, pbBlogTemplate, pMain);
 		
 		
 		// Listpage on page Home for folder SurzilGeek only
@@ -2260,11 +2286,11 @@ public class InitialisationBase {
 		Map<Lang, MapTemplate> mtPbPortfolioPgPortfolio = addMapTemplate(pgPortfolio, pbPortfolio, pMain);
 		Map<Lang, MapTemplate> mtBPortfoliosPgPortfolios = addMapTemplate(pbPortfolio, bPortfolios, pPortfolio);
 
-		
-		
-		
 		Map<Lang, MapTemplate> mtPbContactPgContact = addMapTemplate(pgContact, pbContact, pMain);
+		
 		Map<Lang, MapTemplate> mtPbBlogPgBlog = addMapTemplate(pgBlog, pbBlog, pMain);
+		Map<Lang, MapTemplate> mtBBlogsPgBlog = addMapTemplate(pbBlog, bBlogs, pBlog);
+		
 		Map<Lang, MapTemplate> mtPbResumePgResume = addMapTemplate(pgResumeSurzilGeek, pbResume, pMain);
 		
 		
@@ -2310,13 +2336,16 @@ public class InitialisationBase {
 		ed.setPicture("/files/resume/surzilgeek/education/" + img);
 		return ed;
 	}
-	private Portfolio putPortfolioX(Portfolio ed){
-		ed.setDescription("<h2>Lorem ipsum dolor sit amet</h2><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse pretium varius mauris, nec ornare lacus. Suspendisse potenti. Morbi non dignissim lectus. Vivamus ipsum leo, pulvinar id posuere a, ullamcorper eget ipsum. In eget mauris lorem. Phasellus dolor mauris, sagittis vitae mauris eu, dignissim blandit quam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut gravida sit amet elit quis tempus. Integer dictum est id tempus tempus. In quis pulvinar lorem.</p><p>Integer eleifend venenatis justo, ut pulvinar dolor scelerisque auctor. Suspendisse potenti. Sed ipsum felis, fermentum vel quam ac, congue eleifend enim. Quisque rhoncus, nisi at rhoncus mattis, magna eros dictum eros, quis viverra metus libero nec felis. Fusce accumsan vulputate ullamcorper. Etiam sodales tortor ac odio elementum ornare. Etiam a congue metus. Nulla sed dui fringilla, accumsan nunc a, fringilla tellus. Phasellus vel mi lobortis, pellentesque risus sit amet, consequat lacus. Phasellus ac mattis lectus, id commodo urna. Etiam quis aliquet ante. Vestibulum mattis sollicitudin diam ut facilisis. Pellentesque libero nunc, feugiat non commodo et, mattis eu nibh. Suspendisse consequat tristique sapien, non consequat sem imperdiet placerat. Nunc vitae ante erat.</p><h2>Integer a nunc sit amet mauris sollicitudin imperdiet</h2><p>Etiam lectus enim, faucibus eget augue vitae, tristique rutrum elit. Integer a nunc sit amet mauris sollicitudin imperdiet. Fusce venenatis, mauris id egestas pellentesque, dolor quam vehicula lorem, sit amet tempus metus nisi ultricies urna. Nunc porttitor erat vel nulla sagittis porta. Sed ac varius ligula. Donec interdum, metus sit amet aliquam faucibus, quam lectus maximus mi, nec vehicula libero nunc ac leo. Aliquam ornare eu diam eget consectetur. Ut non fermentum tortor. Sed varius massa at iaculis dignissim. Curabitur a varius libero. Proin ullamcorper nibh elementum neque feugiat, et tincidunt nulla laoreet. Nulla lacinia ullamcorper tellus vitae ullamcorper. Phasellus odio arcu, ullamcorper non porttitor sit amet, dictum quis leo. Suspendisse risus urna, vestibulum in suscipit vitae, tincidunt non leo.</p><p>Integer eget purus non tortor venenatis maximus. Vestibulum vitae tristique neque. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Pellentesque tempor fringilla nibh cursus consequat. Suspendisse id suscipit quam. Ut velit massa, facilisis mattis tellus id, mattis accumsan leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Maecenas non dui nisl. Aenean commodo malesuada velit in dictum. Proin commodo quis ipsum a euismod. Donec consectetur purus vitae dictum auctor. Praesent quis elementum velit, in dapibus velit.</p><p>Nam ac condimentum nisi, vel accumsan tortor. Mauris lacus orci, posuere in dictum quis, tristique non lacus. Ut non pellentesque nulla. Praesent vulputate tortor in velit accumsan, at faucibus risus auctor. Integer vitae tempor felis. Etiam interdum, velit eget rutrum molestie, lacus lorem tempor odio, quis placerat est ligula ac ex. Suspendisse sit amet ultricies sapien. Fusce consectetur non leo vel fermentum. Suspendisse fringilla neque scelerisque semper volutpat. In efficitur, mi at semper porttitor, elit arcu condimentum metus, quis tempus ipsum felis at eros. Duis aliquam auctor sem, non tristique dolor pellentesque ac. Phasellus et libero eget lacus viverra iaculis nec sit amet diam. Sed vel sodales metus. In ut felis lacus.</p>");
-		ed.setChapo("<p>Lorem ipsum dolor sit ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>");
-		return ed;
+	private Portfolio putPortfolioX(Portfolio pf){
+		pf.setDescription("<h2>Lorem ipsum dolor sit amet</h2><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse pretium varius mauris, nec ornare lacus. Suspendisse potenti. Morbi non dignissim lectus. Vivamus ipsum leo, pulvinar id posuere a, ullamcorper eget ipsum. In eget mauris lorem. Phasellus dolor mauris, sagittis vitae mauris eu, dignissim blandit quam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut gravida sit amet elit quis tempus. Integer dictum est id tempus tempus. In quis pulvinar lorem.</p><p>Integer eleifend venenatis justo, ut pulvinar dolor scelerisque auctor. Suspendisse potenti. Sed ipsum felis, fermentum vel quam ac, congue eleifend enim. Quisque rhoncus, nisi at rhoncus mattis, magna eros dictum eros, quis viverra metus libero nec felis. Fusce accumsan vulputate ullamcorper. Etiam sodales tortor ac odio elementum ornare. Etiam a congue metus. Nulla sed dui fringilla, accumsan nunc a, fringilla tellus. Phasellus vel mi lobortis, pellentesque risus sit amet, consequat lacus. Phasellus ac mattis lectus, id commodo urna. Etiam quis aliquet ante. Vestibulum mattis sollicitudin diam ut facilisis. Pellentesque libero nunc, feugiat non commodo et, mattis eu nibh. Suspendisse consequat tristique sapien, non consequat sem imperdiet placerat. Nunc vitae ante erat.</p><h2>Integer a nunc sit amet mauris sollicitudin imperdiet</h2><p>Etiam lectus enim, faucibus eget augue vitae, tristique rutrum elit. Integer a nunc sit amet mauris sollicitudin imperdiet. Fusce venenatis, mauris id egestas pellentesque, dolor quam vehicula lorem, sit amet tempus metus nisi ultricies urna. Nunc porttitor erat vel nulla sagittis porta. Sed ac varius ligula. Donec interdum, metus sit amet aliquam faucibus, quam lectus maximus mi, nec vehicula libero nunc ac leo. Aliquam ornare eu diam eget consectetur. Ut non fermentum tortor. Sed varius massa at iaculis dignissim. Curabitur a varius libero. Proin ullamcorper nibh elementum neque feugiat, et tincidunt nulla laoreet. Nulla lacinia ullamcorper tellus vitae ullamcorper. Phasellus odio arcu, ullamcorper non porttitor sit amet, dictum quis leo. Suspendisse risus urna, vestibulum in suscipit vitae, tincidunt non leo.</p><p>Integer eget purus non tortor venenatis maximus. Vestibulum vitae tristique neque. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Pellentesque tempor fringilla nibh cursus consequat. Suspendisse id suscipit quam. Ut velit massa, facilisis mattis tellus id, mattis accumsan leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Maecenas non dui nisl. Aenean commodo malesuada velit in dictum. Proin commodo quis ipsum a euismod. Donec consectetur purus vitae dictum auctor. Praesent quis elementum velit, in dapibus velit.</p><p>Nam ac condimentum nisi, vel accumsan tortor. Mauris lacus orci, posuere in dictum quis, tristique non lacus. Ut non pellentesque nulla. Praesent vulputate tortor in velit accumsan, at faucibus risus auctor. Integer vitae tempor felis. Etiam interdum, velit eget rutrum molestie, lacus lorem tempor odio, quis placerat est ligula ac ex. Suspendisse sit amet ultricies sapien. Fusce consectetur non leo vel fermentum. Suspendisse fringilla neque scelerisque semper volutpat. In efficitur, mi at semper porttitor, elit arcu condimentum metus, quis tempus ipsum felis at eros. Duis aliquam auctor sem, non tristique dolor pellentesque ac. Phasellus et libero eget lacus viverra iaculis nec sit amet diam. Sed vel sodales metus. In ut felis lacus.</p>");
+		pf.setChapo("<p>Lorem ipsum dolor sit ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>");
+		return pf;
 	}
-	
-	
+	private Article putArticleX(Article at){
+		at.setDescription("<h2>Lorem ipsum dolor sit amet</h2><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse pretium varius mauris, nec ornare lacus. Suspendisse potenti. Morbi non dignissim lectus. Vivamus ipsum leo, pulvinar id posuere a, ullamcorper eget ipsum. In eget mauris lorem. Phasellus dolor mauris, sagittis vitae mauris eu, dignissim blandit quam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut gravida sit amet elit quis tempus. Integer dictum est id tempus tempus. In quis pulvinar lorem.</p><p>Integer eleifend venenatis justo, ut pulvinar dolor scelerisque auctor. Suspendisse potenti. Sed ipsum felis, fermentum vel quam ac, congue eleifend enim. Quisque rhoncus, nisi at rhoncus mattis, magna eros dictum eros, quis viverra metus libero nec felis. Fusce accumsan vulputate ullamcorper. Etiam sodales tortor ac odio elementum ornare. Etiam a congue metus. Nulla sed dui fringilla, accumsan nunc a, fringilla tellus. Phasellus vel mi lobortis, pellentesque risus sit amet, consequat lacus. Phasellus ac mattis lectus, id commodo urna. Etiam quis aliquet ante. Vestibulum mattis sollicitudin diam ut facilisis. Pellentesque libero nunc, feugiat non commodo et, mattis eu nibh. Suspendisse consequat tristique sapien, non consequat sem imperdiet placerat. Nunc vitae ante erat.</p><h2>Integer a nunc sit amet mauris sollicitudin imperdiet</h2><p>Etiam lectus enim, faucibus eget augue vitae, tristique rutrum elit. Integer a nunc sit amet mauris sollicitudin imperdiet. Fusce venenatis, mauris id egestas pellentesque, dolor quam vehicula lorem, sit amet tempus metus nisi ultricies urna. Nunc porttitor erat vel nulla sagittis porta. Sed ac varius ligula. Donec interdum, metus sit amet aliquam faucibus, quam lectus maximus mi, nec vehicula libero nunc ac leo. Aliquam ornare eu diam eget consectetur. Ut non fermentum tortor. Sed varius massa at iaculis dignissim. Curabitur a varius libero. Proin ullamcorper nibh elementum neque feugiat, et tincidunt nulla laoreet. Nulla lacinia ullamcorper tellus vitae ullamcorper. Phasellus odio arcu, ullamcorper non porttitor sit amet, dictum quis leo. Suspendisse risus urna, vestibulum in suscipit vitae, tincidunt non leo.</p><p>Integer eget purus non tortor venenatis maximus. Vestibulum vitae tristique neque. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Pellentesque tempor fringilla nibh cursus consequat. Suspendisse id suscipit quam. Ut velit massa, facilisis mattis tellus id, mattis accumsan leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Maecenas non dui nisl. Aenean commodo malesuada velit in dictum. Proin commodo quis ipsum a euismod. Donec consectetur purus vitae dictum auctor. Praesent quis elementum velit, in dapibus velit.</p><p>Nam ac condimentum nisi, vel accumsan tortor. Mauris lacus orci, posuere in dictum quis, tristique non lacus. Ut non pellentesque nulla. Praesent vulputate tortor in velit accumsan, at faucibus risus auctor. Integer vitae tempor felis. Etiam interdum, velit eget rutrum molestie, lacus lorem tempor odio, quis placerat est ligula ac ex. Suspendisse sit amet ultricies sapien. Fusce consectetur non leo vel fermentum. Suspendisse fringilla neque scelerisque semper volutpat. In efficitur, mi at semper porttitor, elit arcu condimentum metus, quis tempus ipsum felis at eros. Duis aliquam auctor sem, non tristique dolor pellentesque ac. Phasellus et libero eget lacus viverra iaculis nec sit amet diam. Sed vel sodales metus. In ut felis lacus.</p>");
+		at.setChapo("<p>Lorem ipsum dolor sit ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>");
+		return at;
+	}
 	
 	
 	

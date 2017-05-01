@@ -7,7 +7,7 @@
 
 
 
-<s:message var="pattern" code="date.locale.portfolio.format " text="MMMM, yyyy"/>
+<s:message var="pattern" code="date.locale.portfolio.format" text="MMMM, yyyy"/>
 <s:message var="present" code="portfolio.present " text="Present"/>
 
 
