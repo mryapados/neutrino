@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 
 import fr.cedricsevestre.annotation.TemplateController;
+import fr.cedricsevestre.conf.custom.CustomApplicationProperties;
 import fr.cedricsevestre.annotation.BlockMapping;
 import fr.cedricsevestre.annotation.ElementMapping;
 import fr.cedricsevestre.entity.custom.Category;
@@ -38,6 +39,7 @@ import fr.cedricsevestre.service.custom.CategoryService;
 import fr.cedricsevestre.service.custom.EducationService;
 import fr.cedricsevestre.service.custom.ExperienceService;
 import fr.cedricsevestre.service.custom.PortfolioService;
+import fr.cedricsevestre.service.custom.ResumeService;
 import fr.cedricsevestre.service.custom.SkillService;
 import fr.cedricsevestre.service.custom.SocialNetworkService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
@@ -67,6 +69,12 @@ public class ResumeTemplateController {
 	@Autowired
 	private ArticleService articleService;
 	
+	@Autowired
+	private ResumeService resumeService;
+	
+	@Autowired
+	private CustomApplicationProperties properties;
+	
 	protected static final String ATTR_CATEGORIES = "categories";
 	protected static final String ATTR_ACTIVERESUME = "activeResume";
 	protected static final String ATTR_SKILLS = "skills";
@@ -79,7 +87,21 @@ public class ResumeTemplateController {
 	protected static final String ATTR_ARTICLES = "articles";
 	protected static final String ATTR_SOCIALNETWORK = "socialnetworks";
 	protected static final String ATTR_ACTIVEPAGE = "activePage";
+	protected static final String ATTR_ACTIVELANG = "activeLang";
 	
+	@ElementMapping("resume_element_activeResume")
+	public ModelMap activeResume(Folder folder, Lang lang, PageContext pageContext) throws ControllerException{
+		try {
+			ModelMap modelMap = new ModelMap();
+			if (pageContext != null){
+				Resume resume = resumeService.identify(folder, properties.getResumeName(), lang);
+				modelMap.addAttribute(ATTR_ACTIVERESUME, resume);
+			}
+			return modelMap;
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
+		}
+	}
 	
 	@BlockMapping({"resume_block_nav", "resume_block_listpage"})
 	public ModelMap navs(Translation model, Translation activeObject, Template template, Folder folder, Lang lang) throws ControllerException{	

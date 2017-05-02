@@ -15,7 +15,7 @@ import fr.cedricsevestre.exception.ServiceException;
 @Controller
 @Scope("prototype")
 @RequestMapping(value = "/static")
-public class StaticController extends AbtractController {
+public class StaticController extends AbstractController {
 
 	@RequestMapping(value = "/static", method = RequestMethod.GET)
 	public ModelAndView view(@ModelAttribute("p") String page, Folder folder) throws ResourceNotFoundException, ControllerException {

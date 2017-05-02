@@ -20,7 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import fr.cedricsevestre.com.utils.CommonUtil;
 import fr.cedricsevestre.com.utils.EntityLocator;
-import fr.cedricsevestre.controller.engine.AbtractController;
+import fr.cedricsevestre.controller.engine.AbstractController;
 import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.exception.ControllerException;
@@ -33,7 +33,7 @@ import fr.cedricsevestre.service.engine.translation.LangService;
 @Controller
 @RequestMapping(value = CommonUtil.BO_URL)
 @Secured({ "ROLE_WEBMASTER", "ROLE_ADMIN", "ROLE_BO" })
-public abstract class BackOfficeController extends AbtractController {
+public abstract class BackOfficeController extends AbstractController {
 	
 	protected static final String BO_HOME_URL = "";
 	protected static final String BO_HOME_PAGE = "@bo_page_home";

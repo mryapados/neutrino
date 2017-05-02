@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.cedricsevestre.controller.engine.AbtractController;
+import fr.cedricsevestre.controller.engine.AbstractController;
 import fr.cedricsevestre.entity.custom.Resume;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.Lang;
@@ -20,7 +20,7 @@ import fr.cedricsevestre.service.custom.ResumeService;
 
 @Controller
 @RequestMapping(value = PortfolioController.PORTFOLIO_MAPPING)
-public class PortfolioController extends AbtractController {
+public class PortfolioController extends AbstractController {
 	protected static final String PORTFOLIO_MAPPING = "/portfolio";
 	protected static final String PORTFOLIO_URL = "/portfolio";
 

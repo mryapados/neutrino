@@ -31,8 +31,8 @@ import fr.cedricsevestre.service.engine.independant.objects.UserService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 
 @Controller
-@SessionAttributes( value = AbtractController.ATTR_BLOCKPREVIEW, types={Boolean.class} )
-public abstract class AbtractController {
+@SessionAttributes( value = AbstractController.ATTR_BLOCKPREVIEW, types={Boolean.class} )
+public abstract class AbstractController {
 	
 	protected static final String ATTR_BLOCKPREVIEW = "blockPreview";
 	

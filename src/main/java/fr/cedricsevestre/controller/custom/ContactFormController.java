@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.cedricsevestre.controller.engine.AbtractController;
+import fr.cedricsevestre.controller.engine.AbstractController;
 import fr.cedricsevestre.dto.engine.BlockDto;
 import fr.cedricsevestre.dto.engine.MapTemplateSimpleDto;
 import fr.cedricsevestre.entity.custom.Contact;
@@ -37,7 +37,7 @@ import fr.cedricsevestre.service.custom.ResumeService;
 
 @Controller
 @RequestMapping(value = ContactFormController.CONTACTFORM_MAPPING)
-public class ContactFormController extends AbtractController {
+public class ContactFormController extends AbstractController {
 	protected static final String CONTACTFORM_MAPPING = "/contact";
 	protected static final String CONTACTFORM_SAVE_URL = "/save";
 

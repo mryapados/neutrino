@@ -21,7 +21,7 @@ import fr.cedricsevestre.exception.UtilException;
 
 @Controller
 @Scope("prototype")
-public class LoginController extends AbtractController {
+public class LoginController extends AbstractController {
 	public static final String LOGINPAGE = "login";
 	public static final String BACKFOLDER = "back";
 	

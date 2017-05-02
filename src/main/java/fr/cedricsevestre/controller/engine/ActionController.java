@@ -11,7 +11,7 @@ import fr.cedricsevestre.exception.ServiceException;
 @Controller
 //@Scope("prototype")
 @RequestMapping(value = "/@action")
-public class ActionController extends AbtractController {
+public class ActionController extends AbstractController {
 
 	@Secured({ "ROLE_WEBMASTER", "ROLE_ADMIN", "ROLE_USER" })
 	@RequestMapping(value = "/setpreview", method = RequestMethod.POST)

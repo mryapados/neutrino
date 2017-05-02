@@ -75,6 +75,7 @@ public class SpringMvcInitializer extends AbstractAnnotationConfigDispatcherServ
 		try {
 			Properties initParams = new Properties();
 			initParams.load(new ClassPathResource("application.properties").getInputStream());
+			initParams.load(new ClassPathResource("customapplication.properties").getInputStream());
 			initParams.stringPropertyNames().stream().forEach(propertyName -> servletContext.setInitParameter(propertyName, initParams.getProperty(propertyName)));
 		} catch (IOException e) {
 			throw new ServletException(e);

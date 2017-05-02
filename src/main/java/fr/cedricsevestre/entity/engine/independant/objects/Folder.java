@@ -55,6 +55,9 @@ public class Folder implements IdProvider, Serializable{
 	private String path;
 	
 	@Transient
+	private boolean serverNameForced;
+	
+	@Transient
 	@Override
 	public String getObjectType() {
 		return "Folder";
@@ -95,6 +98,14 @@ public class Folder implements IdProvider, Serializable{
 	}
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public boolean isServerNameForced() {
+		return serverNameForced;
+	}
+
+	public void setServerNameForced(boolean serverNameForced) {
+		this.serverNameForced = serverNameForced;
 	}
 
 	@Override

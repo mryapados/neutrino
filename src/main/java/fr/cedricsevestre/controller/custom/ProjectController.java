@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.cedricsevestre.controller.engine.AbtractController;
+import fr.cedricsevestre.controller.engine.AbstractController;
 import fr.cedricsevestre.entity.custom.Project;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.Translation;
@@ -25,7 +25,7 @@ import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 @Controller
 @Scope("prototype")
 @RequestMapping(value = "/project")
-public class ProjectController extends AbtractController {
+public class ProjectController extends AbstractController {
 	
 	@Autowired
 	private ProjectService projectService;

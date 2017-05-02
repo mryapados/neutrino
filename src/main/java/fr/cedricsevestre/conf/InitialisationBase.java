@@ -2027,8 +2027,6 @@ public class InitialisationBase {
 		Folder fldSamuel = new Folder();
 		fldSamuel.setName("samuel");
 		List<String> serverNames = new ArrayList<>();
-		serverNames.add("localhost");
-		serverNames.add("127.0.0.1");
 		serverNames.add("samuel");
 		fldSamuel.setServerName(serverNames);
 		fldSamuel.setPath("resume/samuel/");
@@ -2039,6 +2037,8 @@ public class InitialisationBase {
 		Folder fldSurzilGeek = new Folder();
 		fldSurzilGeek.setName("surzilgeek");
 		serverNames = new ArrayList<>();
+		serverNames.add("localhost");
+		serverNames.add("127.0.0.1");
 		serverNames.add("surzilgeek");
 		fldSurzilGeek.setServerName(serverNames);
 		fldSurzilGeek.setPath("resume/surzilgeek/");
@@ -2178,9 +2178,8 @@ public class InitialisationBase {
 		Map<Lang, Translation> pgAtTest07 = mkPage(putArticleX(new Article("Test07", "/files/resume/surzilgeek/article/07.jpg" , 70)), fldsResume, "attest07", "article", mArticle, pgAtTest06);
 		Map<Lang, Translation> pgAtTest08 = mkPage(putArticleX(new Article("Test08", "/files/resume/surzilgeek/article/08.jpg" , 80)), fldsResume, "attest08", "article", mArticle, pgAtTest07);
 
-
+		Map<Lang, Translation> elActiveResume = mkElement(fldsResume, "resume_element_activeResume", "activeresume/activeresume");
 		Map<Lang, Translation> elSocialNetwork = mkElement(fldsResume, "resume_element_socialnetwork", "socialnetwork/socialnetwork");
-
 		
 		// PageBlocks
 		Map<Lang, Translation> pbHeader = mkPageBlock(fldsResume, "resume_pageblock_header", "header/header");

@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.cedricsevestre.controller.engine.AbtractController;
+import fr.cedricsevestre.controller.engine.AbstractController;
 import fr.cedricsevestre.dto.engine.BlockDto;
 import fr.cedricsevestre.dto.engine.FolderDto;
 import fr.cedricsevestre.dto.engine.LangDto;
@@ -61,7 +61,7 @@ import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 @Scope("prototype")
 @RequestMapping(value = "/@back")
 @Secured({ "ROLE_WEBMASTER", "ROLE_ADMIN" })
-public class BackController extends AbtractController {
+public class BackController extends AbstractController {
 	
 	@Autowired
 	private LangService langService;

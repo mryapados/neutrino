@@ -11,6 +11,7 @@ public class AttributeConst {
 	public static final String ACTIVEPAGE = "activePage";
 	public static final String PARENTPAGEBLOCK = "parentPageBlock";
 	public static final String SURFER = "surfer";
+	public static final String SERVERNAME = "servername";
 	
 	public static final String NDATAS = "nDatas";
 	

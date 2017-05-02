@@ -52,7 +52,7 @@ import fr.cedricsevestre.bean.NDatas;
 import fr.cedricsevestre.bean.NField;
 import fr.cedricsevestre.com.utils.CommonUtil;
 import fr.cedricsevestre.com.utils.EntityLocator;
-import fr.cedricsevestre.controller.engine.AbtractController;
+import fr.cedricsevestre.controller.engine.AbstractController;
 import fr.cedricsevestre.dto.engine.IdProviderDto;
 import fr.cedricsevestre.dto.engine.LangDto;
 import fr.cedricsevestre.dto.engine.NoTranslationDto;

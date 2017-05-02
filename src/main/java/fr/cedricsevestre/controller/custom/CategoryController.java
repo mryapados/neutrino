@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.cedricsevestre.controller.engine.AbtractController;
+import fr.cedricsevestre.controller.engine.AbstractController;
 import fr.cedricsevestre.entity.custom.Resume;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.Lang;
@@ -20,13 +20,9 @@ import fr.cedricsevestre.service.custom.ResumeService;
 
 @Controller
 @RequestMapping(value = CategoryController.CATEGORY_MAPPING)
-public class CategoryController extends AbtractController {
+public class CategoryController extends AbstractController {
 	protected static final String CATEGORY_MAPPING = "/category";
 	protected static final String CATEGORY_URL = "/category";
-
-	protected static final String PARAM_RESUME = "resume";
-	
-	protected static final String ATTR_RESUME = "activeResume";
 	protected static final String ATTR_CATEGORY = "cat";
 		
 	@Autowired
@@ -34,16 +30,7 @@ public class CategoryController extends AbtractController {
 	
 	@RequestMapping(value = CATEGORY_URL, method = RequestMethod.GET)
 	public ModelAndView view(@ModelAttribute(ATTR_CATEGORY) String category, Folder folder, HttpServletRequest request) throws ResourceNotFoundException, ControllerException {
-		try {
-			String resumeName = request.getParameter(PARAM_RESUME);
-			ModelAndView modelAndView = baseView(category, null, folder);
-			Lang lang = (Lang) modelAndView.getModel().get(ATTR_ACTIVELANG);
-			Resume resume = resumeService.identify(folder, resumeName, lang);
-			modelAndView.addObject(ATTR_RESUME, resume);
-			return modelAndView;
-		} catch (ServiceException e) {
-			throw new ControllerException(e);
-		}
+		return baseView(category, null, folder);
 	}
 
 }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.cedricsevestre.controller.engine.AbtractController;
+import fr.cedricsevestre.controller.engine.AbstractController;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ControllerException;
@@ -19,7 +19,7 @@ import fr.cedricsevestre.service.custom.ProjectService;
 @Controller
 @Scope("prototype")
 @RequestMapping(value = "/article")
-public class ArticleController extends AbtractController {
+public class ArticleController extends AbstractController {
 	public static final String HOMEARTICLEPAGE = "article";
 	
 	@RequestMapping(value = "/article", method = RequestMethod.GET)

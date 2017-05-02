@@ -14,7 +14,7 @@
 		</c:if>
 	</c:set>
 	<li class="scroll${status.first ? ' current dropdown' : ''}">
-		<c:url var="url" value='/${categoryName}.html' />
+		<my:url var="url" value='/${categoryName}.html' />
 		<a href="${url}"><span>${icon}${categoryTitle}</span></a>
 	</li>
 </c:forEach>

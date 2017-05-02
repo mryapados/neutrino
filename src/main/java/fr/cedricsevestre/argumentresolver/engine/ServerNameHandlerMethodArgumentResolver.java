@@ -32,12 +32,15 @@ public final class ServerNameHandlerMethodArgumentResolver implements HandlerMet
                                   NativeWebRequest nativeWebRequest,
                                   WebDataBinderFactory webDataBinderFactory) throws Exception {
 		System.out.println("Enter in ServerNameHandlerMethodArgumentResolver");
+		boolean forced = true;
     	String serverName = nativeWebRequest.getParameter("servername");
 		if (serverName == null || serverName.equals("")){
+			forced = false;
 			HttpServletRequest httpServletRequest = (HttpServletRequest) nativeWebRequest.getNativeRequest();
 			serverName = httpServletRequest.getServerName();
 		}
 		Folder folder =  common.getFolder(serverName);
+		folder.setServerNameForced(forced);
     	return folder;
     }
  
