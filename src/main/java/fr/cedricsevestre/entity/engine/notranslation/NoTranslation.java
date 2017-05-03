@@ -2,17 +2,22 @@ package fr.cedricsevestre.entity.engine.notranslation;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -64,9 +69,17 @@ public abstract class NoTranslation implements IdProvider, Serializable {
 	@Column(name = "description")
 	private String description;
 
-	@BOField(type = ValueType.OBJECT)
-	@OneToOne
-	private Folder folder;
+	@BOField(type = ValueType.COLLECTION, ofType = ValueType.OBJECT)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+		name = "notranslation_folders", 
+		joinColumns = { 
+			@JoinColumn(name = "notranslation_id", 
+			referencedColumnName = "id")}, 
+		inverseJoinColumns = {
+			@JoinColumn(name = "folder_id", 
+			referencedColumnName = "id")})
+	private List<Folder> folders;
 	
 	public NoTranslation() {
 		super();
@@ -130,13 +143,13 @@ public abstract class NoTranslation implements IdProvider, Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	public Folder getFolder() {
-		return folder;
+
+	public List<Folder> getFolders() {
+		return folders;
 	}
 
-	public void setFolder(Folder folder) {
-		this.folder = folder;
+	public void setFolders(List<Folder> folders) {
+		this.folders = folders;
 	}
 
 	@Override

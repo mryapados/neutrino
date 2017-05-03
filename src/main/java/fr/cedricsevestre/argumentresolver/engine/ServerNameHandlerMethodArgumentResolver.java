@@ -2,6 +2,7 @@ package fr.cedricsevestre.argumentresolver.engine;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.MethodParameter;
@@ -15,8 +16,9 @@ import fr.cedricsevestre.com.utils.CommonUtil;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 
 @Component
-@Scope(value = "singleton")
 public final class ServerNameHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver  {
+	
+	private Logger logger = Logger.getLogger(ServerNameHandlerMethodArgumentResolver.class);
 	
 	@Autowired
 	private CommonUtil common;
@@ -31,7 +33,7 @@ public final class ServerNameHandlerMethodArgumentResolver implements HandlerMet
                                   ModelAndViewContainer modelAndViewContainer,
                                   NativeWebRequest nativeWebRequest,
                                   WebDataBinderFactory webDataBinderFactory) throws Exception {
-		System.out.println("Enter in ServerNameHandlerMethodArgumentResolver");
+		logger.debug("Enter in resolveArgument");
 		boolean forced = true;
     	String serverName = nativeWebRequest.getParameter("servername");
 		if (serverName == null || serverName.equals("")){

@@ -46,7 +46,8 @@ public class IdProviderUtil {
 		return entityLocator.getEntity(type).getClass();
 	}
 
-	private IdProvider getObject(Class<?> entity, Integer id) throws JspTagException{
+	public IdProvider getObject(Class<?> entity, Integer id) throws JspTagException{
+		logger.debug("Enter in getObject : entity = " + entity + "; id = " + id);
 		try {
 			Class<?> params[] = {Integer.class};
 			Object paramsObj[] = {id};
@@ -59,6 +60,7 @@ public class IdProviderUtil {
 		}
 	}
 	private Field getField(Class<?> classObject, String fieldName) throws NoSuchFieldException {
+		logger.debug("Enter in getField : classObject = " + classObject + "; fieldName = " + fieldName);
 		try {
 			return classObject.getDeclaredField(fieldName);
 		} catch (NoSuchFieldException e) {
@@ -72,6 +74,7 @@ public class IdProviderUtil {
 	}
 	
 	private Object getFieldValue(Object object, Field field) throws JspTagException {
+		logger.debug("Enter in getFieldValue : object = " + object + "; field = " + field);
 		try {
 			field.setAccessible(true);
 			return field.get(object);
@@ -83,6 +86,7 @@ public class IdProviderUtil {
 	
 	@Cacheable(CacheConst.IDPROVIDERFIEDDVALUE)
 	public Object getIdProviderFieldValue(String type, int beanId, String field) throws JspTagException{
+		logger.debug("Enter in getIdProviderFieldValue");
 		try {
 			Class<?> clazz = entityLocator.getEntity(type).getClass();
 			Object object = getObject(clazz, beanId);
@@ -94,6 +98,7 @@ public class IdProviderUtil {
 	
 	
 	private IdProvider copyFields(IdProvider entity, IdProvider newEntity, Class<?> clazz) throws IllegalAccessException {
+		logger.debug("Enter in copyFields : entity = " + entity + "; newEntity = " + newEntity + "; clazz = " + clazz);
 	    List<Field> fields = new ArrayList<>();
 	    for (Field field : clazz.getDeclaredFields()) {
 	        fields.add(field);
@@ -105,6 +110,7 @@ public class IdProviderUtil {
 	    return newEntity;
 	}
 	public IdProvider copy(IdProvider entity) throws IllegalAccessException, InstantiationException {
+		logger.debug("Enter in entity : entity = " + entity);
 	    Class<?> clazz = entity.getClass();
 	    IdProvider newEntity = (IdProvider) entity.getClass().newInstance();
 
@@ -127,7 +133,7 @@ public class IdProviderUtil {
 	}
 
 	private IdProvider getFullObject(Class<?> entity, Integer id, Specification<IdProvider> spec, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException{
-				
+		logger.debug("Enter in getFullObject : entity = " + entity + "; id = " + id + "; spec = " + spec + "; entityGraphType = " + entityGraphType + "; entityGraphName = " + entityGraphName);
 		try {
 			List<Class<?>> classes = new ArrayList<>();
 			classes.add(Specification.class);
@@ -198,7 +204,7 @@ public class IdProviderUtil {
 	}
 
 	private Page<IdProvider> getFullObjects(Class<?> entity, Pageable pageable, Specification<IdProvider> spec, EntityGraphType entityGraphType, String entityGraphName) throws ServiceException{
-
+		logger.debug("Enter in getFullObjects : entity = " + entity + "; pageable = " + pageable + "; spec = " + spec + "; entityGraphType = " + entityGraphType + "; entityGraphName = " + entityGraphName);
 		try {
 
 			List<Class<?>> classes = new ArrayList<>();
@@ -227,12 +233,7 @@ public class IdProviderUtil {
 			Object service = serviceLocator.getService(entity.getSimpleName());
 			logger.debug("getDatas -> Entity found " + entity.getSimpleName());		
 			logger.debug("getDatas -> Service found " + service.getClass().getSimpleName());		
-			
-			
 
-			
-			
-			
 			Class<?> clazz = Class.forName(service.getClass().getName());
 			Method findAll;
 			try {

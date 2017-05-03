@@ -18,20 +18,68 @@
 		<a href="#${categoryName}${categoryName eq 'home' ? '-banner' : ''}"><span>${icon}${categoryTitle}</span></a>
 	</li>
 </c:forEach>
-         
 <li>
-    <ul class="social list-inline">
-        <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-        <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-        <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
-        <li><a href="#"><i class="fa fa-dribbble" aria-hidden="true"></i></a></li>
-        <li><a href="#"><i class="fa fa-behance" aria-hidden="true"></i></a></li>
-        <li><a href="#"><i class="fa fa-github-alt" aria-hidden="true"></i></a></li>
-    </ul>
-</li>      
-                        
-                        
-			
+	<my:element template="resume_element_socialnetwork" />
+</li>
+               
+<my:script>
+// -------------------------------------------------------------
+//  Navigation Height 
+// -------------------------------------------------------------
+
+(function() {
+
+    var height = $(window).height();
+     $(".menu-one .navbar-nav").innerHeight(height);
+    
+}());
+
+// -------------------------------------------------------------
+//Mobile Toggle Control
+// -------------------------------------------------------------
+
+$(function(){ 
+    var navMain = $(".collapse");
+    navMain.on("click", "a", null, function () {
+        navMain.collapse('hide');
+    });
+});
+
+// -------------------------------------------------------------
+// Navigation Scroll
+// -------------------------------------------------------------
+
+$(window).scroll(function(event) {
+    Scroll();
+}); 
+
+$('#mainmenu li a').click(function() {  
+    $('html, body').animate({scrollTop: $(this.hash).offset().top -1}, 1000);
+    return false;
+});
+
+// User define function
+function Scroll() {
+    var contentTop      =   [];
+    var contentBottom   =   [];
+    var winTop      =   $(window).scrollTop();
+    var rangeTop    =   200;
+    var rangeBottom =   500;
+    $('#mainmenu').find('.scroll a').each(function(){
+        contentTop.push( $( $(this).attr('href') ).offset().top);
+        contentBottom.push( $( $(this).attr('href') ).offset().top + $( $(this).attr('href') ).height() );
+    })
+    $.each( contentTop, function(i){
+        if ( winTop > contentTop[i] - rangeTop ){
+            $('#mainmenu li.scroll')
+            .removeClass('current')
+            .eq(i).addClass('current');          
+        }
+    })
+
+};
+</my:script>
+               
 					
                                                             
                    

@@ -133,6 +133,12 @@ public class Folder implements IdProvider, Serializable{
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "Folder [id=" + id + ", name=" + name + ", serverName=" + serverName + ", path=" + path
+				+ ", serverNameForced=" + serverNameForced + "]";
+	}
+
 	
 	
 }

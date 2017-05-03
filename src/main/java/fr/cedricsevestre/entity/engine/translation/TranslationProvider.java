@@ -3,6 +3,8 @@ package fr.cedricsevestre.entity.engine.translation;
 import java.io.Serializable;
 import java.util.Map;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -23,7 +25,8 @@ public class TranslationProvider implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO) 
+	@Access(AccessType.PROPERTY)
 	private Integer id;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="translation")

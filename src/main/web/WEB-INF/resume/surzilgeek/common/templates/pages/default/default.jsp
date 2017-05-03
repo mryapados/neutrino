@@ -60,7 +60,7 @@
 			<my:block position="resume_header" />
 		</header>
 
-		<main>
+		<main id="main" role="main">
 			<my:block position="resume_main" />
 		</main>
 

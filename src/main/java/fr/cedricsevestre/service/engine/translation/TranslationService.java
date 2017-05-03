@@ -49,8 +49,8 @@ public abstract class TranslationService<T extends Translation> extends BaseServ
 
 	@Cacheable(CacheConst.TRANSLATION_IDENTIFY)
 	public T identify(Folder folder, String name, Lang lang) throws ServiceException {
+		logger.debug("Enter in identify : folder = " + folder +  "; name = " + name + "; lang = " + lang);
 		try {
-			System.out.println("ZZZZ identify " + name + " " + lang.getCode() + " " + translationDao);
 			if (folder == null) return translationDao.identify(name, lang);
 			else return translationDao.identify(folder, name, lang);
 		} catch (PersistenceException e) {

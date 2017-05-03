@@ -51,4 +51,39 @@
 	</c:choose>
 </div><!-- more skill -->
 
+<my:script>
+// -------------------------------------------------------------
+// Counter
+// -------------------------------------------------------------
+
+(function () {
+    $('.counter').counterUp({
+        delay: 10,
+        time: 1000
+    
+    });
+}());
+
+// -------------------------------------------------------------
+// EasyPieChart
+// -------------------------------------------------------------
+
+(function () {
+    $('.language-skill').bind('inview', function(event, visible, visiblePartX, visiblePartY) {
+        if (visible) {
+            $('.chart').easyPieChart({
+                //your configuration goes here
+                easing: 'easeOut',
+                delay: 3000,
+                scaleColor: false,
+                animate: 2000,
+                onStep: function(from, to, percent) {
+                    this.el.children[0].innerHTML = Math.round(percent);
+                }
+
+            });
+        }
+    }); 
+}());
+</my:script>
 

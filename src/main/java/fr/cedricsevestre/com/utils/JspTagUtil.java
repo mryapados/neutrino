@@ -70,9 +70,9 @@ public class JspTagUtil {
 	
 	@Autowired
 	private TemplateControllerExecutor templateControllerExecutor;
-	
-	
 
+	@Autowired
+	private IdProviderUtil idProviderUtil;
 	
 	private Folder getFolder(PageContext pageContext){
 		//Get folder from pageContext
@@ -105,20 +105,24 @@ public class JspTagUtil {
 	}
 	private Translation getActiveObject(PageContext pageContext, Folder folder, Lang lang, int activeObjectId, String activeObjectName) throws ServiceException{
 		Translation activeObject = (Translation) pageContext.getAttribute(AttributeConst.ACTIVEOBJECT, PageContext.REQUEST_SCOPE);
-		if (activeObjectId != 0) activeObject = tObjectService.findOne(activeObjectId); //If activeObjectId provided -> activeObject is replace
-		else if (activeObject != null) activeObject = tObjectService.identify(folder, activeObjectName, lang); //If activeObjectName provided -> activeObject is replace
+		if (activeObjectId != 0) {
+			activeObject = tObjectService.findOne(activeObjectId); //If activeObjectId provided -> activeObject is replace
+		}
+		else if (activeObject != null) {
+			activeObject = tObjectService.identify(folder, activeObjectName, lang); //If activeObjectName provided -> activeObject is replace
+		}
 		return activeObject;
 	}
 	
 	
 	private void getJsp(PageContext pageContext, String activeTemplateName, MapTemplate mapTemplate, Template activeTemplate, Folder folder, Lang lang, Page page, Translation model, Translation activeObject, Map<String, String> params) throws ServiceException, ServletException, IOException{
+		logger.debug("Enter in getJsp : pageContext = " + pageContext + "; activeTemplateName = " + activeTemplateName + "; mapTemplate = " + mapTemplate + "; activeTemplate = " + activeTemplate + "; folder = " + folder + "; lang = " + lang + "; page = " + page + "; model = " + model + "; activeObject = " + activeObject + "; params = " + params);
 		ModelMap modelMap = templateControllerExecutor.execute(activeTemplate.getController(), page, model, activeObject, activeTemplate, folder, lang, params, pageContext);
 		if (modelMap != null){
 			for (Map.Entry<String, Object> entry : modelMap.entrySet()) {
 				pageContext.setAttribute(entry.getKey(), entry.getValue(), PageContext.REQUEST_SCOPE);
 			}
 		}
-		System.out.println(activeTemplate.getName());
 		
 		Map<String, Object> nDatas;
 		if (mapTemplate == null) nDatas = nDataService.getNDatas(activeTemplate);
@@ -143,6 +147,7 @@ public class JspTagUtil {
 	
 	/* Get blocks from container parentPageBlock if not null + activeObject if not null + page */
 	public void getJspBlock(PageContext pageContext, String position, String pageName, String activeObjectName, int pageId, int activeObjectId, Map<String, String> params) throws JspException{
+		logger.debug("Enter in getJspBlock : pageContext = " + pageContext + "; position = " + position + "; pageName = " + pageName + "; activeObjectName = " + activeObjectName + "; pageId = " + pageId + "; activeObjectId = " + activeObjectId + "; params = " + params);
 		JspWriter out = pageContext.getOut();
 		try {
 			if (CommonUtil.DEBUG) out.print("<p class=\"debug\">" + "Enter in getJSP()" + "</p>");
@@ -192,6 +197,7 @@ public class JspTagUtil {
 	
 	/* Get blocks from container parentPageBlock if not null + activeObject if not null + page */ 
 	public void getJspElement(PageContext pageContext, String templateName, String pageName, String activeObjectName, int pageId, int activeObjectId, Map<String, String> params) throws JspException{
+		logger.debug("Enter in getJspBlock : pageContext = " + pageContext + "; templateName = " + templateName + "; pageName = " + pageName + "; activeObjectName = " + activeObjectName + "; pageId = " + pageId + "; activeObjectId = " + activeObjectId + "; params = " + params);
 		JspWriter out = pageContext.getOut();
 		try {
 			if (CommonUtil.DEBUG) out.print("<p class=\"debug\">" + "Enter in getJSP()" + "</p>");

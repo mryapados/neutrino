@@ -2,6 +2,7 @@ package fr.cedricsevestre.controller.engine;
 
 import java.util.Locale;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import fr.cedricsevestre.argumentresolver.engine.ServerNameHandlerMethodArgumentResolver;
 import fr.cedricsevestre.com.utils.CommonUtil;
 import fr.cedricsevestre.com.utils.CommonUtil.TypeBase;
 import fr.cedricsevestre.entity.custom.Member;
@@ -34,6 +36,8 @@ import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 @SessionAttributes( value = AbstractController.ATTR_BLOCKPREVIEW, types={Boolean.class} )
 public abstract class AbstractController {
 	
+	private Logger logger = Logger.getLogger(AbstractController.class);
+	
 	protected static final String ATTR_BLOCKPREVIEW = "blockPreview";
 	
 	protected static final String ATTR_ACTIVELANG = "activeLang";
@@ -45,8 +49,6 @@ public abstract class AbstractController {
 	protected static final String ATTR_FOLDER = "folder";
 	protected static final String ATTR_LANGUAGE = "language";
 
-	
-	
 	@Autowired
 	private UserService userService;
 	
@@ -58,17 +60,16 @@ public abstract class AbstractController {
 	
 	@ModelAttribute("surfer")
 	public User addUserToScope() throws ServiceException {
-		System.out.println("Enter in addUserToScope()");
-		
+		logger.debug("Enter in addUserToScope");
 		User user = null;
 		if (isAuthenticated()){
-			System.out.println("user is authenticated");
+			logger.debug("user is authenticated");
 			org.springframework.security.core.userdetails.User userDetail = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			
-			System.out.println("user is null = " + (user == null));
+
+			logger.debug("user is null ? " + (user == null));
 			if (user == null || !user.getLogin().equals(userDetail.getUsername())){
 				user = userService.findByLogin(userDetail.getUsername());
-				System.out.println("user updated");
+				logger.debug("user updated");
 			}
 		} else {
 			user = new Member();
@@ -83,7 +84,7 @@ public abstract class AbstractController {
 	}
 	@ModelAttribute(ATTR_BLOCKPREVIEW)
 	public Boolean addBlockPreviewToSessionScope() throws ServiceException {
-		System.out.println("Enter in addBlockPreviewToSessionScope()");
+		logger.debug("Enter in addBlockPreviewToSessionScope");
 		return false;
 	}
 
@@ -91,6 +92,7 @@ public abstract class AbstractController {
 		return baseView(pageName, null, folder);
 	}
 	public ModelAndView baseView(String pageName, Translation activeObject, Folder folder) throws ControllerException, ResourceNotFoundException {
+		logger.debug("Enter in baseView : pageName = " + pageName + "; activeObject = " + activeObject + " folder = " + folder);
 		try {
 			Locale locale = LocaleContextHolder.getLocale();
 			return baseView(common.getPage(folder, pageName, common.getLang(locale.getLanguage())), activeObject, folder);
@@ -106,7 +108,7 @@ public abstract class AbstractController {
 	}
 	
 	public ModelAndView baseView(Page page, Template template, Translation activeObject, Folder folder) throws ControllerException, ResourceNotFoundException {
-		if (CommonUtil.DEBUG) System.out.println(this.getClass() + " - baseview - page : " + page.getName());
+		logger.debug("Enter in baseView : page = " + page + "; template = " + template + "; activeObject = " + activeObject + " folder = " + folder);
 		try {
 			String pathModelAndView = templateService.getPathJSP(false, folder, page.getContext(), template, false);
 			ModelAndView modelAndView = new ModelAndView(pathModelAndView);

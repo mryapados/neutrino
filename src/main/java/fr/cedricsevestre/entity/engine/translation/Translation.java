@@ -78,7 +78,7 @@ public abstract class Translation implements ITranslation, Serializable {
 	@JoinColumn(name="id_lang")
 	private Lang lang;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="id_translation")
 	private TranslationProvider translation;
 	

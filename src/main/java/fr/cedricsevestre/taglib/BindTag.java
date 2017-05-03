@@ -27,7 +27,6 @@ import fr.cedricsevestre.service.engine.notranslation.NoTranslationService;
 import fr.cedricsevestre.service.engine.translation.TranslationService;
 
 @Component
-@Scope(value = "singleton")
 public class BindTag extends TagSupport {
 
 	private static final long serialVersionUID = 1L;
@@ -65,7 +64,6 @@ public class BindTag extends TagSupport {
 		} catch (IOException e) {
 			throw new JspTagException(e);
 		}
-		logger.debug("Finish doStartTag()");
 		return SKIP_BODY;
 	}
 

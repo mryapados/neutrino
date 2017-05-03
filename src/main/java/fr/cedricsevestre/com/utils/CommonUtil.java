@@ -5,11 +5,13 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.conf.ApplicationProperties;
+import fr.cedricsevestre.controller.engine.AbstractController;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.objects.Page;
@@ -23,6 +25,8 @@ import fr.cedricsevestre.service.engine.translation.objects.PageService;
 @Component
 @Scope(value = "singleton")
 public class CommonUtil {	
+	private Logger logger = Logger.getLogger(AbstractController.class);
+	
 	private Map<String, Page> pages;
 	
 	private Map<String, Folder> foldersByName;
@@ -81,6 +85,7 @@ public class CommonUtil {
 	
 	
 	public void init(){
+		logger.debug("Enter in init");
 		foldersByName = new HashMap<>();
 		foldersByServerName = new HashMap<>();
 		pages = new HashMap<>();
@@ -110,6 +115,7 @@ public class CommonUtil {
 	}
 
 	public Folder getFolder(String serverName) throws UtilException, ResourceNotFoundException {
+		logger.debug("Enter in getFolder : serverName = " + serverName);
 		if (foldersByName == null) {
 			foldersByName = new HashMap<>();
 			foldersByServerName = new HashMap<>();
@@ -123,6 +129,7 @@ public class CommonUtil {
 	}
 
 	public Lang getLang(String langCode) throws UtilException, ResourceNotFoundException {
+		logger.debug("Enter in getLang : langCode = " + langCode);
 		try {
 			if (langs == null) {
 				langs = new HashMap<>();
@@ -141,6 +148,7 @@ public class CommonUtil {
 	}
 
 	public Page getPage(Folder folder, String pageName, Lang lang) throws UtilException, ResourceNotFoundException {
+		logger.debug("Enter in getPage : folder = " + folder + "; pageName = " + pageName + "; lang = " + lang);
 		try {
 			String pageNameLong = (folder.getName() + "_" + pageName + "_" + lang.getCode()).toUpperCase();
 			if (pages == null) {

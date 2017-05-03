@@ -31,4 +31,8 @@ public interface TranslationDao<T extends Translation> extends BaseDao<T> {
 	@Query("SELECT t FROM #{#entityName} t WHERE (t.folders IS EMPTY) AND (t.name =:name AND t.lang =:lang)")
 	T identify(@Param("name") String name, @Param("lang") Lang lang);
 	
+	
+	
+	
+	
 }

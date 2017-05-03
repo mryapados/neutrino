@@ -122,15 +122,13 @@ public class TemplateService extends TranslationService<Template>{
 	
 	@Cacheable(value="templateService")
 	public Boolean checkJSPExist(String webInfFolder, String pathContext, Template template) throws ServiceException{
+		logger.debug("Enter in checkJSPExist : pathContext = " + pathContext + "; template = " + template);
 		String path = pathJSP(true, pathContext, template, true);
 		Boolean jspExist = cacheService.jspPathExist(path);
-		System.out.println("EXIST [" + path + "] = " + jspExist);
+		logger.debug("EXIST [" + path + "] = " + jspExist);
 		if (jspExist == null){
 			File d = new File(webInfFolder);
-			System.out.println("webInfFolder = " + webInfFolder);
 			String fullPath = d.getParent().replace("\\", "/") + path;
-			//String path = webInfFolder.replace("\\", "/") + pathJSP(pathContext, template);
-			System.out.println("fullPath = " + fullPath);
 			File f = new File(fullPath);
 			if(f.exists() && !f.isDirectory()) { 
 				jspExist = true;
