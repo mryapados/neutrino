@@ -9,7 +9,7 @@ import org.apache.taglibs.standard.tag.common.core.UrlSupport;
 import fr.cedricsevestre.constants.AttributeConst;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 
-public class Url extends UrlSupport {
+public class UrlTag extends UrlSupport {
 	private static final long serialVersionUID = 1L;
 
 	@Override

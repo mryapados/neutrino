@@ -28,11 +28,12 @@
 						            <img class="img-responsive" src="${pictureUrl}" alt="">
 						        </div>
 						        <div class="post-content">
+						        	<my:url var="url" value="/article/${article.name}.html" />
 						            <div class="time time${i}">
-						                <a href="#">${day} <span>${month}</span></a>
+						                <a href="${url}">${day} <span>${month}</span></a>
 						            </div>
 						            <div class="entry-title">
-						               <h2><a href="blog.html"><c:out value="${articleTitle}"/></a></h2>
+						               <h2><a href="${url}"><c:out value="${articleTitle}"/></a></h2>
 						           </div> 
 						        </div>
 						    </div>                        

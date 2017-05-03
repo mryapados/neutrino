@@ -26,10 +26,10 @@ import fr.cedricsevestre.taglib.IIncludeJSP.Attributes;
 @Deprecated
 @Component
 @Scope(value = "singleton")
-public class HasBlock extends TagSupport {
+public class HasBlockTag extends TagSupport {
 
 	private static final long serialVersionUID = 1L;
-	private Logger logger = Logger.getLogger(HasBlock.class);
+	private Logger logger = Logger.getLogger(HasBlockTag.class);
 
 	private String position = null;
 	private String var = null;
@@ -38,7 +38,7 @@ public class HasBlock extends TagSupport {
 	private static PositionService positionService;
 	@Autowired
 	public void PositionService(PositionService positionService) {
-		HasBlock.positionService = positionService;
+		HasBlockTag.positionService = positionService;
 	}
 	
 	public int doStartTag() {

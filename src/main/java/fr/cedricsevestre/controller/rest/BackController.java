@@ -196,7 +196,8 @@ public class BackController extends AbstractController {
 				if (activeObject == null) throw new ResourceNotFoundException("activeObject id " + activeObjectId + " not found !");
 			}
 			
-			ModelMap modelMap = templateControllerExecutor.execute(block.getController(), page, mapTemplate.getModel(), activeObject, block, folder, page.getLang(),  null);	
+			//TODO params
+			ModelMap modelMap = templateControllerExecutor.execute(block.getController(), page, mapTemplate.getModel(), activeObject, block, folder, page.getLang(),  null, null);	
 			Map<String, Object> nDatas = nDataService.getNDatas(mapTemplate);
 			
 			modelAndView = baseView(page, block, activeObject, folder);

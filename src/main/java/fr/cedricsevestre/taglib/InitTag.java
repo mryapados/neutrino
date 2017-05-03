@@ -18,17 +18,17 @@ import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 
 @Component
 @Scope(value = "singleton")
-public class Init extends TagSupport {
+public class InitTag extends TagSupport {
 
 	private static final long serialVersionUID = 1L;
-	private Logger logger = Logger.getLogger(Init.class);
+	private Logger logger = Logger.getLogger(InitTag.class);
 	
 	private static final String FOLDER = "folder";
 	
 	private static CommonUtil common;
 	@Autowired
 	public void Common(CommonUtil common) {
-		Init.common = common;
+		InitTag.common = common;
 	}
 	
 	private Boolean test = null;

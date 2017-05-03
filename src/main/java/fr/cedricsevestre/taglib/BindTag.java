@@ -28,15 +28,15 @@ import fr.cedricsevestre.service.engine.translation.TranslationService;
 
 @Component
 @Scope(value = "singleton")
-public class Bind extends TagSupport {
+public class BindTag extends TagSupport {
 
 	private static final long serialVersionUID = 1L;
-	private Logger logger = Logger.getLogger(Bind.class);
+	private Logger logger = Logger.getLogger(BindTag.class);
 
 	private static IdProviderUtil idProviderUtil;
 	@Autowired
 	public void IdProviderUtil(IdProviderUtil idProviderUtil) {
-		Bind.idProviderUtil = idProviderUtil;
+		BindTag.idProviderUtil = idProviderUtil;
 	}
 
 	private String var;                 
@@ -45,7 +45,7 @@ public class Bind extends TagSupport {
 	private int beanId;
 	private String field;
 
-	public Bind() {
+	public BindTag() {
 		super();
 		init();
 	}

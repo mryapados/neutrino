@@ -27,14 +27,14 @@ import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.notranslation.NoTranslationService;
 import fr.cedricsevestre.service.engine.translation.TranslationService;
 import fr.cedricsevestre.specification.engine.IdProviderSpecification;
-import fr.cedricsevestre.taglib.Bind;
+import fr.cedricsevestre.taglib.BindTag;
 
 @Component
 public class IdProviderUtil {
 	
 	final private String ALLJOINS = ".allJoins";
 	
-	private Logger logger = Logger.getLogger(Bind.class);
+	private Logger logger = Logger.getLogger(BindTag.class);
 	
 	@Autowired
 	private EntityLocator entityLocator;

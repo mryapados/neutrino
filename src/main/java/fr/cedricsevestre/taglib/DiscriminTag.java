@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope(value = "singleton")
-public class Discrimin extends TagSupport {
+public class DiscriminTag extends TagSupport {
 	
 	/* Le code JSTL contenu entre le tag <discrimin>
 	 * n'est affiché qu'une fois en fonction de son
@@ -20,7 +20,7 @@ public class Discrimin extends TagSupport {
 	 */
 
 	private static final long serialVersionUID = 1L;
-	private Logger logger = Logger.getLogger(Discrimin.class);
+	private Logger logger = Logger.getLogger(DiscriminTag.class);
 
 	private String name = null;
 	private String scope = null;

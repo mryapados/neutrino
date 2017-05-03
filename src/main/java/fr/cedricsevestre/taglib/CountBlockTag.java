@@ -32,14 +32,14 @@ import fr.cedricsevestre.taglib.IIncludeJSP.Attributes;
 
 @Component
 @Scope(value = "singleton")
-public class CountBlock extends TagSupport {
+public class CountBlockTag extends TagSupport {
 	private static final long serialVersionUID = 1L;
 
 	private String var; // 'var' attribute
 	private int scope; // processed 'scope' attribute
 	private String position = null;
 	
-	public CountBlock() {
+	public CountBlockTag() {
 		super();
 		scope = PageContext.PAGE_SCOPE;
 	}
@@ -47,7 +47,7 @@ public class CountBlock extends TagSupport {
 	private static PositionService positionService;
 	@Autowired
 	public void PositionService(PositionService positionService) {
-		CountBlock.positionService = positionService;
+		CountBlockTag.positionService = positionService;
 	}
 	
 	public int doStartTag() throws JspException {	

@@ -5,7 +5,7 @@ import javax.servlet.http.HttpSessionListener;
 
 import org.apache.log4j.Logger;
 
-import fr.cedricsevestre.taglib.Block;
+import fr.cedricsevestre.taglib.BlockTag;
  
 public class SessionListener implements HttpSessionListener {
 	private Logger logger = Logger.getLogger(SessionListener.class);

@@ -32,19 +32,26 @@
 	<!-- With keywords -->
     <rule>
        <from>^/portfolio/([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+).html$</from>
-       <to>/portfolio/portfolio?pf=$2</to>
+       <to>/portfolio/portfolio?name=$2</to>
     </rule>
     <!-- Without keywords -->
     <rule>
        <from>^/portfolio/([a-zA-Z0-9_\-]+).html$</from>
-       <to>/portfolio/portfolio?pf=$1</to>
+       <to>/portfolio/portfolio?name=$1</to>
+    </rule>
+    
+	<!-- With keywords -->
+    <rule>
+       <from>^/article/([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+).html$</from>
+       <to>/article/article?name=$2</to>
+    </rule>
+    <!-- Without keywords -->
+    <rule>
+       <from>^/article/([a-zA-Z0-9_\-]+).html$</from>
+       <to>/article/article?name=$1</to>
     </rule>
     
     <!-- With keywords -->
-    <rule>
-       <from>^/([a-zA-Z0-9_\-]+)/article-([0-9])/$</from>
-       <to>/article/article?id=$2</to>
-    </rule>
     <rule>
        <from>^/([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+)/$</from>
        <to>/project/project?p=$2</to>
@@ -55,11 +62,6 @@
     </rule>
 
 	<!-- Without keywords -->
-
-    <rule>
-       <from>^/article-([0-9])/$</from>
-       <to>/article/article?id=$1</to>
-    </rule>
     <rule>
        <from>^/([a-zA-Z0-9_\-]+)/$</from>
        <to>/project/project?p=$1</to>

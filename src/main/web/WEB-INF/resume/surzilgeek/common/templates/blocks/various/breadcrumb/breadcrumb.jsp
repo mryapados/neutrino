@@ -16,7 +16,21 @@
 						<li class="active"><c:out value="${page.title}" /></li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="#"><c:out value="${page.title}" /></a></li>
+						<c:choose>
+							<c:when test="${page.objectType eq 'Category'}">
+								<my:url var="url" value="/${page.name}.html" />
+							</c:when>
+							<c:when test="${page.objectType eq 'Article'}">
+								<my:url var="url" value="/article/${page.name}.html" />
+							</c:when>
+							<c:when test="${page.objectType eq 'Portfolio'}">
+								<my:url var="url" value="/portfolio/${page.name}.html" />
+							</c:when>
+							<c:otherwise>
+								<my:url var="url" value="/${page.name}.html" />
+							</c:otherwise>	
+						</c:choose>
+						<li><a href="${url}"><c:out value="${page.title}" /></a></li>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>

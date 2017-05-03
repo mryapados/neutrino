@@ -14,15 +14,15 @@ import fr.cedricsevestre.com.utils.CommonUtil;
 
 @Component
 @Scope(value = "singleton")
-public class Debug extends TagSupport  {
+public class DebugTag extends TagSupport  {
 
 	private static final long serialVersionUID = 1L;
-	private Logger logger = Logger.getLogger(Debug.class);
+	private Logger logger = Logger.getLogger(DebugTag.class);
 			
 	private static CommonUtil commonUtil;
 	@Autowired
 	public void Common(CommonUtil common) {
-		Debug.commonUtil = common;
+		DebugTag.commonUtil = common;
 	}
 	
 	public int doStartTag() {

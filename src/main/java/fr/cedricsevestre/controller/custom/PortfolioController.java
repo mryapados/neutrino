@@ -1,8 +1,5 @@
 package fr.cedricsevestre.controller.custom;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,40 +7,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import fr.cedricsevestre.controller.engine.AbstractController;
-import fr.cedricsevestre.entity.custom.Resume;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
-import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.exception.ControllerException;
 import fr.cedricsevestre.exception.ResourceNotFoundException;
-import fr.cedricsevestre.exception.ServiceException;
-import fr.cedricsevestre.service.custom.ResumeService;
 
 @Controller
 @RequestMapping(value = PortfolioController.PORTFOLIO_MAPPING)
 public class PortfolioController extends AbstractController {
 	protected static final String PORTFOLIO_MAPPING = "/portfolio";
 	protected static final String PORTFOLIO_URL = "/portfolio";
+	protected static final String ATTR_NAME = "name";
 
-	protected static final String PARAM_RESUME = "resume";
-	
-	protected static final String ATTR_RESUME = "activeResume";
-	protected static final String ATTR_PORTFOLIO = "pf";
-		
-	@Autowired
-	ResumeService resumeService;
-	
 	@RequestMapping(value = PORTFOLIO_URL, method = RequestMethod.GET)
-	public ModelAndView view(@ModelAttribute(ATTR_PORTFOLIO) String portfolio, Folder folder, HttpServletRequest request) throws ResourceNotFoundException, ControllerException {
-		try {
-			String resumeName = request.getParameter(PARAM_RESUME);
-			ModelAndView modelAndView = baseView(portfolio, null, folder);
-			Lang lang = (Lang) modelAndView.getModel().get(ATTR_ACTIVELANG);
-			Resume resume = resumeService.identify(folder, resumeName, lang);
-			modelAndView.addObject(ATTR_RESUME, resume);
-			return modelAndView;
-		} catch (ServiceException e) {
-			throw new ControllerException(e);
-		}
+	public ModelAndView view(@ModelAttribute(ATTR_NAME) String name, Folder folder) throws ResourceNotFoundException, ControllerException {
+		return baseView(name, null, folder);
 	}
 
 }

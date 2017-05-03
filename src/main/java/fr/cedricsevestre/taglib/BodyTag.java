@@ -21,15 +21,15 @@ import fr.cedricsevestre.entity.engine.translation.objects.Page;
 
 @Component
 @Scope(value = "singleton")
-public class Body extends TagSupport {
+public class BodyTag extends TagSupport {
 
 	private static final long serialVersionUID = 1L;
-	private Logger logger = Logger.getLogger(Body.class);
+	private Logger logger = Logger.getLogger(BodyTag.class);
 	
 	private static CommonUtil common;
 	@Autowired
 	public void Common(CommonUtil common) {
-		Body.common = common;
+		BodyTag.common = common;
 	}
 	
 	private String id;

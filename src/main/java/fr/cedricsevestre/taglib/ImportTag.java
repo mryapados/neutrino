@@ -25,7 +25,7 @@ import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 
 @Component
 @Scope(value = "singleton")
-public class Import extends ImportSupport implements IIncludeJSP {
+public class ImportTag extends ImportSupport implements IIncludeJSP {
 	private static final long serialVersionUID = 1L;
 
 	private String template = null;

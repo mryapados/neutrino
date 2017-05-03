@@ -19,10 +19,10 @@ import fr.cedricsevestre.entity.engine.independant.objects.User;
 
 @Component
 @Scope(value = "singleton")
-public class Head extends TagSupport {
+public class HeadTag extends TagSupport {
 	
 	private static final long serialVersionUID = 1L;
-	private Logger logger = Logger.getLogger(Head.class);
+	private Logger logger = Logger.getLogger(HeadTag.class);
 	
 	private static final String FOLDER = "folder";
 	private static final String SURFER = "surfer";
@@ -31,7 +31,7 @@ public class Head extends TagSupport {
 	private static CommonUtil commonUtil;
 	@Autowired
 	public void Common(CommonUtil common) {
-		Head.commonUtil = common;
+		HeadTag.commonUtil = common;
 	}
 	
 	public int doStartTag() {

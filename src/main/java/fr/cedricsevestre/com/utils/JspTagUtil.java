@@ -43,7 +43,7 @@ import fr.cedricsevestre.service.engine.translation.TObjectService;
 import fr.cedricsevestre.service.engine.translation.TranslationService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
-import fr.cedricsevestre.taglib.Bind;
+import fr.cedricsevestre.taglib.BindTag;
 
 @Component
 public class JspTagUtil {
@@ -111,8 +111,8 @@ public class JspTagUtil {
 	}
 	
 	
-	private void getJsp(PageContext pageContext, String activeTemplateName, MapTemplate mapTemplate, Template activeTemplate, Folder folder, Lang lang, Page page, Translation model, Translation activeObject) throws ServiceException, ServletException, IOException{
-		ModelMap modelMap = templateControllerExecutor.execute(activeTemplate.getController(), page, model, activeObject, activeTemplate, folder, lang, pageContext);
+	private void getJsp(PageContext pageContext, String activeTemplateName, MapTemplate mapTemplate, Template activeTemplate, Folder folder, Lang lang, Page page, Translation model, Translation activeObject, Map<String, String> params) throws ServiceException, ServletException, IOException{
+		ModelMap modelMap = templateControllerExecutor.execute(activeTemplate.getController(), page, model, activeObject, activeTemplate, folder, lang, params, pageContext);
 		if (modelMap != null){
 			for (Map.Entry<String, Object> entry : modelMap.entrySet()) {
 				pageContext.setAttribute(entry.getKey(), entry.getValue(), PageContext.REQUEST_SCOPE);
@@ -142,7 +142,7 @@ public class JspTagUtil {
 	}
 	
 	/* Get blocks from container parentPageBlock if not null + activeObject if not null + page */
-	public void getJspBlock(PageContext pageContext, String position, String pageName, String activeObjectName, int pageId, int activeObjectId) throws JspException{
+	public void getJspBlock(PageContext pageContext, String position, String pageName, String activeObjectName, int pageId, int activeObjectId, Map<String, String> params) throws JspException{
 		JspWriter out = pageContext.getOut();
 		try {
 			if (CommonUtil.DEBUG) out.print("<p class=\"debug\">" + "Enter in getJSP()" + "</p>");
@@ -170,7 +170,7 @@ public class JspTagUtil {
 				for (MapTemplate mapTemplate : mapTemplates) {
 					Template activeBlock = mapTemplate.getBlock();
 
-					getJsp(pageContext, AttributeConst.ACTIVEBLOCK, mapTemplate, activeBlock, folder, lang, page, model, activeObject);
+					getJsp(pageContext, AttributeConst.ACTIVEBLOCK, mapTemplate, activeBlock, folder, lang, page, model, activeObject, params);
 
 				}
 			}
@@ -190,8 +190,8 @@ public class JspTagUtil {
 
 	}
 	
-	/* Get blocks from container parentPageBlock if not null + activeObject if not null + page */
-	public void getJspElement(PageContext pageContext, String templateName, String pageName, String activeObjectName, int pageId, int activeObjectId) throws JspException{
+	/* Get blocks from container parentPageBlock if not null + activeObject if not null + page */ 
+	public void getJspElement(PageContext pageContext, String templateName, String pageName, String activeObjectName, int pageId, int activeObjectId, Map<String, String> params) throws JspException{
 		JspWriter out = pageContext.getOut();
 		try {
 			if (CommonUtil.DEBUG) out.print("<p class=\"debug\">" + "Enter in getJSP()" + "</p>");
@@ -203,7 +203,7 @@ public class JspTagUtil {
 			Translation activeObject = getActiveObject(pageContext, folder, lang, activeObjectId, activeObjectName);
 
 			Template activeElement = templateService.identify(folder, templateName, lang);
-			getJsp(pageContext, AttributeConst.ACTIVEELEMENT, null, activeElement, folder, lang, page, model, activeObject);
+			getJsp(pageContext, AttributeConst.ACTIVEELEMENT, null, activeElement, folder, lang, page, model, activeObject, params);
 
 			if (CommonUtil.DEBUG) out.print("<p class=\"debug\">" + "Exit getJSP()" + "</p>");
 			

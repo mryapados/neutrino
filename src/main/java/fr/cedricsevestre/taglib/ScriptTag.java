@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope(value = "singleton")
-public class Script extends BodyTagSupport  {
+public class ScriptTag extends BodyTagSupport  {
 
 	private static final long serialVersionUID = 1L;
-	private Logger logger = Logger.getLogger(Script.class);
+	private Logger logger = Logger.getLogger(ScriptTag.class);
 		
 	private String src = null;
 	

@@ -65,7 +65,7 @@ public class TemplateControllerExecutor {
     private ApplicationContext context;
     private Map<String, TemplateControllerBean> templateControllers;
     
-    public ModelMap execute(String controllerName, Page page, Translation model, Translation activeObject, Template template, Folder folder, Lang lang, PageContext pageContext) throws ServiceException{
+    public ModelMap execute(String controllerName, Page page, Translation model, Translation activeObject, Template template, Folder folder, Lang lang, Map<String, String> params, PageContext pageContext) throws ServiceException{
     	logger.debug("Enter in 'execute'");	
     	
     	if (controllerName == null) return null;
@@ -78,7 +78,7 @@ public class TemplateControllerExecutor {
         }
 
 		try {
-			Object paramsObj[] = mkParameters(templateControllerBean.getParameters(), page, model, activeObject, template, folder, lang, pageContext);
+			Object paramsObj[] = mkParameters(templateControllerBean.getParameters(), page, model, activeObject, template, folder, lang, params, pageContext);
 			return (ModelMap) templateControllerBean.getMethod().invoke(templateControllerBean.getObject(), paramsObj);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			throw new ServiceException("Error execute", e);//TODO TemplateControllerException
@@ -86,7 +86,7 @@ public class TemplateControllerExecutor {
         
     }
     
-    private Object[] mkParameters(List<Class<?>> parameters, Page page, Translation model, Translation activeObject, Template template, Folder folder, Lang lang, PageContext pageContext){
+    private Object[] mkParameters(List<Class<?>> parameters, Page page, Translation model, Translation activeObject, Template template, Folder folder, Lang lang, Map<String, String> params, PageContext pageContext){
     	logger.debug("Enter in 'mkParameters'");	
     	Boolean firstTranslation = true;
 		List<Object> objects = new ArrayList<>();
@@ -104,6 +104,8 @@ public class TemplateControllerExecutor {
 				objects.add(folder);
 			} else if (parameter == Lang.class){
 				objects.add(lang);
+			} else if (parameter == Map.class){
+				objects.add(params);
 			} else if (parameter == PageContext.class){
 				objects.add(pageContext);
 			}

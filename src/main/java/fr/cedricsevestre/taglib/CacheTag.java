@@ -28,15 +28,15 @@ import fr.cedricsevestre.exception.TagException;
 
 @Component
 @Scope(value = "singleton")
-public class Cache extends SimpleTagSupport implements Serializable  {
+public class CacheTag extends SimpleTagSupport implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
-	private Logger logger = Logger.getLogger(Cache.class);
+	private Logger logger = Logger.getLogger(CacheTag.class);
 		
 	private static CommonUtil common;
 	@Autowired
 	public void Common(CommonUtil common) {
-		Cache.common = common;
+		CacheTag.common = common;
 	}
 
 	private String key = null;
