@@ -30,9 +30,10 @@ import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.exception.TagException;
+import fr.cedricsevestre.service.engine.CacheService;
 
 @Component
-public class CacheSupport extends SimpleTagSupport implements ICacheSupport, Serializable  {
+public class CacheSupport extends SimpleTagSupport implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(CacheSupport.class);
@@ -42,28 +43,25 @@ public class CacheSupport extends SimpleTagSupport implements ICacheSupport, Ser
 	public void Common(CommonUtil common) {
 		CacheSupport.common = common;
 	}
+	
+	private static CacheService cacheService;
+	@Autowired
+	public void CacheService(CacheService cacheService) {
+		CacheSupport.cacheService = cacheService;
+	}
 
 	protected String key = null;
 	protected PageContext pageContext;
-	
-	public void doTag() throws JspException {	
-		logger.debug("Enter in doTag");
+
+	public void doTag() throws JspException {
+		logger.debug("Enter in doTag()");
 		try {
 			pageContext = (PageContext) getJspContext();
 			JspWriter out = pageContext.getOut();
-			int hashCode = mkHashCode();
-			out.print(getCachedValue(hashCode));
+			out.print(getContentAndCache(mkHashCode()));
 		} catch (IOException e) {
 			throw new JspTagException(e);
 		}
-	}	
-	
-	@Override
-	public StringWriter getCachedValue(int hashCode) throws JspException, IOException{
-		logger.debug("Enter in getCachedValue");
-		StringWriter sw = new StringWriter();
-		getJspBody().invoke(sw);
-		return sw;
 	}
 
 	private int mkHashCode(){
@@ -82,6 +80,49 @@ public class CacheSupport extends SimpleTagSupport implements ICacheSupport, Ser
 			hashCode = prime * hashCode + ((lang == null) ? 0 : lang.hashCode());
 		}
 		return hashCode;
+	}
+
+	
+	
+	private String getContentAndCache(int hashCode) throws JspException {
+		String pathDir = common.getWebInfFolder() + "cache/";
+		String pathFile = pathDir + hashCode;
+		String content = contentFromCache(pathDir + hashCode);
+		if (content == null){
+			content = contentFromBodyTag(pathDir, pathFile);
+			mkCachedFile(pathDir, pathFile, content);
+		}
+		return content;
+	}
+	
+	
+	private String contentFromCache(String pathFile) throws JspException {
+		logger.debug("Enter in contentFromCache");
+		try {
+			return cacheService.getContentFromCache(pathFile);
+		} catch (IOException e) {
+			throw new JspTagException(e);
+		}
+	}
+
+	private String contentFromBodyTag(String pathDir, String pathFile) throws JspException {
+		logger.debug("Enter in contentFromBodyTag");
+		try {
+			StringWriter sw = new StringWriter();
+			getJspBody().invoke(sw);
+			return sw.toString();
+		} catch (IOException e) {
+			throw new JspTagException(e);
+		}
+	}
+	
+	private void mkCachedFile(String pathDir, String pathFile, String Content) throws JspException{
+		logger.debug("Enter in contentFromBodyTag");
+		try {
+			cacheService.mkCachedFile(pathDir, pathFile, Content);
+		} catch (IOException e) {
+			throw new JspTagException(e);
+		}
 	}
 
 	public void setKey(String key) {

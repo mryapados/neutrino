@@ -26,8 +26,6 @@ import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.exception.TagException;
 
-@Component
-@Scope(value = "singleton")
 public class CacheTag extends CacheSupport  {
 
 	private static final long serialVersionUID = 1L;
@@ -40,7 +38,6 @@ public class CacheTag extends CacheSupport  {
 //	}
 //
 //	private String key = null;
-	private String lang = null;
 //	
 //	protected PageContext pageContext;
 //	
@@ -119,10 +116,6 @@ public class CacheTag extends CacheSupport  {
 //		}
 //	}
 	
-
-	public void setLang(String lang) {
-		this.lang = lang;
-	}
 
 
 }
