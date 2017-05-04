@@ -120,27 +120,23 @@ public class TemplateService extends TranslationService<Template>{
 		return path.toString();
 	}
 	
-	@Cacheable(value="templateService")
 	public Boolean checkJSPExist(String webInfFolder, String pathContext, Template template) throws ServiceException{
 		logger.debug("Enter in checkJSPExist : pathContext = " + pathContext + "; template = " + template);
 		String path = pathJSP(true, pathContext, template, true);
-		Boolean jspExist = cacheService.jspPathExist(path);
-		logger.debug("EXIST [" + path + "] = " + jspExist);
-		if (jspExist == null){
-			File d = new File(webInfFolder);
-			String fullPath = d.getParent().replace("\\", "/") + path;
-			File f = new File(fullPath);
-			if(f.exists() && !f.isDirectory()) { 
-				jspExist = true;
-			} else {
-				jspExist = false;
-			}
-			cacheService.addJspPath(path, jspExist);
+		boolean jspExist;
+		File d = new File(webInfFolder);
+		String fullPath = d.getParent().replace("\\", "/") + path;
+		File f = new File(fullPath);
+		if(f.exists() && !f.isDirectory()) { 
+			jspExist = true;
+		} else {
+			jspExist = false;
 		}
+		logger.debug("EXIST [" + path + "] = " + jspExist);
 		return jspExist;
-		
 	}
 	
+	@Cacheable(value="templateService")
 	public String getPathJSP(Boolean webInf, Folder folder, String context, Template template, boolean jsp) throws ServiceException{
 		String pathContext = common.getBasePath(false, folder, TypeBase.VIEWS) + context + "/";
 		if (checkJSPExist(common.getWebInfFolder(), pathContext, template)){

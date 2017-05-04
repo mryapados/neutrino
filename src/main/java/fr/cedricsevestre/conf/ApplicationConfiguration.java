@@ -11,6 +11,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
+import org.springframework.cache.support.NoOpCacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
@@ -74,7 +75,8 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
     
 	@Bean
 	public CacheManager cacheManager() {
-		return new EhCacheCacheManager(ehCacheCacheManager().getObject());
+		if (applicationProperties.getCache()) return new EhCacheCacheManager(ehCacheCacheManager().getObject());
+		else return new NoOpCacheManager();
 	}
 
 	@Bean

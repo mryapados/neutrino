@@ -89,6 +89,9 @@ public class InitialisationBase {
 	}
 	
 	@Autowired
+	private ApplicationProperties applicationProperties;
+	
+	@Autowired
 	private ProjectService projectService;
 	
 	@Autowired
@@ -173,6 +176,8 @@ public class InitialisationBase {
 	
 	public void run() throws ServiceException, InstantiationException, IllegalAccessException {
 		logger.debug("init");
+		if (!applicationProperties.getHibernateHbm2ddlAuto().equals("create-drop")) return;
+		
 		initFolders();
 		
 		initLangs();

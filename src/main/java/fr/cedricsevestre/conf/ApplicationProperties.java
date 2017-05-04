@@ -15,11 +15,10 @@ public class ApplicationProperties {
 	@Resource
 	private Environment environment;
 
-	private String webInfFolder;
-	
 	private String jdbcUrl;
 	private String jdbcUser;
 	private String jdbcPassword;
+	private String hibernateHbm2ddlAuto;
 	
 	private String applicationFolder;
 	private String pathBundleLabelsBack;
@@ -30,12 +29,15 @@ public class ApplicationProperties {
 	private Integer fileSizeThreshold;
 	private String uploadDir;
 	
+	private Boolean cache;
+	
 	@PostConstruct
 	public void init() {
 		jdbcUrl = environment.getProperty("jdbc.url");
 		jdbcUser = environment.getProperty("jdbc.user");
 		jdbcPassword = environment.getProperty("jdbc.password");
-		
+		hibernateHbm2ddlAuto = environment.getProperty("hibernate.hbm2ddl.auto");
+
 		applicationFolder = environment.getProperty("application.folder");		
 		pathBundleLabelsBack  = environment.getProperty("path.bundle.labels.back");
 		pathBundleLabelsFront  = environment.getProperty("path.bundle.labels.front");
@@ -44,6 +46,8 @@ public class ApplicationProperties {
 		maxRequestSize = Long.parseLong(environment.getProperty("http.multipart.max-request-size"));
 		fileSizeThreshold = Integer.parseInt(environment.getProperty("http.multipart.file-size-threshold"));
 		uploadDir  = environment.getProperty("upload.dir");	
+		
+		cache  = Boolean.parseBoolean(environment.getProperty("cache"));
 	}
 
 	public String getJdbcUrl() {
@@ -54,6 +58,9 @@ public class ApplicationProperties {
 	}
 	public String getJdbcPassword() {
 		return jdbcPassword;
+	}
+	public String getHibernateHbm2ddlAuto() {
+		return hibernateHbm2ddlAuto;
 	}
 	public String getApplicationFolder() {
 		return applicationFolder;
@@ -75,6 +82,9 @@ public class ApplicationProperties {
 	}
 	public String getUploadDir() {
 		return uploadDir;
+	}
+	public Boolean getCache() {
+		return cache;
 	}
 
 }

@@ -52,7 +52,7 @@ public class DBConfiguration extends WebMvcConfigurerAdapter{
 		lcemfb.setPackagesToScan("fr.cedricsevestre.entity");
 
 		Properties properties = new Properties();
-		properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+		properties.setProperty("hibernate.hbm2ddl.auto", applicationProperties.getHibernateHbm2ddlAuto());
 		lcemfb.setJpaProperties(properties);
 		lcemfb.afterPropertiesSet();
 
