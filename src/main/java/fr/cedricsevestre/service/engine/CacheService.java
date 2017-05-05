@@ -22,7 +22,7 @@ public class CacheService{
 
 	private Logger logger = Logger.getLogger(CacheService.class);
 
-	@Cacheable(value="jspCache")
+	@Cacheable(value="jspCache", condition = "#result != null")
 	public String getContentFromCache(String pathFile) throws IOException {
 		logger.debug("Enter in getContentFromCache");
 		try {

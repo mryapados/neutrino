@@ -27,7 +27,7 @@ public class ScriptTag extends BodyTagSupport  {
 			pageContext.setAttribute("NEngineScript", engineScript, PageContext.REQUEST_SCOPE);
 			return SKIP_BODY;
 		}
-		return EVAL_BODY_AGAIN;
+		return EVAL_BODY_BUFFERED;
 	}
 	
 	public int doAfterBody() {

@@ -5,7 +5,7 @@
 
 <my:init test="${!initialized}"/>
 
-<my:cache lang="language">
+<my:cache>
 	<c:forEach items="${categories}" var="category" varStatus="status">
 		<my:bind var="categoryName" type="Category" beanId="${category.id}" field="name" />
 		<my:bind var="categoryTitle" type="Category" beanId="${category.id}" field="title" />
@@ -16,13 +16,14 @@
 		</c:set>
 		<li class="scroll${category.id eq activePage.id ? ' current dropdown' : ''}">
 			<my:url var="url" value='/${categoryName}.html' />
-			<a href="${url}"><span>${icon}${categoryTitle}</span></a>
+			<a title="${category.title}" href="${url}"><span>${icon}${categoryTitle}</span></a>
 		</li>
 	</c:forEach>
 	<li>
 		<my:element template="resume_element_socialnetwork" />
 	</li>
 </my:cache>
+
 <my:script>
 // -------------------------------------------------------------
 //  Navigation Height 
