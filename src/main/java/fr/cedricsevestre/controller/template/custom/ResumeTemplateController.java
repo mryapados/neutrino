@@ -229,16 +229,18 @@ public class ResumeTemplateController {
 	@BlockMapping("resume_block_breadbrumb")
 	public ModelMap breadcrumb(Folder folder, Lang lang, PageContext pageContext) throws ControllerException{
 		ModelMap modelMap = new ModelMap();
-		List<Page> pages = new ArrayList<>();
-		Page page = (Page) pageContext.getAttribute(ATTR_ACTIVEPAGE, PageContext.REQUEST_SCOPE);
-		pages.add(page);
-		while (true) {
-			page = page.getParent();
-			if (page != null) pages.add(page);
-			else break;
-        }
-		Collections.reverse(pages);
-		modelMap.addAttribute("breadcrumbPages", pages);
+		if (pageContext != null){
+			List<Page> pages = new ArrayList<>();
+			Page page = (Page) pageContext.getAttribute(ATTR_ACTIVEPAGE, PageContext.REQUEST_SCOPE);
+			pages.add(page);
+			while (true) {
+				page = page.getParent();
+				if (page != null) pages.add(page);
+				else break;
+	        }
+			Collections.reverse(pages);
+			modelMap.addAttribute("breadcrumbPages", pages);
+		}
 		return modelMap;
 	}
 	

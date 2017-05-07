@@ -4,24 +4,24 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 
 <my:init test="${!initialized}"/>
-
-<%-- En HomePage, les liens du nav sont des ancres --%>
-<c:forEach items="${categories}" var="category" varStatus="status">
-	<my:bind var="categoryName" type="Category" beanId="${category.id}" field="name" />
-	<my:bind var="categoryTitle" type="Category" beanId="${category.id}" field="title" />
-	<c:set var="icon">
-		<c:if test="${not empty category.icon}">
-			<i class="${category.icon.fontAwesome}" aria-hidden="true"></i>
-		</c:if>
-	</c:set>
-	<li class="scroll${status.first ? ' current dropdown' : ''}">
-		<a href="#${categoryName}${categoryName eq 'home' ? '-banner' : ''}"><span>${icon}${categoryTitle}</span></a>
+<my:cache>
+	<%-- En HomePage, les liens du nav sont des ancres --%>
+	<c:forEach items="${categories}" var="category" varStatus="status">
+		<my:bind var="categoryName" type="Category" beanId="${category.id}" field="name" />
+		<my:bind var="categoryTitle" type="Category" beanId="${category.id}" field="title" />
+		<c:set var="icon">
+			<c:if test="${not empty category.icon}">
+				<i class="${category.icon.fontAwesome}" aria-hidden="true"></i>
+			</c:if>
+		</c:set>
+		<li class="scroll${status.first ? ' current dropdown' : ''}">
+			<a href="#${categoryName}${categoryName eq 'home' ? '-banner' : ''}"><span>${icon}${categoryTitle}</span></a>
+		</li>
+	</c:forEach>
+	<li>
+		<my:element template="resume_element_socialnetwork" />
 	</li>
-</c:forEach>
-<li>
-	<my:element template="resume_element_socialnetwork" />
-</li>
-               
+</my:cache>     
 <my:script>
 // -------------------------------------------------------------
 //  Navigation Height 

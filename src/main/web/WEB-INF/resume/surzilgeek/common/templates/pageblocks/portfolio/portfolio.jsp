@@ -5,6 +5,7 @@
 
 <my:init test="${!initialized}"/>
 
+
 <section id="portfolio" class="portfolio-section section-padding">
     <div class="container">
         <div class="row">

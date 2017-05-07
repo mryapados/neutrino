@@ -66,7 +66,7 @@ public class TemplateControllerExecutor {
     private Map<String, TemplateControllerBean> templateControllers;
     
     public ModelMap execute(String controllerName, Page page, Translation model, Translation activeObject, Template template, Folder folder, Lang lang, Map<String, String> params, PageContext pageContext) throws ServiceException{
-    	logger.debug("Enter in execute : controllerName = " + controllerName + "; page = " + page + "; model = " + model + "; activeObject = " + activeObject + "; template = " + template + "; folder = " + folder + "; params = " + params + "; pageContext = " + pageContext);
+    	logger.debug("Enter in execute : controllerName = " + controllerName);
     	if (controllerName == null) return null;
     	
         checkTemplateControllers();
@@ -86,7 +86,7 @@ public class TemplateControllerExecutor {
     }
     
     private Object[] mkParameters(List<Class<?>> parameters, Page page, Translation model, Translation activeObject, Template template, Folder folder, Lang lang, Map<String, String> params, PageContext pageContext){
-    	logger.debug("Enter in mkParameters : parameters = " + parameters + "; page = " + page + "; model = " + model + "; activeObject = " + activeObject + "; template = " + template + "; folder = " + folder + "; params = " + params + "; pageContext = " + pageContext);	
+    	logger.debug("Enter in mkParameters : parameters = " + parameters);	
     	Boolean firstTranslation = true;
 		List<Object> objects = new ArrayList<>();
 		for (Class<?> parameter : parameters) {

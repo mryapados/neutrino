@@ -2138,7 +2138,7 @@ public class InitialisationBase {
 		Map<Lang, Translation> mHome = mkModel(fldsResume, "resume_model_home", "default/default");
 		Map<Lang, Translation> mDefault = mkModel(fldsResume, "resume_model_default", "default/default");
 		Map<Lang, Translation> mPortfolio = mkModel(fldsResume, "resume_model_portfolio", "default/default");
-		Map<Lang, Translation> mArticle = mkModel(fldsResume, "resume_model_blog", "default/default");
+		Map<Lang, Translation> mArticle = mkModel(fldsResume, "resume_model_article", "default/default");
 		
 		// Pages
 		Map<Lang, Translation> pgHome = mkPage(new Category("#1abc9c", "Home", iHome, true, 10), fldsResume, "home", "home", mHome, null);
@@ -2201,7 +2201,7 @@ public class InitialisationBase {
 		
 		
 		Map<Lang, Translation> pbPortfolioTemplate = mkPageBlock(fldsResume, "resume_pageblock_portfolio_template", "standard/standard");
-		Map<Lang, Translation> pbBlogTemplate = mkPageBlock(fldsResume, "resume_pageblock_blog_template", "standard/standard");
+		Map<Lang, Translation> pbArticleTemplate = mkPageBlock(fldsResume, "resume_pageblock_article_template", "standard/standard");
 		
 		
 		// Blocks
@@ -2223,6 +2223,7 @@ public class InitialisationBase {
 		Map<Lang, Translation> bPortfolios = mkBlock(fldSurzilGeek, "resume_block_portfolio_list", "portfolio/list");
 		Map<Lang, Translation> bPortfolioPicture = mkBlock(fldSurzilGeek, "resume_block_portfolio_picture", "portfolio/picture");
 		Map<Lang, Translation> bBlogs = mkBlock(fldSurzilGeek, "resume_block_blog_list", "blog/list");
+		Map<Lang, Translation> bBlogPicture = mkBlock(fldSurzilGeek, "resume_block_blog_picture", "blog/picture");
 		
 		
 		// Set MapTemplate
@@ -2263,11 +2264,12 @@ public class InitialisationBase {
 		nDataService.save(nData);
 		Map<Lang, MapTemplate> mtBPortfoliosPbPortfolioTemplate = addMapTemplate(pbPortfolioTemplate, bPortfolios, pStandardArticle);
 		
-		
-		
-		
+		// PortfolioTemplate on model Portfolio - All pages model
+		Map<Lang, MapTemplate> mtPBArticleTemplateMArticle = addMapTemplate(mArticle, pbArticleTemplate, pMain);
+		Map<Lang, MapTemplate> mtBBlogPicturePbArticleTemplate = addMapTemplate(pbArticleTemplate, bBlogPicture, pStandardHeader);
+
 		// BlogTemplate on model Blog - All pages model
-		Map<Lang, MapTemplate> mtBlogTemplateMBlog = addMapTemplate(mArticle, pbBlogTemplate, pMain);
+		Map<Lang, MapTemplate> mtBlogTemplateMBlog = addMapTemplate(mArticle, pbArticleTemplate, pMain);
 		
 		
 		// Listpage on page Home for folder SurzilGeek only

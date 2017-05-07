@@ -7,6 +7,7 @@
 
 <my:init test="${!initialized}"/>
 
+<my:cache>
                 <ul class="achievement">
                     <li class="achievement-info">
                         <span class="counter">35</span>
@@ -25,6 +26,6 @@
                         <h4>Running Projects</h4>
                     </li>                            
                 </ul>
-					
+</my:cache>
                                                             
                    

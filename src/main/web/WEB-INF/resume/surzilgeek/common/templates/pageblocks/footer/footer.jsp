@@ -12,4 +12,4 @@
 			&copy; 2017 <a href="#"><c:out value="${resumeFirstName} ${resumeLastName}"/>.</a> All Rights Reserved
 		</p>
 	</div>
-</div><!-- contaner -->
+</div><!-- container -->
