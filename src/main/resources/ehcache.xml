@@ -55,7 +55,7 @@
 		<persistence strategy="localTempSwap" />
 	</cache>
 	
-	<cache name="jspCache"
+	<cache name="jsp"
 		maxEntriesLocalHeap="10000"
 		maxEntriesLocalDisk="1000"
 		eternal="false"

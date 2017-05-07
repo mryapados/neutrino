@@ -22,6 +22,7 @@ import org.springframework.ui.ModelMap;
 
 import fr.cedricsevestre.com.utils.CommonUtil;
 import fr.cedricsevestre.com.utils.JspTagUtil;
+import fr.cedricsevestre.conf.ApplicationProperties;
 import fr.cedricsevestre.constants.AttributeConst;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.MapTemplate;
@@ -45,24 +46,13 @@ import fr.cedricsevestre.service.engine.translation.TObjectService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 
-@Component
-@Scope(value = "singleton")
 public class BlockTag extends TagSupport implements IIncludeJSP, ParamParent {
 
 	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(BlockTag.class);
 
-	private static PositionService positionService;
-	@Autowired
-	public void PositionService(PositionService positionService) {
-		BlockTag.positionService = positionService;
-	}
-	
-	private static JspTagUtil jspTagUtil;
-	@Autowired
-	public void JspTagUtil(JspTagUtil jspTagUtil) {
-		BlockTag.jspTagUtil = jspTagUtil;
-	}
+	private PositionService positionService;
+	private JspTagUtil jspTagUtil;
 	
 	private String position;
 	private String page;
@@ -92,6 +82,10 @@ public class BlockTag extends TagSupport implements IIncludeJSP, ParamParent {
     
 	public int doStartTag() throws JspException {
 		logger.debug("Enter in doStartTag()");
+		
+    	positionService = (PositionService) pageContext.getAttribute(AttributeConst.POSITION_SERVICE_BEAN, PageContext.APPLICATION_SCOPE);
+    	jspTagUtil = (JspTagUtil) pageContext.getAttribute(AttributeConst.JSP_TAG_UTIL_BEAN, PageContext.APPLICATION_SCOPE);
+		
 		params = new HashMap<>();
 		JspWriter out = pageContext.getOut();
 		try {

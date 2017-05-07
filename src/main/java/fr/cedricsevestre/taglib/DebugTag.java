@@ -11,21 +11,15 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.com.utils.CommonUtil;
+import fr.cedricsevestre.constants.AttributeConst;
 
-@Component
-@Scope(value = "singleton")
 public class DebugTag extends TagSupport  {
 
 	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(DebugTag.class);
-			
-	private static CommonUtil commonUtil;
-	@Autowired
-	public void Common(CommonUtil common) {
-		DebugTag.commonUtil = common;
-	}
 	
 	public int doStartTag() {
+		CommonUtil commonUtil = (CommonUtil) pageContext.getAttribute(AttributeConst.COMMON_UTIL_BEAN, PageContext.APPLICATION_SCOPE);
 		if (CommonUtil.DEBUG){
 			return EVAL_BODY_AGAIN;
 		} else {

@@ -14,10 +14,9 @@ import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.com.utils.CommonUtil;
 import fr.cedricsevestre.com.utils.CommonUtil.TypeBase;
+import fr.cedricsevestre.constants.AttributeConst;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 
-@Component
-@Scope(value = "singleton")
 public class InitTag extends TagSupport {
 
 	private static final long serialVersionUID = 1L;
@@ -25,12 +24,7 @@ public class InitTag extends TagSupport {
 	
 	private static final String FOLDER = "folder";
 	
-	private static CommonUtil common;
-	@Autowired
-	public void Common(CommonUtil common) {
-		InitTag.common = common;
-	}
-	
+
 	private Boolean test = null;
 	
 	public int doStartTag() {
@@ -38,10 +32,12 @@ public class InitTag extends TagSupport {
 		if (test){
 			JspWriter out = pageContext.getOut();
 			try {
-				pageContext.include(common.getBasePath(true, null, TypeBase.ADMIN) + "components/init.jsp");
+				CommonUtil commonUtil = (CommonUtil) pageContext.getAttribute(AttributeConst.COMMON_UTIL_BEAN, PageContext.APPLICATION_SCOPE);
+				
+				pageContext.include(commonUtil.getBasePath(true, null, TypeBase.ADMIN) + "components/init.jsp");
 				
 				Folder folder = (Folder) pageContext.getAttribute(FOLDER, PageContext.REQUEST_SCOPE);
-				pageContext.include(common.getBasePath(true, folder, TypeBase.COMMON) + "components/init.jsp");
+				pageContext.include(commonUtil.getBasePath(true, folder, TypeBase.COMMON) + "components/init.jsp");
 				
 				
 				pageContext.setAttribute("initialized", true, PageContext.REQUEST_SCOPE);

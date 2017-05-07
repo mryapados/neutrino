@@ -95,8 +95,11 @@
 	        <artifactId>spring-security-taglibs</artifactId>
 	        <version>${springsecurity.version}</version>
 	    </dependency>
-    
-    
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
     
     
     
@@ -104,11 +107,18 @@
     
     
 <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+<!--    <dependency> -->
+<!--    <groupId>org.aspectj</groupId> -->
+<!--    <artifactId>aspectjweaver</artifactId> -->
+<!--    <version>1.6.6</version> -->
+<!--   </dependency> -->
+    
    <dependency>
    <groupId>org.aspectj</groupId>
    <artifactId>aspectjweaver</artifactId>
-   <version>1.6.6</version>
+   <version>1.8.10</version>
   </dependency>
+    
     
     
 		<dependency>

@@ -44,25 +44,14 @@ import fr.cedricsevestre.service.engine.independant.objects.PositionService;
 import fr.cedricsevestre.service.engine.translation.TObjectService;
 import fr.cedricsevestre.service.engine.translation.objects.PageService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
-//TODO
-@Component
-@Scope(value = "singleton")
+
 public class ElementTag extends TagSupport implements IIncludeJSP, ParamParent {
 
 	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(ElementTag.class);
 
-	private static PositionService positionService;
-	@Autowired
-	public void PositionService(PositionService positionService) {
-		ElementTag.positionService = positionService;
-	}
-	
-	private static JspTagUtil jspTagUtil;
-	@Autowired
-	public void JspTagUtil(JspTagUtil jspTagUtil) {
-		ElementTag.jspTagUtil = jspTagUtil;
-	}
+	private PositionService positionService;
+	private JspTagUtil jspTagUtil;
 	
 	private String template;
 	private String page;
@@ -92,6 +81,10 @@ public class ElementTag extends TagSupport implements IIncludeJSP, ParamParent {
 
 	public int doStartTag() throws JspException {
 		logger.debug("Enter in doStartTag()");
+		
+    	positionService = (PositionService) pageContext.getAttribute(AttributeConst.POSITION_SERVICE_BEAN, PageContext.APPLICATION_SCOPE);
+    	jspTagUtil = (JspTagUtil) pageContext.getAttribute(AttributeConst.JSP_TAG_UTIL_BEAN, PageContext.APPLICATION_SCOPE);
+		
 		params = new HashMap<>();
 		getJsp();
 		return EVAL_BODY_INCLUDE;

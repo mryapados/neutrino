@@ -19,25 +19,21 @@ import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.com.utils.EntityLocator;
 import fr.cedricsevestre.com.utils.IdProviderUtil;
+import fr.cedricsevestre.com.utils.JspTagUtil;
 import fr.cedricsevestre.com.utils.ServiceLocator;
+import fr.cedricsevestre.constants.AttributeConst;
 import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
+import fr.cedricsevestre.service.engine.independant.objects.PositionService;
 import fr.cedricsevestre.service.engine.notranslation.NoTranslationService;
 import fr.cedricsevestre.service.engine.translation.TranslationService;
 
-@Component
 public class BindTag extends TagSupport {
 
 	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(BindTag.class);
-
-	private static IdProviderUtil idProviderUtil;
-	@Autowired
-	public void IdProviderUtil(IdProviderUtil idProviderUtil) {
-		BindTag.idProviderUtil = idProviderUtil;
-	}
-
+	
 	private String var;                 
 	private int scope;
 	private String type;
@@ -57,6 +53,8 @@ public class BindTag extends TagSupport {
 	public int doStartTag() throws JspException {
 		logger.debug("Enter in doStartTag()");
 		try {
+	    	IdProviderUtil idProviderUtil = (IdProviderUtil) pageContext.getAttribute(AttributeConst.ID_PROVIDER_UTIL_BEAN, PageContext.APPLICATION_SCOPE);
+
 			Object result = idProviderUtil.getIdProviderFieldValue(type, beanId, field);
 			if (var != null) pageContext.setAttribute(var, result, scope);
 			else pageContext.getOut().print(result);

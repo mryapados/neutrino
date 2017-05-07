@@ -10,8 +10,6 @@ import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-@Component
-@Scope(value = "singleton")
 public class DiscriminTag extends TagSupport {
 	
 	/* Le code JSTL contenu entre le tag <discrimin>

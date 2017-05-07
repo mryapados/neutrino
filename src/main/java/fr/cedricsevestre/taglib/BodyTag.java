@@ -13,24 +13,20 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.com.utils.CommonUtil;
+import fr.cedricsevestre.com.utils.IdProviderUtil;
 import fr.cedricsevestre.com.utils.CommonUtil.TypeBase;
+import fr.cedricsevestre.constants.AttributeConst;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.User;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Page;
 
-@Component
-@Scope(value = "singleton")
 public class BodyTag extends TagSupport {
 
 	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(BodyTag.class);
 	
-	private static CommonUtil common;
-	@Autowired
-	public void Common(CommonUtil common) {
-		BodyTag.common = common;
-	}
+	private CommonUtil commonUtil;
 	
 	private String id;
 	private String cssClass;
@@ -45,7 +41,9 @@ public class BodyTag extends TagSupport {
 	public int doStartTag() {
 		logger.debug("Enter in doStartTag()");
 		JspWriter out = pageContext.getOut();
-		try {			
+		try {
+			commonUtil = (CommonUtil) pageContext.getAttribute(AttributeConst.COMMON_UTIL_BEAN, PageContext.APPLICATION_SCOPE);
+			
 			String bodyCssClass = "";
 			if (cssClass != null) bodyCssClass = " class=\"" + cssClass + "\"";
 			
@@ -86,7 +84,7 @@ public class BodyTag extends TagSupport {
 		try {			
 			User surfer = (User) pageContext.getAttribute(SURFER, PageContext.REQUEST_SCOPE);
 			if (surfer.getRole().equals(User.ROLE_ADMIN)){
-				String adminPath = common.getBasePath(true, null, TypeBase.ADMIN);
+				String adminPath = commonUtil.getBasePath(true, null, TypeBase.ADMIN);
 				pageContext.include(adminPath + "components/blockPreview.jsp");
 				Boolean blockPreview = (Boolean) pageContext.getAttribute(BLOCKPREVIEW, PageContext.REQUEST_SCOPE);
 				if (blockPreview){
@@ -95,7 +93,7 @@ public class BodyTag extends TagSupport {
 			}
 			
 			Folder folder = (Folder) pageContext.getAttribute(FOLDER, PageContext.REQUEST_SCOPE);
-			pageContext.include(common.getBasePath(true, folder, TypeBase.COMMON) + "components/scripts.jsp");
+			pageContext.include(commonUtil.getBasePath(true, folder, TypeBase.COMMON) + "components/scripts.jsp");
 			String engineScript = (String) pageContext.getAttribute(NENGINESCRIPT, PageContext.REQUEST_SCOPE); 
 			if (engineScript != null){
 				out.println(engineScript);		

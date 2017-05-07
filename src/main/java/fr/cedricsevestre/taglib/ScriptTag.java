@@ -8,8 +8,6 @@ import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-@Component
-@Scope(value = "singleton")
 public class ScriptTag extends BodyTagSupport  {
 
 	private static final long serialVersionUID = 1L;

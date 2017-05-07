@@ -30,8 +30,6 @@ import fr.cedricsevestre.service.engine.independant.objects.PositionService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
 import fr.cedricsevestre.taglib.IIncludeJSP.Attributes;
 
-@Component
-@Scope(value = "singleton")
 public class CountBlockTag extends TagSupport {
 	private static final long serialVersionUID = 1L;
 
@@ -44,14 +42,11 @@ public class CountBlockTag extends TagSupport {
 		scope = PageContext.PAGE_SCOPE;
 	}
 
-	private static PositionService positionService;
-	@Autowired
-	public void PositionService(PositionService positionService) {
-		CountBlockTag.positionService = positionService;
-	}
-	
+
 	public int doStartTag() throws JspException {	
 		try {
+			PositionService positionService = (PositionService) pageContext.getAttribute(AttributeConst.POSITION_SERVICE_BEAN, PageContext.APPLICATION_SCOPE);
+			
 			Boolean blockPreview = (Boolean) pageContext.getAttribute(AttributeConst.BLOCKPREVIEW, PageContext.REQUEST_SCOPE);
 			Folder folder = (Folder) pageContext.getAttribute(AttributeConst.FOLDER, PageContext.REQUEST_SCOPE);
 			List<Translation> models = new ArrayList<>();

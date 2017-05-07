@@ -14,11 +14,10 @@ import org.springframework.stereotype.Component;
 
 import fr.cedricsevestre.com.utils.CommonUtil;
 import fr.cedricsevestre.com.utils.CommonUtil.TypeBase;
+import fr.cedricsevestre.constants.AttributeConst;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.independant.objects.User;
 
-@Component
-@Scope(value = "singleton")
 public class HeadTag extends TagSupport {
 	
 	private static final long serialVersionUID = 1L;
@@ -27,18 +26,14 @@ public class HeadTag extends TagSupport {
 	private static final String FOLDER = "folder";
 	private static final String SURFER = "surfer";
 	private static final String APPLICATIONFOLDER = "applicationFolder";
-	
-	private static CommonUtil commonUtil;
-	@Autowired
-	public void Common(CommonUtil common) {
-		HeadTag.commonUtil = common;
-	}
-	
+
 	public int doStartTag() {
 		logger.debug("Enter in doStartTag()");
 		JspWriter out = pageContext.getOut();
 		try {
+			
 			out.println("<head>");
+			
 		} catch (IOException e) {
 			try {
 				out.println("<p class=\"bg-danger\">" + e.getMessage() + "</p>");
@@ -53,6 +48,7 @@ public class HeadTag extends TagSupport {
 	public int doEndTag() {
 		logger.debug("Enter in doEndTag()");
 		JspWriter out = pageContext.getOut();
+		CommonUtil commonUtil = (CommonUtil) pageContext.getAttribute(AttributeConst.COMMON_UTIL_BEAN, PageContext.APPLICATION_SCOPE);
 		try {
 			Folder folder = (Folder) pageContext.getAttribute(FOLDER, PageContext.REQUEST_SCOPE);
 			pageContext.include(commonUtil.getBasePath(true, folder, TypeBase.COMMON) + "components/css.jsp");

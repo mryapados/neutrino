@@ -17,12 +17,14 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import fr.cedricsevestre.constants.CacheConst;
+
 @Service
 public class CacheService{
 
 	private Logger logger = Logger.getLogger(CacheService.class);
 
-	@Cacheable(value="jspCache", condition = "#result != null")
+	@Cacheable(value = CacheConst.JSP, unless = "#result == null")
 	public String getContentFromCache(String pathFile) throws IOException {
 		logger.debug("Enter in getContentFromCache");
 		try {
