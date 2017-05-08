@@ -25,7 +25,6 @@ import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.translation.TranslationService;
 
 @Service
-@Scope(value = "singleton")
 @CustomService
 public class AlbumService extends TranslationService<Album>{
 

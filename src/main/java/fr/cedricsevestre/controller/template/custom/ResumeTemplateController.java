@@ -34,6 +34,7 @@ import fr.cedricsevestre.entity.engine.translation.objects.Page;
 import fr.cedricsevestre.entity.engine.translation.objects.Template;
 import fr.cedricsevestre.exception.ControllerException;
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.service.custom.AchievementService;
 import fr.cedricsevestre.service.custom.ArticleService;
 import fr.cedricsevestre.service.custom.CategoryService;
 import fr.cedricsevestre.service.custom.EducationService;
@@ -50,6 +51,9 @@ public class ResumeTemplateController {
 
 	@Autowired
 	private CategoryService categoryService;
+	
+	@Autowired
+	private AchievementService achievementService;
 	
 	@Autowired
 	private SkillService skillService;
@@ -77,11 +81,12 @@ public class ResumeTemplateController {
 	
 	protected static final String ATTR_CATEGORIES = "categories";
 	protected static final String ATTR_ACTIVERESUME = "activeResume";
+	protected static final String ATTR_ACHIEVEMENTS = "achievements";
 	protected static final String ATTR_SKILLS = "skills";
 	protected static final String ATTR_EXPERIENCES = "experiences";
 	protected static final String ATTR_EDUCATIONS = "educations";
-	protected static final int ATTR_PORTFOLIOS_MAXRESULT = 10;
-	protected static final int ATTR_ARTICLES_MAXRESULT = 10;
+	protected static final    int ATTR_PORTFOLIOS_MAXRESULT = 10;
+	protected static final    int ATTR_ARTICLES_MAXRESULT = 10;
 	protected static final String ATTR_PUBLISHDATE = "publishDate";
 	protected static final String ATTR_PORTFOLIOS = "portfolios";
 	protected static final String ATTR_ARTICLES = "articles";
@@ -115,13 +120,25 @@ public class ResumeTemplateController {
 
 	}
 
+	@ElementMapping("resume_block_achievement")
+	public ModelMap achievement(Folder folder, Lang lang, PageContext pageContext) throws ControllerException{
+		try {
+			ModelMap modelMap = new ModelMap();
+			if (pageContext != null){
+				modelMap.addAttribute(ATTR_ACHIEVEMENTS, achievementService.findAllForFolderAndLang(folder, lang));
+			}
+			return modelMap;
+		} catch (ServiceException e) {
+			throw new ControllerException(e);
+		}
+	}
+	
 	@BlockMapping("resume_block_skill_progressBar_list")
 	public ModelMap skillsProgressBar(Folder folder, Lang lang, PageContext pageContext) throws ControllerException{	
 		try {
 			ModelMap modelMap = new ModelMap();
 			if (pageContext != null){
-				Resume resume = (Resume) pageContext.getAttribute(ATTR_ACTIVERESUME, PageContext.REQUEST_SCOPE);
-				if (resume != null)	modelMap.addAttribute(ATTR_SKILLS, skillService.findAllKindForFolderAndLang(SkillKind.PROGRESSBAR, folder, lang));
+				modelMap.addAttribute(ATTR_SKILLS, skillService.findAllKindForFolderAndLang(SkillKind.PROGRESSBAR, folder, lang));
 			}
 			return modelMap;
 		} catch (ServiceException e) {
@@ -135,8 +152,7 @@ public class ResumeTemplateController {
 		try {
 			ModelMap modelMap = new ModelMap();
 			if (pageContext != null){
-				Resume resume = (Resume) pageContext.getAttribute(ATTR_ACTIVERESUME, PageContext.REQUEST_SCOPE);
-				if (resume != null)	modelMap.addAttribute(ATTR_SKILLS, skillService.findAllKindForFolderAndLang(SkillKind.CHART, folder, lang));
+				modelMap.addAttribute(ATTR_SKILLS, skillService.findAllKindForFolderAndLang(SkillKind.CHART, folder, lang));
 			}
 			return modelMap;
 		} catch (ServiceException e) {
@@ -149,8 +165,7 @@ public class ResumeTemplateController {
 		try {
 			ModelMap modelMap = new ModelMap();
 			if (pageContext != null){
-				Resume resume = (Resume) pageContext.getAttribute(ATTR_ACTIVERESUME, PageContext.REQUEST_SCOPE);
-				if (resume != null)	modelMap.addAttribute(ATTR_EXPERIENCES, experienceService.findAllForFolderAndLang(folder, lang));
+				modelMap.addAttribute(ATTR_EXPERIENCES, experienceService.findAllForFolderAndLang(folder, lang));
 			}
 			return modelMap;
 		} catch (ServiceException e) {
@@ -163,8 +178,7 @@ public class ResumeTemplateController {
 		try {
 			ModelMap modelMap = new ModelMap();
 			if (pageContext != null){
-				Resume resume = (Resume) pageContext.getAttribute(ATTR_ACTIVERESUME, PageContext.REQUEST_SCOPE);
-				if (resume != null)	modelMap.addAttribute(ATTR_EDUCATIONS, educationService.findAllForFolderAndLang(folder, lang));
+				modelMap.addAttribute(ATTR_EDUCATIONS, educationService.findAllForFolderAndLang(folder, lang));
 			}
 			return modelMap;
 		} catch (ServiceException e) {
@@ -177,13 +191,10 @@ public class ResumeTemplateController {
 		try {
 			ModelMap modelMap = new ModelMap();
 			if (pageContext != null){
-				Resume resume = (Resume) pageContext.getAttribute(ATTR_ACTIVERESUME, PageContext.REQUEST_SCOPE);
-
 				List<Order> orders = new ArrayList<>();
 				orders.add(new Order(Direction.DESC, ATTR_PUBLISHDATE));
-				
 				Pageable pageRequest = new PageRequest(0, ATTR_PORTFOLIOS_MAXRESULT, new Sort(orders));
-				if (resume != null)	modelMap.addAttribute(ATTR_PORTFOLIOS, portfolioService.findAllForFolderAndLang(folder, lang, pageRequest).getContent());
+				modelMap.addAttribute(ATTR_PORTFOLIOS, portfolioService.findAllForFolderAndLang(folder, lang, pageRequest).getContent());
 			}
 			return modelMap;
 		} catch (ServiceException e) {
@@ -196,13 +207,11 @@ public class ResumeTemplateController {
 		try {
 			ModelMap modelMap = new ModelMap();
 			if (pageContext != null){
-				Resume resume = (Resume) pageContext.getAttribute(ATTR_ACTIVERESUME, PageContext.REQUEST_SCOPE);
-
 				List<Order> orders = new ArrayList<>();
 				orders.add(new Order(Direction.DESC, ATTR_PUBLISHDATE));
 				
 				Pageable pageRequest = new PageRequest(0, ATTR_ARTICLES_MAXRESULT, new Sort(orders));
-				if (resume != null)	modelMap.addAttribute(ATTR_ARTICLES, articleService.findAllForFolderAndLang(folder, lang, pageRequest).getContent());
+				modelMap.addAttribute(ATTR_ARTICLES, articleService.findAllForFolderAndLang(folder, lang, pageRequest).getContent());
 			}
 			return modelMap;
 		} catch (ServiceException e) {
@@ -215,10 +224,8 @@ public class ResumeTemplateController {
 		try {
 			ModelMap modelMap = new ModelMap();
 			if (pageContext != null){
-				Resume resume = (Resume) pageContext.getAttribute(ATTR_ACTIVERESUME, PageContext.REQUEST_SCOPE);
-				if (resume != null)	modelMap.addAttribute(ATTR_SOCIALNETWORK, socialNetworkService.findAllForFolderAndLang(folder, lang));
+				modelMap.addAttribute(ATTR_SOCIALNETWORK, socialNetworkService.findAllForFolderAndLang(folder, lang));
 				modelMap.addAttribute("contact", new Contact());
-			
 			}
 			return modelMap;
 		} catch (ServiceException e) {
