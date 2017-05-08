@@ -84,8 +84,8 @@ public class IdProviderUtil {
 		}
 	}
 	
-	@Cacheable(CacheConst.IDPROVIDERFIEDDVALUE)
-	public Object getIdProviderFieldValue(String type, int beanId, String field) throws JspTagException{
+	@Cacheable(value = CacheConst.IDPROVIDERFIEDDVALUE, condition = "#cache")
+	public Object getIdProviderFieldValue(String type, int beanId, String field, boolean cache) throws JspTagException{
 		logger.debug("Enter in getIdProviderFieldValue");
 		try {
 			Class<?> clazz = entityLocator.getEntity(type).getClass();

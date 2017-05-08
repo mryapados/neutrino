@@ -11,6 +11,7 @@
 	<p>finalField.type = ${finalField.type}<p>
 	<p>finalField.name = ${finalField.name}<p>
 	<p>${objectType}_${finalParentObject.id}_${finalField.name}</p>
+	<p>finalFieldType = ${finalFieldType}</p>
 	<c:set var="assignType" value="text" />
 </my:debug> 
 

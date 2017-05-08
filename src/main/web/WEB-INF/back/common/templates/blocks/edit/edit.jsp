@@ -93,7 +93,7 @@
 															<c:set var="finalObject" value="${objectView[field.name]}" scope="request" />
 															<c:set var="finalField" value="${field}" scope="request" />
 															<c:set var="finalFieldType" value="${finalField.type}" scope="request" />
-														
+
 															<jsp:include page="/WEB-INF/back/common/templates/blocks/view/detail/field.jsp" />
 															
 															<c:remove var="finalParentObject"/>

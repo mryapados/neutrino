@@ -39,7 +39,8 @@ public class BindTag extends TagSupport {
 	private String type;
 	private int beanId;
 	private String field;
-
+	private boolean cache;
+	
 	public BindTag() {
 		super();
 		init();
@@ -47,6 +48,7 @@ public class BindTag extends TagSupport {
 
 	private void init() {
 		var = null;
+		cache = true;
 	    scope = PageContext.PAGE_SCOPE;
 	}
 
@@ -55,7 +57,7 @@ public class BindTag extends TagSupport {
 		try {
 	    	IdProviderUtil idProviderUtil = (IdProviderUtil) pageContext.getAttribute(AttributeConst.ID_PROVIDER_UTIL_BEAN, PageContext.APPLICATION_SCOPE);
 
-			Object result = idProviderUtil.getIdProviderFieldValue(type, beanId, field);
+			Object result = idProviderUtil.getIdProviderFieldValue(type, beanId, field, cache);
 			if (var != null) pageContext.setAttribute(var, result, scope);
 			else pageContext.getOut().print(result);
 
@@ -85,4 +87,7 @@ public class BindTag extends TagSupport {
 		this.field = field;
 	}
 
+	public void setCache(boolean cache) {
+		this.cache = cache;
+	}
 }
