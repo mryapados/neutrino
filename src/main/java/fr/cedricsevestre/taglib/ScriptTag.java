@@ -1,12 +1,13 @@
 package fr.cedricsevestre.taglib;
 
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.Tag;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 public class ScriptTag extends BodyTagSupport  {
 
@@ -15,8 +16,13 @@ public class ScriptTag extends BodyTagSupport  {
 		
 	private String src = null;
 	
-	public int doStartTag() {
+	public int doStartTag() throws JspException {
 		logger.debug("Enter in doStartTag()");
+		
+		// Un tag ScriptTag ne doit pas être dans un tag CacheTag car sinon, il ne sera pas présent lorsque le contenu du tag CacheTag est issu du cache
+		Tag findAncestorWithClass = findAncestorWithClass(this, CacheTag.class);
+		if (findAncestorWithClass != null) throw new JspTagException(ScriptTag.class + " can't be in a " + CacheTag.class);
+
 		if (src != null){
 			String engineScript = (String) pageContext.getAttribute("NEngineScript", PageContext.REQUEST_SCOPE);
 			if (engineScript == null) engineScript = "";

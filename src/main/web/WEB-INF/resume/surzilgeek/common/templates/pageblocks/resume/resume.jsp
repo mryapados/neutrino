@@ -4,6 +4,26 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 
 <my:init test="${!initialized}"/>
+           
+<div id="profile" class="profile-section section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="section-content"> 
+   					<my:block position="resume_resume" />
+                </div>
+                <div class="button">
+                    <a href="cv.pdf" class="btn btn-primary">Download My Resume as a .pdf file</a>
+                </div>
+            </div>
+        </div><!-- row -->
+    </div><!-- container -->
+</div><!-- profile section -->	
+           
+           
+           
+           
+<%--
             
         <div id="profile" class="profile-section section-padding">
             <div class="container">
@@ -277,3 +297,7 @@
                 </div><!-- row -->
             </div><!-- container -->
         </div><!-- profile section -->		
+        
+        
+        
+ --%>

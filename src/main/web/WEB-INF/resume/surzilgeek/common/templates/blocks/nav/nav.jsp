@@ -5,6 +5,17 @@
 
 <my:init test="${!initialized}"/>
 
+
+<c:if test="${1 eq 1}">
+<my:script>
+testage
+</my:script>
+</c:if>
+
+
+
+
+
 <my:cache>
 	<c:forEach items="${categories}" var="category" varStatus="status">
 		<my:bind var="categoryName" type="Category" beanId="${category.id}" field="name" />
@@ -23,6 +34,7 @@
 		<my:element template="resume_element_socialnetwork" />
 	</li>
 </my:cache>
+
 
 <my:script>
 // -------------------------------------------------------------
@@ -47,6 +59,7 @@ $(function(){
     });
 });
 </my:script>
+
                         
                         
 			

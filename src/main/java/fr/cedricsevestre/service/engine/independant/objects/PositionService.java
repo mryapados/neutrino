@@ -37,7 +37,8 @@ public class PositionService extends BaseService<Position> implements IBOService
 	private PositionDao positionDao;
 
 	public Position findByName(String name) throws ServiceException {
-		try {		
+		try {
+			logger.debug("Look for position : " + name);
 			return positionDao.findByName(name);
 		} catch (PersistenceException e) {
 			throw new ServiceException("erreur findById position", e);

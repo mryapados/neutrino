@@ -704,7 +704,7 @@ public class InitialisationBase {
 		templateFR = templateService.translate(templateEN, langFR);
 		templateFR.setName(name + "");
 		templateFR.setDescription(name + " Page Block article description fr");
-		templateService.save(templateFR);	
+		templateService.save(templateFR);
 		
 
 		templateEN = templateService.translate(new Template(), langEN);
@@ -2133,6 +2133,8 @@ public class InitialisationBase {
 		Position pEducation = addPosition(mapPosition, "resume_educations");
 		Position pPortfolio = addPosition(mapPosition, "resume_portfolios");
 		Position pBlog = addPosition(mapPosition, "resume_articles");
+		Position pContact = addPosition(mapPosition, "resume_contact");
+		Position pResume = addPosition(mapPosition, "resume_resume");
 		
 		// Models
 		Map<Lang, Translation> mHome = mkModel(fldsResume, "resume_model_home", "default/default");
@@ -2224,7 +2226,8 @@ public class InitialisationBase {
 		Map<Lang, Translation> bPortfolioPicture = mkBlock(fldSurzilGeek, "resume_block_portfolio_picture", "portfolio/picture");
 		Map<Lang, Translation> bBlogs = mkBlock(fldSurzilGeek, "resume_block_blog_list", "blog/list");
 		Map<Lang, Translation> bBlogPicture = mkBlock(fldSurzilGeek, "resume_block_blog_picture", "blog/picture");
-		
+		Map<Lang, Translation> bContactAddress = mkBlock(fldSurzilGeek, "resume_block_contact_address", "contact/address");
+		Map<Lang, Translation> bContactForm = mkBlock(fldSurzilGeek, "resume_block_contact_address", "contact/form");
 		
 		// Set MapTemplate
 		
@@ -2293,6 +2296,8 @@ public class InitialisationBase {
 		Map<Lang, MapTemplate> mtBPortfoliosPgPortfolios = addMapTemplate(pbPortfolio, bPortfolios, pPortfolio);
 
 		Map<Lang, MapTemplate> mtPbContactPgContact = addMapTemplate(pgContact, pbContact, pMain);
+		Map<Lang, MapTemplate> mtBContactAddressPgContact = addMapTemplate(pbContact, bContactAddress, pContact);
+		Map<Lang, MapTemplate> mtBContactFormPgContact = addMapTemplate(pbContact, bContactForm, pContact);
 		
 		Map<Lang, MapTemplate> mtPbBlogPgBlog = addMapTemplate(pgBlog, pbBlog, pMain);
 		Map<Lang, MapTemplate> mtBBlogsPgBlog = addMapTemplate(pbBlog, bBlogs, pBlog);
