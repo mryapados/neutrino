@@ -2136,6 +2136,9 @@ public class InitialisationBase {
 		Position pContact = addPosition(mapPosition, "resume_contact");
 		Position pResume = addPosition(mapPosition, "resume_resume");
 		
+		Position pGoal = addPosition(mapPosition, "resume_goal");
+		Position pDeclaration = addPosition(mapPosition, "resume_declaration");
+		
 		// Models
 		Map<Lang, Translation> mHome = mkModel(fldsResume, "resume_model_home", "default/default");
 		Map<Lang, Translation> mDefault = mkModel(fldsResume, "resume_model_default", "default/default");
@@ -2200,7 +2203,8 @@ public class InitialisationBase {
 		Map<Lang, Translation> pbContact = mkPageBlock(fldsResume, "resume_pageblock_contact", "contact/contact");
 		Map<Lang, Translation> pbBlog = mkPageBlock(fldsResume, "resume_pageblock_blog", "blog/blog");
 		Map<Lang, Translation> pbResume = mkPageBlock(fldsResume, "resume_pageblock_resume", "resume/resume");
-		
+		Map<Lang, Translation> pbGoal = mkPageBlock(fldsResume, "resume_pageblock_goal", "goal/goal");
+		Map<Lang, Translation> pbDeclaration = mkPageBlock(fldsResume, "resume_pageblock_declaration", "declaration/declaration");
 		
 		Map<Lang, Translation> pbPortfolioTemplate = mkPageBlock(fldsResume, "resume_pageblock_portfolio_template", "standard/standard");
 		Map<Lang, Translation> pbArticleTemplate = mkPageBlock(fldsResume, "resume_pageblock_article_template", "standard/standard");
@@ -2217,6 +2221,7 @@ public class InitialisationBase {
 		
 		Map<Lang, Translation> bNav = mkBlock(fldsResume, "resume_block_nav", "nav/nav");
 		
+		Map<Lang, Translation> bAboutMeInfo = mkBlock(fldSurzilGeek, "resume_block_achievement", "aboutme/info");
 		Map<Lang, Translation> bAchievement = mkBlock(fldSurzilGeek, "resume_block_achievement", "achievement/achievement");
 		Map<Lang, Translation> bSkillsProgressBar = mkBlock(fldSurzilGeek, "resume_block_skill_progressBar_list", "skill/progressBar/list");
 		Map<Lang, Translation> bSkillsChart = mkBlock(fldSurzilGeek, "resume_block_skill_chart_list", "skill/chart/list");
@@ -2280,6 +2285,7 @@ public class InitialisationBase {
 		
 		// blocks on pages
 		Map<Lang, MapTemplate> mtPbAboutmePgAboutMe = addMapTemplate(pgAboutMe, pbAboutMe, pMain);
+		Map<Lang, MapTemplate> mtPbAboutInfoPgAboutMe = addMapTemplate(pbAboutMe, bAboutMeInfo, pAboutMe);
 		Map<Lang, MapTemplate> mtPbAchievementPgAboutMe = addMapTemplate(pbAboutMe, bAchievement, pAboutMe);
 		
 		Map<Lang, MapTemplate> mtPbSkillsPgSkills = addMapTemplate(pgSkills, pbSkills, pMain);
@@ -2303,12 +2309,15 @@ public class InitialisationBase {
 		Map<Lang, MapTemplate> mtBBlogsPgBlog = addMapTemplate(pbBlog, bBlogs, pBlog);
 		
 		Map<Lang, MapTemplate> mtPbResumePgResume = addMapTemplate(pgResumeSurzilGeek, pbResume, pMain);
+		Map<Lang, MapTemplate> mtBAboutMeInfoPgResume = addMapTemplate(pbResume, bAboutMeInfo, pResume);
+		Map<Lang, MapTemplate> mtPbGoalPgResume = addMapTemplate(pbResume, pbGoal, pResume);
+		Map<Lang, MapTemplate> mtBExperiencesPgResume = addMapTemplate(pbResume, bExperiences, pResume);
+		Map<Lang, MapTemplate> mtBEducationsPgResume = addMapTemplate(pbResume, bEducations, pResume);
+		Map<Lang, MapTemplate> mtBSkillsChartPgResume = addMapTemplate(pbResume, bSkillsChart, pResume);
+		Map<Lang, MapTemplate> mtBSkillsProgressPgResume = addMapTemplate(pbResume, bSkillsProgressBar, pResume);
 		
-		
-
-		
-		
-		
+		Map<Lang, MapTemplate> mtBPortfoliosPgResume = addMapTemplate(pbResume, bPortfolios, pResume);
+		Map<Lang, MapTemplate> mtPbDeclarationPgResume = addMapTemplate(pbResume, pbDeclaration, pResume);
 	}
 	
 	private Page putCategoryAboutMe(Page page){

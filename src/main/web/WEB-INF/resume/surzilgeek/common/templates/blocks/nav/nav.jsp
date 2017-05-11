@@ -5,17 +5,6 @@
 
 <my:init test="${!initialized}"/>
 
-
-<c:if test="${1 eq 1}">
-<my:script>
-testage
-</my:script>
-</c:if>
-
-
-
-
-
 <my:cache>
 	<c:forEach items="${categories}" var="category" varStatus="status">
 		<my:bind var="categoryName" type="Category" beanId="${category.id}" field="name" />

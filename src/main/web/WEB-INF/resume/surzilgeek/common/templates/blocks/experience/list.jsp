@@ -14,6 +14,7 @@
 			<c:forEach items="${experiences}" var="experience" varStatus="status">
 				<my:bind var="experienceTitle" type="Experience" beanId="${experience.id}" field="title" />
 				<my:bind var="experienceChapo" type="Experience" beanId="${experience.id}" field="chapo" />
+				<my:bind var="experienceCompanyName" type="Experience" beanId="${experience.id}" field="companyName" />
 				<my:bind var="experiencePicture" type="Experience" beanId="${experience.id}" field="picture" />
 			
 				<c:set var="dtStart" value="${experience.start}" />
@@ -31,7 +32,7 @@
 			    <div class="exprience">
 			        <c:if test="${not empty pictureUrl}">
 						<div class="exprience-image">
-						    <img class="img-responsive" src="${pictureUrl}" alt="Image">
+						    <img class="img-responsive" src="${pictureUrl}" alt="Company name : <c:out value='${experienceCompanyName}'/>">
 						</div>
 			        </c:if>
 					<div class="exprience-info">
