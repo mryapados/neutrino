@@ -18,24 +18,42 @@
 			    </div>                            
 			    <div class="sub-content">
 			    	<div class="row">
-				    	<c:forEach var = "col" begin = "1" end = "3">
+			    		
+			    		<c:set var="skillsSize" value="${skills.size()}" />
+			    		<%
+			    			int skillsSize = (int) pageContext.getAttribute("skillsSize");
+			    			int mod3 = skillsSize % 3;
+			    			int n = (new Double(Math.ceil((double) skillsSize / 3))).intValue();
+			    			
+			    			int col1 = mod3 == 0 || mod3 == 2 ? n : n + 1;
+			    			int col2 = n;
+			    			int col3 = skillsSize >= (col1 + col2) ? skillsSize - (col1 + col2) : 0;
+			    			
+			    			int[] cols = {col1, col2, col3};	
+			    			pageContext.setAttribute("cols", cols);
+			    			
+			    			System.out.println("ddd " + skillsSize + " - " + col1 + " " + col2 + " " + col3 + " ");
+			    		%>
+				    	<c:forEach var = "col" begin = "0" end = "2">
+
 				            <div class="col-sm-4">
 				                <div class="rating-bar">
-				                    <label>Photoshop</label>
-				                    <div class="skill-progress">
-				                        <div class="progress">
-				                            <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 90%;">
-				                            </div>
-				                        </div>
-				                    </div>
-				                    <label>WordPress</label>
-				                    <div class="skill-progress">
-				                        <div class="progress">
-				                            <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
-				                            </div>
-				                        </div>
-				                    </div>
-				                </div>                                
+									<c:forEach var="i" begin="1" end="${cols[col]}">
+										<c:set var="n" value="${empty n ? 0 : n + 1}" />
+										<c:set var="skill" value="${skills[n]}" />
+										
+										<my:bind var="skillTitle" type="Skill" beanId="${skill.id}" field="title" />
+
+					                    <label>${skillTitle}</label>
+					                    <div class="skill-progress">
+					                        <div class="progress">
+					                            <div class="progress-bar" role="progressbar" aria-valuenow="${skill.percent}" aria-valuemin="0" aria-valuemax="100">
+					                            </div>
+					                        </div>
+					                    </div>
+									</c:forEach>
+				                </div>       
+
 				            </div>
 				    	</c:forEach>
 				    </div><!-- row -->                                    
