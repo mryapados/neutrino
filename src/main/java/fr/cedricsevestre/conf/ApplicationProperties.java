@@ -30,6 +30,7 @@ public class ApplicationProperties {
 	private String uploadDir;
 	
 	private Boolean cache;
+	private Boolean jspCache;
 	
 	@PostConstruct
 	public void init() {
@@ -48,6 +49,7 @@ public class ApplicationProperties {
 		uploadDir  = environment.getProperty("upload.dir");	
 		
 		cache  = Boolean.parseBoolean(environment.getProperty("cache"));
+		jspCache  = Boolean.parseBoolean(environment.getProperty("cache.jsp"));
 	}
 
 	public String getJdbcUrl() {
@@ -86,5 +88,7 @@ public class ApplicationProperties {
 	public Boolean getCache() {
 		return cache;
 	}
-
+	public Boolean getJspCache() {
+		return jspCache;
+	}
 }

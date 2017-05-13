@@ -1,9 +1,6 @@
 package fr.cedricsevestre.taglib;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
@@ -12,22 +9,9 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import org.apache.log4j.Logger;
 import org.apache.taglibs.standard.tag.common.core.Util;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
-import fr.cedricsevestre.com.utils.EntityLocator;
 import fr.cedricsevestre.com.utils.IdProviderUtil;
-import fr.cedricsevestre.com.utils.JspTagUtil;
-import fr.cedricsevestre.com.utils.ServiceLocator;
 import fr.cedricsevestre.constants.AttributeConst;
-import fr.cedricsevestre.entity.engine.IdProvider;
-import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
-import fr.cedricsevestre.entity.engine.translation.Translation;
-import fr.cedricsevestre.service.engine.independant.objects.PositionService;
-import fr.cedricsevestre.service.engine.notranslation.NoTranslationService;
-import fr.cedricsevestre.service.engine.translation.TranslationService;
 
 public class BindTag extends TagSupport {
 
@@ -40,6 +24,7 @@ public class BindTag extends TagSupport {
 	private int beanId;
 	private String field;
 	private boolean cache;
+	private boolean escapeXml;		// tag attribute
 	
 	public BindTag() {
 		super();
@@ -50,6 +35,7 @@ public class BindTag extends TagSupport {
 		var = null;
 		cache = true;
 	    scope = PageContext.PAGE_SCOPE;
+	    escapeXml = true;
 	}
 
 	public int doStartTag() throws JspException {
@@ -58,6 +44,8 @@ public class BindTag extends TagSupport {
 	    	IdProviderUtil idProviderUtil = (IdProviderUtil) pageContext.getAttribute(AttributeConst.ID_PROVIDER_UTIL_BEAN, PageContext.APPLICATION_SCOPE);
 
 			Object result = idProviderUtil.getIdProviderFieldValue(type, beanId, field, cache);
+			if (escapeXml && result instanceof String) result = (String) Util.escapeXml((String) result);
+
 			if (var != null) pageContext.setAttribute(var, result, scope);
 			else pageContext.getOut().print(result);
 
@@ -66,7 +54,7 @@ public class BindTag extends TagSupport {
 		}
 		return SKIP_BODY;
 	}
-
+	
 	public void setVar(String var) {
 		this.var = var;
 	}
@@ -90,4 +78,12 @@ public class BindTag extends TagSupport {
 	public void setCache(boolean cache) {
 		this.cache = cache;
 	}
+	
+    public void setEscapeXml(boolean escapeXml) {
+        this.escapeXml = escapeXml;
+    }
+
+	
+	
+	
 }

@@ -42,7 +42,7 @@
 										<c:set var="n" value="${empty n ? 0 : n + 1}" />
 										<c:set var="skill" value="${skills[n]}" />
 										
-										<my:bind var="skillTitle" type="Skill" beanId="${skill.id}" field="title" />
+										<my:bind var="skillTitle" type="Skill" beanId="${skill.id}" field="title" escapeXml="true" />
 
 					                    <label>${skillTitle}</label>
 					                    <div class="skill-progress">

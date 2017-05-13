@@ -13,10 +13,12 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import fr.cedricsevestre.conf.ApplicationProperties;
 import fr.cedricsevestre.constants.CacheConst;
 
 @Service
@@ -24,8 +26,13 @@ public class CacheService{
 
 	private Logger logger = Logger.getLogger(CacheService.class);
 
+	@Autowired
+	private ApplicationProperties applicationProperties;
+	
 	@Cacheable(value = CacheConst.JSP, unless = "#result == null")
 	public String getContentFromCache(String pathFile) throws IOException {
+		if (!applicationProperties.getJspCache()) return null;
+		
 		logger.debug("Enter in getContentFromCache");
 		try {
 			return new String(Files.readAllBytes(Paths.get(pathFile)));
@@ -35,7 +42,10 @@ public class CacheService{
 	}
 	
 	public void mkCachedFile(String pathDir, String pathFile, String Content) throws IOException{
+		if (!applicationProperties.getJspCache()) return;
+		
 		logger.debug("Enter in mkCachedFile");
+		
 		File file = new File(pathDir);
 		file.mkdirs();
 

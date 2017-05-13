@@ -12,7 +12,7 @@
 			<c:forEach items="${educations}" var="education" varStatus="status">
 				<my:bind var="educationTitle" type="Education" beanId="${education.id}" field="title" />
 				<my:bind var="educationSchoolName" type="Education" beanId="${education.id}" field="schoolName" />
-				<my:bind var="educationChapo" type="Education" beanId="${education.id}" field="chapo" />
+				<my:bind var="educationChapo" type="Education" beanId="${education.id}" field="chapo" escapeXml="false" />
 				<my:bind var="educationPicture" type="Education" beanId="${education.id}" field="picture" />
 				<my:bind var="educationYear" type="Education" beanId="${education.id}" field="year" />
 			
@@ -25,9 +25,7 @@
 					<div class="education-info">
 					    <h3>${educationYear} - <c:out value="${educationTitle}"/></h3>
 					    <h5>${educationSchoolName}</h5>
-					    <div>
-					    	<c:out value="${educationChapo}" escapeXml="false" />
-					    </div>
+					    <div>${educationChapo}</div>
 					</div>                            
 			    </div>
 			    <c:if test="${!status.last}"><hr></c:if>

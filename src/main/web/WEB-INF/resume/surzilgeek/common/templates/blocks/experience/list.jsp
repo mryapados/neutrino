@@ -13,7 +13,7 @@
 		<c:when test="${not empty experiences}">
 			<c:forEach items="${experiences}" var="experience" varStatus="status">
 				<my:bind var="experienceTitle" type="Experience" beanId="${experience.id}" field="title" />
-				<my:bind var="experienceChapo" type="Experience" beanId="${experience.id}" field="chapo" />
+				<my:bind var="experienceChapo" type="Experience" beanId="${experience.id}" field="chapo" escapeXml="false" />
 				<my:bind var="experienceCompanyName" type="Experience" beanId="${experience.id}" field="companyName" />
 				<my:bind var="experiencePicture" type="Experience" beanId="${experience.id}" field="picture" />
 			
@@ -32,15 +32,13 @@
 			    <div class="exprience">
 			        <c:if test="${not empty pictureUrl}">
 						<div class="exprience-image">
-						    <img class="img-responsive" src="${pictureUrl}" alt="Company name : <c:out value='${experienceCompanyName}'/>">
+						    <img class="img-responsive" src="${pictureUrl}" alt="Company name : ${experienceCompanyName}">
 						</div>
 			        </c:if>
 					<div class="exprience-info">
-					    <h3><c:out value="${experienceTitle}"/></h3>
+					    <h3>${experienceTitle}</h3>
 					    <h5>${formatedStartDate} - ${formatedEndDate}</h5>
-					    <div>
-					    	<c:out value="${experienceChapo}" escapeXml="false" />
-					    </div>
+					    <div>${experienceChapo}</div>
 					</div>                            
 			    </div>
 			    <c:if test="${!status.last}"><hr></c:if>

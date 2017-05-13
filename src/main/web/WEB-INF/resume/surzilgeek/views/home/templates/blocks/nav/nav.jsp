@@ -4,7 +4,7 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 
 <my:init test="${!initialized}"/>
-<my:cache>
+<my:cache key="ViewNav${folder}${language}">
 	<%-- En HomePage, les liens du nav sont des ancres --%>
 	<c:forEach items="${categories}" var="category" varStatus="status">
 		<my:bind var="categoryName" type="Category" beanId="${category.id}" field="name" />

@@ -6,144 +6,52 @@
 <my:init test="${!initialized}"/>
 
 
-
-<s:message var="pattern" code="date.locale.portfolio.format" text="MMMM, yyyy"/>
-<s:message var="present" code="portfolio.present " text="Present"/>
-
-<my:cache>
 	<div class="portfolio-content">
 		<div class="row">
-	
 			<c:choose>
 				<c:when test="${not empty activeResume}">
-					<c:forEach items="${portfolios}" var="portfolio">
-						<c:if test="${portfolio.id ne activePage.id}"><%-- Si on est dans une page portfolio, on ne l'affiche pas dans la liste --%>
-							<my:bind var="portfolioTitle" type="Portfolio" beanId="${portfolio.id}" field="title" />
-							<my:bind var="portfolioChapo" type="Portfolio" beanId="${portfolio.id}" field="chapo" />
-		
-							<c:url var="pictureUrl" value="${portfolio.picture}" scope="request"/>
-		
-							<div class="col-sm-6">
-								<div class="portfolio-item">
-									<img class="img-responsive" src="${pictureUrl}" alt="">
-					                <div class="portfolio-overlay">
-					                    <div class="portfolio-info">
-					                        <a href="${pictureUrl}"><i class="fa fa-camera-retro" aria-hidden="true"></i></a>
-					                        <h3><c:out value="${portfolioTitle}"/></h3>
-										    <div>
-										    	<c:out value="${portfolioChapo}" escapeXml="false" />
-										    </div>
-					                    </div>
-					                </div>
-					            </div>
-					        </div>
-						</c:if>
-					</c:forEach>  
+					<div class="portfolio">
+					    <div class="title">
+					        <div class="icons">
+					            <i class="fa fa-picture-o" aria-hidden="true"></i>
+					        </div>                                  
+					        <h3><s:message code="portfolio.title" text="Portfolio"/></h3>
+					    </div> 
+					    <div class="sub-content">
+					        <ul>
+								<c:forEach items="${portfolios}" var="portfolio">
+									<my:bind var="portfolioTitle" type="Portfolio" beanId="${portfolio.id}" field="title" />
+									<my:url var="url" value="/portfolio/${portfolio.name}.html" />
+						            <li><h5>${portfolioTitle} </h5> <span>:</span><a href="${url}"><my:stripTag value="${portfolio.chapo}"/></a></li>
+					            </c:forEach>  
+					        </ul>                                    
+					    </div>                                
+						</div>
 				</c:when>
 				<c:when test="${blockPreview}">
 					<%--- Orginal HTML template --%>
-					<div class="col-sm-6">
-						<div class="portfolio-item">
-							<img class="img-responsive" src="<c:url value='/resources/src/resume/surzilgeek/images/portfolio/1.jpg'/>" alt="Image">
-			                <div class="portfolio-overlay">
-			                    <div class="portfolio-info">
-			                        <a href="<c:url value='/resources/src/resume/surzilgeek/images/portfolio/1.jpg'/>"><i class="fa fa-camera-retro" aria-hidden="true"></i></a>
-			                        <h3>Book Cover</h3>
-			                        <p>Print Design</p>
-			                    </div>
-			                </div>
-			            </div>
-			        </div>
-			        <div class="col-sm-6">
-			            <div class="portfolio-item">
-			                <img class="img-responsive" src="<c:url value='/resources/src/resume/surzilgeek/images/portfolio/2.jpg'/>" alt="Image">
-			                <div class="portfolio-overlay">
-			                    <div class="portfolio-info">
-			                        <a href="<c:url value='/resources/src/resume/surzilgeek/images/portfolio/2.jpg'/>"><i class="fa fa-camera-retro" aria-hidden="true"></i></a>
-			                        <h3>Book Cover</h3>
-			                        <p>Print Design</p>
-			                    </div>
-			                </div>
-			            </div>
-			        </div>
-			        <div class="col-sm-6">
-			            <div class="portfolio-item">
-			                <img class="img-responsive" src="<c:url value='/resources/src/resume/surzilgeek/images/portfolio/3.jpg'/>" alt="Image">
-			                <div class="portfolio-overlay">
-			                    <div class="portfolio-info">
-			                        <a href="<c:url value='/resources/src/resume/surzilgeek/images/portfolio/3.jpg'/>"><i class="fa fa-camera-retro" aria-hidden="true"></i></a>
-			                        <h3>Book Cover</h3>
-			                        <p>Print Design</p>
-			                    </div>
-			                </div>
-			            </div>
-			        </div>
-			        <div class="col-sm-6">
-			            <div class="portfolio-item">
-			                <img class="img-responsive" src="<c:url value='/resources/src/resume/surzilgeek/images/portfolio/4.jpg'/>" alt="Image">
-			                <div class="portfolio-overlay">
-			                    <div class="portfolio-info">
-			                        <a href="<c:url value='/resources/src/resume/surzilgeek/images/portfolio/4.jpg'/>"><i class="fa fa-camera-retro" aria-hidden="true"></i></a>
-			                        <h3>Book Cover</h3>
-			                        <p>Print Design</p>
-			                    </div>
-			                </div>
-			            </div>
-			        </div>
-			        <div class="col-sm-6">
-			            <div class="portfolio-item">
-			                <img class="img-responsive" src="<c:url value='/resources/src/resume/surzilgeek/images/portfolio/5.jpg'/>" alt="Image">
-			                <div class="portfolio-overlay">
-			                    <div class="portfolio-info">
-			                        <a href="<c:url value='/resources/src/resume/surzilgeek/images/portfolio/5.jpg'/>"><i class="fa fa-camera-retro" aria-hidden="true"></i></a>
-			                        <h3>Book Cover</h3>
-			                        <p>Print Design</p>
-			                    </div>
-			                </div>
-			            </div>
-			        </div>
-			        <div class="col-sm-6">
-			            <div class="portfolio-item">
-			                <img class="img-responsive" src="<c:url value='/resources/src/resume/surzilgeek/images/portfolio/6.jpg'/>" alt="Image">
-			                <div class="portfolio-overlay">
-			                    <div class="portfolio-info">
-			                        <a href="<c:url value='/resources/src/resume/surzilgeek/images/portfolio/6.jpg'/>"><i class="fa fa-camera-retro" aria-hidden="true"></i></a>
-			                        <h3>Book Cover</h3>
-			                        <p>Print Design</p>
-			                    </div>
-			                </div>
-			            </div>
-			        </div>
-			        <div class="col-sm-6">
-			            <div class="portfolio-item">
-			                <img class="img-responsive" src="<c:url value='/resources/src/resume/surzilgeek/images/portfolio/7.jpg'/>" alt="Image">
-			                <div class="portfolio-overlay">
-			                    <div class="portfolio-info">
-			                        <a href="<c:url value='/resources/src/resume/surzilgeek/images/portfolio/7.jpg'/>"><i class="fa fa-camera-retro" aria-hidden="true"></i></a>
-			                        <h3>Book Cover</h3>
-			                        <p>Print Design</p>
-			                    </div>
-			                </div>
-			            </div>
-			        </div>
-			        <div class="col-sm-6">
-			            <div class="portfolio-item">
-			                <img class="img-responsive" src="<c:url value='/resources/src/resume/surzilgeek/images/portfolio/8.jpg'/>" alt="Image">
-			                <div class="portfolio-overlay">
-			                    <div class="portfolio-info">
-			                        <a href="<c:url value='/resources/src/resume/surzilgeek/images/portfolio/8.jpg'/>"><i class="fa fa-camera-retro" aria-hidden="true"></i></a>
-			                        <h3>Book Cover</h3>
-			                        <p>Print Design</p>
-			                    </div>
-			                </div>
-			            </div>
-			        </div>
+					<div class="portfolio">
+					    <div class="title">
+					        <div class="icons">
+					            <i class="fa fa-picture-o" aria-hidden="true"></i>
+					        </div>                                  
+					        <h3>Portfolio</h3>
+					    </div> 
+					    <div class="sub-content">
+					        <ul>
+					            <li><h5>Dribbble </h5> <span>:</span><a href="#">dribbble.com/geek</a></li>
+					            <li><h5>Website </h5> <span>:</span><a href="#">www.surzilgeek.com/portfolio</a></li>
+					            <li><h5>Flicker </h5> <span>:</span><a href="#">www.flicker.com/geek-photography</a></li>
+					            <li><h5>Behance </h5> <span>:</span><a href="#">www.behance.com/geekin</a></li>
+					        </ul>                                    
+					    </div>                                
+					</div>
 				</c:when>
 			</c:choose>	
 	
 	    </div>
 	</div><!-- portfolio content -->
-</my:cache>
+
 <my:script>
 // -------------------------------------------------------------
 // MagnificPopup

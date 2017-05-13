@@ -5,7 +5,7 @@
 
 <my:init test="${!initialized}"/>
 
-<my:cache>
+<my:cache key="CommonNav${folder}${language}">
 	<c:forEach items="${categories}" var="category" varStatus="status">
 		<my:bind var="categoryName" type="Category" beanId="${category.id}" field="name" />
 		<my:bind var="categoryTitle" type="Category" beanId="${category.id}" field="title" />
