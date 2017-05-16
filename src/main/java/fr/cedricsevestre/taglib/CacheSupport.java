@@ -25,12 +25,9 @@ public class CacheSupport extends BodyTagSupport implements Serializable {
 
 	protected String key = null;
 
-	private CommonUtil commonUtil;
 	private CacheService cacheService;
 
 	private int hashCode = 0;
-	private String pathDir = null;
-	private String pathFile = null;
 	private String content = null;
 	private boolean done = false;
 	private boolean blockPreview = false;
@@ -40,13 +37,9 @@ public class CacheSupport extends BodyTagSupport implements Serializable {
 		content = null;
 		blockPreview = (Boolean) pageContext.getAttribute(AttributeConst.BLOCKPREVIEW, PageContext.REQUEST_SCOPE);
 		if (blockPreview) return;
-		
-		commonUtil = (CommonUtil) pageContext.getAttribute(AttributeConst.COMMON_UTIL_BEAN, PageContext.APPLICATION_SCOPE);
 		cacheService = (CacheService) pageContext.getAttribute(AttributeConst.CACHE_SERVICE_BEAN, PageContext.APPLICATION_SCOPE);
 
 		mkHashCode();
-		pathDir = commonUtil.getWebInfFolder() + "cache/";
-		pathFile = pathDir + hashCode;
 	}
 
 	@Override
@@ -112,7 +105,7 @@ public class CacheSupport extends BodyTagSupport implements Serializable {
 	private void contentFromCache() throws JspException {
 		logger.debug("Enter in contentFromCache");
 		try {
-			content = cacheService.getContentFromCache(pathFile);
+			content = cacheService.getContentFromCache(hashCode);
 		} catch (IOException e) {
 			throw new JspTagException(e);
 		}
@@ -126,7 +119,7 @@ public class CacheSupport extends BodyTagSupport implements Serializable {
 	private void mkCachedFile() throws JspException {
 		logger.debug("Enter in contentFromBodyTag");
 		try {
-			cacheService.mkCachedFile(pathDir, pathFile, content);
+			cacheService.mkCachedFile(hashCode, content);
 		} catch (IOException e) {
 			throw new JspTagException(e);
 		}

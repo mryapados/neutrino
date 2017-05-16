@@ -28,6 +28,7 @@ public class ApplicationProperties {
 	private Long maxRequestSize;
 	private Integer fileSizeThreshold;
 	private String uploadDir;
+	private String cacheDir;
 	
 	private Boolean cache;
 	private Boolean jspCache;
@@ -47,6 +48,7 @@ public class ApplicationProperties {
 		maxRequestSize = Long.parseLong(environment.getProperty("http.multipart.max-request-size"));
 		fileSizeThreshold = Integer.parseInt(environment.getProperty("http.multipart.file-size-threshold"));
 		uploadDir  = environment.getProperty("upload.dir");	
+		cacheDir  = environment.getProperty("cache.dir");	
 		
 		cache  = Boolean.parseBoolean(environment.getProperty("cache"));
 		jspCache  = Boolean.parseBoolean(environment.getProperty("cache.jsp"));
@@ -84,6 +86,9 @@ public class ApplicationProperties {
 	}
 	public String getUploadDir() {
 		return uploadDir;
+	}
+	public String getCacheDir() {
+		return cacheDir;
 	}
 	public Boolean getCache() {
 		return cache;

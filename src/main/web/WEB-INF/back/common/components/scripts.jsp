@@ -5,6 +5,7 @@
 <%-- Here set all necessary initialization for alone component like blocks --%>
 <!-- jquery -->
 <script src="<c:url value='/resources/src/lib/bower_components/jquery/dist/jquery.min.js'/>"></script>
+<script src="<c:url value='/resources/src/lib/bower_components/bootstrap/dist/js/bootstrap.min.js'/>"></script>
 
 <my:import url="/admin/components/angularLibs.jsp" />
 
