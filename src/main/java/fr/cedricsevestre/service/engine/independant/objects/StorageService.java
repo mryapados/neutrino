@@ -118,6 +118,11 @@ public class StorageService implements IStorageService{
 
     }
 
+
+    public Path getPath(String filename) {
+        return Paths.get(rootLocation + filename);
+    }
+    
     @Override
     public Path load(String filename) {
         return rootLocation.resolve(filename);
@@ -126,7 +131,7 @@ public class StorageService implements IStorageService{
     @Override
     public Resource loadAsResource(String filename) {
         try {
-            Path file = load(filename);
+            Path file = load(this.rootLocation + filename);
             Resource resource = new UrlResource(file.toUri());
             if(resource.exists() || resource.isReadable()) {
                 return resource;
@@ -139,10 +144,25 @@ public class StorageService implements IStorageService{
             throw new StorageFileNotFoundException("Could not read file: " + filename, e);
         }
     }
+    
+	public void move(String filename, String newFilename) {
+		try {
+			File afile = new File(rootLocation + filename);
+			if (!afile.renameTo(new File(rootLocation + newFilename))){
+				throw new StorageException("Failed to move file : " + filename + " to " + newFilename);
+			}
+		}catch(Exception e){
+			throw new StorageException(e.getMessage(), e);
+    	}
+	}
 
     @Override
     public void deleteAll() {
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
+    }
+    
+    public void delete(String path) {
+    	FileSystemUtils.deleteRecursively(Paths.get(rootLocation + path).toFile());
     }
 
     @Override
@@ -153,5 +173,7 @@ public class StorageService implements IStorageService{
             throw new StorageException("Could not initialize storage", e);
         }
     }
+
+
     
 }
