@@ -1,7 +1,10 @@
 package fr.cedricsevestre.service.engine.independant.objects;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -19,6 +22,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.annotation.PostConstruct;
 
@@ -118,7 +123,6 @@ public class StorageService implements IStorageService{
 
     }
 
-
     public Path getPath(String filename) {
         return Paths.get(rootLocation + filename);
     }
@@ -127,6 +131,70 @@ public class StorageService implements IStorageService{
     public Path load(String filename) {
         return rootLocation.resolve(filename);
     }
+
+    private void compressSubDirectory(String basePath, File dir, ZipOutputStream zout) throws IOException {
+    	logger.debug("Zipping the directory: " + dir.getName());
+        File[] files = dir.listFiles();
+        for (File file : files) {
+            if (file.isDirectory()) {
+                String path = basePath + file.getName() + "/";
+                zout.putNextEntry(new ZipEntry(path));
+                compressSubDirectory(path, file, zout);
+                zout.closeEntry();
+            } else {
+            	compressFile(basePath, file, zout);
+            }
+        }
+    }
+    private void compressFile(String basePath, File file, ZipOutputStream zout) throws IOException {
+    	logger.debug("Zipping the file: " + file.getName());
+        byte[] buffer = new byte[4096];    	
+        FileInputStream fin = new FileInputStream(file);
+        zout.putNextEntry(new ZipEntry(basePath + file.getName()));
+        int length;
+        while ((length = fin.read(buffer)) > 0) {
+            zout.write(buffer, 0, length);
+        }
+        zout.closeEntry();
+        fin.close();
+    }
+	public Path compress(List<String> files, String destLocation, String destFileName) {
+		FileOutputStream fos = null;
+		ZipOutputStream zipOut = null;
+		Path path = null;
+		if (destLocation != null) path = Paths.get(destLocation);
+		else path = Paths.get(applicationProperties.getTempDir());
+		try {
+			if (destFileName == null) destFileName = String.valueOf(files.hashCode());
+			path = Paths.get(path + File.separator + destFileName);
+			fos = new FileOutputStream(path.toFile());
+			zipOut = new ZipOutputStream(new BufferedOutputStream(fos));
+			for (String filePath : files) {
+				File input = getPath(filePath).toFile();
+				if (input.isDirectory()){
+					compressSubDirectory("", input, zipOut);
+				} else {
+					compressFile("", input, zipOut);
+				}
+			}
+			zipOut.close();
+			logger.debug("Done... Zipped the files...");
+		} catch (FileNotFoundException e) {
+			throw new StorageFileNotFoundException("Could not found file", e);
+		} catch (IOException e) {
+			throw new StorageException("error", e);
+		} finally {
+			try {
+				if (fos != null){
+					fos.close();
+					return path;
+				}
+			} catch (Exception e) {
+				throw new StorageException("error", e);
+			}
+		}
+		throw new StorageFileNotFoundException("no FileOutputStream");
+	}
 
     @Override
     public Resource loadAsResource(String filename) {

@@ -6,6 +6,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +27,7 @@ import fr.cedricsevestre.exception.ResourceNotFoundException;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.exception.StorageException;
 import fr.cedricsevestre.service.engine.independant.objects.StorageService;
+import fr.cedricsevestre.wrapper.engine.bo.CompressRequestWrapper;
 import fr.cedricsevestre.wrapper.engine.bo.MoveRequestWrapper;
 import fr.cedricsevestre.wrapper.engine.bo.RemoveRequestWrapper;
 import fr.cedricsevestre.wrapper.engine.bo.ResultEncapsulatorWrapper;
@@ -34,6 +38,8 @@ public class BackOfficeControllerFileManager extends BackOfficeController {
 	
 	protected static final String BO_FILE_PARAM_ACTION = "action";
 	protected static final String BO_FILE_PARAM_PATH = "path";
+	protected static final String BO_FILE_PARAM_ITEMS = "items[]";
+	protected static final String BO_FILE_PARAM_TOFILENAME = "toFilename";
 	
 	@Autowired
 	private StorageService fileService;
@@ -144,17 +150,31 @@ public class BackOfficeControllerFileManager extends BackOfficeController {
 		}
 	}
 
+	
 	@RequestMapping(value = BO_FILE_DOWNLOAD_URL, method = RequestMethod.GET)
-	@ResponseBody
-	public FileSystemResource getFile(@RequestParam(BO_FILE_PARAM_ACTION) String action, @RequestParam(BO_FILE_PARAM_PATH) String path) throws ControllerException {
+	public HttpEntity<FileSystemResource> getFile(@RequestParam(BO_FILE_PARAM_ACTION) String action, @RequestParam(BO_FILE_PARAM_PATH) String path) throws ControllerException {
 		try {
+			FileSystemResource fileSystemResource = new FileSystemResource(fileService.getPath(path).toFile());
+
+			HttpHeaders header = new HttpHeaders();
+		    header.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+		    header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileSystemResource.getFilename());			
+			return new HttpEntity<FileSystemResource>(fileSystemResource, header);
 			
-			FileSystemResource dddd = new FileSystemResource(fileService.getPath(path).toFile());
-			
-			return dddd;
-			
-			
-			
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		}
+	}
+	
+	@RequestMapping(value = BO_FILE_DOWNLOADMULTIPLE_URL, method = RequestMethod.GET)
+	public HttpEntity<FileSystemResource> getFileMultiple(@RequestParam(BO_FILE_PARAM_ACTION) String action, @RequestParam(BO_FILE_PARAM_ITEMS) List<String> items, @RequestParam(BO_FILE_PARAM_TOFILENAME) String toFileName) throws ControllerException {
+		try {
+			FileSystemResource fileSystemResource = new FileSystemResource(fileService.compress(items, null, toFileName).toFile());
+
+			HttpHeaders header = new HttpHeaders();
+		    header.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+		    header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileSystemResource.getFilename());			
+			return new HttpEntity<FileSystemResource>(fileSystemResource, header);
 			
 		} catch (Exception e) {
 			throw new ControllerException(e);
@@ -162,7 +182,21 @@ public class BackOfficeControllerFileManager extends BackOfficeController {
 	}
 
 	
-	
+	@RequestMapping(value = BO_FILE_COMPRESS_URL, method = RequestMethod.POST)
+	public @ResponseBody ResultEncapsulatorWrapper compress(@RequestBody CompressRequestWrapper compressRequest) throws ControllerException {
+		boolean success = true;
+		String errorMessage = null;
+		try {
+			fileService.compress(compressRequest.getItems(), fileService.getPath(compressRequest.getDestination()).toString() , compressRequest.getCompressedFilename()).toFile();
+		} catch (Exception e) {
+			success = false;
+			errorMessage = e.getMessage();
+		}
+		Map<String, Object> result = new HashMap<>();
+		result.put("success", success);
+		result.put("error", errorMessage);
+		return new ResultEncapsulatorWrapper(result);
+	}
 	
 	
 	

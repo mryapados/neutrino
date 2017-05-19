@@ -27,6 +27,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.ResourceHttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
@@ -158,6 +159,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         // the list is empty, so we just add our converter
         converters.add(jsonConverter());
+        converters.add(fileConverter());
     }
 
     @Bean
@@ -169,7 +171,14 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
         return new MappingJackson2HttpMessageConverter(objectMapper);
     }
 	
-	
+    @Bean
+    public ResourceHttpMessageConverter fileConverter() {
+        return new ResourceHttpMessageConverter();
+    }
+    
+    
+    
+    
 	
     @Override
     public void addFormatters(FormatterRegistry registry) {

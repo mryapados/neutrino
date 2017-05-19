@@ -16,8 +16,8 @@
         getContentUrl: 'bridges/php/handler.php',
         createFolderUrl: 'bridges/php/handler.php',
         downloadFileUrl: '/neutrino/bo/file/download/',
-        downloadMultipleUrl: 'bridges/php/handler.php',
-        compressUrl: 'bridges/php/handler.php',
+        downloadMultipleUrl: '/neutrino/bo/file/downloadMultiple/',
+        compressUrl: '/neutrino/bo/file/compress/',
         extractUrl: 'bridges/php/handler.php',
         permissionsUrl: 'bridges/php/handler.php',
         

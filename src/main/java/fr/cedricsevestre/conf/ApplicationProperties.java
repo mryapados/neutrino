@@ -23,7 +23,9 @@ public class ApplicationProperties {
 	private String applicationFolder;
 	private String pathBundleLabelsBack;
 	private String pathBundleLabelsFront;
-
+	
+	private String tempDir;
+		
 	private Long maxFileSize;
 	private Long maxRequestSize;
 	private Integer fileSizeThreshold;
@@ -43,6 +45,8 @@ public class ApplicationProperties {
 		applicationFolder = environment.getProperty("application.folder");		
 		pathBundleLabelsBack  = environment.getProperty("path.bundle.labels.back");
 		pathBundleLabelsFront  = environment.getProperty("path.bundle.labels.front");
+		
+		tempDir  = environment.getProperty("temp.dir");	
 		
 		maxFileSize =  Long.parseLong(environment.getProperty("http.multipart.max-file-size"));
 		maxRequestSize = Long.parseLong(environment.getProperty("http.multipart.max-request-size"));
@@ -74,6 +78,9 @@ public class ApplicationProperties {
 	}
 	public String getPathBundleLabelsFront() {
 		return pathBundleLabelsFront;
+	}
+	public String getTempDir(){
+		return tempDir;
 	}
 	public Long getMaxFileSize() {
 		return maxFileSize;

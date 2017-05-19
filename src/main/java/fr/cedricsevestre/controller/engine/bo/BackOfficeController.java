@@ -68,6 +68,8 @@ public abstract class BackOfficeController extends AbstractController {
 	protected static final String BO_FILE_RENAME_URL = "rename/";
 	protected static final String BO_FILE_MOVE_URL = "move/";
 	protected static final String BO_FILE_DOWNLOAD_URL = "download/";
+	protected static final String BO_FILE_DOWNLOADMULTIPLE_URL = "downloadMultiple/";
+	protected static final String BO_FILE_COMPRESS_URL = "compress/";
 	
 	protected static final Integer BO_MAX_REQUEST_ELEMENT = 1000;
 		
