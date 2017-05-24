@@ -11,10 +11,6 @@
       <param-name>contextClass</param-name>
       <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
     </init-param>
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>fr.treeptik.conf.ApplicationConfiguration</param-value>
-    </init-param>
   </servlet>
   <filter>
     <filter-name>UrlRewriteFilter</filter-name>

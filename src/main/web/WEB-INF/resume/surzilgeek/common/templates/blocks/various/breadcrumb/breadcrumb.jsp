@@ -39,8 +39,8 @@
 					</c:when>
 					<c:when test="${blockPreview}">
 						<ol class="breadcrumb">
-							<li><a href="/neutrino/home.html">Home</a></li>
-							<li><a href="/neutrino/test.html">Test</a></li>
+							<li><a href="<c:url value='home.html' />">Home</a></li>
+							<li><a href="<c:url value='test' />">Test</a></li>
 							<li class="active">Test1</li>
 						</ol>
 					</c:when>

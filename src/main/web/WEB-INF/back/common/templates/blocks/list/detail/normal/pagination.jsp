@@ -17,7 +17,7 @@
 		int max = Integer.parseInt(pageContext.getAttribute("max").toString());
 		int count = max;
 
-		SortedSet<Integer> r = new TreeSet<>();
+		SortedSet<Integer> r = new TreeSet<Integer>();
 		r.add(first);
 		r.add(active);
 		r.add(last);

@@ -4,7 +4,8 @@
 	monitoring="autodetect"
 	dynamicConfig="true">
 
-	<diskStore path="C:\tmp" />
+<!-- 	<diskStore path="C:\tmp" /> -->
+	<diskStore path="/tmp/neutrino/cache" />
 <!-- 	<diskStore path="java.io.tmpdir" /> -->
 
 	<defaultCache eternal="false" maxEntriesLocalHeap="10000" maxEntriesLocalDisk="1000" timeToIdleSeconds="30000" timeToLiveSeconds="60000" overflowToDisk="false" />

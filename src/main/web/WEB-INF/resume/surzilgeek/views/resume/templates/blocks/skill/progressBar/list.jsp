@@ -21,7 +21,7 @@
 			    		
 			    		<c:set var="skillsSize" value="${skills.size()}" />
 			    		<%
-			    			int skillsSize = (int) pageContext.getAttribute("skillsSize");
+			    			int skillsSize = (Integer) pageContext.getAttribute("skillsSize");
 			    			int mod3 = skillsSize % 3;
 			    			int n = (new Double(Math.ceil((double) skillsSize / 3))).intValue();
 			    			
