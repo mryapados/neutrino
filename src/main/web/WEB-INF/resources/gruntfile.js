@@ -22,60 +22,91 @@ module.exports = function (grunt) {
             }
         },
  
+        
+        /**
+         * 
+         * 
+         * 
+         */
+        ngtemplates: {
+            boApp: {
+            	// cwd: 'src/bo',
+            	src: ['src/bo/js/templates/**.html'],
+                dest: 'src/bo/js/templates/tpl.js',
+                options: {
+                	htmlmin: {
+                		  collapseBooleanAttributes:      true,
+                		  collapseWhitespace:             true,
+                		  removeAttributeQuotes:          true,
+                		  removeComments:                 true, // Only if you don't use comment directives! 
+                		  removeEmptyAttributes:          true,
+                		  removeRedundantAttributes:      true,
+                		  removeScriptTypeAttributes:     true,
+                		  removeStyleLinkTypeAttributes:  true
+                	}
+                }
+            },
+        }, 
+        
+        /**
+         * 
+         * 
+         * 
+         */
+        copy: {
+        	main: {
+        		files: [
+        	    	// includes files within path and its sub-directories
+        	      {expand: true, cwd: 'src/bo/js/', src: ['templates/resources/**'], dest: 'dist/bo/'},
+        	      
+        	    ],
+        	},
+        },
+        
+        
+        
+        
         /**
          * Configuration du plugin concat
          * une seule tâche qui va concatener tous les fichiers situés dans 'src/js/'
          * dans un seul fichier 'dist/js/built.js'
          */
-        concat: {
-            lib: {
-                src: ['src/lib/**/*.min.js'],
-                dest: 'dist/lib.js'
-            },
-            
+        concat: {            
             back: {
                 src: ['src/back/**/*.js'],
-                dest: 'dist/back.js'
+                dest: 'dist/back/back.js'
             },
             
             bo: {
                 src: ['src/bo/**/*.js'],
-                dest: 'dist/bo.js'
+                dest: 'dist/bo/bo.js'
             },
             
             front: {
                 src: ['src/front/**/*.js'],
-                dest: 'dist/front.js'
+                dest: 'dist/front/front.js'
             },
-        },
- 
+        }, 
         /**
          * Configuration du plugin uglify
          * une seule tâche qui va minimifier le fichier built.js
          * généré par la tâche précédente
          */
-        uglify: {
-            lib: {
-                src: ['dist/lib*.js'],
-                dest: 'dist/lib.min.js'
-            }, 
-            
+        uglify: {            
             back: {
-                src: ['dist/back.js'],
-                dest: 'dist/back.min.js'
+                src: ['dist/back/back.js'],
+                dest: 'dist/back/back.min.js'
             }, 
             
             bo: {
-                src: ['dist/bo.js'],
-                dest: 'dist/bo.min.js'
+                src: ['dist/bo/bo.js'],
+                dest: 'dist/bo/bo.min.js'
             }, 
             
             front: {
-                src: ['dist/front.js'],
-                dest: 'dist/front.min.js'
+                src: ['dist/front/front.js'],
+                dest: 'dist/front/front.min.js'
             }
-        	
-        
         },
  
         /**
@@ -96,6 +127,12 @@ module.exports = function (grunt) {
     // plugin du préprocesseur less
     grunt.loadNpmTasks('grunt-contrib-less');
  
+    // plugin ...
+    grunt.loadNpmTasks('grunt-angular-templates');
+    
+    // plugin pour copier des fichiers ressources
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    
     // plugin pour concatener des fichiers
     grunt.loadNpmTasks('grunt-contrib-concat');
  
@@ -113,7 +150,7 @@ module.exports = function (grunt) {
      * le lancement de la tâche 'watch-src' ne vous rendra pas la main, mais grunt restera actif
      * pour scruter vos fichiers
      */
-    grunt.registerTask('default', ['less:dist', 'concat', 'uglify']);
+    grunt.registerTask('default', ['less:dist', 'ngtemplates', 'copy', 'concat', 'uglify']);
     grunt.registerTask('watch-src', ['default', 'watch']);
  
 };

@@ -1,5 +1,161 @@
 (function() {
 
+	var fModule = angular.module('boApp', ['frontServices', 'ui.bootstrap', 'textAngular', 'ngSanitize', 'pascalprecht.translate', 'ngCookies', 'ngResource']);
+	fModule.config(function($translateProvider) {
+		var $cookies;
+		angular.injector(['ngCookies']).invoke(['$cookies', function(_$cookies_) {
+			$cookies = _$cookies_;
+		}]);
+		
+		$translateProvider.useSanitizeValueStrategy('sanitize');
+		var lang = $cookies.get('language');
+		if (lang == undefined){lang = 'en';}
+		$translateProvider.preferredLanguage(lang);
+		$translateProvider.useLoader('i18nLoader');
+		
+	});
+	fModule.run(function($cookies) {
+
+		
+	});
+	fModule.factory('i18nLoader', function ($http, $q, $frontPath) {
+	    return function (options) {
+		    var deferred = $q.defer();
+		    $http.get($frontPath.URL_I18N + options.key + '.json')
+			.then(function(response) {
+	            deferred.resolve(response.data);
+			})
+			.catch(function(error){
+				console.log(error.status);
+				console.log(error);
+				deferred.reject(options.key);
+			});
+			return deferred.promise;
+	    };
+	});
+	
+	
+	
+	
+
+
+	
+	
+	
+	
+}());
+var fModule = angular.module('boApp');
+fModule.controller('DatepickerPopupCtrl', ['$scope', function($scope) {
+
+  $scope.init = function(dateObj) {
+	$scope.dt = new Date(dateObj);
+  }	
+	
+  $scope.today = function() {
+    $scope.dt = new Date();
+  };
+  $scope.today();
+
+  $scope.clear = function() {
+    $scope.dt = null;
+  };
+
+  $scope.inlineOptions = {
+    customClass: getDayClass,
+    minDate: new Date(),
+    showWeeks: true
+  };
+
+  $scope.dateOptions = {
+    dateDisabled: disabled,
+    formatYear: 'yy',
+    maxDate: new Date(2020, 5, 22),
+    minDate: new Date(),
+    startingDay: 1
+  };
+
+  // Disable weekend selection
+  function disabled(data) {
+    var date = data.date,
+      mode = data.mode;
+    return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+  }
+
+  $scope.toggleMin = function() {
+    $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
+    $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
+  };
+
+  $scope.toggleMin();
+
+  $scope.open1 = function() {
+    $scope.popup1.opened = true;
+  };
+
+  $scope.open2 = function() {
+    $scope.popup2.opened = true;
+  };
+
+  $scope.setDate = function(year, month, day) {
+    $scope.dt = new Date(year, month, day);
+  };
+
+  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+  $scope.format = $scope.formats[0];
+  $scope.altInputFormats = ['M!/d!/yyyy'];
+
+  $scope.popup1 = {
+    opened: false
+  };
+
+  $scope.popup2 = {
+    opened: false
+  };
+
+  var tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  var afterTomorrow = new Date();
+  afterTomorrow.setDate(tomorrow.getDate() + 1);
+  $scope.events = [
+    {
+      date: tomorrow,
+      status: 'full'
+    },
+    {
+      date: afterTomorrow,
+      status: 'partially'
+    }
+  ];
+
+  function getDayClass(data) {
+    var date = data.date,
+      mode = data.mode;
+    if (mode === 'day') {
+      var dayToCheck = new Date(date).setHours(0,0,0,0);
+
+      for (var i = 0; i < $scope.events.length; i++) {
+        var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+
+        if (dayToCheck === currentDay) {
+          return $scope.events[i].status;
+        }
+      }
+    }
+
+    return '';
+  }
+}]);
+
+var fModule = angular.module('boApp');
+
+fModule.controller('WysiwygEditorCtrl', ['$scope', 'textAngularManager', function($scope, textAngularManager) {
+    $scope.version = textAngularManager.getVersion();
+    $scope.versionNumber = $scope.version.substring(1);
+    $scope.disabled = false;
+}]);
+
+(function() {
+
 	var fModule = angular.module("boApp");
 
 	//Directives
@@ -526,3 +682,207 @@
 	}]);
 	
 }());
+(function() {
+
+	var fModule = angular.module("boApp");
+	fModule.directive('uiFile', ['$parse', 'q', 'boConfig', '$frontPath', function($parse, $q, boConfig, $frontPath) {		
+        return {
+            restrict: 'EA',
+            scope: {
+            	url: '=',
+            },
+			controller: function ($scope) {
+				var filename = $scope.url.substring($scope.url.lastIndexOf('/')+1);
+				$scope.name = filename;
+				
+    			var doesFileExist = function(url) 
+    			{
+    				var deferred = $q.defer();
+    			    var request = new XMLHttpRequest();
+    			    request.onreadystatechange = function()
+    			    {
+    			        if (request.readyState == 4)
+    			        {
+    					    if (request.status == "404") {
+    					    	deferred.resolve(false);
+    					    } else {
+    					    	deferred.resolve(true);
+    					    }
+    			        }
+    			    }; 
+    			    request.open('GET', url);
+    			    request.send();
+    			    return deferred.promise;
+    			}
+    			
+            	doesFileExist($scope.url).then(function(exist) {
+            		var code = null;
+            		if (!exist) code ='404';
+            		else code = $scope.url.split('.').pop().toLowerCase();
+
+                	var basePath = boConfig.tplPath + '/resources/';
+                	var extensions = 
+                    {
+                		'png': $scope.url,
+                		'jpg': $scope.url,
+                		'jpeg': $scope.url,
+                		'gif': $scope.url,
+                		'bmp': $scope.url,
+                		'pdf': basePath + 'pdf.png',
+                		'ND': basePath + 'nd.png',
+                		'404': basePath + '404.png',
+                		'LOADING': basePath + 'loading.png',
+                    }
+                	var result = extensions[code];
+                    if (result == null){
+                    	result = extensions['ND'];
+                    }
+                   
+                    $scope.src = result;
+            		
+            		
+    			});
+
+			}, 
+            templateUrl: boConfig.tplPath + '/ui-file.html',
+            link: function(scope, element, attrs) {
+
+            }
+        };
+	}]);
+
+
+
+	
+}());
+(function(angular) {
+    'use strict';
+    angular.module('boApp').provider('boConfig', function() {
+
+        var values = {
+            tplPath: 'src/bo/js/templates'
+        };
+
+        return {
+            $get: function() {
+                return values;
+            },
+            set: function (constants) {
+                angular.extend(values, constants);
+            }
+        };
+
+    });
+})(angular);
+
+(function() {
+	var bModule=angular.module("frontServices",['FileManagerApp']);
+
+	angular.module('FileManagerApp').config(['fileManagerConfigProvider', function (config) {
+      var defaults = config.$get();
+      config.set({
+        appName: 'Neutrino',
+        
+        listUrl: '/neutrino/bo/file/list/',
+        uploadUrl: '/neutrino/bo/file/add/',
+        renameUrl: '/neutrino/bo/file/rename/',
+        copyUrl: 'bridges/php/handler.php',
+        moveUrl: '/neutrino/bo/file/move/',
+        removeUrl: '/neutrino/bo/file/remove/',
+        editUrl: 'bridges/php/handler.php',
+        getContentUrl: 'bridges/php/handler.php',
+        createFolderUrl: 'bridges/php/handler.php',
+        downloadFileUrl: '/neutrino/bo/file/download/',
+        downloadMultipleUrl: '/neutrino/bo/file/downloadMultiple/',
+        compressUrl: '/neutrino/bo/file/compress/',
+        extractUrl: 'bridges/php/handler.php',
+        permissionsUrl: 'bridges/php/handler.php',
+        
+        pickCallback: function(item) {
+          var msg = 'Picked %s "%s" for external use'
+            .replace('%s', item.type)
+            .replace('%s', item.fullPath());
+          window.alert(msg);
+        },
+
+        searchForm: false,
+        sidebar: true,
+        breadcrumb: true,
+        navbar: true,
+        multiSelect:true,
+        allowedActions: {
+            upload: true,
+            rename: true,
+            move: true,
+            copy: true,
+            edit: true,
+            changePermissions: true,
+            compress: true,
+            compressChooseName: true,
+            extract: true,
+            download: true,
+            downloadMultiple: true,
+            preview: true,
+            remove: true,
+            createFolder: true,
+            pickFiles: false,
+            pickFolders: false
+        },
+        
+        
+        multipleDownloadFileName: 'angular-filemanager.zip',
+        showExtensionIcons: true,
+        showSizeForDirectories: false,
+        useBinarySizePrefixes: false,
+        downloadFilesByAjax: true,
+        previewImagesInModal: true,
+        enablePermissionsRecursive: true,
+        compressAsync: false,
+        extractAsync: false,
+        pickCallback: null,
+
+        
+      });
+      
+    }]);
+	
+	
+}());
+(function() {
+	var fModule = angular.module('frontServices');
+	fModule.constant('$frontPath', {
+		URL_SERVER_REST: '/neutrino/',
+		URL_TEMPLATE_JS: '/neutrino/resources/src/bo/js/templates/',
+		URL_I18N: '/neutrino/resources/src/bo/js/i18n/',
+		URL_BASE : '/neutrino',
+		URL_FILES : '/files',
+	});
+}());
+angular.module('boApp').run(['$templateCache', function($templateCache) {
+  'use strict';
+
+  $templateCache.put('src/bo/js/templates/ui-file-assignement-modal.html',
+    "<form name=templateForm class=form-horizontal role=form><div class=modal-header><button type=button class=close data-dismiss=modal aria-label=Close><span aria-hidden=true>&times;</span></button><h4 class=modal-title>{{'block-management.type' | translate}} : {{template.template.name}}</h4></div><div class=modal-body><div data-ng-show=template.errors class=\"alert alert-danger\" role=alert><div data-ng-repeat=\"err in template.errors.data\"><span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=true></span> <span class=sr-only>Error :</span> {{err.defaultMessage}}</div></div><div data-ng-include=urlMaked></div></div><div class=modal-footer><button data-ng-click=cancel() class=\"btn btn-danger btn-small\">Annuler</button> <button class=\"btn btn-success\" data-ng-disabled=\"!templateForm.$dirty || templateForm.$invalid\" data-ng-click=save(templateForm)>Modifier</button></div></form>"
+  );
+
+
+  $templateCache.put('src/bo/js/templates/ui-file-assignement.html',
+    "<div><a ng-click=\"add('lg')\" class=\"btn btn-primary btn-xs\">{{ many ? 'add' : 'assign' | translate }}</a> <a ng-click=clear() class=\"btn btn-danger btn-xs\">{{ 'reset' | translate }}</a></div>"
+  );
+
+
+  $templateCache.put('src/bo/js/templates/ui-file.html',
+    "<div class=uifile><a ng-href={{url}} target=_blank><div class=content><p class=title>{{name}}</p><p><img ng-src={{src}} alt={{name}}></p></div></a></div>"
+  );
+
+
+  $templateCache.put('src/bo/js/templates/ui-object-assignement-modal.html',
+    "<form name=templateForm class=form-horizontal role=form><div class=modal-header><button type=button class=close data-dismiss=modal aria-label=Close><span aria-hidden=true>&times;</span></button><h4 class=modal-title>{{'block-management.type' | translate}} : {{template.template.name}}</h4></div><div class=modal-body><div data-ng-show=template.errors class=\"alert alert-danger\" role=alert><div data-ng-repeat=\"err in template.errors.data\"><span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=true></span> <span class=sr-only>Error :</span> {{err.defaultMessage}}</div></div><div data-ng-include=urlMaked></div></div><div class=modal-footer><button data-ng-click=cancel() class=\"btn btn-danger btn-small\">Annuler</button> <button class=\"btn btn-success\" data-ng-disabled=\"!templateForm.$dirty || templateForm.$invalid\" data-ng-click=save(templateForm)>Modifier</button></div></form>"
+  );
+
+
+  $templateCache.put('src/bo/js/templates/ui-object-assignement.html',
+    "<div><a ng-click=\"open('lg')\" class=\"btn btn-primary btn-xs\">{{ 'assign' | translate }}</a></div>"
+  );
+
+}]);

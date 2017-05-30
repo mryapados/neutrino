@@ -1,8 +1,7 @@
 (function() {
 
-	var fModule = angular.module("frontApp");
-
-	fModule.directive('uiFile', function($parse, $q, $frontPath){
+	var fModule = angular.module("boApp");
+	fModule.directive('uiFile', ['$parse', 'q', 'boConfig', '$frontPath', function($parse, $q, boConfig, $frontPath) {		
         return {
             restrict: 'EA',
             scope: {
@@ -37,7 +36,7 @@
             		if (!exist) code ='404';
             		else code = $scope.url.split('.').pop().toLowerCase();
 
-                	var basePath = $frontPath.URL_TEMPLATE_JS + 'resources/';
+                	var basePath = boConfig.tplPath + '/resources/';
                 	var extensions = 
                     {
                 		'png': $scope.url,
@@ -61,12 +60,12 @@
     			});
 
 			}, 
-            templateUrl: $frontPath.URL_TEMPLATE_JS + '/ui-file.html',
+            templateUrl: boConfig.tplPath + '/ui-file.html',
             link: function(scope, element, attrs) {
 
             }
         };
-	});
+	}]);
 
 
 

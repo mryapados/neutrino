@@ -1,6 +1,6 @@
-var fModule = angular.module('frontApp');
-fModule.controller('DatepickerPopupCtrl', function ($scope) {
-	
+var fModule = angular.module('boApp');
+fModule.controller('DatepickerPopupCtrl', ['$scope', function($scope) {
+
   $scope.init = function(dateObj) {
 	$scope.dt = new Date(dateObj);
   }	
@@ -98,4 +98,4 @@ fModule.controller('DatepickerPopupCtrl', function ($scope) {
 
     return '';
   }
-});
+}]);

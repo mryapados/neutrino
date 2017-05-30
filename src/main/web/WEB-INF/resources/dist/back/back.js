@@ -1,5 +1,5 @@
 (function() {
-	var bModule = angular.module('backApp', [ 'backServices', 'ngSanitize', 'pascalprecht.translate', 'ngCookies', 'ngResource', 'frontApp' ]);
+	var bModule = angular.module('backApp', [ 'backServices', 'ui.bootstrap', 'ngSanitize', 'pascalprecht.translate', 'ngCookies', 'ngResource', 'frontApp' ]);
 	bModule.config(function($translateProvider) {
 		var $cookies;
 		angular.injector(['ngCookies']).invoke(['$cookies', function(_$cookies_) {
@@ -11,7 +11,6 @@
 		if (lang == undefined){lang = 'en';}
 		$translateProvider.preferredLanguage(lang);
 		$translateProvider.useLoader('i18nLoader');
-		
 	});
 	bModule.run(function($cookies) {
 
@@ -33,34 +32,53 @@
 	    };
 	});
 }());
+(function() {
 var bModule = angular.module("backApp");
 
 bModule.controller('BlockManagementCtrl', function ($scope, $rootScope, BlockManagementService, $backPath) {
-	$scope.init = function(folderName, pageName, activeObjectId) {
-		BlockManagementService.init(folderName, pageName, activeObjectId).then(function() {
-			$scope.BlockManagementFacade = BlockManagementService;
+	$scope.init = function(folderId, pageId, activeObjectId) {
+		BlockManagementService.init(folderId, pageId, activeObjectId).then(function() {
+			
 		});
 	}
 });
+
+}());
+(function() {
 var bModule = angular.module("backApp");
 
-bModule.controller('BlockSelectionCtrl', function($scope) {
-	
-	$scope.currentLang = '';
-	$scope.switchLang = function(codeLang) {
-		$scope.currentLang = codeLang;
-	};
+bModule.controller('BlockSelectionCtrl', function($scope, BlockManagementService) {
+	BlockManagementService.init().then(function() {
 
-	$scope.openValue = false;
-	$scope.switchDisplay = function() {
-		$scope.openValue = !$scope.openValue;
-	};
+		BlockManagementService.initTemplates().then(function() {
+			$scope.templates = BlockManagementService.getTemplates();
+		});
+		BlockManagementService.initLangs().then(function() {
+			$scope.langs = BlockManagementService.getLangs();
+		});
+		
+		
+		$scope.currentLang = '';
+		$scope.switchLang = function(codeLang) {
+			$scope.currentLang = codeLang;
+		};
+
+		$scope.openValue = false;
+		$scope.switchDisplay = function() {
+			$scope.openValue = !$scope.openValue;
+		};
+		
+		
+	});
+	
+
 
 });
 
 
+}());
 
-
+(function() {
 var bModule = angular.module("backApp");
 
 bModule.controller('ModalDemoCtrl', function ($scope, $uibModal, $log) {
@@ -92,8 +110,10 @@ bModule.controller('ModalDemoCtrl', function ($scope, $uibModal, $log) {
   };
 });
 
+}());
+(function() {
 var bModule = angular.module("backApp");
-
+	
 bModule.controller('TemplateModalCtrl', function($scope, $uibModalInstance, $backPath, template, page, TemplateService) {	
 	$scope.exist = function() {
 		return TemplateService.getExist(page.context, template.kind, template.path, template.name)
@@ -103,10 +123,6 @@ bModule.controller('TemplateModalCtrl', function($scope, $uibModalInstance, $bac
 				path: '\"...' + template.path + '/' + template.name + '.jsp\"',
 			};
 		});
-	};
-	
-	$scope.cancel = function() {
-		$uibModalInstance.dismiss('cancel');
 	};
 	
 	$scope.cancel = function() {
@@ -137,46 +153,152 @@ bModule.controller('TemplateModalCtrl', function($scope, $uibModalInstance, $bac
 	$scope.exist();
 });
 
-
-
-
+}());
+(function() {
 var bModule = angular.module('backApp');
 
-bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateService, TemplateService, BlockManagementService) {
-	TemplateService.getTemplate($scope.model).then(function(data) {
-		var model = data;
-		var position = $scope.position;
-		var activeObject = $scope.activeobject;
-
-		$scope.modelKind = model.kind;	
+bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagementService, TemplateService, BlockService, $backPath) {
+	BlockManagementService.init().then(function() {
+		const SCOPE_ACTIVEMODEL = 'ACTIVEMODEL';
+		const SCOPE_ACTIVEPAGE = 'ACTIVEPAGE';
+		const SCOPE_ACTIVEOBJECT = 'ACTIVEOBJECT';
+		const BLOCK_KIND_PAGEBLOCK = 'PAGEBLOCK';
 		
-		BlockService.getBlocksForModelPosition(model.name, activeObject, position).then(function(data) {
+		$scope.debug = false;
+		
+		$scope.folder = BlockManagementService.getFolder();
+		$scope.page = BlockManagementService.getPage();
+		$scope.activeObject = BlockManagementService.getActiveObject();
+		
+		BlockService.getBlocksForModelPosition($scope.modelId, $scope.page.id, $scope.activeObjectId, $scope.positionId).then(function(data) {
+			
 			$scope.blocks = data;
 		});
 		
-	    $scope.$on('dropEvent_' + position + '@' + model.name, function (evt, dragged, dropped) {
-	        //console.log('Block : ', dragged, 'Position : ', dropped, 'Model : ', model, 'Ordered : ', dropped.ordered);
-	        BlockManagementService.setMapBlock(model.name, dragged.name, dropped.name, dropped.ordered).then(function(data){
-	        	if (dropped.ordered < 0){
-	        		$scope.blocks.splice(0, 0, data);
-	        	} else {
-	        		$scope.blocks.push(data);
-	        	}
-			});
+		TemplateService.getTemplate($scope.modelId).then(function(data) {
+			$scope.model = data;
+		});
+		
+		var activeObjectId = $scope.activeObject == null ? '' : $scope.activeObject.id;
+		$scope.getParsedBlock = function(block) {
+			return $backPath.URL_SERVER_REST + '@back/parsedblock/' + $scope.page.id + '/' + block.idMapTemplate + '/' + activeObjectId + '?folderId=' + $scope.folder.id;
+		}
+		
+	    $scope.$on('dropEvent_' + $scope.positionId + '@' + $scope.modelId, function (evt, block, ordered) {
+	    	console.log($scope.modelId);
+	    	console.log($scope.positionId + '@' + $scope.modelId, $scope.page, block, ordered);
+	    	
+			var setMapBlock = function(choice) {
+				var scopeChoice = null;
+				if (choice == SCOPE_ACTIVEMODEL) scopeChoice = $scope.modelId;
+				else if (choice == SCOPE_ACTIVEPAGE) scopeChoice = $scope.page.id;
+				else if (choice == SCOPE_ACTIVEOBJECT) scopeChoice = activeObjectId;
+				
+				console.log(scopeChoice);
+				
+		        BlockManagementService.setMapBlock(scopeChoice, block.id, $scope.positionId, ordered).then(function(data){
+		        	if (ordered < 0){
+		        		$scope.blocks.splice(0, 0, data);
+		        	} else {
+		        		$scope.blocks.push(data);
+		        	}
+				});
+			}
+	    	
+			console.log($scope.model.kind);
+			//Les blocks posés sur un PAGEBLOCK sont forcément posés sur le modèle
+			if ($scope.model.kind == BLOCK_KIND_PAGEBLOCK){
+				setMapBlock(SCOPE_ACTIVEMODEL);
+			} else {
+				var activeObjectNull = $scope.activeObject == null;
+				console.log(activeObjectNull);
+				var instance = $uibModal.open({
+					templateUrl: $backPath.URL_TEMPLATE_MODAL_CHOICE_SCOPE,
+					size: 'sm',
+					resolve: {
+			            buttons: function(){
+			            	return {activeModel : true, activePage : true, activeObject : !activeObjectNull};
+			            },
+			            nbCol: function(){
+			            	return activeObjectNull ? 2 : 3
+			            },
+					},
+					controller: function ( $scope, $uibModalInstance, buttons, nbCol ) {
+						$scope.buttons = buttons;
+						$scope.classCol = 'col-xs-' + (12 / nbCol);
+						
+						$scope.scopeActiveModel = function() {
+							$uibModalInstance.close(SCOPE_ACTIVEMODEL);
+						};	
+						$scope.scopeActivePage = function() {
+							$uibModalInstance.close(SCOPE_ACTIVEPAGE);
+						};	
+						$scope.scopeActiveObject = function() {
+							$uibModalInstance.close(SCOPE_ACTIVEOBJECT);
+						};	
+						
+					}, 
+				});
+				instance.result.then(function(choice) {
+					setMapBlock(choice);
+				});
+			}
+
+
 	    }); 
 		
 	    $scope.remove = function(blockIndex) {
-			MapTemplateService.remove($scope.blocks[blockIndex].idMapTemplate).then(function(data) {
+	    	BlockManagementService.removeMapBlock($scope.blocks[blockIndex].idMapTemplate).then(function(data) {
 				$scope.blocks.splice(blockIndex, 1);
 			});
 		}
-		
+	    
+	    
+	    
+	    
+//        self.getPathTemplateForm = function() {
+//        	return $backPath.URL_TEMPLATE_MODAL;
+//        }
+        
+        $scope.open = function(blockId) {
+			var instance = $uibModal.open({
+				templateUrl: $backPath.URL_TEMPLATE_MODAL_EDIT,
+				controller: 'TemplateModalCtrl',
+				size: 'lg',
+				resolve: {
+					template: function(){
+						return blockId;
+					}, 
+					page: function() { return $scope.page;}, 
+				}
+			});
+			instance.result.then(function(savedTemplate) {
+				
+				if (templates) {
+					// TODO Update templates list
+					
+					//var oldTemplate =getByIdFilter(templates, blockId);
+					//var index = templates.indexOf(oldTemplate);
+
+					//templates[index] = savedTemplate;
+	
+				
+	
+				}
+
+				
+				
+				
+			});
+		};
 	});
 	
-	
-
 
 });
+
+
+}());
+
 (function() {
 	
 	var bModule = angular.module("backApp");
@@ -184,8 +306,8 @@ bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateS
 
         function dragStart(evt, element, dragStyle) {
             element.addClass(dragStyle);
-            evt.originalEvent.dataTransfer.setData( "id", evt.target.id );
-            evt.originalEvent.dataTransfer.effectAllowed = 'move';
+//            evt.originalEvent.dataTransfer.setData( "id", evt.target.id );
+//            evt.originalEvent.dataTransfer.effectAllowed = 'move';
         };
 
         function dragEnd(evt, element, dragStyle) {
@@ -241,21 +363,13 @@ bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateS
                 element.bind('dragover', dragOver);
                 element.bind('drop', function (evt) {
                     drop(evt, element, scope.dropStyle);
-                    var model = scope.model;
-                    if (!scope[attrs['drop']]) {
-                        var res = attrs['drop'].split('-');
-                        var ordered = 0;
-                        if (res[1] == 'top'){
-                        	ordered = -1;
-                        } else {
-                        	ordered = 1;
-                        }
-                        dropData = {name: res[0], ordered:ordered};
-                    } else {
-                    	dropData = scope[attrs["drop"]];
-                    }
-                    var pathEvent = 'dropEvent_' + dropData.name + '@' + model;
-                    $rootScope.$broadcast(pathEvent, $rootScope.draggedElement, dropData);
+
+                    var ordered = 0;
+                    if (attrs.drop == 'top') ordered = -1;
+                    else if (attrs.drop == 'bottom') ordered = -1;
+
+                    var pathEvent = 'dropEvent_' + scope.positionId + '@' + scope.modelId;
+                    $rootScope.$broadcast(pathEvent, $rootScope.draggedElement, ordered);
 
                 });
             }
@@ -267,15 +381,15 @@ bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateS
 	bModule.directive('uiPosition', function($backPath, BlockManagementService){
 		return {
 			scope: {
-				position: '@',
-				model: '@',
-				activeobject: '@',
+				positionId: '@',
+				modelId: '@',
+				activeObjectId: '@',
 			},
 			restrict: 'E',
 			templateUrl: $backPath.URL_TEMPLATE_JS + 'ui-position.html', 
 			controller: 'UiPositionCtrl', 
 			link: function(scope, element, attrs){
-				scope.facade = BlockManagementService;
+				
 	        },
 		};
 	});
@@ -345,87 +459,38 @@ bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateS
 (function() {
 	var bModule = angular.module('backServices');
 
-	bModule.service('BlockManagementService', function($rootScope, $q, $uibModal, FolderService, LangService, PageService, TemplateService, BlockService, MapTemplateService, TObjectService, $backPath) {
-		var folder;
-		var page;
+	bModule.service('BlockManagementService', function($rootScope, $q, FolderService, PageService, TemplateService, LangService, BlockService, MapTemplateService, TObjectService, $backPath) {
+		var folder = null;
+		var page = null;
 		var activeObject = null;
 		self = this;
+
+		self.getFolder = function() {
+			return folder;
+		};
+		self.getPage = function() {
+			return page;
+		};
+		self.getActiveObject = function() {
+			return activeObject;
+		};
 		
-		var templates;
+		var templates = null;
 		self.getTemplates = function() {
 			return templates;
 		};
-		var langs;
+		var langs = null;
 		self.getLangs = function() {
 			return langs;
 		};
 		
-		self.init = function(folderName, pageName, activeObjectId) {
-			var deferred = $q.defer();
-			
-			var promise = FolderService.getFolder(folderName).then(function(data){
-				folder = data;
-			})
-			.then(function(){
-				self.initPage(pageName);
-			})
-			.then(function(){
-				if (activeObjectId != null){
-					TObjectService.getTObject(activeObjectId).then(function(data){
-						activeObject = data;
-					});
-				}
-			})
-			.then(function(){
-				self.initLangs();
-			})
-			.then(function(){
-				self.initTemplates();
-			})
-			.catch(function(error) {
-				console.log('errrrrrrrrrrrrrrrrrrrrror');
-				console.log(error);
-			})
-			.finally(function() {
-				deferred.resolve();
-			});
-			
-			
-			
-//			var promise = PageService.getPage(pageName)
-//			.then(function(data){
-//				page = data;
-//			})
-//			.then(function(){
-//				if (activeObjectId != null){
-//					TObjectService.getTObject(activeObjectId).then(function(data){
-//						activeObject = data;
-//					});
-//				}
-//			})
-//			.then(function(){
-//				self.initLangs();
-//				
-//				
-//			})
-//			.then(function(){
-//				self.initTemplates();
-//			})
-//			.catch(function(error) {
-//				console.log(error);
-//			})
-//			.finally(function() {
-//				deferred.resolve();
-//			});
-			return deferred.promise;
-			
-			
-		};
 		
-		self.initFolder = function(folderName) {
+		self.initFolder = function(folderId) {
 			var deferred = $q.defer();
 			if (!folder) {
-				FolderService.getFolder(folderName).then(function(data){
+				console.log('init folder');
+				FolderService.getFolder(folderId).then(function(data){
+					console.log('folder initialized');
 					folder = data;
 					deferred.resolve();
 				});
@@ -435,10 +500,12 @@ bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateS
 			return deferred.promise;
 		};
 		
-		self.initPage = function(pageName) {
+		self.initPage = function(pageId) {
 			var deferred = $q.defer();
 			if (!page) {
-				PageService.getPage(pageName).then(function(data){
+				console.log('init page');
+				PageService.getPage(pageId).then(function(data){
+					console.log('page initialized');
 					page = data;
 					deferred.resolve();
 				});
@@ -448,33 +515,24 @@ bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateS
 			return deferred.promise;
 		};
 		
-		self.initLangs = function() {
+		self.initActiveObject = function(activeObjectId) {
 			var deferred = $q.defer();
-			if (!langs) {
-				LangService.getLangs().then(function(data) {
-					langs = data;
-					deferred.resolve();
-				});
+			if (!activeObject) {
+				if (!activeObjectId) deferred.resolve();
+				else {
+					TObjectService.getTObject(activeObjectId).then(function(data){
+						activeObject = data;
+						console.log(activeObject);
+						deferred.resolve();
+					});
+				}
 			} else {
 				deferred.resolve();
 			}
 			return deferred.promise;
 		};
 		
-//		self.initTemplates = function() {
-//			var deferred = $q.defer();
-//			if (!templates) {
-//				TemplateService.getTemplates().then(function(data) {
-//					templates = data;
-//					console.log(data);
-//					deferred.resolve();
-//				});
-//			} else {
-//				deferred.resolve();
-//			}
-//			return deferred.promise;
-//		};
-		
+
 		self.initTemplates = function() {
 			var deferred = $q.defer();
 			if (!templates) {
@@ -487,15 +545,43 @@ bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateS
 			}
 			return deferred.promise;
 		};
-		self.getParsedBlock = function(blockName) {
-			return $backPath.URL_SERVER_REST + '@back/parsedblock/' + page.name + '/' + blockName + '?servername=' + folder.serverName[0];
-		}
+		self.initLangs = function() {
+			var deferred = $q.defer();
+			if (!langs) {
+				LangService.getLangs().then(function(data) {
+					langs = data;
+					deferred.resolve();
+				});
+			} else {
+				deferred.resolve();
+			}
+			return deferred.promise;
+		};
 
-		self.setMapBlock = function(modelName, blockName, positionName, ordered) {
+
+		var initialized = $q.defer();
+		self.init = function(folderId, pageId, activeObjectId) {
+			if (folderId && pageId){
+				console.log('init');
+				$q.all([self.initFolder(folderId), self.initPage(pageId), self.initActiveObject(activeObjectId)]).then(function() {
+					
+				}).catch(function(error) {
+					console.log(error);
+					initialized.reject();
+				})
+				.finally(function() {
+					console.log('fin init');
+					initialized.resolve();
+				});
+			}
+			return initialized.promise;
+		};
+		
+		self.setMapBlock = function(modelId, blockId, positionId, ordered) {
     		var dataObj = {
-    				modelName : modelName,
-    				blockName : blockName,
-    				positionName : positionName, 
+    				modelId : modelId,
+    				blockId : blockId,
+    				positionId : positionId, 
     				ordered : ordered
     		};
 			var deferred = $q.defer();
@@ -505,40 +591,28 @@ bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateS
 			return deferred.promise;
 		}
 		
-        self.getPathTemplateForm = function() {
-        	return $backPath.URL_TEMPLATE_MODAL;
-        }
-        
-        self.openModal = function(templateId) {
-			var instance = $uibModal.open({
-				templateUrl: $backPath.URL_TEMPLATE_MODAL_EDIT,
-				controller: 'TemplateModalCtrl',
-				resolve: {
-					template: function(){
-						return TemplateService.getTemplate(templateId);
-					}, 
-					page: function() { return page;}, 
-				}
+		self.removeMapBlock = function(blockId) {
+			var deferred = $q.defer();
+			MapTemplateService.remove(blockId).then(function(data) {
+				deferred.resolve(data);
 			});
-			instance.result.then(function(savedTemplate) {
-				
-				if (templates) {
-					// TODO Update templates list
-					
-					//var oldTemplate =getByIdFilter(templates, templateId);
-					//var index = templates.indexOf(oldTemplate);
-
-					//templates[index] = savedTemplate;
-	
-				
-	
-				}
-
-				
-				
-				
-			});
-		};
+			return deferred.promise;
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 	});
 	
@@ -546,8 +620,8 @@ bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateS
 	
 	bModule.service('TemplateService', function(TemplateResource, TemplateRepository, $backPath) {
 		self = this;
-		self.getTemplate = function(templateName) {
-			return TemplateResource.get({name : templateName}).$promise;
+		self.getTemplate = function(id) {
+			return TemplateResource.get({id : id}).$promise;
 		};
 		self.getTemplates = function() {
 			return TemplateResource.getAll().$promise;
@@ -582,8 +656,11 @@ bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateS
 	});
 	bModule.service('LangService', function(LangResource, $backPath) {
 		self = this;
-		self.getLang = function(langName) {
-			return LangResource.get({name : langName}).$promise;
+		self.getLang = function(id) {
+			return LangResource.get({id : id}).$promise;
+		};
+		self.getLangByCode = function(code) {
+			return LangResource.get({code : code}).$promise;
 		};
 		self.getLangs = function() {
 			return LangResource.getAll().$promise;
@@ -591,8 +668,11 @@ bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateS
 	});
 	bModule.service('FolderService', function(FolderResource, $backPath) {
 		self = this;
-		self.getFolder = function(folderName) {
-			return FolderResource.get({name : folderName}).$promise;
+		self.getFolder = function(id) {
+			return FolderResource.get({id : id}).$promise;
+		};
+		self.getFolderByName = function(name) {
+			return FolderResource.get({name : name}).$promise;
 		};
 		self.getFolders = function() {
 			return FolderResource.getAll().$promise;
@@ -600,36 +680,18 @@ bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateS
 	});
 	bModule.service('PageService', function(PageResource, $backPath) {
 		self = this;
-		self.getPage = function(pageName) {
-			return PageResource.get({name : pageName}).$promise;
+		self.getPage = function(id) {
+			return PageResource.get({id : id}).$promise;
 		};
 		self.getPages = function() {
 			return PageResource.getAll().$promise;
 		};
-	});
-	bModule.service('TObjectService', function(TObjectResource, $backPath) {
-		self = this;
-		self.getTObject = function(id) {
-			return TObjectResource.get({id : id}).$promise;
-		};
-	});
-	
-	
-	
+	});	
 	bModule.service('BlockService', function(BlockResource, $backPath) {
 		self = this;
-		self.getBlocksForModelPosition = function(modelName, activeObject, positionName) {
-			return BlockResource.getAll({model : modelName, activeobject:activeObject, position : positionName}).$promise;
+		self.getBlocksForModelPosition = function(modelId, pageId, activeObjectId, positionId) {
+			return BlockResource.getAll({modelId : modelId, pageId : pageId, activeObjectId : activeObjectId, positionId : positionId}).$promise;
 		};
-	});
-	bModule.service('PositionService', function(PositionRepository, $backPath) {
-		self = this;
-		self.getPosition = function(positionName) {
-			return PositionRepository.get(positionName);
-		};
-		self.getPositions = function() {
-			return PositionRepository.getAll();
-		};		
 	});
 	bModule.service('MapTemplateService', function(MapTemplateResource, $backPath) {
 		self = this;
@@ -641,35 +703,34 @@ bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateS
 			return MapTemplateResource.remove({id:id}).$promise;
 		};
 	});
+	bModule.service('TObjectService', function(TObjectResource, $backPath) {
+		self = this;
+		self.getTObject = function(id) {
+			return TObjectResource.get({id : id}).$promise;
+		};
+	});
+	
+
 }());
 (function() {
 	var bModule = angular.module('backServices');
 	bModule.constant('$backPath', {
 		URL_SERVER_REST: '/neutrino/',
-		URL_TEMPLATE_JS: '/neutrino/resources/src/back/templates/',
-		URL_TEMPLATE_MODAL: '/neutrino/resources/src/back/views/templateForm.html',
-		URL_TEMPLATE_MODAL_ADD: '/neutrino/resources/src/back/views/modalTemplateFormAdd.html',
-		URL_TEMPLATE_MODAL_EDIT: '/neutrino/resources/src/back/views/modalTemplateFormEdit.html',
+		URL_TEMPLATE_JS: '/neutrino/resources/src/back/js/templates/',
+		URL_TEMPLATE_MODAL: '/neutrino/resources/src/back/js/views/templateForm.html',
+		URL_TEMPLATE_MODAL_ADD: '/neutrino/resources/src/back/js/views/modalTemplateFormAdd.html',
+		URL_TEMPLATE_MODAL_EDIT: '/neutrino/resources/src/back/js/views/modalTemplateFormEdit.html',
+		URL_TEMPLATE_MODAL_CHOICE_SCOPE: '/neutrino/resources/src/back/js/views/choiceScopeModal.html',
+		
+		
+		
+		
 	});
 
 }());
 (function() {
 	var bModule = angular.module('backServices');
 
-//	module.factory("BlockRepository", function($http, $backPath) {
-//		return {
-//			getAllForModel: function(modelName) {
-//				return $http.get($backPath.URL_SERVER_REST + '@back/blocks/' + modelName)
-//				.then(function(response) {
-//		            return response.data;
-//				})
-//				.catch(function(error){
-//					console.log(error.status);
-//					console.log(error);
-//				});
-//			}
-//		};
-//	});
 	bModule.factory("TemplateRepository", function($http, $backPath) {
 		return {
 			exist: function(context, kind, path, name) {
@@ -688,8 +749,8 @@ bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateS
 	});
 	
 	bModule.factory("TemplateResource", function($resource, $backPath) {
-	  	var API_URI = '@back/templates/:name';  				
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {name: '@name'}, {
+	  	var API_URI = '@back/template';  				
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -699,8 +760,8 @@ bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateS
 	});
 	
 	bModule.factory("LangResource", function($resource, $backPath) {
-	  	var API_URI = '@back/langs/:name';  				
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {name: '@name'}, {
+	  	var API_URI = '@back/lang';  				
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id', code: '@code'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -711,8 +772,8 @@ bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateS
 	
 	
 	bModule.factory("FolderResource", function($resource, $backPath) {
-	  	var API_URI = '@back/folders/:name';  				
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {name: '@name'}, {
+	  	var API_URI = '@back/folder';  				
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id', name: '@name'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -722,8 +783,8 @@ bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateS
 	});
 	
 	bModule.factory("PageResource", function($resource, $backPath) {
-	  	var API_URI = '@back/pages/:name';  				
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {name: '@name'}, {
+	  	var API_URI = '@back/page';  				
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -733,8 +794,8 @@ bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateS
 	});
 	
 	bModule.factory("BlockResource", function($resource, $backPath) {
-	  	var API_URI = '@back/models/:model/activeobjects/:activeobject/positions/:position/blocks';  				
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {model: '@model', activeobject: '@activeobject', positions: '@position'}, {
+	  	var API_URI = '@back/block';  				
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {modelId: '@modelId', pageId: '@pageId', activeObjectId: '@activeObjectId', positionId: '@positionId'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -742,6 +803,43 @@ bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateS
 	  		update: {method: 'PUT'}
 	  	});
 	});
+	
+	bModule.factory("MapTemplateResource", function($resource, $backPath) {
+	  	var API_URI = '@back/mapTemplate';			
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id'}, {
+	  		save:   {method: 'POST'},
+	  		get:    {method: 'GET'},
+	  		getAll: {method: 'GET', isArray: true},
+	  		remove: {method: 'DELETE'},
+	  		update: {method: 'PUT'}
+	  	});
+	});
+	
+	bModule.factory("TObjectResource", function($resource, $backPath) {
+	  	var API_URI = '@back/tobject';			
+	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id'}, {
+	  		save:   {method: 'POST'},
+	  		get:    {method: 'GET'},
+	  		getAll: {method: 'GET', isArray: true},
+	  		remove: {method: 'DELETE'},
+	  		update: {method: 'PUT'}
+	  	});
+	});
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	bModule.factory("PositionRepository", function($http, $backPath) {
 		return {
@@ -795,27 +893,9 @@ bModule.controller('UiPositionCtrl', function($scope, BlockService, MapTemplateS
 	});
 	
 	
-	bModule.factory("MapTemplateResource", function($resource, $backPath) {
-	  	var API_URI = '@back/maptemplates/:id';			
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id'}, {
-	  		save:   {method: 'POST'},
-	  		get:    {method: 'GET'},
-	  		getAll: {method: 'GET', isArray: true},
-	  		remove: {method: 'DELETE'},
-	  		update: {method: 'PUT'}
-	  	});
-	});
+
 	
-	bModule.factory("TObjectResource", function($resource, $backPath) {
-	  	var API_URI = '@back/tobjects/:id';			
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id'}, {
-	  		save:   {method: 'POST'},
-	  		get:    {method: 'GET'},
-	  		getAll: {method: 'GET', isArray: true},
-	  		remove: {method: 'DELETE'},
-	  		update: {method: 'PUT'}
-	  	});
-	});
+
 	
 	
 }());

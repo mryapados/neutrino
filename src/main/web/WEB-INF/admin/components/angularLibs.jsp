@@ -14,7 +14,7 @@
 	<%-- Overide this angularjs module to use angularjs on your website --%>
 	<script>
 		(function() {
-			angular.module('frontApp', []);
+			angular.module('frontApp', [${nFrontAppModules}]);
 		}());
 	</script>
 </my:discrimin>
