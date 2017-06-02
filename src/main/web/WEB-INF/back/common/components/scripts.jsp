@@ -34,7 +34,7 @@
 
 
 <!-- bo app -->
-<script src="<c:url value='/resources/dist/bo/bo.min.js'/>"></script>
+<script src="<c:url value='/resources/dist/bo/bo.js'/>"></script>
 
 <%-- <script src="<c:url value='/resources/src/bo/js/app.js'/>"></script> --%>
 <%-- <script src="<c:url value='/resources/src/bo/js/controller/datepickerPopupCtrl.js'/>"></script> --%>
