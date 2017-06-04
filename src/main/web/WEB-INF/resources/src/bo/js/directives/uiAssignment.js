@@ -3,7 +3,7 @@
 	var fModule = angular.module("boApp");
 
 	//Directives
-	fModule.directive('uiObjectAssignment', ['$parse', 'boConfig', '$frontPath', function($parse, boConfig, $frontPath) {
+	fModule.directive('uiObjectAssignment', ['$parse', 'boConfig', function($parse, boConfig) {
 		return {
 			restrict: 'E',
 			require : '?ngModel',
@@ -33,7 +33,7 @@
 		};
 	}]);
 	
-	fModule.directive('uiFileAssignment', ['$parse', 'boConfig', '$frontPath', function($parse, boConfig, $frontPath) {
+	fModule.directive('uiFileAssignment', ['$parse', 'boConfig', function($parse, boConfig) {
 		return {
 			restrict: 'E',
 			require : '?ngModel',
@@ -105,7 +105,7 @@
 		};
 	}]);
 	
-	fModule.directive('input', ['$parse', 'idProvidersFilter', 'stringsFilter', '$compile', '$http', '$frontPath', function($parse, idProvidersFilter, stringsFilter, $compile, $http, $frontPath) {
+	fModule.directive('input', ['$parse', 'idProvidersFilter', 'stringsFilter', '$compile', '$http', 'boConfig', function($parse, idProvidersFilter, stringsFilter, $compile, $http, boConfig) {
 		return {
 			restrict : 'E',
 			require : '?ngModel',
@@ -156,7 +156,7 @@
 				      			if (!max) max = objects.length;
 				      			else if (objects.length < max) max = objects.length;
 				      			for(var i = 0; i < max; i++) {
-				      				files.push($frontPath.URL_BASE + objects[i]);
+				      				files.push(boConfig.basePath + '/' + objects[i]);
 				      			}
 				      		}
 				      		$scope[modelText] = files;
@@ -186,7 +186,7 @@
 
 				      			//Récupère la liste des objets avec leur nom via une requête au serveur
 				      			if (ids.length > 0){
-						      		$http.get($frontPath.URL_SERVER_REST + 'bo/list/objects/' + type, {params:{'id': ids}}).then(function(data) {
+						      		$http.get(boConfig.basePath + '/bo/list/objects/' + type, {params:{'id': ids}}).then(function(data) {
 						      			$scope[modelText] = data.data;
 						      			
 									})
@@ -240,8 +240,6 @@
 	//Filter
 	fModule.filter('idProviders', function () {
 		return function(object, method) {
-			console.log('in idProviders');
-			
 			if (!method) method = 'toString';
 			if (method == 'toArray'){
 		    	var res = object.split(",");
@@ -348,7 +346,7 @@
 	
 
     //Services
-    fModule.service('UiAssignmentService', ['$q', '$log', '$uibModal', 'boConfig', '$frontPath', function($q, $log, $uibModal, boConfig, $frontPath) {		
+    fModule.service('UiAssignmentService', ['$q', '$log', '$uibModal', 'boConfig', function($q, $log, $uibModal, boConfig) {		
 		self = this;
 		self.getObjects = function(values, objectType, objectId, objectField, kind, many, disablePreChecked, modalSize, pageSize, page) {
 			if (!values) $log.error('values is mandatory !');
@@ -401,7 +399,7 @@
 	
 	
 	//Controller
-    fModule.controller('UiObjectAssignmentModalCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'values', 'urlInfos', 'kind', 'disablePreChecked', function($rootScope, $scope, $uibModalInstance, values, urlInfos, kind, disablePreChecked) {			
+    fModule.controller('UiObjectAssignmentModalCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'boConfig', 'values', 'urlInfos', 'kind', 'disablePreChecked', function($rootScope, $scope, $uibModalInstance, boConfig, values, urlInfos, kind, disablePreChecked) {			
 		$scope.init = function(disable) {
 			$scope.values = [];
 			angular.extend($scope.values, values);
@@ -452,7 +450,7 @@
 		
 		$scope.mkUrl = function(urlInfos) {
 			var id = urlInfos.id == '' ? 0 : urlInfos.id;
-			var url = '/neutrino/bo/blocklist/' + urlInfos.type + '/' + id + '/' + urlInfos.field;
+			var url = boConfig.basePath + '/bo/blocklist/' + urlInfos.type + '/' + id + '/' + urlInfos.field;
 			$scope.urlInfos = urlInfos;
 			$scope.urlMaked = url + $scope.mkParams(urlInfos.pageable);
 			$scope.init();
@@ -491,9 +489,9 @@
 		
 	}]);
 
-	fModule.controller('UiFileAssignmentModalCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'values', 'urlInfos', 'kind', 'disablePreChecked', '$frontPath', function($rootScope, $scope, $uibModalInstance, values, urlInfos, kind, disablePreChecked, $frontPath) {
+	fModule.controller('UiFileAssignmentModalCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'boConfig', 'values', 'urlInfos', 'kind', 'disablePreChecked', function($rootScope, $scope, $uibModalInstance, boConfig, values, urlInfos, kind, disablePreChecked) {
 		$scope.mkUrl = function(urlInfos) {
-			var url = '/neutrino/bo/file/single/?navbar=false&multi=' + urlInfos.many;
+			var url = boConfig.basePath + '/bo/file/single/?navbar=false&multi=' + urlInfos.many;
 			$scope.urlMaked = url;
 		}
 		$scope.mkUrl(urlInfos);
@@ -503,7 +501,7 @@
 			for(var i = 0; i < data.length; i++) {
 				var item = data[i].model;
 				if (item.type == 'file'){
-					$scope.values.push($frontPath.URL_FILES + item.fullPath());
+					$scope.values.push(boConfig.basePath + '/' + boConfig.filesPath + item.fullPath());
 				}
 			}
 			if ($scope.templateForm){

@@ -41,16 +41,20 @@
 <%-- <script src="<c:url value='/resources/src/bo/js/controller/wysiwygEditorCtrl.js'/>"></script> --%>
 <%-- <script src="<c:url value='/resources/src/bo/js/service.js'/>"></script> --%>
 <%-- <script src="<c:url value='/resources/src/bo/js/provider/config.js'/>"></script> --%>
-<%-- <script src="<c:url value='/resources/src/bo/js/services/constants.js'/>"></script> --%>
 <%-- <script src="<c:url value='/resources/src/bo/js/directives/uiAssignment.js'/>"></script> --%>
 <%-- <script src="<c:url value='/resources/src/bo/js/directives/uiFile.js'/>"></script> --%>
 
 <c:url var="templateUrl" value="/resources/src/bo/js/templates"/>
+<c:url var="i18nUrl" value="/resources/src/bo/js/i18n"/>
+<c:url var="fileUrl" value="/files"/>
 <script>
 	angular.module('boApp').config(['boConfigProvider', function (config) {
     var defaults = config.$get();
     config.set({
+    	basePath: '${pageContext.request.contextPath}',
     	tplPath: '${templateUrl}',
+    	i18nPath: '${i18nUrl}',
+        filePath: '${fileUrl}'
     });
     
   }]);

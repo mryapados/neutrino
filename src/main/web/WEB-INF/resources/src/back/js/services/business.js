@@ -1,7 +1,7 @@
 (function() {
 	var bModule = angular.module('backServices');
 
-	bModule.service('BlockManagementService', function($rootScope, $q, FolderService, PageService, TemplateService, LangService, BlockService, MapTemplateService, TObjectService, $backPath) {
+	bModule.service('BlockManagementService', function($rootScope, $q, FolderService, PageService, TemplateService, LangService, BlockService, MapTemplateService, TObjectService) {
 		var folder = null;
 		var page = null;
 		var activeObject = null;
@@ -160,7 +160,7 @@
 	
 
 	
-	bModule.service('TemplateService', function(TemplateResource, TemplateRepository, $backPath) {
+	bModule.service('TemplateService', function(TemplateResource, TemplateRepository) {
 		self = this;
 		self.getTemplate = function(id) {
 			return TemplateResource.get({id : id}).$promise;
@@ -196,7 +196,7 @@
 
 		};
 	});
-	bModule.service('LangService', function(LangResource, $backPath) {
+	bModule.service('LangService', function(LangResource) {
 		self = this;
 		self.getLang = function(id) {
 			return LangResource.get({id : id}).$promise;
@@ -208,7 +208,7 @@
 			return LangResource.getAll().$promise;
 		};
 	});
-	bModule.service('FolderService', function(FolderResource, $backPath) {
+	bModule.service('FolderService', function(FolderResource) {
 		self = this;
 		self.getFolder = function(id) {
 			return FolderResource.get({id : id}).$promise;
@@ -220,7 +220,7 @@
 			return FolderResource.getAll().$promise;
 		};
 	});
-	bModule.service('PageService', function(PageResource, $backPath) {
+	bModule.service('PageService', function(PageResource) {
 		self = this;
 		self.getPage = function(id) {
 			return PageResource.get({id : id}).$promise;
@@ -229,13 +229,13 @@
 			return PageResource.getAll().$promise;
 		};
 	});	
-	bModule.service('BlockService', function(BlockResource, $backPath) {
+	bModule.service('BlockService', function(BlockResource) {
 		self = this;
 		self.getBlocksForModelPosition = function(modelId, pageId, activeObjectId, positionId) {
 			return BlockResource.getAll({modelId : modelId, pageId : pageId, activeObjectId : activeObjectId, positionId : positionId}).$promise;
 		};
 	});
-	bModule.service('MapTemplateService', function(MapTemplateResource, $backPath) {
+	bModule.service('MapTemplateService', function(MapTemplateResource) {
 		self = this;
 		self.save = function(mapTemplate) {
 			var fn = (mapTemplate.id) ? MapTemplateResource.update : MapTemplateResource.save;
@@ -245,7 +245,7 @@
 			return MapTemplateResource.remove({id:id}).$promise;
 		};
 	});
-	bModule.service('TObjectService', function(TObjectResource, $backPath) {
+	bModule.service('TObjectService', function(TObjectResource) {
 		self = this;
 		self.getTObject = function(id) {
 			return TObjectResource.get({id : id}).$promise;

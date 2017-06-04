@@ -1,13 +1,13 @@
 (function() {
 
 	var fModule = angular.module("boApp");
-	fModule.directive('uiFile', ['$parse', 'q', 'boConfig', '$frontPath', function($parse, $q, boConfig, $frontPath) {		
+	fModule.directive('uiFile', ['$parse', '$q', 'boConfig', function($parse, $q, boConfig) {		
         return {
             restrict: 'EA',
             scope: {
             	url: '=',
             },
-			controller: function ($scope) {
+			controller: ['$scope', function ( $scope ) {
 				var filename = $scope.url.substring($scope.url.lastIndexOf('/')+1);
 				$scope.name = filename;
 				
@@ -58,8 +58,7 @@
             		
             		
     			});
-
-			}, 
+			}], 
             templateUrl: boConfig.tplPath + '/ui-file.html',
             link: function(scope, element, attrs) {
 

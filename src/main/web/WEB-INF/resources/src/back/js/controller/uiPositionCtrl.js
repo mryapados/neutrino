@@ -1,7 +1,7 @@
 (function() {
 var bModule = angular.module('backApp');
 
-bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagementService, TemplateService, BlockService, $backPath) {
+bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagementService, TemplateService, BlockService, backConfig) {
 	BlockManagementService.init().then(function() {
 		const SCOPE_ACTIVEMODEL = 'ACTIVEMODEL';
 		const SCOPE_ACTIVEPAGE = 'ACTIVEPAGE';
@@ -25,7 +25,7 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 		
 		var activeObjectId = $scope.activeObject == null ? '' : $scope.activeObject.id;
 		$scope.getParsedBlock = function(block) {
-			return $backPath.URL_SERVER_REST + '@back/parsedblock/' + $scope.page.id + '/' + block.idMapTemplate + '/' + activeObjectId + '?folderId=' + $scope.folder.id;
+			return backConfig.serverRest + '/parsedblock/' + $scope.page.id + '/' + block.idMapTemplate + '/' + activeObjectId + '?folderId=' + $scope.folder.id;
 		}
 		
 	    $scope.$on('dropEvent_' + $scope.positionId + '@' + $scope.modelId, function (evt, block, ordered) {
@@ -57,7 +57,7 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 				var activeObjectNull = $scope.activeObject == null;
 				console.log(activeObjectNull);
 				var instance = $uibModal.open({
-					templateUrl: $backPath.URL_TEMPLATE_MODAL_CHOICE_SCOPE,
+					templateUrl: backConfig.URL_TEMPLATE_MODAL_CHOICE_SCOPE,
 					size: 'sm',
 					resolve: {
 			            buttons: function(){
@@ -101,12 +101,12 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 	    
 	    
 //        self.getPathTemplateForm = function() {
-//        	return $backPath.URL_TEMPLATE_MODAL;
+//        	return backConfig.URL_TEMPLATE_MODAL;
 //        }
         
         $scope.open = function(blockId) {
 			var instance = $uibModal.open({
-				templateUrl: $backPath.URL_TEMPLATE_MODAL_EDIT,
+				templateUrl: backConfig.URL_TEMPLATE_MODAL_EDIT,
 				controller: 'TemplateModalCtrl',
 				size: 'lg',
 				resolve: {

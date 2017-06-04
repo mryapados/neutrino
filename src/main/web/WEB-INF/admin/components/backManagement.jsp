@@ -103,11 +103,21 @@
 <script src="<c:url value='/resources/src/back/js/service.js'/>"></script>
 <script src="<c:url value='/resources/src/back/js/services/repositories.js'/>"></script>
 <script src="<c:url value='/resources/src/back/js/services/business.js'/>"></script>
-<script src="<c:url value='/resources/src/back/js/services/constants.js'/>"></script>
-<script src="<c:url value='/resources/src/back/js/directives/backDirectives.js'/>"></script>		
-		
-		
-		
-		
-		
-			
+<script src="<c:url value='/resources/src/back/js/provider/config.js'/>"></script>
+<script src="<c:url value='/resources/src/back/js/directives/backDirectives.js'/>"></script>
+
+<c:url var="serverRestUrl" value="/@back"/>	
+<c:url var="templateUrl" value="/resources/src/back/js/templates"/>
+<c:url var="i18nUrl" value="/resources/src/back/js/i18n"/>
+<script>
+	angular.module('backApp').config(['backConfigProvider', function (config) {
+    var defaults = config.$get();
+    config.set({
+    	basePath: '${pageContext.request.contextPath}',
+    	serverRest: '${serverRestUrl}',
+    	tplPath: '${templateUrl}',
+    	i18nPath: '${i18nUrl}'
+    });
+    
+  }]);
+</script>

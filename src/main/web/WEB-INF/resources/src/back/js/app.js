@@ -16,10 +16,10 @@
 
 		
 	});
-	bModule.factory('i18nLoader', function ($http, $q, $backPath) {
+	bModule.factory('i18nLoader', function ($http, $q, backConfig) {
 	    return function (options) {
 		    var deferred = $q.defer();
-			$http.get($backPath.URL_SERVER_REST + '@front/labels/' + options.key)
+			$http.get(backConfig.basePath + '/@front/labels/' + options.key)
 			.then(function(response) {
 	            deferred.resolve(response.data);
 			})

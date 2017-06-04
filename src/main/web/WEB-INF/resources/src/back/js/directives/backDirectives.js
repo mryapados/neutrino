@@ -77,7 +77,7 @@
 	
 	
 
-	bModule.directive('uiPosition', function($backPath, BlockManagementService){
+	bModule.directive('uiPosition', function(backConfig, BlockManagementService){
 		return {
 			scope: {
 				positionId: '@',
@@ -85,7 +85,7 @@
 				activeObjectId: '@',
 			},
 			restrict: 'E',
-			templateUrl: $backPath.URL_TEMPLATE_JS + 'ui-position.html', 
+			templateUrl: backConfig.tplPath + '/ui-position.html', 
 			controller: 'UiPositionCtrl', 
 			link: function(scope, element, attrs){
 				

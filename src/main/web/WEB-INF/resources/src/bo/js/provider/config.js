@@ -3,7 +3,10 @@
     angular.module('boApp').provider('boConfig', function() {
 
         var values = {
-            tplPath: 'src/bo/js/templates'
+        	basePath: '',
+        	tplPath: 'src/bo/js/templates',
+            i18nPath: 'src/bo/js/i18n',
+            filePath: 'files/'
         };
 
         return {

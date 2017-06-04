@@ -26,28 +26,28 @@
 
 
 
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>bo</web-resource-name>
-			<url-pattern>/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>admin</role-name>
-			<role-name>resumejp</role-name>
-		</auth-constraint>
-	</security-constraint>
-	<login-config>
-		<auth-method>BASIC</auth-method>
-		<realm-name>Basic Authentication</realm-name>
-	</login-config>
-	<security-role>
-		<description>Administration</description>
-		<role-name>admin</role-name>
-	</security-role>
-	<security-role>
-		<description>Resume JP</description>
-		<role-name>resumejp</role-name>
-	</security-role>
+<!-- 	<security-constraint> -->
+<!-- 		<web-resource-collection> -->
+<!-- 			<web-resource-name>bo</web-resource-name> -->
+<!-- 			<url-pattern>/*</url-pattern> -->
+<!-- 		</web-resource-collection> -->
+<!-- 		<auth-constraint> -->
+<!-- 			<role-name>admin</role-name> -->
+<!-- 			<role-name>resumejp</role-name> -->
+<!-- 		</auth-constraint> -->
+<!-- 	</security-constraint> -->
+<!-- 	<login-config> -->
+<!-- 		<auth-method>BASIC</auth-method> -->
+<!-- 		<realm-name>Basic Authentication</realm-name> -->
+<!-- 	</login-config> -->
+<!-- 	<security-role> -->
+<!-- 		<description>Administration</description> -->
+<!-- 		<role-name>admin</role-name> -->
+<!-- 	</security-role> -->
+<!-- 	<security-role> -->
+<!-- 		<description>Resume JP</description> -->
+<!-- 		<role-name>resumejp</role-name> -->
+<!-- 	</security-role> -->
   
   
   

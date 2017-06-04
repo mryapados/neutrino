@@ -1,7 +1,7 @@
 (function() {
 var bModule = angular.module("backApp");
 	
-bModule.controller('TemplateModalCtrl', function($scope, $uibModalInstance, $backPath, template, page, TemplateService) {	
+bModule.controller('TemplateModalCtrl', function($scope, $uibModalInstance, backConfig, template, page, TemplateService) {	
 	$scope.exist = function() {
 		return TemplateService.getExist(page.context, template.kind, template.path, template.name)
 		.then(function(data) {
@@ -32,7 +32,7 @@ bModule.controller('TemplateModalCtrl', function($scope, $uibModalInstance, $bac
 	};
 	
 	$scope.template = {
-		templateModal: $backPath.URL_TEMPLATE_MODAL, 
+		templateModal: backConfig.URL_TEMPLATE_MODAL, 
 		template: template,
 		errors: null, 
 	};

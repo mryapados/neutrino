@@ -159,7 +159,7 @@ fModule.controller('WysiwygEditorCtrl', ['$scope', 'textAngularManager', functio
 	var fModule = angular.module("boApp");
 
 	//Directives
-	fModule.directive('uiObjectAssignment', ['$parse', 'boConfig', '$frontPath', function($parse, boConfig, $frontPath) {
+	fModule.directive('uiObjectAssignment', ['$parse', 'boConfig', function($parse, boConfig) {
 		return {
 			restrict: 'E',
 			require : '?ngModel',
@@ -189,7 +189,7 @@ fModule.controller('WysiwygEditorCtrl', ['$scope', 'textAngularManager', functio
 		};
 	}]);
 	
-	fModule.directive('uiFileAssignment', ['$parse', 'boConfig', '$frontPath', function($parse, boConfig, $frontPath) {
+	fModule.directive('uiFileAssignment', ['$parse', 'boConfig', function($parse, boConfig) {
 		return {
 			restrict: 'E',
 			require : '?ngModel',
@@ -261,7 +261,7 @@ fModule.controller('WysiwygEditorCtrl', ['$scope', 'textAngularManager', functio
 		};
 	}]);
 	
-	fModule.directive('input', ['$parse', 'idProvidersFilter', 'stringsFilter', '$compile', '$http', '$frontPath', function($parse, idProvidersFilter, stringsFilter, $compile, $http, $frontPath) {
+	fModule.directive('input', ['$parse', 'idProvidersFilter', 'stringsFilter', '$compile', '$http', 'boConfig', function($parse, idProvidersFilter, stringsFilter, $compile, $http, boConfig) {
 		return {
 			restrict : 'E',
 			require : '?ngModel',
@@ -312,7 +312,7 @@ fModule.controller('WysiwygEditorCtrl', ['$scope', 'textAngularManager', functio
 				      			if (!max) max = objects.length;
 				      			else if (objects.length < max) max = objects.length;
 				      			for(var i = 0; i < max; i++) {
-				      				files.push($frontPath.URL_BASE + objects[i]);
+				      				files.push(boConfig.basePath + '/' + objects[i]);
 				      			}
 				      		}
 				      		$scope[modelText] = files;
@@ -342,7 +342,7 @@ fModule.controller('WysiwygEditorCtrl', ['$scope', 'textAngularManager', functio
 
 				      			//Récupère la liste des objets avec leur nom via une requête au serveur
 				      			if (ids.length > 0){
-						      		$http.get($frontPath.URL_SERVER_REST + 'bo/list/objects/' + type, {params:{'id': ids}}).then(function(data) {
+						      		$http.get(boConfig.basePath + '/bo/list/objects/' + type, {params:{'id': ids}}).then(function(data) {
 						      			$scope[modelText] = data.data;
 						      			
 									})
@@ -396,8 +396,6 @@ fModule.controller('WysiwygEditorCtrl', ['$scope', 'textAngularManager', functio
 	//Filter
 	fModule.filter('idProviders', function () {
 		return function(object, method) {
-			console.log('in idProviders');
-			
 			if (!method) method = 'toString';
 			if (method == 'toArray'){
 		    	var res = object.split(",");
@@ -504,7 +502,7 @@ fModule.controller('WysiwygEditorCtrl', ['$scope', 'textAngularManager', functio
 	
 
     //Services
-    fModule.service('UiAssignmentService', ['$q', '$log', '$uibModal', 'boConfig', '$frontPath', function($q, $log, $uibModal, boConfig, $frontPath) {		
+    fModule.service('UiAssignmentService', ['$q', '$log', '$uibModal', 'boConfig', function($q, $log, $uibModal, boConfig) {		
 		self = this;
 		self.getObjects = function(values, objectType, objectId, objectField, kind, many, disablePreChecked, modalSize, pageSize, page) {
 			if (!values) $log.error('values is mandatory !');
@@ -557,7 +555,7 @@ fModule.controller('WysiwygEditorCtrl', ['$scope', 'textAngularManager', functio
 	
 	
 	//Controller
-    fModule.controller('UiObjectAssignmentModalCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'values', 'urlInfos', 'kind', 'disablePreChecked', function($rootScope, $scope, $uibModalInstance, values, urlInfos, kind, disablePreChecked) {			
+    fModule.controller('UiObjectAssignmentModalCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'boConfig', 'values', 'urlInfos', 'kind', 'disablePreChecked', function($rootScope, $scope, $uibModalInstance, boConfig, values, urlInfos, kind, disablePreChecked) {			
 		$scope.init = function(disable) {
 			$scope.values = [];
 			angular.extend($scope.values, values);
@@ -608,7 +606,7 @@ fModule.controller('WysiwygEditorCtrl', ['$scope', 'textAngularManager', functio
 		
 		$scope.mkUrl = function(urlInfos) {
 			var id = urlInfos.id == '' ? 0 : urlInfos.id;
-			var url = '/neutrino/bo/blocklist/' + urlInfos.type + '/' + id + '/' + urlInfos.field;
+			var url = boConfig.basePath + '/bo/blocklist/' + urlInfos.type + '/' + id + '/' + urlInfos.field;
 			$scope.urlInfos = urlInfos;
 			$scope.urlMaked = url + $scope.mkParams(urlInfos.pageable);
 			$scope.init();
@@ -647,9 +645,9 @@ fModule.controller('WysiwygEditorCtrl', ['$scope', 'textAngularManager', functio
 		
 	}]);
 
-	fModule.controller('UiFileAssignmentModalCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'values', 'urlInfos', 'kind', 'disablePreChecked', '$frontPath', function($rootScope, $scope, $uibModalInstance, values, urlInfos, kind, disablePreChecked, $frontPath) {
+	fModule.controller('UiFileAssignmentModalCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'boConfig', 'values', 'urlInfos', 'kind', 'disablePreChecked', function($rootScope, $scope, $uibModalInstance, boConfig, values, urlInfos, kind, disablePreChecked) {
 		$scope.mkUrl = function(urlInfos) {
-			var url = '/neutrino/bo/file/single/?navbar=false&multi=' + urlInfos.many;
+			var url = boConfig.basePath + '/bo/file/single/?navbar=false&multi=' + urlInfos.many;
 			$scope.urlMaked = url;
 		}
 		$scope.mkUrl(urlInfos);
@@ -659,7 +657,7 @@ fModule.controller('WysiwygEditorCtrl', ['$scope', 'textAngularManager', functio
 			for(var i = 0; i < data.length; i++) {
 				var item = data[i].model;
 				if (item.type == 'file'){
-					$scope.values.push($frontPath.URL_FILES + item.fullPath());
+					$scope.values.push(boConfig.basePath + '/' + boConfig.filesPath + item.fullPath());
 				}
 			}
 			if ($scope.templateForm){
@@ -685,13 +683,13 @@ fModule.controller('WysiwygEditorCtrl', ['$scope', 'textAngularManager', functio
 (function() {
 
 	var fModule = angular.module("boApp");
-	fModule.directive('uiFile', ['$parse', 'q', 'boConfig', '$frontPath', function($parse, $q, boConfig, $frontPath) {		
+	fModule.directive('uiFile', ['$parse', '$q', 'boConfig', function($parse, $q, boConfig) {		
         return {
             restrict: 'EA',
             scope: {
             	url: '=',
             },
-			controller: function ($scope) {
+			controller: ['$scope', function ( $scope ) {
 				var filename = $scope.url.substring($scope.url.lastIndexOf('/')+1);
 				$scope.name = filename;
 				
@@ -742,8 +740,7 @@ fModule.controller('WysiwygEditorCtrl', ['$scope', 'textAngularManager', functio
             		
             		
     			});
-
-			}, 
+			}], 
             templateUrl: boConfig.tplPath + '/ui-file.html',
             link: function(scope, element, attrs) {
 
@@ -760,7 +757,10 @@ fModule.controller('WysiwygEditorCtrl', ['$scope', 'textAngularManager', functio
     angular.module('boApp').provider('boConfig', function() {
 
         var values = {
-            tplPath: 'src/bo/js/templates'
+        	basePath: '',
+        	tplPath: 'src/bo/js/templates',
+            i18nPath: 'src/bo/js/i18n',
+            filePath: 'files/'
         };
 
         return {
@@ -847,16 +847,6 @@ fModule.controller('WysiwygEditorCtrl', ['$scope', 'textAngularManager', functio
     }]);
 	
 	
-}());
-(function() {
-	var fModule = angular.module('frontServices');
-	fModule.constant('$frontPath', {
-		URL_SERVER_REST: '/neutrino/',
-		URL_TEMPLATE_JS: '/neutrino/resources/src/bo/js/templates/',
-		URL_I18N: '/neutrino/resources/src/bo/js/i18n/',
-		URL_BASE : '/neutrino',
-		URL_FILES : '/files',
-	});
 }());
 angular.module('boApp').run(['$templateCache', function($templateCache) {
   'use strict';

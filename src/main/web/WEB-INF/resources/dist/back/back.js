@@ -16,10 +16,10 @@
 
 		
 	});
-	bModule.factory('i18nLoader', function ($http, $q, $backPath) {
+	bModule.factory('i18nLoader', function ($http, $q, backConfig) {
 	    return function (options) {
 		    var deferred = $q.defer();
-			$http.get($backPath.URL_SERVER_REST + '@front/labels/' + options.key)
+			$http.get(backConfig.basePath + '/@front/labels/' + options.key)
 			.then(function(response) {
 	            deferred.resolve(response.data);
 			})
@@ -35,7 +35,7 @@
 (function() {
 var bModule = angular.module("backApp");
 
-bModule.controller('BlockManagementCtrl', function ($scope, $rootScope, BlockManagementService, $backPath) {
+bModule.controller('BlockManagementCtrl', function ($scope, $rootScope, BlockManagementService) {
 	$scope.init = function(folderId, pageId, activeObjectId) {
 		BlockManagementService.init(folderId, pageId, activeObjectId).then(function() {
 			
@@ -114,7 +114,7 @@ bModule.controller('ModalDemoCtrl', function ($scope, $uibModal, $log) {
 (function() {
 var bModule = angular.module("backApp");
 	
-bModule.controller('TemplateModalCtrl', function($scope, $uibModalInstance, $backPath, template, page, TemplateService) {	
+bModule.controller('TemplateModalCtrl', function($scope, $uibModalInstance, backConfig, template, page, TemplateService) {	
 	$scope.exist = function() {
 		return TemplateService.getExist(page.context, template.kind, template.path, template.name)
 		.then(function(data) {
@@ -145,7 +145,7 @@ bModule.controller('TemplateModalCtrl', function($scope, $uibModalInstance, $bac
 	};
 	
 	$scope.template = {
-		templateModal: $backPath.URL_TEMPLATE_MODAL, 
+		templateModal: backConfig.URL_TEMPLATE_MODAL, 
 		template: template,
 		errors: null, 
 	};
@@ -157,7 +157,7 @@ bModule.controller('TemplateModalCtrl', function($scope, $uibModalInstance, $bac
 (function() {
 var bModule = angular.module('backApp');
 
-bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagementService, TemplateService, BlockService, $backPath) {
+bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagementService, TemplateService, BlockService, backConfig) {
 	BlockManagementService.init().then(function() {
 		const SCOPE_ACTIVEMODEL = 'ACTIVEMODEL';
 		const SCOPE_ACTIVEPAGE = 'ACTIVEPAGE';
@@ -181,7 +181,7 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 		
 		var activeObjectId = $scope.activeObject == null ? '' : $scope.activeObject.id;
 		$scope.getParsedBlock = function(block) {
-			return $backPath.URL_SERVER_REST + '@back/parsedblock/' + $scope.page.id + '/' + block.idMapTemplate + '/' + activeObjectId + '?folderId=' + $scope.folder.id;
+			return backConfig.serverRest + '/parsedblock/' + $scope.page.id + '/' + block.idMapTemplate + '/' + activeObjectId + '?folderId=' + $scope.folder.id;
 		}
 		
 	    $scope.$on('dropEvent_' + $scope.positionId + '@' + $scope.modelId, function (evt, block, ordered) {
@@ -213,7 +213,7 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 				var activeObjectNull = $scope.activeObject == null;
 				console.log(activeObjectNull);
 				var instance = $uibModal.open({
-					templateUrl: $backPath.URL_TEMPLATE_MODAL_CHOICE_SCOPE,
+					templateUrl: backConfig.URL_TEMPLATE_MODAL_CHOICE_SCOPE,
 					size: 'sm',
 					resolve: {
 			            buttons: function(){
@@ -257,12 +257,12 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 	    
 	    
 //        self.getPathTemplateForm = function() {
-//        	return $backPath.URL_TEMPLATE_MODAL;
+//        	return backConfig.URL_TEMPLATE_MODAL;
 //        }
         
         $scope.open = function(blockId) {
 			var instance = $uibModal.open({
-				templateUrl: $backPath.URL_TEMPLATE_MODAL_EDIT,
+				templateUrl: backConfig.URL_TEMPLATE_MODAL_EDIT,
 				controller: 'TemplateModalCtrl',
 				size: 'lg',
 				resolve: {
@@ -378,7 +378,7 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 	
 	
 
-	bModule.directive('uiPosition', function($backPath, BlockManagementService){
+	bModule.directive('uiPosition', function(backConfig, BlockManagementService){
 		return {
 			scope: {
 				positionId: '@',
@@ -386,7 +386,7 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 				activeObjectId: '@',
 			},
 			restrict: 'E',
-			templateUrl: $backPath.URL_TEMPLATE_JS + 'ui-position.html', 
+			templateUrl: backConfig.tplPath + '/ui-position.html', 
 			controller: 'UiPositionCtrl', 
 			link: function(scope, element, attrs){
 				
@@ -438,6 +438,29 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 }());
 
 
+(function(angular) {
+    'use strict';
+    angular.module('backApp').provider('backConfig', function() {
+
+        var values = {
+        	basePath: '',
+        	serverRest: '/@back',
+        	tplPath: 'src/back/js/templates',
+            i18nPath: 'src/back/js/i18n',
+        };
+
+        return {
+            $get: function() {
+                return values;
+            },
+            set: function (constants) {
+                angular.extend(values, constants);
+            }
+        };
+
+    });
+})(angular);
+
 (function() {
 	var bModule=angular.module("backServices",[]);
 	bModule.config(function($httpProvider) {
@@ -459,7 +482,7 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 (function() {
 	var bModule = angular.module('backServices');
 
-	bModule.service('BlockManagementService', function($rootScope, $q, FolderService, PageService, TemplateService, LangService, BlockService, MapTemplateService, TObjectService, $backPath) {
+	bModule.service('BlockManagementService', function($rootScope, $q, FolderService, PageService, TemplateService, LangService, BlockService, MapTemplateService, TObjectService) {
 		var folder = null;
 		var page = null;
 		var activeObject = null;
@@ -618,7 +641,7 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 	
 
 	
-	bModule.service('TemplateService', function(TemplateResource, TemplateRepository, $backPath) {
+	bModule.service('TemplateService', function(TemplateResource, TemplateRepository) {
 		self = this;
 		self.getTemplate = function(id) {
 			return TemplateResource.get({id : id}).$promise;
@@ -654,7 +677,7 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 
 		};
 	});
-	bModule.service('LangService', function(LangResource, $backPath) {
+	bModule.service('LangService', function(LangResource) {
 		self = this;
 		self.getLang = function(id) {
 			return LangResource.get({id : id}).$promise;
@@ -666,7 +689,7 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 			return LangResource.getAll().$promise;
 		};
 	});
-	bModule.service('FolderService', function(FolderResource, $backPath) {
+	bModule.service('FolderService', function(FolderResource) {
 		self = this;
 		self.getFolder = function(id) {
 			return FolderResource.get({id : id}).$promise;
@@ -678,7 +701,7 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 			return FolderResource.getAll().$promise;
 		};
 	});
-	bModule.service('PageService', function(PageResource, $backPath) {
+	bModule.service('PageService', function(PageResource) {
 		self = this;
 		self.getPage = function(id) {
 			return PageResource.get({id : id}).$promise;
@@ -687,13 +710,13 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 			return PageResource.getAll().$promise;
 		};
 	});	
-	bModule.service('BlockService', function(BlockResource, $backPath) {
+	bModule.service('BlockService', function(BlockResource) {
 		self = this;
 		self.getBlocksForModelPosition = function(modelId, pageId, activeObjectId, positionId) {
 			return BlockResource.getAll({modelId : modelId, pageId : pageId, activeObjectId : activeObjectId, positionId : positionId}).$promise;
 		};
 	});
-	bModule.service('MapTemplateService', function(MapTemplateResource, $backPath) {
+	bModule.service('MapTemplateService', function(MapTemplateResource) {
 		self = this;
 		self.save = function(mapTemplate) {
 			var fn = (mapTemplate.id) ? MapTemplateResource.update : MapTemplateResource.save;
@@ -703,7 +726,7 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 			return MapTemplateResource.remove({id:id}).$promise;
 		};
 	});
-	bModule.service('TObjectService', function(TObjectResource, $backPath) {
+	bModule.service('TObjectService', function(TObjectResource) {
 		self = this;
 		self.getTObject = function(id) {
 			return TObjectResource.get({id : id}).$promise;
@@ -714,13 +737,13 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 }());
 (function() {
 	var bModule = angular.module('backServices');
-	bModule.constant('$backPath', {
+	bModule.constant('$backjPath', {
 		URL_SERVER_REST: '/neutrino/',
 		URL_TEMPLATE_JS: '/neutrino/resources/src/back/js/templates/',
-		URL_TEMPLATE_MODAL: '/neutrino/resources/src/back/js/views/templateForm.html',
-		URL_TEMPLATE_MODAL_ADD: '/neutrino/resources/src/back/js/views/modalTemplateFormAdd.html',
-		URL_TEMPLATE_MODAL_EDIT: '/neutrino/resources/src/back/js/views/modalTemplateFormEdit.html',
-		URL_TEMPLATE_MODAL_CHOICE_SCOPE: '/neutrino/resources/src/back/js/views/choiceScopeModal.html',
+		URL_TEMPLATE_MODAL: '/neutrino/resources/src/back/js/templates/templateForm.html',
+		URL_TEMPLATE_MODAL_ADD: '/neutrino/resources/src/back/js/templates/modalTemplateFormAdd.html',
+		URL_TEMPLATE_MODAL_EDIT: '/neutrino/resources/src/back/js/templates/modalTemplateFormEdit.html',
+		URL_TEMPLATE_MODAL_CHOICE_SCOPE: '/neutrino/resources/src/back/js/templates/choiceScopeModal.html',
 		
 		
 		
@@ -731,11 +754,11 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 (function() {
 	var bModule = angular.module('backServices');
 
-	bModule.factory("TemplateRepository", function($http, $backPath) {
+	bModule.factory("TemplateRepository", function($http, backConfig) {
 		return {
 			exist: function(context, kind, path, name) {
 				return $http.get(
-						$backPath.URL_SERVER_REST + '@back/templates/exist/', 
+						backConfig.serverRest + '/templates/exist/', 
 					{params:{'context': context, 'kind': kind, 'path': path, 'name': name}}
 				).then(function(response) {
 					return response.data;
@@ -748,9 +771,9 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 		};
 	});
 	
-	bModule.factory("TemplateResource", function($resource, $backPath) {
-	  	var API_URI = '@back/template';  				
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id'}, {
+	bModule.factory("TemplateResource", function($resource, backConfig) {
+	  	var API_URI = backConfig.serverRest + '/template';  				
+	  	return $resource(API_URI, {id: '@id'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -759,9 +782,9 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 	  	});
 	});
 	
-	bModule.factory("LangResource", function($resource, $backPath) {
-	  	var API_URI = '@back/lang';  				
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id', code: '@code'}, {
+	bModule.factory("LangResource", function($resource, backConfig) {
+	  	var API_URI = backConfig.serverRest + '/lang';  				
+	  	return $resource(API_URI, {id: '@id', code: '@code'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -771,9 +794,9 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 	});
 	
 	
-	bModule.factory("FolderResource", function($resource, $backPath) {
-	  	var API_URI = '@back/folder';  				
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id', name: '@name'}, {
+	bModule.factory("FolderResource", function($resource, backConfig) {
+	  	var API_URI = backConfig.serverRest + '/folder';  				
+	  	return $resource(API_URI, {id: '@id', name: '@name'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -782,9 +805,9 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 	  	});
 	});
 	
-	bModule.factory("PageResource", function($resource, $backPath) {
-	  	var API_URI = '@back/page';  				
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id'}, {
+	bModule.factory("PageResource", function($resource, backConfig) {
+	  	var API_URI = backConfig.serverRest + '/page';  				
+	  	return $resource(API_URI, {id: '@id'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -793,9 +816,9 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 	  	});
 	});
 	
-	bModule.factory("BlockResource", function($resource, $backPath) {
-	  	var API_URI = '@back/block';  				
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {modelId: '@modelId', pageId: '@pageId', activeObjectId: '@activeObjectId', positionId: '@positionId'}, {
+	bModule.factory("BlockResource", function($resource, backConfig) {
+	  	var API_URI = backConfig.serverRest + '/block';  				
+	  	return $resource(API_URI, {modelId: '@modelId', pageId: '@pageId', activeObjectId: '@activeObjectId', positionId: '@positionId'}, {
 	  		create: {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -804,9 +827,9 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 	  	});
 	});
 	
-	bModule.factory("MapTemplateResource", function($resource, $backPath) {
-	  	var API_URI = '@back/mapTemplate';			
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id'}, {
+	bModule.factory("MapTemplateResource", function($resource, backConfig) {
+	  	var API_URI = backConfig.serverRest + ' /mapTemplate';			
+	  	return $resource(API_URI, {id: '@id'}, {
 	  		save:   {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -815,9 +838,9 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 	  	});
 	});
 	
-	bModule.factory("TObjectResource", function($resource, $backPath) {
-	  	var API_URI = '@back/tobject';			
-	  	return $resource($backPath.URL_SERVER_REST + API_URI, {id: '@id'}, {
+	bModule.factory("TObjectResource", function($resource, backConfig) {
+	  	var API_URI = backConfig.serverRest + ' /tobject';			
+	  	return $resource(API_URI, {id: '@id'}, {
 	  		save:   {method: 'POST'},
 	  		get:    {method: 'GET'},
 	  		getAll: {method: 'GET', isArray: true},
@@ -841,10 +864,10 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 	
 	
 	
-	bModule.factory("PositionRepository", function($http, $backPath) {
+	bModule.factory("PositionRepository", function($http, backConfig) {
 		return {
 			get: function(positionName) {
-				return $http.get($backPath.URL_SERVER_REST + '@back/positions/'+ positionName)
+				return $http.get(backConfig.serverRest + '/positions/'+ positionName)
 				.then(function(response) {
 					return response.data;
 				})
@@ -854,7 +877,7 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 				});
 			},
 			getAll: function() {
-				return $http.get($backPath.URL_SERVER_REST + '@back/positions/')
+				return $http.get(backConfig.serverRest + '/positions/')
 				.then(function(response) {
 		            return response.data;
 				})
@@ -868,10 +891,10 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 		};
 	});
 
-	bModule.factory("MapTemplateRepository", function($http, $backPath) {
+	bModule.factory("MapTemplateRepository", function($http, backConfig) {
 		return {
 			remove: function(idTemplateBlock) {
-				return $http.delete($backPath.URL_SERVER_REST + '@back/removemapblock/' + idTemplateBlock)
+				return $http.delete(backConfig.serverRest + '/removemapblock/' + idTemplateBlock)
 				.then(function(response) {
 
 				})
@@ -881,7 +904,7 @@ bModule.controller('UiPositionCtrl', function($scope, $uibModal, BlockManagement
 				});
 			},
 			add: function(dataObj) {
-	    		return $http.post($backPath.URL_SERVER_REST + '@back/addmapblock', dataObj).then(function(response) {
+	    		return $http.post(backConfig.serverRest + '/addmapblock', dataObj).then(function(response) {
 	    			return response.data;
 				}).catch(function(error){
 					console.log(error.status);
