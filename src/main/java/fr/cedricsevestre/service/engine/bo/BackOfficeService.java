@@ -1,21 +1,15 @@
 package fr.cedricsevestre.service.engine.bo;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -24,8 +18,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +29,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.domain.Specifications;
-import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
@@ -46,6 +36,7 @@ import fr.cedricsevestre.annotation.BOField;
 import fr.cedricsevestre.annotation.BOField.SortType;
 import fr.cedricsevestre.annotation.BOResource;
 import fr.cedricsevestre.annotation.BOResources;
+import fr.cedricsevestre.annotation.BOViewUrl;
 import fr.cedricsevestre.bean.NData;
 import fr.cedricsevestre.bean.NDatas;
 import fr.cedricsevestre.bean.NField;
@@ -55,17 +46,13 @@ import fr.cedricsevestre.com.utils.EntityLocator;
 import fr.cedricsevestre.com.utils.IdProviderUtil;
 import fr.cedricsevestre.com.utils.ServiceLocator;
 import fr.cedricsevestre.constants.CacheConst;
-import fr.cedricsevestre.entity.custom.Album;
 import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Lang;
 import fr.cedricsevestre.entity.engine.translation.Translation;
-import fr.cedricsevestre.entity.engine.translation.objects.Template;
-import fr.cedricsevestre.exception.ResourceNotFoundException;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.service.engine.translation.TranslationService;
 import fr.cedricsevestre.service.engine.translation.objects.TemplateService;
-import fr.cedricsevestre.specification.engine.IdProviderSpecification;
 
 @Service
 @Scope(value = "singleton")
@@ -227,6 +214,12 @@ public class BackOfficeService { //implements IBackOfficeService{
 		return nfTabsGroupsFields;
 	}
 
+	public String getViewUrl(Class<?> entity) throws ServiceException{
+		BOViewUrl viewUrl = entity.getAnnotation(BOViewUrl.class);
+		if (viewUrl != null) return viewUrl.value();
+		else return null;
+	}
+
 	private NResource mkNResourceFromBOResource(BOResource nResource){
 		return new NResource(nResource.type(), nResource.value());
 	}
@@ -241,7 +234,8 @@ public class BackOfficeService { //implements IBackOfficeService{
 		}
 		return list;
 	}
-
+	
+	
 	public NDatas<IdProvider> findAll(Class<?> entity, Pageable pageable) throws ServiceException{		
 		return findAll(entity, pageable, null);
 	}

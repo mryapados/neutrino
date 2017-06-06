@@ -39,12 +39,20 @@
 							</c:forEach>
 						</ul>
 					</div>
-
 				</c:if>
 
 				<button id="delete_button" type="submit" class="btn btn-danger">
 					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remove
 				</button>
+				
+				<c:if test="${not empty boViewUrl}">
+					<my:url var="url" value="${boViewUrl}" bean="${objectView}" />
+					
+					<a href="${url}" class="btn btn-success">
+						<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+						<s:message code="bo.view.button.viewUrl" text="See on front office" />
+					</a>
+				</c:if>
 
 			</div>
 		</div>

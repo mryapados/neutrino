@@ -19,6 +19,8 @@ import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 import fr.cedricsevestre.annotation.BOField;
+import fr.cedricsevestre.annotation.BOResource;
+import fr.cedricsevestre.annotation.BOViewUrl;
 import fr.cedricsevestre.annotation.BOField.ValueType;
 import fr.cedricsevestre.entity.engine.independant.objects.Folder;
 import fr.cedricsevestre.entity.engine.translation.Lang;

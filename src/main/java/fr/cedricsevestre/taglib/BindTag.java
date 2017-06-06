@@ -12,6 +12,7 @@ import org.apache.taglibs.standard.tag.common.core.Util;
 
 import fr.cedricsevestre.com.utils.IdProviderUtil;
 import fr.cedricsevestre.constants.AttributeConst;
+import fr.cedricsevestre.exception.UtilException;
 
 public class BindTag extends TagSupport {
 
@@ -49,7 +50,7 @@ public class BindTag extends TagSupport {
 			if (var != null) pageContext.setAttribute(var, result, scope);
 			else pageContext.getOut().print(result);
 
-		} catch (IOException e) {
+		} catch (IOException | UtilException e) {
 			throw new JspTagException(e);
 		}
 		return SKIP_BODY;

@@ -42,7 +42,8 @@ public class BackOfficeControllerView extends BackOfficeController {
 			}
 			
 			modelAndView.addObject("boResources", backOfficeService.getResources(object));
-
+			modelAndView.addObject("boViewUrl", backOfficeService.getViewUrl(object));
+			
 			return modelAndView;
 		} catch (ServiceException e) {
 			throw new ControllerException(e);

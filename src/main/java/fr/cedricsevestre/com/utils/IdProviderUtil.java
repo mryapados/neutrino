@@ -24,6 +24,7 @@ import fr.cedricsevestre.entity.engine.IdProvider;
 import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
+import fr.cedricsevestre.exception.UtilException;
 import fr.cedricsevestre.service.engine.notranslation.NoTranslationService;
 import fr.cedricsevestre.service.engine.translation.TranslationService;
 import fr.cedricsevestre.specification.engine.IdProviderSpecification;
@@ -46,7 +47,7 @@ public class IdProviderUtil {
 		return entityLocator.getEntity(type).getClass();
 	}
 
-	public IdProvider getObject(Class<?> entity, Integer id) throws JspTagException{
+	public IdProvider getObject(Class<?> entity, Integer id) throws UtilException{
 		logger.debug("Enter in getObject : entity = " + entity + "; id = " + id);
 		try {
 			Class<?> params[] = {Integer.class};
@@ -56,7 +57,7 @@ public class IdProviderUtil {
 			Method findOne = clazz.getMethod("findOne", params);
 			return (IdProvider) findOne.invoke(service, paramsObj);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
-			throw new JspTagException(e);
+			throw new UtilException(e);
 		}
 	}
 	private Field getField(Class<?> classObject, String fieldName) throws NoSuchFieldException {
@@ -73,29 +74,39 @@ public class IdProviderUtil {
 		}
 	}
 	
-	private Object getFieldValue(Object object, Field field) throws JspTagException {
+	private Object getFieldValue(Object object, Field field) throws UtilException {
 		logger.debug("Enter in getFieldValue : object = " + object + "; field = " + field);
 		try {
 			field.setAccessible(true);
 			return field.get(object);
 		} catch (IllegalAccessException e) {
 			logger.error("Failed to get value from field", e);
-			throw new JspTagException("Erreur getFieldValue", e);
+			throw new UtilException("Erreur getFieldValue", e);
 		}
 	}
 	
 	@Cacheable(value = CacheConst.IDPROVIDERFIEDDVALUE, condition = "#cache")
-	public Object getIdProviderFieldValue(String type, int beanId, String field, boolean cache) throws JspTagException{
+	public Object getIdProviderFieldValue(String type, int beanId, String field, boolean cache) throws UtilException{
 		logger.debug("Enter in getIdProviderFieldValue");
 		try {
 			Class<?> clazz = entityLocator.getEntity(type).getClass();
 			Object object = getObject(clazz, beanId);
 			return getFieldValue(object, getField(clazz, field));
 		} catch (ClassNotFoundException | NoSuchFieldException e) {
-			throw new JspTagException(e);
+			throw new UtilException(e);
 		}
 	}
 	
+	@Cacheable(value = CacheConst.IDPROVIDERFIEDDVALUE, condition = "#cache")
+	public Object getIdProviderFieldValue(IdProvider object, String field, boolean cache) throws UtilException{
+		logger.debug("Enter in getIdProviderFieldValue");
+		try {
+			Class<?> clazz = object.getClass();
+			return getFieldValue(object, getField(clazz, field));
+		} catch (NoSuchFieldException e) {
+			throw new UtilException(e);
+		}
+	}
 	
 	private IdProvider copyFields(IdProvider entity, IdProvider newEntity, Class<?> clazz) throws IllegalAccessException {
 		logger.debug("Enter in copyFields : entity = " + entity + "; newEntity = " + newEntity + "; clazz = " + clazz);
