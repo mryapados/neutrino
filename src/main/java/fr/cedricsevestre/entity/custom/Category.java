@@ -30,6 +30,7 @@ import fr.cedricsevestre.entity.engine.translation.objects.Template;
 
 @Entity
 @Table(name = "category")
+@BOViewUrl("/{lang.code}/{name}.html")
 public class Category extends Page {
 
 	private static final long serialVersionUID = 1L;

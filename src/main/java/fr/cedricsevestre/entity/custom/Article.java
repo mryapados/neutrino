@@ -19,7 +19,6 @@ import fr.cedricsevestre.entity.engine.translation.objects.Page;
 
 @Entity
 @Table(name = "article")
-//@BOViewUrl("/article/article?name={name}&language={lang.code}")
 @BOViewUrl("/{lang.code}/article/{name}.html")
 public class Article extends Page {
 

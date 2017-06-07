@@ -45,13 +45,47 @@
 					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remove
 				</button>
 				
+				
 				<c:if test="${not empty boViewUrl}">
-					<my:url var="url" value="${boViewUrl}" bean="${objectView}" />
-					
-					<a href="${url}" class="btn btn-success">
-						<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
-						<s:message code="bo.view.button.viewUrl" text="See on front office" />
-					</a>
+					<c:if test="${true}">
+						<c:catch var="exception">
+							<c:set var="folders" value="${objectView.folders}"/>
+							<div class="btn-group${position eq 'bottom' ? ' dropup' : ''}" role="group" uib-dropdown >
+								<button id="add_button" class="btn btn-success" uib-dropdown-toggle>
+			                       <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> <s:message code="bo.view.button.viewUrl" text="See on front office" /> <span class="caret"></span>
+			                   	</button>
+								<ul uib-dropdown-menu class="dropdown-menu" role="menu">
+									<c:forEach var="folder" items="${folders}">
+										<li>
+											<my:url var="url" value="${boViewUrl}" bean="${objectView}">
+												<my:param name="servername" value="${folder.name}" />
+											</my:url>
+											<a href="${url}"><c:out value="${folder.name}"/></a>
+										</li>
+									</c:forEach>
+								</ul>
+							</div>
+						</c:catch>
+					</c:if>
+					<c:if test="${not empty exception}">
+						<c:catch var="exception">
+							<c:set var="folder" value="${objectView.folder}"/>
+							<my:url var="url" value="${boViewUrl}" bean="${objectView}">
+								<my:param name="servername" value="${folder.name}" />
+							</my:url>
+							<a href="${url}" class="btn btn-success">
+								<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+								<s:message code="bo.view.button.viewUrl" text="See on front office" />
+							</a>
+						</c:catch>
+					</c:if>
+					<c:if test="${not empty exception}">
+						<my:url var="url" value="${boViewUrl}" bean="${objectView}"/>
+						<a href="${url}" class="btn btn-success">
+							<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+							<s:message code="bo.view.button.viewUrl" text="See on front office" />
+						</a>
+					</c:if>
 				</c:if>
 
 			</div>

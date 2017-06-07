@@ -20,6 +20,7 @@ import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 import fr.cedricsevestre.annotation.BOField;
+import fr.cedricsevestre.annotation.BOViewUrl;
 import fr.cedricsevestre.annotation.BOField.SortType;
 import fr.cedricsevestre.annotation.BOField.ValueType;
 import fr.cedricsevestre.entity.engine.translation.Lang;
@@ -34,6 +35,7 @@ import fr.cedricsevestre.entity.engine.translation.Translation;
 			@NamedAttributeNode("model")
 		})
 })
+@BOViewUrl("/{lang.code}/page/{name}.html")
 public class Page extends Translation {
 
 	private static final long serialVersionUID = 1L;

@@ -12,12 +12,14 @@ import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 import fr.cedricsevestre.annotation.BOField;
+import fr.cedricsevestre.annotation.BOViewUrl;
 import fr.cedricsevestre.annotation.BOField.ValueType;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.entity.engine.translation.objects.Page;
 
 @Entity
 @Table(name = "portfolio")
+@BOViewUrl("/{lang.code}/portfolio/{name}.html")
 public class Portfolio extends Page {
 
 	private static final long serialVersionUID = 1L;
