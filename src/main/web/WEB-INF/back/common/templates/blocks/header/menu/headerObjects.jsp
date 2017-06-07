@@ -10,7 +10,7 @@
 	<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="my-menu">
 		<c:forEach var="item" items="${translationLinks}" varStatus="status">
 			<s:message var="i18nName" code="bo.${item}.entity.name" text="${item}" />
-			<li><a href="<c:url value='/bo/list/?type=${item}'/>">${i18nName}</a></li>
+			<li><a href="<c:url value='${boContext}/list/?type=${item}'/>">${i18nName}</a></li>
 		</c:forEach>
 	</ul>
 </li>
@@ -19,7 +19,7 @@
 	<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="my-menu">
 		<c:forEach var="item" items="${noTranslationLinks}" varStatus="status">
 			<s:message var="i18nName" code="bo.${item}.entity.name" text="${item}" />
-			<li><a href="<c:url value='/bo/list/?type=${item}'/>">${i18nName}</a></li>
+			<li><a href="<c:url value='${boContext}/list/?type=${item}'/>">${i18nName}</a></li>
 		</c:forEach>
 	</ul>
 </li>

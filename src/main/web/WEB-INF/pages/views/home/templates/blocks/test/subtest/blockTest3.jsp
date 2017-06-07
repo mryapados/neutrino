@@ -22,11 +22,3 @@
 </p>
 
 
-
-<form method="POST" action="/neutrino/bo/file/add/" enctype="multipart/form-data">
-    <input type="file" name="file" /><br/>
-    <input type="submit" value="Submit" />
-    
-    <input type="hidden" name="_csrf" value="${_csrf.token}" />
-
-</form>

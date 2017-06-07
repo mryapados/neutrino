@@ -30,7 +30,7 @@
 		<fmt:formatDate value="${finalObject}"/>
 	</c:when>
 	<c:when test="${finalFieldType eq 'TOBJECT' || finalFieldType eq 'NTOBJECT'}">
-		<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a>
+		<a class="linked" href="<c:url value='${boContext}/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a>
 	</c:when>
 	<c:when test="${finalFieldType eq 'OBJECT'}">
 		<c:choose>
@@ -48,13 +48,13 @@
 				</c:choose>
 				
 				<my:bind var="templateName" type="Template" beanId="${template.id}" field="name" cache="false" />
-				<a class="linked" href="<c:url value='/bo/view/?type=Template&id=${template.id}' />">${templateName}</a> / <a class="linked" href="<c:url value='/bo/view/?type=Position&id=${finalObject.position.id}' />"><c:out value="${finalObject.position.name}"/></a>
+				<a class="linked" href="<c:url value='${boContext}/view/?type=Template&id=${template.id}' />">${templateName}</a> / <a class="linked" href="<c:url value='${boContext}/view/?type=Position&id=${finalObject.position.id}' />"><c:out value="${finalObject.position.name}"/></a>
 			</c:when>
 			<c:when test="${finalObject.objectType eq 'Folder'}">
-				<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a>
+				<a class="linked" href="<c:url value='${boContext}/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a>
 			</c:when>
 			<c:otherwise>
-				<a class="linked" href="<c:url value='/bo/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="object"/></a>
+				<a class="linked" href="<c:url value='${boContext}/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="object"/></a>
 			</c:otherwise>
 		</c:choose>
 	</c:when>

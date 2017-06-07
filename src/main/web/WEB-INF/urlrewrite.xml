@@ -11,69 +11,63 @@
     </rule>
     
     <rule>
-       <from>^/bo/(.*)$</from>
+       <from>^/admin/(.*)$</from>
        <to>/@bo/$1</to>
     </rule>
     
-
-	<!-- With keywords -->
-    <rule>
-       <from>^/@([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+).html$</from>
-       <to>/page/page?pg=$2</to>
-    </rule>
     
-    <!-- Without keywords -->
-    <rule>
-       <from>^/@([a-zA-Z0-9_\-]+).html$</from>
-       <to>/page/page?pg=$1</to>
+    <rule><!-- Category : lang, name -->
+       <from>^/([A-Za-z]{2})/([a-zA-Z0-9_\-]+).html$</from>
+       <to>/category/category?name=$2&amp;language=$1</to>
     </rule>
 
-
-	<!-- With keywords -->
-    <rule>
-       <from>^/portfolio/([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+).html$</from>
-       <to>/portfolio/portfolio?name=$2</to>
-    </rule>
-    <!-- Without keywords -->
-    <rule>
-       <from>^/portfolio/([a-zA-Z0-9_\-]+).html$</from>
-       <to>/portfolio/portfolio?name=$1</to>
-    </rule>
-    
-	<!-- With keywords -->
-    <rule>
-       <from>^/article/([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+).html$</from>
-       <to>/article/article?name=$2</to>
-    </rule>
-    <!-- Without keywords -->
-    <rule>
-       <from>^/article/([a-zA-Z0-9_\-]+).html$</from>
-       <to>/article/article?name=$1</to>
-    </rule>
-    
-    <!-- With keywords -->
-    <rule>
-       <from>^/([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+)/$</from>
-       <to>/project/project?p=$2</to>
-    </rule>
-    <rule>
-       <from>^/([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+).html$</from>
-       <to>/category/category?cat=$2</to>
-    </rule>
-
-	<!-- Without keywords -->
-    <rule>
-       <from>^/([a-zA-Z0-9_\-]+)/$</from>
-       <to>/project/project?p=$1</to>
-    </rule>
     <rule>
        <from>^/([a-zA-Z0-9_\-]+).html$</from>
-       <to>/category/category?cat=$1</to>
+       <to>/category/category?name=$1</to>
+    </rule>
+
+    
+    
+    <rule><!-- lang, keyword, type, name -->
+       <from>^/([A-Za-z]{2})/([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+).html$</from>
+       <to>/$3/$3?name=$4&amp;keywords=$2&amp;language=$1</to>
+    </rule>
+    <rule><!-- lang, type, name -->
+       <from>^/([A-Za-z]{2})/([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+).html$</from>
+       <to>/$2/$2?name=$3&amp;language=$1</to>
+    </rule>
+    
+    <rule><!-- keyword, type, name -->
+       <from>^/([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+).html$</from>
+       <to>/$2/$2?name=$3&amp;keywords=$1</to>
+    </rule>
+    <rule><!-- type, name -->
+       <from>^/([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+).html$</from>
+       <to>/$1/$1?name=$2</to>
     </rule>
 
 
 
 
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+	
 
 
     <rule>

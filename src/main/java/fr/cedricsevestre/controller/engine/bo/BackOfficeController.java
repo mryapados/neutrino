@@ -92,7 +92,8 @@ public abstract class BackOfficeController extends AbstractController {
 	
 	private ModelMap init() throws ServiceException{
 		ModelMap modelMap = new ModelMap();
-		modelMap.addAttribute("langs", langService.findAll());			
+		modelMap.addAttribute("langs", langService.findAll());		
+		modelMap.addAttribute("boContext", "/admin");
 		return modelMap;
 	}
 	

@@ -52,7 +52,7 @@
                     <ul uib-dropdown-menu class="dropdown-menu" role="menu">
 						<c:forEach var="item" items="${langs}" varStatus="status">
 							<li>
-								<a href="<c:url value='/bo/language/?language=${item.code}'/>">
+								<a href="<c:url value='${boContext}/language/?language=${item.code}'/>">
 								<span class="lang-sm lang-lbl-full" lang="${item.code}"></span></a>
 							</li>
 						</c:forEach>

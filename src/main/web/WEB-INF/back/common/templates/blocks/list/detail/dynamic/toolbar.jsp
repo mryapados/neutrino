@@ -52,7 +52,7 @@
 					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remove
 				</button>
 				
-				<c:url var="url" value="/bo/new/" scope="request">
+				<c:url var="url" value="${boContext}/new/" scope="request">
 					<c:param name="type" value="${objectType}"/>
 				</c:url>
 				<a href="${url}" role="button" class="btn btn-primary">

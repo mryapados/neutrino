@@ -28,7 +28,7 @@
 		</div>
 	</c:if>
 		
-	<c:url var="deleteUrl" value="/bo/removes/?type=${objectType}"/>
+	<c:url var="deleteUrl" value="${boContext}/removes/?type=${objectType}"/>
 	<form:form id="delete" action="${deleteUrl}" method="post">
 		<div class="panel-group">
 			<div class="panel panel-primary">
@@ -61,13 +61,13 @@
 										<input type="checkbox" name="id" value="${object.id}"/>
 									</td>
 									<td class="text-center">
-										<c:url var="url" value="/bo/edit/" scope="request">
+										<c:url var="url" value="${boContext}/edit/" scope="request">
 											<c:param name="type" value="${objectType}"/>
 											<c:param name="id" value="${objectView.id}"/>
 										</c:url>
 										<a href="${url}" title="edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
 										&nbsp
-										<c:url var="url" value="/bo/view/" scope="request">
+										<c:url var="url" value="${boContext}/view/" scope="request">
 											<c:param name="type" value="${param.type}"/>
 											<c:param name="id" value="${objectView.id}"/>
 										</c:url>

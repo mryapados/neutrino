@@ -95,7 +95,7 @@
 		                    <ul uib-dropdown-menu class="dropdown-menu" role="menu">
 								<c:forEach var="item" items="${langs}" varStatus="status">
 									<li>
-										<c:url var="url" value="/bo/new/translation/" scope="request">
+										<c:url var="url" value="${boContext}/new/translation/" scope="request">
 											<c:param name="type" value="${objectType}"/>
 											<c:param name="lg" value="${item.code}"/>
 										</c:url>
@@ -106,7 +106,7 @@
 						</div>
 					</c:when>
 					<c:otherwise>
-						<c:url var="url" value="/bo/new/" scope="request">
+						<c:url var="url" value="${boContext}/new/" scope="request">
 							<c:param name="type" value="${objectType}"/>
 						</c:url>
 						<a href="${url}" role="button" class="btn btn-primary">

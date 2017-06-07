@@ -23,7 +23,7 @@ import fr.cedricsevestre.service.custom.ResumeService;
 public class CategoryController extends AbstractController {
 	protected static final String CATEGORY_MAPPING = "/category";
 	protected static final String CATEGORY_URL = "/category";
-	protected static final String ATTR_CATEGORY = "cat";
+	protected static final String ATTR_CATEGORY = "name";
 		
 	@Autowired
 	ResumeService resumeService;

@@ -18,8 +18,8 @@ import fr.cedricsevestre.exception.ServiceException;
 public class PageController extends AbstractController {
 
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
-	public ModelAndView view(@ModelAttribute("pg") String page, Folder folder) throws ResourceNotFoundException, ControllerException {
-		return baseView(page, null, folder);
+	public ModelAndView view(@ModelAttribute("name") String name, Folder folder) throws ResourceNotFoundException, ControllerException {
+		return baseView(name, null, folder);
 	}
 
 }
