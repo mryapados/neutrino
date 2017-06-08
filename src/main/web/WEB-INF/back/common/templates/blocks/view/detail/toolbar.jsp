@@ -60,7 +60,7 @@
 											<my:url var="url" value="${boViewUrl}" bean="${objectView}">
 												<my:param name="servername" value="${folder.name}" />
 											</my:url>
-											<a href="${url}"><c:out value="${folder.name}"/></a>
+											<a href="${url}" target="_blank"><c:out value="${folder.name}"/></a>
 										</li>
 									</c:forEach>
 								</ul>
@@ -73,7 +73,7 @@
 							<my:url var="url" value="${boViewUrl}" bean="${objectView}">
 								<my:param name="servername" value="${folder.name}" />
 							</my:url>
-							<a href="${url}" class="btn btn-success">
+							<a href="${url}" target="_blank" class="btn btn-success">
 								<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
 								<s:message code="bo.view.button.viewUrl" text="See on front office" />
 							</a>
@@ -81,7 +81,7 @@
 					</c:if>
 					<c:if test="${not empty exception}">
 						<my:url var="url" value="${boViewUrl}" bean="${objectView}"/>
-						<a href="${url}" class="btn btn-success">
+						<a href="${url}" target="_blank" class="btn btn-success">
 							<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
 							<s:message code="bo.view.button.viewUrl" text="See on front office" />
 						</a>

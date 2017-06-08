@@ -24,11 +24,11 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name=viewport content="width=device-width, initial-scale=1">
 	
-	<meta name="description" content="Gridus vCard HTML Template is the professional responsive personal website template, based on the latest Bootstrap 3">
-	<meta name="keywords" content="html5, template, website, responsive, bootstrap">
-	<meta name="author" content="neuethemes">
+	<meta name="description" content="<c:out value='${activePage.metaDescription}'/>">
+	<meta name="keywords" content="<c:out value='${activePage.metaKeyWords}'/>">
+	<meta name="author" content="Cédric Sevestre">
 	
-	<title><spring:message code="project.pages.home.title" arguments="${project}" /></title>
+	<title><c:out value="${activePage.metaTitle}"/></title>
 </my:head>
 <my:body id="samuel" cssClass="boxed">
 

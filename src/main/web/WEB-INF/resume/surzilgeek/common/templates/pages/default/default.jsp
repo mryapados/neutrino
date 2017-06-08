@@ -6,7 +6,7 @@
 <%-- 
 	Objets disponibles :  
 	language : Scope Request, String , en / fr / es / ..., objet fourni par le controller, provient d'un cookie.
-
+	activePage : Scope Request.
 	TO DO...
 --%>
 
@@ -24,11 +24,11 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name=viewport content="width=device-width, initial-scale=1">
 	
-	<meta name="description" content="Gridus vCard HTML Template is the professional responsive personal website template, based on the latest Bootstrap 3">
-	<meta name="keywords" content="to do">
+	<meta name="description" content="<c:out value='${activePage.metaDescription}'/>">
+	<meta name="keywords" content="<c:out value='${activePage.metaKeyWords}'/>">
 	<meta name="author" content="Cédric Sevestre">
 	
-	<title><s:message code="project.pages.home.title" arguments="${project}" /></title>
+	<title><c:out value="${activePage.metaTitle}"/></title>
 </my:head>
 <my:body>
 

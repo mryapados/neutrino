@@ -35,15 +35,22 @@
 				<span class="lang-sm lang-lbl" lang="${finalObject.code}"></span>
 			</c:when>
 			<c:when test="${finalObject.objectType eq 'MapTemplate'}">
+			
+				<h1>${finalParentObject.id} - ${finalObject.model.id}</h1>
+			
 				<c:choose>
 					<c:when test="${finalParentObject.id eq finalObject.model.id}">
-						<c:set var="template" value="${finalObject.block}" />
+						<my:bind var="templateId" type="Template" beanId="${finalObject.block.id}" field="id" cache="false" />
+						<my:bind var="templateName" type="Template" beanId="${finalObject.block.id}" field="name" cache="false" />
+						
 					</c:when>
 					<c:otherwise>
-						<c:set var="template" value="${finalObject.model}" />
+						<c:set var="templateId" value="${finalObject.model.id}" />
+						<my:bind var="templateName" type="Translation" beanId="${finalObject.model.id}" field="name" cache="false" />
+						
 					</c:otherwise>
 				</c:choose>
-				<a class="linked" href="<c:url value='${boContext}/view/?type=Template&id=${template.id}' />"><c:out value="${template.name}"/></a> / <a class="linked" href="<c:url value='${boContext}/view/?type=Position&id=${finalObject.position.id}' />"><c:out value="${finalObject.position.name}"/></a>
+				<a class="linked" href="<c:url value='${boContext}/view/?type=Template&id=${templateId}' />"><c:out value="${templateName}"/></a> / <a class="linked" href="<c:url value='${boContext}/view/?type=Position&id=${finalObject.position.id}' />"><c:out value="${finalObject.position.name}"/></a>
 			</c:when>
 			<c:when test="${finalObject.objectType eq 'Folder'}">
 				<a class="linked" href="<c:url value='${boContext}/view/?type=${finalObject.objectType}&id=${finalObject.id}' />"><c:out value="${finalObject.name}"/></a>
