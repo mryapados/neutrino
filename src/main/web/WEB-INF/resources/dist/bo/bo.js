@@ -342,7 +342,7 @@ fModule.controller('WysiwygEditorCtrl', ['$scope', 'textAngularManager', functio
 
 				      			//Récupère la liste des objets avec leur nom via une requête au serveur
 				      			if (ids.length > 0){
-						      		$http.get(boConfig.basePath + '/bo/list/objects/' + type, {params:{'id': ids}}).then(function(data) {
+						      		$http.get(boConfig.basePath + '/admin/list/objects/' + type, {params:{'id': ids}}).then(function(data) {
 						      			$scope[modelText] = data.data;
 						      			
 									})
@@ -606,7 +606,7 @@ fModule.controller('WysiwygEditorCtrl', ['$scope', 'textAngularManager', functio
 		
 		$scope.mkUrl = function(urlInfos) {
 			var id = urlInfos.id == '' ? 0 : urlInfos.id;
-			var url = boConfig.basePath + '/bo/blocklist/' + urlInfos.type + '/' + id + '/' + urlInfos.field;
+			var url = boConfig.basePath + '/admin/blocklist/' + urlInfos.type + '/' + id + '/' + urlInfos.field;
 			$scope.urlInfos = urlInfos;
 			$scope.urlMaked = url + $scope.mkParams(urlInfos.pageable);
 			$scope.init();
@@ -647,7 +647,7 @@ fModule.controller('WysiwygEditorCtrl', ['$scope', 'textAngularManager', functio
 
 	fModule.controller('UiFileAssignmentModalCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'boConfig', 'values', 'urlInfos', 'kind', 'disablePreChecked', function($rootScope, $scope, $uibModalInstance, boConfig, values, urlInfos, kind, disablePreChecked) {
 		$scope.mkUrl = function(urlInfos) {
-			var url = boConfig.basePath + '/bo/file/single/?navbar=false&multi=' + urlInfos.many;
+			var url = boConfig.basePath + '/admin/file/single/?navbar=false&multi=' + urlInfos.many;
 			$scope.urlMaked = url;
 		}
 		$scope.mkUrl(urlInfos);
@@ -783,18 +783,18 @@ fModule.controller('WysiwygEditorCtrl', ['$scope', 'textAngularManager', functio
       config.set({
         appName: 'Neutrino',
         
-        listUrl: '/neutrino/bo/file/list/',
-        uploadUrl: '/neutrino/bo/file/add/',
-        renameUrl: '/neutrino/bo/file/rename/',
+        listUrl: '/neutrino/admin/file/list/',
+        uploadUrl: '/neutrino/admin/file/add/',
+        renameUrl: '/neutrino/admin/file/rename/',
         copyUrl: 'bridges/php/handler.php',
-        moveUrl: '/neutrino/bo/file/move/',
-        removeUrl: '/neutrino/bo/file/remove/',
+        moveUrl: '/neutrino/admin/file/move/',
+        removeUrl: '/neutrino/admin/file/remove/',
         editUrl: 'bridges/php/handler.php',
         getContentUrl: 'bridges/php/handler.php',
         createFolderUrl: 'bridges/php/handler.php',
-        downloadFileUrl: '/neutrino/bo/file/download/',
-        downloadMultipleUrl: '/neutrino/bo/file/downloadMultiple/',
-        compressUrl: '/neutrino/bo/file/compress/',
+        downloadFileUrl: '/neutrino/admin/file/download/',
+        downloadMultipleUrl: '/neutrino/admin/file/downloadMultiple/',
+        compressUrl: '/neutrino/admin/file/compress/',
         extractUrl: 'bridges/php/handler.php',
         permissionsUrl: 'bridges/php/handler.php',
         

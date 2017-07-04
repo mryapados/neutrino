@@ -7,7 +7,7 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.jsp.JspTagException;
+import javax.transaction.Transaction;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +25,8 @@ import fr.cedricsevestre.entity.engine.notranslation.NoTranslation;
 import fr.cedricsevestre.entity.engine.translation.Translation;
 import fr.cedricsevestre.exception.ServiceException;
 import fr.cedricsevestre.exception.UtilException;
-import fr.cedricsevestre.service.engine.notranslation.NoTranslationService;
-import fr.cedricsevestre.service.engine.translation.TranslationService;
+import fr.cedricsevestre.service.engine.notranslation.NTObjectService;
+import fr.cedricsevestre.service.engine.translation.TObjectService;
 import fr.cedricsevestre.specification.engine.IdProviderSpecification;
 import fr.cedricsevestre.taglib.BindTag;
 
@@ -43,11 +43,32 @@ public class IdProviderUtil {
 	@Autowired
 	private ServiceLocator serviceLocator;
 
+	@Autowired
+	private TObjectService tObjectService ;
+	
+	@Autowired
+	private NTObjectService nTObjectService ;
+	
 	public Class<?> getEntity(String type) throws ClassNotFoundException {
 		return entityLocator.getEntity(type).getClass();
 	}
+	
+	public IdProvider getTranslationObject(Integer id) throws UtilException{
+		try {
+			return tObjectService.findOne(id);
+		} catch (ServiceException e) {
+			throw new UtilException(e);
+		}
+	}
+	public IdProvider getNoTranslationObject(Integer id) throws UtilException{
+		try {
+			return nTObjectService.findOne(id);
+		} catch (ServiceException e) {
+			throw new UtilException(e);
+		}
+	}
 
-	public IdProvider getObject(Class<?> entity, Integer id) throws UtilException{
+	private IdProvider getConcreteObject(Class<?> entity, Integer id) throws UtilException{
 		logger.debug("Enter in getObject : entity = " + entity + "; id = " + id);
 		try {
 			Class<?> params[] = {Integer.class};
@@ -60,6 +81,17 @@ public class IdProviderUtil {
 			throw new UtilException(e);
 		}
 	}
+	
+	public IdProvider getObject(Class<?> entity, Integer id) throws UtilException{
+		if (entity == Translation.class){
+			return getTranslationObject(id);
+		} else if (entity == Translation.class){
+			return getNoTranslationObject(id);
+		} else {
+			return getConcreteObject(entity, id);
+		}
+	}
+	
 	private Field getField(Class<?> classObject, String fieldName) throws NoSuchFieldException {
 		logger.debug("Enter in getField : classObject = " + classObject + "; fieldName = " + fieldName);
 		try {
@@ -85,14 +117,28 @@ public class IdProviderUtil {
 		}
 	}
 	
+	private Class<?> getClass(String type) throws UtilException{
+		if (type.equals(Translation.class.getSimpleName())){
+			return Translation.class;
+		} else if (type.equals(NoTranslation.class.getSimpleName())){
+			return NoTranslation.class;
+		} else {
+			try {
+				return entityLocator.getEntity(type).getClass();
+			} catch (ClassNotFoundException e) {
+				throw new UtilException(e);
+			}
+		}
+	}
+	
 	@Cacheable(value = CacheConst.IDPROVIDERFIEDDVALUE, condition = "#cache")
 	public Object getIdProviderFieldValue(String type, int beanId, String field, boolean cache) throws UtilException{
 		logger.debug("Enter in getIdProviderFieldValue");
 		try {
-			Class<?> clazz = entityLocator.getEntity(type).getClass();
+			Class<?> clazz = getClass(type);
 			Object object = getObject(clazz, beanId);
 			return getFieldValue(object, getField(clazz, field));
-		} catch (ClassNotFoundException | NoSuchFieldException e) {
+		} catch (NoSuchFieldException e) {
 			throw new UtilException(e);
 		}
 	}
