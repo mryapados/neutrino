@@ -29,6 +29,8 @@
 	<meta name="author" content="Cédric Sevestre">
 	
 	<title><c:out value="${activePage.metaTitle}"/></title>
+	
+	<my:import url="/resume/surzilgeek/common/components/head.jsp" />
 </my:head>
 <my:body>
 
